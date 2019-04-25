@@ -18,6 +18,9 @@ The library is licenced under the MIT licence (https://opensource.org/licenses/M
 This namespace provides three templated types: Point, Vector and NormalizedVector. Each point or vector lives in a 
 Space. It is possible to convert points and vectors from space to another.
 
+Importantly, points and vectors can *only* interact with points and vectors from the same space. 
+Attempting to, say, add a vector from one space to a vector from another will result in a compilation error.
+
 A Space can be defined as follows:
 
 ```cpp
