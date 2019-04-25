@@ -1,15 +1,9 @@
 #pragma once
-/**************************************************************************************************
-
-Copyright (C) 2018 Canon Medical Systems Corporation. All rights reserved.
-
-**************************************************************************************************/
 
 #include "BaseImpl.h"
 
 namespace Space::detail {
 
-    // Forward declaration
     template <typename Space>
     class Vector;
 

@@ -1,11 +1,4 @@
 #pragma once
-/**************************************************************************************************
-
-Copyright (C) 2018 Canon Medical Systems Corporation. All rights reserved.
-
-**************************************************************************************************/
-
-// This is an implementation header. DO NOT include it directly. Just include Space.h
 
 #include "BaseImpl.h"
 
