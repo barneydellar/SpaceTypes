@@ -82,7 +82,7 @@ Vectors can be added to a point from the same space can be added together to pro
 ```cpp
 const NewSpace::Vector v(1, 2, 3);
 const NewSpace::Point p1(4, 5, 6);
-auto p2 = p1 + v; // Patient::Point(5, 7, 9)
+auto p2 = p1 + v; // NewSpace::Point(5, 7, 9)
 ```
 
 Vectors can be added to a point from the same space can be added together in place:
@@ -162,7 +162,7 @@ You can get the normal form of a vector
 
 ```cpp
 const NewSpace::Vector v1(5, 0, 0);
-const NewSpace::NormalizedVector v2 = v1.Norm(); // Patient::Vector(1, 0, 0)
+const NewSpace::NormalizedVector v2 = v1.Norm(); // NewSpace::Vector(1, 0, 0)
 ```
 
 In addition, you can construct a normalized vector as you would a normal vector, but the result will
