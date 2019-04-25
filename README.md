@@ -207,7 +207,7 @@ auto b_inequality = p1 != p2; // true
 
 ### Conversion between spaces</H3>
 
-Vectors from one space can be converted to another space. Under the hood, this uses a Transform33.
+Vectors from one space can be converted to another space. Under the hood, this makes a call to Transform33 on the TransformManager.
 
 ```cpp
 TransformManager tm;
@@ -215,7 +215,7 @@ const NewSpace::Vector v_new_space(1, 0, 0);
 const auto v_view = v_new_space.ConvertTo<ViewSpace>(tm); // ViewSpace::Vector(x, y, z)
 ```
 
-Points from one space can be converted to another space. Under the hood, this uses a Transform.
+Points from one space can be converted to another space. Under the hood, this makes a call to Transform on the TransformManager.
 
 ```cpp
 TransformManager tm;
