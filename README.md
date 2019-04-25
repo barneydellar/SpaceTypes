@@ -2,6 +2,8 @@
 
 A C++ library for 3D points and vectors that are strongly typed on their coordinate space.
 
+This library has only been tested using Visual Studio 2017 with C++17.
+
 This is a header-only library. Simply #include "Space.h".
 The library defines the namespace *Space*.
 
