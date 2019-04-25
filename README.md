@@ -271,3 +271,12 @@ std::transform(
 );
 // p == NewSpace::Point(4, 6, 8);
 ```
+
+Points, Vectors and NormalisedVectors can be serialised:
+
+```cpp
+const NewSpace::Point p(2, 3, 4);
+std::stringstream stream;
+stream << p;
+// stream.str() == std::string("NewSpace::Point (2, 3, 4)"));
+```
