@@ -21,10 +21,10 @@ Space. It is possible to convert points and vectors from space to another.
 A Space can be defined as follows:
 
 ```cpp
-    using NewSpaceUnits = ...;
+using NewSpaceUnits = ...;
 
-    struct NewSpace final : Space::SpaceBase<NewSpace, NewSpaceUnits> {};
-    template <> const std::string SpaceTypeNameMap<Volume>::name = "NewSpace";
+struct NewSpace final : Space::SpaceBase<NewSpace, NewSpaceUnits> {};
+template <> const std::string SpaceTypeNameMap<Volume>::name = "NewSpace";
 ```
 
 The units must be constructable from a double. It will be used to return the magnitude of a vector.
