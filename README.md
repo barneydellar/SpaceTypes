@@ -38,23 +38,23 @@ The entry in the SpaceTypeNameMap will be used to serialize a point, vector or n
 A point or vector can be created from three doubles.
 
 ```cpp
-const View::Point p(1, 2, 3);
-const Patient::Vector v(1, 2, 3);
-const Image::NormalizedVector v(1, 0, 0);
+const ViewSpace::Point p(1, 2, 3);
+const NewSpace::Vector v(1, 2, 3);
+const NewSpace::NormalizedVector v(1, 0, 0);
 ```
 
 A point or vector can be created from two doubles. The z-value will be set to zero.
 
 ```cpp
-const View::Point p(1, 2);
-const Patient::Vector v(1, 2);
-const Image::NormalizedVector v(1, 0);
+const ViewSpace::Point p(1, 2);
+const NewSpace::Vector v(1, 2);
+const NewSpace::NormalizedVector v(1, 0);
 ```
 
 Note that a NormalizedVector will always have unit length, even if you create with non-unit values
 
 ```cpp
-const Image::NormalizedVector v(5, 0, 0); // v = {1, 0, 0}
+const ViewSpace::NormalizedVector v(5, 0, 0); // v = {1, 0, 0}
 ```
 
 
@@ -63,16 +63,16 @@ const Image::NormalizedVector v(5, 0, 0); // v = {1, 0, 0}
 Vectors from the same space can be added together to produce a new vector:
 
 ```cpp
-const Patient::Vector v1(1, 2, 3);
-const Patient::Vector v2(4, 5, 6);
-auto sum = v1 + v2; // Patient::Vector(5, 7, 9)
+const NewSpace::Vector v1(1, 2, 3);
+const NewSpace::Vector v2(4, 5, 6);
+auto sum = v1 + v2; // NewSpace::Vector(5, 7, 9)
 ```
 
 Vectors from the same space can be added together in place:
 
 ```cpp
-Patient::Vector v1(1, 2, 3);
-const Patient::Vector v2(4, 5, 6);
+NewSpace::Vector v1(1, 2, 3);
+const NewSpace::Vector v2(4, 5, 6);
 v1 += v2; // v1 = (5, 7, 9)
 ```
 
@@ -80,16 +80,16 @@ v1 += v2; // v1 = (5, 7, 9)
 Vectors can be added to a point from the same space can be added together to produce a new point:
 
 ```cpp
-const Patient::Vector v(1, 2, 3);
-const Patient::Point p1(4, 5, 6);
+const NewSpace::Vector v(1, 2, 3);
+const NewSpace::Point p1(4, 5, 6);
 auto p2 = p1 + v; // Patient::Point(5, 7, 9)
 ```
 
 Vectors can be added to a point from the same space can be added together in place:
 
 ```cpp
-const Patient::Point p(4, 5, 6);
-const Patient::Vector v(1, 2, 3);
+const NewSpace::Point p(4, 5, 6);
+const NewSpace::Vector v(1, 2, 3);
 auto p += v; // p = (5, 7, 9)
 ```
 
@@ -99,9 +99,9 @@ auto p += v; // p = (5, 7, 9)
 Points from the same space can be subtracted to produce a vector:
 
 ```cpp
-const Patient::Point p1(4, 5, 6);
-const Patient::Point p2(1, 2, 3);
-auto v = p1 - p2; // Patient::Vector(3, 3, 3)
+const NewSpace::Point p1(4, 5, 6);
+const NewSpace::Point p2(1, 2, 3);
+auto v = p1 - p2; // NewSpace::Vector(3, 3, 3)
 ```
 
 ### Scaling
@@ -109,14 +109,14 @@ auto v = p1 - p2; // Patient::Vector(3, 3, 3)
 Vectors can be scaled to produce a new vector
 
 ```cpp
-const Patient::Vector v1(4, 5, 6);
-auto v2 = v1 * 2; // Patient::Vector(8, 10, 12)
+const NewSpace::Vector v1(4, 5, 6);
+auto v2 = v1 * 2; // NewSpace::Vector(8, 10, 12)
 ```
 
 Vectors can be scaled in place
 
 ```cpp
-const Patient::Vector v(4, 5, 6);
+NewSpace::Vector v(4, 5, 6);
 auto v *= 2; // v = (8, 10, 12)
 ```
 
@@ -125,8 +125,8 @@ auto v *= 2; // v = (8, 10, 12)
 You can get the dot product from two vectors in the same space
 
 ```cpp
-const Patient::Vector v1(1, 2, 3);
-const Patient::Vector v2(4, 5, 6);
+const NewSpace::Vector v1(1, 2, 3);
+const NewSpace::Vector v2(4, 5, 6);
 auto dot = v1.Dot(v2); // double dot = 4+10+18 = 32;
 ```
 
@@ -135,24 +135,24 @@ auto dot = v1.Dot(v2); // double dot = 4+10+18 = 32;
 You can get the cross product from two vectors in the same space
 
 ```cpp
-const Patient::Vector v1(1, 0, 0);
-const Patient::Vector v2(0, 1, 0);
-auto cross = v1.Cross(v2); // Patient::Vector(0, 0, 1);
+const NewSpace::Vector v1(1, 0, 0);
+const NewSpace::Vector v2(0, 1, 0);
+auto cross = v1.Cross(v2); // NewSpace::Vector(0, 0, 1);
 ```
 
 You can get the cross product from two vectors in the same space using the * operator:
 
 ```cpp
-const Patient::Vector v1(1, 0, 0);
-const Patient::Vector v2(0, 1, 0);
-auto cross = v1 * v2; // Patient::Vector(0, 0, 1)
+const NewSpace::Vector v1(1, 0, 0);
+const NewSpace::Vector v2(0, 1, 0);
+auto cross = v1 * v2; // NewSpace::Vector(0, 0, 1)
 ```
 
 You can get the cross product from two vectors in the same space using the *= operator:
 
 ```cpp
-const Patient::Vector v1(1, 0, 0);
-const Patient::Vector v2(0, 1, 0);
+const NewSpace::Vector v1(1, 0, 0);
+const NewSpace::Vector v2(0, 1, 0);
 auto v1 *= v2; // v1 = (0, 0, 1);
 ```
 
@@ -161,25 +161,25 @@ auto v1 *= v2; // v1 = (0, 0, 1);
 You can get the normal form of a vector
 
 ```cpp
-const Patient::Vector v1(5, 0, 0);
-const Patient::NormalizedVector v2 = v1.Norm(); // Patient::Vector(1, 0, 0)
+const NewSpace::Vector v1(5, 0, 0);
+const NewSpace::NormalizedVector v2 = v1.Norm(); // Patient::Vector(1, 0, 0)
 ```
 
 In addition, you can construct a normalized vector as you would a normal vector, but the result will
 always be normalized:
 
 ```cpp
-const Patient::NormalizedVector v(5, 0, 0);
+const NewSpace::NormalizedVector v(5, 0, 0);
 // v1 = (1, 0, 0)
 ```
 
 ### Magnitude
 
-You can get the magnitude of a vector. This will be in strongly typed units, e.g. Patient Space
-is in millimetres, View Space is in Pixels.
+You can get the magnitude of a vector. This will be in strongly typed units, e.g. NewSpace
+is in NewSpaceUnits, ViewSpace is in Pixels.
 
 ```cpp
-const Patient::Vector v1(5, 0, 0);
+const ViewSpace::Vector v1(5, 0, 0);
 const auto m = v1.Mag(); // m = 5 Millimetres
 ```
 
@@ -189,8 +189,8 @@ Vectors from the same space can be compared using == or !=. Under the hood, this
 for approximate equality.
 
 ```cpp
-const Patient::Vector v1(1, 0, 0);
-const Patient::Vector v2(0, 1, 0);
+const NewSpace::Vector v1(1, 0, 0);
+const NewSpace::Vector v2(0, 1, 0);
 auto b_equality = v1 == v2; // false
 auto b_inequality = v1 != v2; // true
 ```
@@ -199,8 +199,8 @@ Points from the same space can be compared using == or !=. Under the hood, this 
 for approximate equality.
 
 ```cpp
-const Patient::Point p1(1, 0, 0);
-const Patient::Point p2(0, 1, 0);
+const NewSpace::Point p1(1, 0, 0);
+const NewSpace::Point p2(0, 1, 0);
 auto b_equality = p1 == p2; // false
 auto b_inequality = p1 != p2; // true
 ```
@@ -211,16 +211,16 @@ Vectors from one space can be converted to another space. Under the hood, this u
 
 ```cpp
 TransformManager tm;
-const Patient::Vector v_patient(1, 0, 0);
-auto v = v_patient.ConvertTo<Image>(tm); // Image::Vector(x, y, z)
+const NewSpace::Vector v_new_space(1, 0, 0);
+const auto v_view = v_new_space.ConvertTo<ViewSpace>(tm); // ViewSpace::Vector(x, y, z)
 ```
 
 Points from one space can be converted to another space. Under the hood, this uses a Transform.
 
 ```cpp
 TransformManager tm;
-const Patient::Point p_patient(1, 0, 0);
-auto p = p_patient.ConvertTo<Image>(tm); // Image::Point(x, y, z)
+const NewSpace::Point p_new_space(1, 0, 0);
+const auto p = p_view.ConvertTo<ViewSpace>(tm); // ViewSpace::Point(x, y, z)
 ```
 
 ### Access
@@ -233,8 +233,8 @@ The data from a point or vector can be accessed using square brackets. The only 
 are 0, 1, or 2. Any other value will cause a runtime throw.
 
 ```cpp
-const Image::Vector v(1, 2, 3);
-v[0] == 1;
+const NewSpace::Vector v(1, 2, 3);
+// v[0] == 1;
 ```
 
 #### Named Access</H4>
@@ -242,8 +242,8 @@ v[0] == 1;
 The data from a point or vector can be accessed using the X(), Y() or Z() functions.
 
 ```cpp
-const Image::Vector v(1, 2, 3);
-v.Y() == 2;
+const NewSpace::Vector v(1, 2, 3);
+// v.Y() == 2;
 ```
 
 #### At Access
@@ -252,8 +252,8 @@ The data from a point or vector can be accessed using at(). The only valid indic
 Any other value will cause a compilation error.
 
 ```cpp
-const Image::Vector v(1, 2, 3);
-v.at<2>() == 3;
+const NewSpace::Vector v(1, 2, 3);
+//v.at<2>() == 3;
 ```
 
 #### Iteration
@@ -261,7 +261,7 @@ v.at<2>() == 3;
 You can iterate over the values, and use STL algorithms on Points, Vectors and NormalizedVectors:
 
 ```cpp
-View::Point p(2, 3, 4);
+NewSpace::Point p(2, 3, 4);
 
 std::transform(
     p.cbegin(),
@@ -269,5 +269,5 @@ std::transform(
     p.begin(),
     [](const double d) {return d * 2; }
 );
-p == View::Point(4, 6, 8);
+// p == NewSpace::Point(4, 6, 8);
 ```
