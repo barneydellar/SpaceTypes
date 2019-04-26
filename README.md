@@ -88,7 +88,7 @@ auto p2 = p1 + v; // NewSpace::Point(5, 7, 9)
 Vectors can be added to a point from the same space can be added together in place:
 
 ```cpp
-const NewSpace::Point p(4, 5, 6);
+NewSpace::Point p(4, 5, 6);
 const NewSpace::Vector v(1, 2, 3);
 auto p += v; // p = (5, 7, 9)
 ```
@@ -151,7 +151,7 @@ auto cross = v1 * v2; // NewSpace::Vector(0, 0, 1)
 You can get the cross product from two vectors in the same space using the *= operator:
 
 ```cpp
-const NewSpace::Vector v1(1, 0, 0);
+NewSpace::Vector v1(1, 0, 0);
 const NewSpace::Vector v2(0, 1, 0);
 auto v1 *= v2; // v1 = (0, 0, 1);
 ```
@@ -170,7 +170,7 @@ always be normalized:
 
 ```cpp
 const NewSpace::NormalizedVector v(5, 0, 0);
-// v1 = (1, 0, 0)
+// v = (1, 0, 0)
 ```
 
 ### Magnitude
@@ -207,10 +207,12 @@ auto b_inequality = p1 != p2; // true
 
 ### Conversion between spaces</H3>
 
+Actual geometric transformations are outsourced to a transform manager. This needs to implement two methods: Transform and Transform33.
+
 Vectors from one space can be converted to another space. Under the hood, this makes a call to Transform33 on the TransformManager.
 
 ```cpp
-TransformManager tm;
+const TransformManager tm;
 const NewSpace::Vector v_new_space(1, 0, 0);
 const auto v_view = v_new_space.ConvertTo<ViewSpace>(tm); // ViewSpace::Vector(x, y, z)
 ```
@@ -218,7 +220,7 @@ const auto v_view = v_new_space.ConvertTo<ViewSpace>(tm); // ViewSpace::Vector(x
 Points from one space can be converted to another space. Under the hood, this makes a call to Transform on the TransformManager.
 
 ```cpp
-TransformManager tm;
+const TransformManager tm;
 const NewSpace::Point p_new_space(1, 0, 0);
 const auto p = p_view.ConvertTo<ViewSpace>(tm); // ViewSpace::Point(x, y, z)
 ```
