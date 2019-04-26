@@ -79,7 +79,7 @@ namespace Space::detail {
             return *this;
         }
 
-        typename Space::Vector operator*(const typename Space::Vector& rhs) const {
+        constexpr typename Space::Vector operator*(const typename Space::Vector& rhs) const {
             return this->Cross(rhs);
         }
         template <typename WrongSpace>
@@ -87,7 +87,7 @@ namespace Space::detail {
             return StaticAssert::invalid_vector_cross{};
         }
 
-        typename Space::Vector operator*=(const typename Space::Vector& rhs) {
+        constexpr typename Space::Vector operator*=(const typename Space::Vector& rhs) {
             return *this = this->Cross(rhs);
         }
         template <typename WrongSpace>
