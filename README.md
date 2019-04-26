@@ -33,6 +33,8 @@ template <> const std::string SpaceTypeNameMap<Volume>::name = "NewSpace";
 The units must be constructable from a double. It will be used to return the magnitude of a vector.
 The entry in the SpaceTypeNameMap will be used to serialize a point, vector or normalized vector.
 
+The *name* is used if and when a point or vector is serialised.  
+
 ### Creation
 
 A point or vector can be created from three doubles.
