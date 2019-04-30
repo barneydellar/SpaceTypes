@@ -118,6 +118,22 @@ NewSpace::Vector v(4, 5, 6);
 const auto v *= 2; // v = (8, 10, 12)
 ```
 
+## Normalisation
+
+You can get the normal form of a vector
+
+```cpp
+const NewSpace::Vector v1(5, 0, 0);
+const auto v2 = v1.Norm(); // NewSpace::NormalizedVector(1, 0, 0)
+```
+
+In addition, you can construct a normalized vector as you would a normal vector, but the result will
+always be normalized:
+
+```cpp
+const NewSpace::NormalizedVector v(5, 0, 0); // v = (1, 0, 0)
+```
+
 ## Dot Product
 
 You can get the dot product from two vectors in the same space
@@ -154,20 +170,14 @@ const NewSpace::Vector v2(0, 1, 0);
 const auto v1 *= v2; // v1 = (0, 0, 1);
 ```
 
-## Normalisation
+### Normalized Vectors
 
-You can get the normal form of a vector
-
-```cpp
-const NewSpace::Vector v1(5, 0, 0);
-const auto v2 = v1.Norm(); // NewSpace::NormalizedVector(1, 0, 0)
-```
-
-In addition, you can construct a normalized vector as you would a normal vector, but the result will
-always be normalized:
+The cross-product of two normalized vectors is always a normalized vector:
 
 ```cpp
-const NewSpace::NormalizedVector v(5, 0, 0); // v = (1, 0, 0)
+const NewSpace::NormalizedVector v1(1, 0, 0);
+const NewSpace::NormalizedVector v2(0, 1, 0);
+const auto cross = v1.Cross(v2); // NewSpace::Normalized(0, 0, 1);
 ```
 
 ## Magnitude
