@@ -1,3 +1,4 @@
+#pragma once
 #include "BaseImpl.h"
 #include "NormalizedVector.h"
 
