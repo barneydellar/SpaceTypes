@@ -219,7 +219,7 @@ const NewSpace::Point p_new_space(1, 0, 0);
 const auto p = p_view.ConvertTo<ViewSpace>(tm); // ViewSpace::Point(x, y, z)
 ```
 
-### Example
+### Example Transform Manager
 
 Suppose we have two spaces defined, with units in *double*. Each has a static value identifying the type.
 
