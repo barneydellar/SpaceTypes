@@ -27,7 +27,7 @@ namespace Space::detail {
 
         //------------------------------------------------------------------------------------
 
-        constexpr double operator[] (const unsigned int i) const {
+        [[nodiscard]] constexpr double operator[] (const unsigned int i) const {
             if (i > 2) {
                 throw std::invalid_argument("Index is out of range");
             }
@@ -39,35 +39,35 @@ namespace Space::detail {
 
         //------------------------------------------------------------------------------------
 
-        constexpr const double* cbegin() const noexcept {
+        [[nodiscard]] constexpr const double* cbegin() const noexcept {
             return reinterpret_cast<const double*>(m_values._Unchecked_begin());
         }
-        constexpr const double* cend() const noexcept {
+        [[nodiscard]] constexpr const double* cend() const noexcept {
             return reinterpret_cast<const double*>(m_values._Unchecked_end());
         }
 
         //------------------------------------------------------------------------------------
 
         template <int I>
-        constexpr typename std::enable_if<I == 0 || I == 1 || I == 2, double>::type at(
+        [[nodiscard]] constexpr typename std::enable_if<I == 0 || I == 1 || I == 2, double>::type at(
         ) const noexcept {
             return *reinterpret_cast<const double* const>(&m_values[I]);
         }
         template <int I>
-        constexpr typename std::enable_if<I != 0 && I != 1 && I != 2, StaticAssert::invalid_at_access>::type at(
+        [[nodiscard]] constexpr typename std::enable_if<I != 0 && I != 1 && I != 2, StaticAssert::invalid_at_access>::type at(
         ) const noexcept {
             return StaticAssert::invalid_at_access{};
         }
 
         //------------------------------------------------------------------------------------
 
-        constexpr double X() const noexcept { return m_values[0]; }
-        constexpr double Y() const noexcept { return m_values[1]; }
-        constexpr double Z() const noexcept { return m_values[2]; }
+        [[nodiscard]] constexpr double X() const noexcept { return m_values[0]; }
+        [[nodiscard]] constexpr double Y() const noexcept { return m_values[1]; }
+        [[nodiscard]] constexpr double Z() const noexcept { return m_values[2]; }
 
     protected:
 
-        constexpr std::array<double, 3> SumArrays(const std::array<double, 3>& lhs, const std::array<double, 3>& rhs) const noexcept
+        [[nodiscard]] constexpr std::array<double, 3> SumArrays(const std::array<double, 3>& lhs, const std::array<double, 3>& rhs) const noexcept
         {
             std::array<double, 3> result{};
             std::transform(
@@ -80,14 +80,14 @@ namespace Space::detail {
             return result;
         }
 
-        constexpr std::array<double, 3> ScaleArray(const std::array<double, 3>& a, const double d) const noexcept
+        [[nodiscard]] constexpr std::array<double, 3> ScaleArray(const std::array<double, 3>& a, const double d) const noexcept
         {
             std::array<double, 3> result{};
             std::transform(a.cbegin(), a.cend(), result.begin(), [d](auto v) {return v * d;});
             return result;
         }
 
-        constexpr double DotArrays(const std::array<double, 3>& lhs, const std::array<double, 3>& rhs) const noexcept
+        [[nodiscard]] constexpr double DotArrays(const std::array<double, 3>& lhs, const std::array<double, 3>& rhs) const noexcept
         {
             return std::transform_reduce(
                 lhs.cbegin(),
@@ -99,7 +99,7 @@ namespace Space::detail {
             );
         }
 
-        constexpr std::array<double, 3> CrossArrays(const std::array<double, 3>& lhs, const std::array<double, 3>& rhs) const noexcept
+        [[nodiscard]] constexpr std::array<double, 3> CrossArrays(const std::array<double, 3>& lhs, const std::array<double, 3>& rhs) const noexcept
         {
             return {
                 lhs[1] * rhs[2] - lhs[2] * rhs[1],
@@ -108,7 +108,8 @@ namespace Space::detail {
             };
         }
 
-        constexpr double MagHelper() const noexcept {
+        [[nodiscard]] constexpr double MagHelper() const noexcept {
+
             return std::sqrt(
                 std::accumulate(
                     m_values.cbegin(),

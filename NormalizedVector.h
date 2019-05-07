@@ -11,7 +11,7 @@ namespace Space::detail {
 
         using _base = BaseImpl<Space>;
 
-        constexpr void Normalise() noexcept(false)
+        constexpr void Normalize() noexcept(false)
         {
             const auto mag = _base::MagHelper();
             if (mag == 0) {
@@ -24,9 +24,9 @@ namespace Space::detail {
 
         //-------------------------------------------------------------------------------------
 
-        constexpr explicit NormalizedVector(const std::array<double, 3> value) noexcept(false) : _base(value) { Normalise();}
-        constexpr explicit NormalizedVector(const double x, const double y, const double z) noexcept(false) : _base(x, y, z) { Normalise(); }
-        constexpr explicit NormalizedVector(const double x, const double y) noexcept(false) : _base(x, y, 0) { Normalise(); }
+        constexpr explicit NormalizedVector(const std::array<double, 3> value) noexcept(false) : _base(value) { Normalize();}
+        constexpr explicit NormalizedVector(const double x, const double y, const double z) noexcept(false) : _base(x, y, z) {Normalize();}
+        constexpr explicit NormalizedVector(const double x, const double y) noexcept(false) : _base(x, y, 0) {Normalize();}
 
         constexpr operator Vector<Space>() const noexcept {
             return Space::Vector(_base::m_values);
@@ -122,18 +122,19 @@ namespace Space::detail {
 
         //-------------------------------------------------------------------------------------
 
-        constexpr double Dot(const NormalizedVector<Space>& other) const noexcept {
+        [[nodiscard]] constexpr double Dot(const NormalizedVector<Space>& other) const noexcept {
             return _base::DotArrays(_base::m_values, other.m_values);
         }
-        constexpr double Dot(const Vector<Space>& other) const noexcept {
+
+        [[nodiscard]] constexpr double Dot(const Vector<Space>& other) const noexcept {
             return _base::DotArrays(_base::m_values, other.m_values);
         }
         template <typename WrongSpace>
-        constexpr StaticAssert::invalid_vector_dot Dot(const NormalizedVector<WrongSpace>&) const noexcept {
+        [[nodiscard]] constexpr StaticAssert::invalid_vector_dot Dot(const NormalizedVector<WrongSpace>&) const noexcept {
             return StaticAssert::invalid_vector_dot{};
         }
         template <typename WrongSpace>
-        constexpr StaticAssert::invalid_vector_dot Dot(const Vector<WrongSpace>&) const noexcept {
+        [[nodiscard]] constexpr StaticAssert::invalid_vector_dot Dot(const Vector<WrongSpace>&) const noexcept {
             return StaticAssert::invalid_vector_dot{};
         }
 
@@ -147,28 +148,28 @@ namespace Space::detail {
             return this->Cross(rhs);
         }
 
-        constexpr typename Space::NormalizedVector Cross(const NormalizedVector<Space>& other) const noexcept {
+        [[nodiscard]] constexpr typename Space::NormalizedVector Cross(const NormalizedVector<Space>& other) const noexcept {
             return Space::NormalizedVector(_base::CrossArrays(_base::m_values, other.m_values));
         }
 
-        constexpr typename Space::Vector Cross(const Vector<Space>& other) const noexcept {
+        [[nodiscard]] constexpr typename Space::Vector Cross(const Vector<Space>& other) const noexcept {
             return Space::Vector(_base::CrossArrays(_base::m_values, other.m_values));
         }
 
         //-------------------------------------------------------------------------------------
 
-        constexpr StaticAssert::normalized_vectors_do_not_support_non_const_iteration begin() const noexcept {
+        [[nodiscard]] constexpr StaticAssert::normalized_vectors_do_not_support_non_const_iteration begin() const noexcept {
             return StaticAssert::normalized_vectors_do_not_support_non_const_iteration{};
         }
 
-        constexpr StaticAssert::normalized_vectors_do_not_support_non_const_iteration end() const noexcept {
+        [[nodiscard]] constexpr StaticAssert::normalized_vectors_do_not_support_non_const_iteration end() const noexcept {
             return StaticAssert::normalized_vectors_do_not_support_non_const_iteration{};
         }
 
         //-------------------------------------------------------------------------------------
 
         template <typename OtherSpace, typename TransformManager>
-        constexpr typename OtherSpace::Vector ConvertTo(const TransformManager& transform_manager) const noexcept {
+        [[nodiscard]] constexpr typename OtherSpace::Vector ConvertTo(const TransformManager& transform_manager) const noexcept {
             return typename OtherSpace::Vector(transform_manager.template Transform33<Space, OtherSpace>(_base::m_values));
         }
 

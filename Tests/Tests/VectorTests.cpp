@@ -247,7 +247,7 @@ TEST_CASE("VectorsSupportMag_double") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("VectorsCanBeNormalised") {
+TEST_CASE("VectorsCanBeNormalized") {
     const Image::Vector v(0, 3, 4);
     const auto v_norm = v.Norm();
     // Mag of v = sqrt(3*3 + 4*4) = 5
@@ -256,7 +256,7 @@ TEST_CASE("VectorsCanBeNormalised") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("ZeroSizeVectorsCannotBeNormalised") {
+TEST_CASE("ZeroSizeVectorsCannotBeNormalized") {
     const Image::Vector v(0, 0, 0);
     CHECK_THROWS_AS(v.Norm(), std::invalid_argument);
 }

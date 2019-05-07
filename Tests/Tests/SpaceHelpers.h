@@ -6,7 +6,7 @@ class Millimetres final
 {
 public:
     constexpr explicit Millimetres(const double d) : m_values{ d } {}
-    constexpr double get() const { return m_values; }
+    [[nodiscard]] constexpr double get() const { return m_values; }
 private:
     double m_values;
 };
@@ -15,7 +15,7 @@ class Pixels final
 {
 public:
     constexpr explicit Pixels(const double d) : m_values{ d } {}
-    constexpr double get() const { return m_values; }
+    [[nodiscard]] constexpr double get() const { return m_values; }
 private:
     double m_values;
 };
@@ -24,7 +24,7 @@ class Voxels final
 {
 public:
     constexpr explicit Voxels(const double d) : m_values{ d } {}
-    constexpr double get() const { return m_values; }
+    [[nodiscard]] constexpr double get() const { return m_values; }
 private:
     double m_values;
 };
@@ -68,7 +68,7 @@ class TransformManager final
 public:
 
     template <typename From, typename To>
-    std::array<double, 3> Transform33(
+    [[nodiscard]] std::array<double, 3> Transform33(
         std::array<double, 3>
     ) const noexcept {
         using namespace Space;
@@ -80,7 +80,7 @@ public:
     }
 
     template <typename From, typename To>
-    std::array<double, 3> Transform(
+    [[nodiscard]] std::array<double, 3> Transform(
         std::array<double, 3>
     ) const noexcept {
         using namespace Space;

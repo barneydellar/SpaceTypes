@@ -138,22 +138,23 @@ namespace Space::detail {
 
         //-------------------------------------------------------------------------------------
 
-        constexpr typename Space::Unit Mag() const noexcept {
+        [[nodiscard]] constexpr typename Space::Unit Mag() const noexcept {
             return Space::Unit{ _base::MagHelper() };
         }
 
-        constexpr double Mag_double() const noexcept {
+        [[nodiscard]] constexpr double Mag_double() const noexcept {
             return _base::MagHelper();
         }
 
-        constexpr typename Space::NormalizedVector Norm() const {
+        [[nodiscard]] constexpr typename Space::NormalizedVector Norm() const {
             return Space::NormalizedVector(_base::m_values);
         }
 
-        constexpr double Dot(const typename Space::Vector& other) const noexcept {
+        [[nodiscard]] constexpr double Dot(const typename Space::Vector& other) const noexcept {
             return _base::DotArrays(_base::m_values, other.m_values);
         }
-        constexpr double Dot(const typename Space::NormalizedVector& other) const noexcept {
+
+        [[nodiscard]] constexpr double Dot(const typename Space::NormalizedVector& other) const noexcept {
             return _base::DotArrays(_base::m_values, other.m_values);
         }
         template <typename WrongSpace>
@@ -161,11 +162,11 @@ namespace Space::detail {
             return StaticAssert::invalid_vector_dot{};
         }
         template <typename WrongSpace>
-        constexpr StaticAssert::invalid_vector_dot Dot(const NormalizedVector<WrongSpace>&) const noexcept {
+        [[nodiscard]] constexpr StaticAssert::invalid_vector_dot Dot(const NormalizedVector<WrongSpace>&) const noexcept {
             return StaticAssert::invalid_vector_dot{};
         }
 
-        constexpr typename Space::Vector Cross(const typename Space::Vector& other) const noexcept {
+        [[nodiscard]] constexpr typename Space::Vector Cross(const typename Space::Vector& other) const noexcept {
             return Space::Vector(_base::CrossArrays(_base::m_values, other.m_values));
         }
         template <typename WrongSpace>
