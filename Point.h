@@ -28,16 +28,18 @@ namespace Space::detail {
             return std::equal(_base::m_values.cbegin(), _base::m_values.cend(), other.m_values.cbegin());
         }
         template <typename WrongSpace>
-        constexpr StaticAssert::invalid_equality operator == (const Point<WrongSpace>&) const noexcept {
-            return StaticAssert::invalid_equality{};
+        constexpr bool operator == (const Point<WrongSpace>&) const noexcept {
+
+            static_assert(false, "It is not valid to compare items from different spaces");
+
         }
         template <typename AnySpace>
-        constexpr StaticAssert::invalid_point_vector_equality operator == (const Vector<AnySpace>&) const noexcept {
-            return StaticAssert::invalid_point_vector_equality{};
+        constexpr bool operator == (const Vector<AnySpace>&) const noexcept {
+            StaticAssert::invalid_point_vector_equality{};
         }
         template <typename AnySpace>
-        constexpr StaticAssert::invalid_point_vector_equality operator == (const NormalizedVector<AnySpace>&) const noexcept {
-            return StaticAssert::invalid_point_vector_equality{};
+        constexpr bool operator == (const NormalizedVector<AnySpace>&) const noexcept {
+            StaticAssert::invalid_point_vector_equality{};
         }
 
         //------------------------------------------------------------------------------------
@@ -46,12 +48,12 @@ namespace Space::detail {
             return !(operator==(other));
         }
         template <typename WrongSpace>
-        constexpr StaticAssert::invalid_equality operator != (const Point<WrongSpace>&) const noexcept {
-            return StaticAssert::invalid_equality{};
+        constexpr bool operator != (const Point<WrongSpace>&) const noexcept {
+            StaticAssert::invalid_equality{};
         }
         template <typename AnySpace>
-        constexpr StaticAssert::invalid_point_vector_equality operator != (const Vector<AnySpace>&) const noexcept {
-            return StaticAssert::invalid_point_vector_equality{};
+        constexpr bool operator != (const Vector<AnySpace>&) const noexcept {
+            StaticAssert::invalid_point_vector_equality{};
         }
 
         //------------------------------------------------------------------------------------
@@ -77,8 +79,8 @@ namespace Space::detail {
             return Space::Vector(result);
         }
         template <typename WrongSpace>
-        constexpr StaticAssert::invalid_subtraction operator-(const Point<WrongSpace>&) const noexcept {
-            return StaticAssert::invalid_subtraction{};
+        constexpr typename WrongSpace::Vector operator-(const Point<WrongSpace>&) const noexcept {
+            StaticAssert::invalid_subtraction{};
         }
 
         //------------------------------------------------------------------------------------
@@ -96,8 +98,8 @@ namespace Space::detail {
             return Space::Point(result);
         }
         template <typename WrongSpace>
-        constexpr StaticAssert::invalid_vector_to_point_addition operator+(const Vector<WrongSpace>&) const noexcept {
-            return StaticAssert::invalid_vector_to_point_addition{};
+        constexpr typename WrongSpace::Point operator+(const Vector<WrongSpace>&) const noexcept {
+            StaticAssert::invalid_vector_to_point_addition{};
         }
 
         constexpr typename Space::Point operator+=(const Vector<Space>& rhs) noexcept {
@@ -111,8 +113,8 @@ namespace Space::detail {
             return *this;
         }
         template <typename WrongSpace>
-        constexpr StaticAssert::invalid_vector_to_point_addition operator+=(const Vector<WrongSpace>&) const noexcept {
-            return StaticAssert::invalid_vector_to_point_addition{};
+        constexpr typename WrongSpace::Vector operator+=(const Vector<WrongSpace>&) const noexcept {
+            StaticAssert::invalid_vector_to_point_addition{};
         }
     };
 

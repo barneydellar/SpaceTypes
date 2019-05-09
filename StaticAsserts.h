@@ -6,7 +6,7 @@ namespace Space::StaticAssert {
     {
         template<typename T = void>
         constexpr invalid_equality() {
-            static_assert(false, "It is not valid to compare items from different spaces");
+            static_assert(false, "It is not valid to compare items from different spaces.");
         }
     };
 
@@ -14,7 +14,7 @@ namespace Space::StaticAssert {
     {
         template<typename T = void>
         constexpr invalid_point_vector_equality() {
-            static_assert(false, "It is not valid to compare points and vectors");
+            static_assert(false, "It is not valid to compare points and vectors.");
         }
     };
 
@@ -22,7 +22,7 @@ namespace Space::StaticAssert {
     {
         template<typename T = void>
         constexpr invalid_subtraction() {
-            static_assert(false, "It is not valid to subtract items from different spaces");
+            static_assert(false, "It is not valid to subtract items from different spaces.");
         }
     };
 
@@ -30,7 +30,7 @@ namespace Space::StaticAssert {
     {
         template<typename T = void>
         constexpr invalid_point_to_vector_addition() {
-            static_assert(false, "You can't add points to vectors");
+            static_assert(false, "You can't add points to vectors.");
         }
     };
 
@@ -38,7 +38,7 @@ namespace Space::StaticAssert {
     {
         template<typename T = void>
         constexpr invalid_vector_to_point_addition() {
-            static_assert(false, "You can't add vectors to points in other spaces");
+            static_assert(false, "You can't add vectors to points in other spaces.");
         }
     };
 
@@ -46,7 +46,7 @@ namespace Space::StaticAssert {
     {
         template<typename T = void>
         constexpr invalid_vector_to_vector_addition() {
-            static_assert(false, "You can't add vectors from different spaces");
+            static_assert(false, "You can't add vectors from different spaces.");
         }
     };
 
@@ -54,7 +54,7 @@ namespace Space::StaticAssert {
     {
         template<typename T = void>
         constexpr invalid_normalized_vector_addition() {
-            static_assert(false, "You can't add to a normalized vector");
+            static_assert(false, "You can't add to a normalized vector.");
         }
     };
 
@@ -62,7 +62,7 @@ namespace Space::StaticAssert {
     {
         template<typename T = void>
         constexpr invalid_vector_dot() {
-            static_assert(false, "You can't dot vectors from different spaces");
+            static_assert(false, "You can't dot vectors from different spaces.");
         }
     };
 
@@ -70,7 +70,7 @@ namespace Space::StaticAssert {
     {
         template<typename T = void>
         constexpr invalid_vector_cross() {
-            static_assert(false, "You can't cross vectors from different spaces");
+            static_assert(false, "You can't cross vectors from different spaces.");
         }
     };
 
@@ -78,7 +78,7 @@ namespace Space::StaticAssert {
     {
         template<typename T = void>
         constexpr invalid_normalized_vector_scale() {
-            static_assert(false, "You can't scale a normalized vector");
+            static_assert(false, "You can't scale a normalized vector.");
         }
     };
 
@@ -86,7 +86,7 @@ namespace Space::StaticAssert {
     {
         template<typename T = void>
         constexpr invalid_random_access() {
-            static_assert(false, "Negative indices are invalid");
+            static_assert(false, "Negative indices are invalid.");
         }
     };
 
@@ -94,7 +94,7 @@ namespace Space::StaticAssert {
     {
         template<typename T = void>
         constexpr invalid_at_access() {
-            static_assert(false, "Index out of range");
+            static_assert(false, "Index out of range.");
         }
     };
 
@@ -102,7 +102,7 @@ namespace Space::StaticAssert {
     {
         template<typename T = void>
         constexpr normalized_vectors_do_not_support_non_const_iteration() {
-            static_assert(false, "Normalized vectors do not support non const iteration");
+            static_assert(false, "Normalized vectors do not support non const iteration.");
         }
     };
 }

@@ -46,16 +46,16 @@ namespace Space::detail {
             return std::equal(_base::m_values.cbegin(), _base::m_values.cend(), other.m_values.cbegin());
         }
         template <typename WrongSpace>
-        constexpr StaticAssert::invalid_equality operator == (const NormalizedVector<WrongSpace>&) const noexcept {
-            return StaticAssert::invalid_equality{};
+        constexpr bool operator == (const NormalizedVector<WrongSpace>&) const noexcept {
+            StaticAssert::invalid_equality{};
         }
         template <typename WrongSpace>
-        constexpr StaticAssert::invalid_equality operator == (const Vector<WrongSpace>&) const noexcept {
-            return StaticAssert::invalid_equality{};
+        constexpr bool operator == (const Vector<WrongSpace>&) const noexcept {
+            StaticAssert::invalid_equality{};
         }
         template <typename AnySpace>
-        constexpr StaticAssert::invalid_point_vector_equality operator == (const Point<AnySpace>&) const noexcept {
-            return StaticAssert::invalid_point_vector_equality{};
+        constexpr bool operator == (const Point<AnySpace>&) const noexcept {
+            StaticAssert::invalid_point_vector_equality{};
         }
         //------------------------------------------------------------------------------------
 
@@ -66,16 +66,16 @@ namespace Space::detail {
             return !(operator==(other));
         }
         template <typename WrongSpace>
-        constexpr StaticAssert::invalid_equality operator != (const NormalizedVector<WrongSpace>&) const noexcept {
-            return StaticAssert::invalid_equality{};
+        constexpr bool operator != (const NormalizedVector<WrongSpace>&) const noexcept {
+            StaticAssert::invalid_equality{};
         }
         template <typename WrongSpace>
-        constexpr StaticAssert::invalid_equality operator != (const Vector<WrongSpace>&) const noexcept {
-            return StaticAssert::invalid_equality{};
+        constexpr bool operator != (const Vector<WrongSpace>&) const noexcept {
+            StaticAssert::invalid_equality{};
         }
         template <typename AnySpace>
-        constexpr StaticAssert::invalid_point_vector_equality operator != (const Point<AnySpace>&) const noexcept {
-            return StaticAssert::invalid_point_vector_equality{};
+        constexpr bool operator != (const Point<AnySpace>&) const noexcept {
+            StaticAssert::invalid_point_vector_equality{};
         }
 
         //-------------------------------------------------------------------------------------
@@ -87,31 +87,31 @@ namespace Space::detail {
             return Space::Vector(_base::SumArrays(_base::m_values, rhs.m_values));
         }
         template <typename WrongSpace>
-        constexpr StaticAssert::invalid_vector_to_vector_addition operator+(const NormalizedVector<WrongSpace>&) const noexcept {
-            return StaticAssert::invalid_vector_to_vector_addition{};
+        constexpr typename WrongSpace::Vector operator+(const NormalizedVector<WrongSpace>&) const noexcept {
+            StaticAssert::invalid_vector_to_vector_addition{};
         }
         template <typename WrongSpace>
-        constexpr StaticAssert::invalid_vector_to_vector_addition operator+(const Vector<WrongSpace>&) const noexcept {
-            return StaticAssert::invalid_vector_to_vector_addition{};
+        constexpr typename WrongSpace::Vector operator+(const Vector<WrongSpace>&) const noexcept {
+            StaticAssert::invalid_vector_to_vector_addition{};
         }
         template <typename AnySpace>
-        constexpr StaticAssert::invalid_point_to_vector_addition operator+(const Point<AnySpace>&) const noexcept {
-            return StaticAssert::invalid_point_to_vector_addition{};
+        constexpr typename AnySpace::Vector operator+(const Point<AnySpace>&) const noexcept {
+            StaticAssert::invalid_point_to_vector_addition{};
         }
 
         //-------------------------------------------------------------------------------------
 
         // Prevent inline Scaling or Adding
-        constexpr StaticAssert::invalid_normalized_vector_scale operator*=(const double&) const noexcept {
-            return StaticAssert::invalid_normalized_vector_scale{};
+        constexpr typename Space::Vector operator*=(const double&) const noexcept {
+            StaticAssert::invalid_normalized_vector_scale{};
         }
         template <typename OtherSpace>
-        constexpr StaticAssert::invalid_normalized_vector_addition operator+=(const Vector<OtherSpace>&) const noexcept {
-            return StaticAssert::invalid_normalized_vector_addition{};
+        constexpr typename OtherSpace::Vector operator+=(const Vector<OtherSpace>&) const noexcept {
+            StaticAssert::invalid_normalized_vector_addition{};
         }
         template <typename OtherSpace>
-        constexpr StaticAssert::invalid_normalized_vector_addition operator+=(const NormalizedVector<OtherSpace>&) const noexcept {
-            return StaticAssert::invalid_normalized_vector_addition{};
+        constexpr typename OtherSpace::Vector operator+=(const NormalizedVector<OtherSpace>&) const noexcept {
+            StaticAssert::invalid_normalized_vector_addition{};
         }
 
         //-------------------------------------------------------------------------------------
@@ -130,12 +130,12 @@ namespace Space::detail {
             return _base::DotArrays(_base::m_values, other.m_values);
         }
         template <typename WrongSpace>
-        [[nodiscard]] constexpr StaticAssert::invalid_vector_dot Dot(const NormalizedVector<WrongSpace>&) const noexcept {
-            return StaticAssert::invalid_vector_dot{};
+        constexpr double Dot(const NormalizedVector<WrongSpace>&) const noexcept {
+            StaticAssert::invalid_vector_dot{};
         }
         template <typename WrongSpace>
-        [[nodiscard]] constexpr StaticAssert::invalid_vector_dot Dot(const Vector<WrongSpace>&) const noexcept {
-            return StaticAssert::invalid_vector_dot{};
+        constexpr double Dot(const Vector<WrongSpace>&) const noexcept {
+            StaticAssert::invalid_vector_dot{};
         }
 
         //-------------------------------------------------------------------------------------
@@ -156,11 +156,11 @@ namespace Space::detail {
 
         //-------------------------------------------------------------------------------------
 
-        [[nodiscard]] constexpr StaticAssert::normalized_vectors_do_not_support_non_const_iteration begin() const noexcept {
-            return StaticAssert::normalized_vectors_do_not_support_non_const_iteration{};
+        constexpr double* begin() const noexcept {
+            StaticAssert::normalized_vectors_do_not_support_non_const_iteration{};
         }
-        [[nodiscard]] constexpr StaticAssert::normalized_vectors_do_not_support_non_const_iteration end() const noexcept {
-            return StaticAssert::normalized_vectors_do_not_support_non_const_iteration{};
+        constexpr double* end() const noexcept {
+            StaticAssert::normalized_vectors_do_not_support_non_const_iteration{};
         }
 
         //-------------------------------------------------------------------------------------

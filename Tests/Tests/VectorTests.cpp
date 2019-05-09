@@ -4,6 +4,8 @@
 
 using namespace Space;
 
+constexpr bool TEST_NON_COMPILATION{ false };
+
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("VectorsCanBeConstructedFromThreeDoubles") {
@@ -73,13 +75,10 @@ TEST_CASE("VectorsFromDiffefentSpacesCannotBeComparedUsingEqual") {
     const View::Vector v1(1, 0, 0);
     const Patient::Vector v2(1, 0, 0);
     
-    // We should not be able to compile this. But we can check 
-    // the return type, to make sure we get an invalid type:
-    using converted_type = decltype(v1 == v2);
-    using required_type = StaticAssert::invalid_equality;
-    CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
-    );
+    // We should not be able to compile this.
+    if constexpr (TEST_NON_COMPILATION) {
+        v1 == v2;
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -100,13 +99,10 @@ TEST_CASE("VectorsFromDiffefentSpacesCannotBeComparedUsingInequality") {
     const View::Vector v1(1, 0, 0);
     const Patient::Vector v2(1, 0, 0);
     
-    // We should not be able to compile this. But we can check 
-    // the return type, to make sure we get an invalid type:
-    using converted_type = decltype(v1 != v2);
-    using required_type = StaticAssert::invalid_equality;
-    CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
-    );
+    // We should not be able to compile this.
+    if constexpr (TEST_NON_COMPILATION) {
+        v1 != v2;
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -122,13 +118,10 @@ TEST_CASE("VectorsInDifferentSpacesCannotBeAddedTogether") {
     const View::Vector v1(1, 2, 3);
     const Image::Vector v2(3, 2, 1);
     
-    // We should not be able to compile this. But we can check 
-    // the return type, to make sure we get an invalid type:
-    using converted_type = decltype(v1 + v2);
-    using required_type = StaticAssert::invalid_vector_to_vector_addition;
-    CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
-    );
+    // We should not be able to compile this.
+    if constexpr (TEST_NON_COMPILATION) {
+        v1 + v2;
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -144,13 +137,10 @@ TEST_CASE("VectorsAndNormalizedVectorsInDifferentSpacesCannotBeAddedTogether") {
     const View::Vector v1(1, 2, 3);
     const Image::NormalizedVector v2(1, 0, 0);
     
-    // We should not be able to compile this. But we can check 
-    // the return type, to make sure we get an invalid type:
-    using converted_type = decltype(v1 + v2);
-    using required_type = StaticAssert::invalid_vector_to_vector_addition;
-    CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
-    );
+    // We should not be able to compile this
+    if constexpr (TEST_NON_COMPILATION) {
+        v1 + v2;
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -166,13 +156,10 @@ TEST_CASE("VectorsInDifferentSpacesCannotBeAddedInPlace") {
     View::Vector v1(1, 2, 3);
     const Image::Vector v2(3, 2, 1);
     
-    // We should not be able to compile this. But we can check 
-    // the return type, to make sure we get an invalid type:
-    using converted_type = decltype(v1 += v2);
-    using required_type = StaticAssert::invalid_vector_to_vector_addition;
-    CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
-    );
+    // We should not be able to compile this.
+    if constexpr (TEST_NON_COMPILATION) {
+        v1 += v2;
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -188,13 +175,10 @@ TEST_CASE("VectorsAndNormalizedVectorsInDifferentSpacesCannotBeAddedInPlace") {
     View::Vector v1(1, 2, 3);
     const Image::NormalizedVector v2(1, 0, 0);
     
-    // We should not be able to compile this. But we can check 
-    // the return type, to make sure we get an invalid type:
-    using converted_type = decltype(v1 += v2);
-    using required_type = StaticAssert::invalid_vector_to_vector_addition;
-    CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
-    );
+    // We should not be able to compile this.
+    if constexpr (TEST_NON_COMPILATION) {
+        v1 += v2;
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -273,13 +257,10 @@ TEST_CASE("VectorsFromDifferentSpacesCannotBeDotted") {
     const View::Vector v1(1, 2, 3);
     const Image::Vector v2(1, 2, 3);
     
-    // We should not be able to compile this. But we can check 
-    // the return type, to make sure we get an invalid type:
-    using converted_type = decltype(v1.Dot(v2));
-    using required_type = StaticAssert::invalid_vector_dot;
-    CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
-    );
+    // We should not be able to compile this. 
+    if constexpr (TEST_NON_COMPILATION) {
+        v1.Dot(v2);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -296,13 +277,10 @@ TEST_CASE("VectorsFromDifferentSpacesCannotBeCrossed") {
     const View::Vector v1(1, 2, 3);
     const Image::Vector v2(1, 2, 3);
     
-    // We should not be able to compile this. But we can check 
-    // the return type, to make sure we get an invalid type:
-    using converted_type = decltype(v1.Cross(v2));
-    using required_type = StaticAssert::invalid_vector_cross;
-    CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
-    );
+    // We should not be able to compile this.
+    if constexpr (TEST_NON_COMPILATION) {
+        v1.Cross(v2);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -318,13 +296,10 @@ TEST_CASE("VectorsFromDifferentSpacesCannotBeCrossedUsingStarOperator") {
     const View::Vector v1(1, 2, 3);
     const Image::Vector v2(1, 2, 3);
     
-    // We should not be able to compile this. But we can check 
-    // the return type, to make sure we get an invalid type:
-    using converted_type = decltype(v1 * v2);
-    using required_type = StaticAssert::invalid_vector_cross;
-    CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
-    );
+    // We should not be able to compile this.
+    if constexpr (TEST_NON_COMPILATION) {
+        v1 * v2;
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -340,13 +315,10 @@ TEST_CASE("VectorsFromDifferentSpacesCannotBeCrossedUsingStarEqualOperator") {
     const View::Vector v1(1, 2, 3);
     const Image::Vector v2(1, 2, 3);
     
-    // We should not be able to compile this. But we can check 
-    // the return type, to make sure we get an invalid type:
-    using converted_type = decltype(v1 *= v2);
-    using required_type = StaticAssert::invalid_vector_cross;
-    CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
-    );
+    // We should not be able to compile this. 
+    if constexpr (TEST_NON_COMPILATION) {
+        v1 *= v2;
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -405,13 +377,10 @@ TEST_CASE("VectorsSupportElementAccessByRandomAccess") {
 TEST_CASE("VectorsDoNotCompileIfRandomAccessIsTooLow") {
     const Image::Vector v(2, 3, 4);
     
-    // We should not be able to compile this. But we can check 
-    // the return type, to make sure we get an invalid type:
-    using converted_type = decltype(v[-1]);
-    using required_type = StaticAssert::invalid_random_access;
-    CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
-    );
+    // We should not be able to compile this. 
+    if constexpr (TEST_NON_COMPILATION) {
+        v[-1];
+    }
 }
 
 TEST_CASE("VectorsThrowIfRandomAccessIsTooHigh") {
@@ -430,24 +399,18 @@ TEST_CASE("VectorsSupportElementAccessByAt") {
 TEST_CASE("VectorsSupportElementAccessByAtDoesNotCompileIfTooLow") {
     const Image::Vector v(2, 3, 4);
     
-    // We should not be able to compile this. But we can check 
-    // the return type, to make sure we get an invalid type:
-    using converted_type = decltype(v.at<-1>());
-    using required_type = StaticAssert::invalid_at_access;
-    CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
-    );
+    // We should not be able to compile this.
+    if constexpr (TEST_NON_COMPILATION) {
+        v.at<-1>();
+    }
 }
 TEST_CASE("VectorsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
     const Image::Vector v(2, 3, 4);
     
-    // We should not be able to compile this. But we can check 
-    // the return type, to make sure we get an invalid type:
-    using converted_type = decltype(v.at<3>());
-    using required_type = StaticAssert::invalid_at_access;
-    CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
-    );
+    // We should not be able to compile this.
+    if constexpr (TEST_NON_COMPILATION) {
+        v.at<3>();
+    }
 }
 
 //-------------------------------------------------------------------------------------------------

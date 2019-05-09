@@ -33,8 +33,8 @@ namespace Space::detail {
             }
             return m_values[i];
         }
-        constexpr StaticAssert::invalid_random_access operator[] (int) const {
-            return StaticAssert::invalid_random_access{};
+        constexpr double operator[] (int) const {
+            StaticAssert::invalid_random_access{};
         }
 
         //------------------------------------------------------------------------------------
@@ -54,9 +54,9 @@ namespace Space::detail {
             return *reinterpret_cast<const double* const>(&m_values[I]);
         }
         template <int I>
-        [[nodiscard]] constexpr typename std::enable_if<I != 0 && I != 1 && I != 2, StaticAssert::invalid_at_access>::type at(
+        constexpr typename std::enable_if<I != 0 && I != 1 && I != 2, double>::type at(
         ) const noexcept {
-            return StaticAssert::invalid_at_access{};
+            StaticAssert::invalid_at_access{};
         }
 
         //------------------------------------------------------------------------------------
