@@ -24,7 +24,7 @@ namespace Space::detail {
 
         //------------------------------------------------------------------------------------
 
-        constexpr bool operator == (const Point<Space>& other) const noexcept {
+        [[nodiscard]] constexpr bool operator == (const Point<Space>& other) const noexcept {
             return std::equal(_base::m_values.cbegin(), _base::m_values.cend(), other.m_values.cbegin());
         }
         template <typename WrongSpace>
@@ -42,7 +42,7 @@ namespace Space::detail {
 
         //------------------------------------------------------------------------------------
 
-        constexpr bool operator != (const Point<Space>& other) const noexcept {
+        [[nodiscard]] constexpr bool operator != (const Point<Space>& other) const noexcept {
             return !(operator==(other));
         }
         template <typename WrongSpace>
@@ -57,13 +57,13 @@ namespace Space::detail {
         //------------------------------------------------------------------------------------
 
         template <typename OtherSpace, typename TransformManager>
-        constexpr typename OtherSpace::Point ConvertTo(const TransformManager& transform_manager) const {
+        [[nodiscard]] constexpr typename OtherSpace::Point ConvertTo(const TransformManager& transform_manager) const {
             return typename OtherSpace::Point(transform_manager.template Transform<Space, OtherSpace>(_base::m_values));
         }
 
         //------------------------------------------------------------------------------------
 
-        constexpr typename Space::Vector operator-(
+        [[nodiscard]] constexpr typename Space::Vector operator-(
             const Point<Space>& rhs
         ) const noexcept {
             std::array<double, 3> result{};
@@ -84,7 +84,7 @@ namespace Space::detail {
         //------------------------------------------------------------------------------------
 
         // Operators:
-        constexpr typename Space::Point operator+(const Vector<Space>& rhs) const noexcept {
+        [[nodiscard]] constexpr typename Space::Point operator+(const Vector<Space>& rhs) const noexcept {
             std::array<double, 3> result{};
             std::transform(
                 _base::m_values.cbegin(), 

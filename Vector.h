@@ -22,10 +22,10 @@ namespace Space::detail {
 
         //------------------------------------------------------------------------------------
 
-        constexpr bool operator == (const typename Space::Vector& other) const noexcept {
+        [[nodiscard]] constexpr bool operator == (const typename Space::Vector& other) const noexcept {
             return std::equal(_base::m_values.cbegin(), _base::m_values.cend(), other.m_values.cbegin());
         }
-        constexpr bool operator == (const typename Space::NormalizedVector& other) const noexcept {
+        [[nodiscard]] constexpr bool operator == (const typename Space::NormalizedVector& other) const noexcept {
             return std::equal(_base::m_values.cbegin(), _base::m_values.cend(), other.m_values.cbegin());
         }
         template <typename WrongSpace>
@@ -43,10 +43,10 @@ namespace Space::detail {
 
         //------------------------------------------------------------------------------------
 
-        constexpr bool operator != (const typename Space::Vector& other) const noexcept {
+        [[nodiscard]] constexpr bool operator != (const typename Space::Vector& other) const noexcept {
             return !(operator==(other));
         }
-        constexpr bool operator != (const typename Space::NormalizedVector& other) const noexcept {
+        [[nodiscard]] constexpr bool operator != (const typename Space::NormalizedVector& other) const noexcept {
             return !(operator==(other));
         }
         template <typename WrongSpace>
@@ -65,14 +65,14 @@ namespace Space::detail {
         //-------------------------------------------------------------------------------------
 
         template <typename OtherSpace, typename TransformManager>
-        constexpr typename OtherSpace::Vector ConvertTo(const TransformManager& transform_manager) const noexcept {
+        [[nodiscard]] constexpr typename OtherSpace::Vector ConvertTo(const TransformManager& transform_manager) const noexcept {
             return typename OtherSpace::Vector(transform_manager.template Transform33<Space, OtherSpace>(_base::m_values));
         }
 
         //------------------------------------------------------------------------------------
 
         // Operators
-        constexpr typename Space::Vector operator*(const double& d) const noexcept {
+        [[nodiscard]] constexpr typename Space::Vector operator*(const double& d) const noexcept {
             return Space::Vector(_base::ScaleArray(_base::m_values, d));
         }
         constexpr typename Space::Vector& operator*=(const double& d) noexcept {
@@ -80,11 +80,11 @@ namespace Space::detail {
             return *this;
         }
 
-        constexpr typename Space::Vector operator*(const typename Space::Vector& rhs) const noexcept {
+        [[nodiscard]] constexpr typename Space::Vector operator*(const typename Space::Vector& rhs) const noexcept {
             return this->Cross(rhs);
         }
         template <typename WrongSpace>
-        constexpr StaticAssert::invalid_vector_cross operator*(const Vector<WrongSpace>&) const noexcept {
+        [[nodiscard]] constexpr StaticAssert::invalid_vector_cross operator*(const Vector<WrongSpace>&) const noexcept {
             return StaticAssert::invalid_vector_cross{};
         }
 
@@ -98,10 +98,10 @@ namespace Space::detail {
 
         //-------------------------------------------------------------------------------------
 
-        constexpr typename Space::Vector operator+(const typename Space::Vector& rhs) const noexcept {
+        [[nodiscard]] constexpr typename Space::Vector operator+(const typename Space::Vector& rhs) const noexcept {
             return Space::Vector(_base::SumArrays(_base::m_values, rhs.m_values));
         }
-        constexpr typename Space::Vector operator+(const typename Space::NormalizedVector& rhs) const noexcept {
+        [[nodiscard]] constexpr typename Space::Vector operator+(const typename Space::NormalizedVector& rhs) const noexcept {
             return Space::Vector(_base::SumArrays(_base::m_values, rhs.m_values));
         }
         template <typename WrongSpace>
@@ -162,7 +162,7 @@ namespace Space::detail {
             return StaticAssert::invalid_vector_dot{};
         }
         template <typename WrongSpace>
-        [[nodiscard]] constexpr StaticAssert::invalid_vector_dot Dot(const NormalizedVector<WrongSpace>&) const noexcept {
+        constexpr StaticAssert::invalid_vector_dot Dot(const NormalizedVector<WrongSpace>&) const noexcept {
             return StaticAssert::invalid_vector_dot{};
         }
 

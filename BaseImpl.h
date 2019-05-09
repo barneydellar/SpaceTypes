@@ -137,10 +137,10 @@ namespace Space::detail {
         constexpr explicit ModifiableBaseImpl(const double x, const double y, const double z) noexcept : _base(x, y, z) {}
         constexpr explicit ModifiableBaseImpl(const double x, const double y) noexcept : _base(x, y) {}
 
-        constexpr double* begin() noexcept {
+        [[nodiscard]] constexpr double* begin() noexcept {
             return reinterpret_cast<double*>(_base::m_values._Unchecked_begin());
         }
-        constexpr double* end() noexcept {
+        [[nodiscard]] constexpr double* end() noexcept {
             return reinterpret_cast<double*>(_base::m_values._Unchecked_end());
         }
     };
