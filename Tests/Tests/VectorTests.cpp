@@ -8,6 +8,15 @@ constexpr bool TEST_NON_COMPILATION{ false };
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("Vectors can be created using initalizer lists") {
+    View::Vector v = { 1, 2, 4 };
+    CHECK(v[0] == 1);
+    CHECK(v[1] == 2);
+    CHECK(v[2] == 4);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("VectorsCanBeConstructedFromThreeDoubles") {
     const Patient::Vector v(4, 5, 6);
     CHECK(v.X() == 4);
@@ -74,10 +83,10 @@ TEST_CASE("VectorsFromTheSameSpaceCanBeComparedUsingEqual_different") {
 TEST_CASE("VectorsFromDiffefentSpacesCannotBeComparedUsingEqual") {
     const View::Vector v1(1, 0, 0);
     const Patient::Vector v2(1, 0, 0);
-    
+
     // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        v1 == v2;
+        auto dummy = v1 == v2;
     }
 }
 
@@ -98,10 +107,10 @@ TEST_CASE("VectorsFromTheSameSpaceCanBeComparedUsingInequality_different") {
 TEST_CASE("VectorsFromDiffefentSpacesCannotBeComparedUsingInequality") {
     const View::Vector v1(1, 0, 0);
     const Patient::Vector v2(1, 0, 0);
-    
+
     // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        v1 != v2;
+        auto dummy = v1 != v2;
     }
 }
 
@@ -117,10 +126,10 @@ TEST_CASE("VectorsInTheSameSpaceCanBeAddedTogether") {
 TEST_CASE("VectorsInDifferentSpacesCannotBeAddedTogether") {
     const View::Vector v1(1, 2, 3);
     const Image::Vector v2(3, 2, 1);
-    
+
     // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        v1 + v2;
+        auto dummy = v1 + v2;
     }
 }
 
@@ -136,10 +145,10 @@ TEST_CASE("VectorsAndNormalizedVectorsInTheSameSpaceCanBeAddedTogether") {
 TEST_CASE("VectorsAndNormalizedVectorsInDifferentSpacesCannotBeAddedTogether") {
     const View::Vector v1(1, 2, 3);
     const Image::NormalizedVector v2(1, 0, 0);
-    
+
     // We should not be able to compile this
     if constexpr (TEST_NON_COMPILATION) {
-        v1 + v2;
+        auto dummy = v1 + v2;
     }
 }
 
@@ -155,7 +164,7 @@ TEST_CASE("VectorsInTheSameSpaceCanBeAddedInPlace") {
 TEST_CASE("VectorsInDifferentSpacesCannotBeAddedInPlace") {
     View::Vector v1(1, 2, 3);
     const Image::Vector v2(3, 2, 1);
-    
+
     // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
         v1 += v2;
@@ -174,7 +183,7 @@ TEST_CASE("VectorsAndNormalizedVectorsInTheSameSpaceCanBeAddedInPlace") {
 TEST_CASE("VectorsAndNormalizedVectorsInDifferentSpacesCannotBeAddedInPlace") {
     View::Vector v1(1, 2, 3);
     const Image::NormalizedVector v2(1, 0, 0);
-    
+
     // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
         v1 += v2;
@@ -256,10 +265,10 @@ TEST_CASE("VectorsFromTheSameSpaceCanBeDotted") {
 TEST_CASE("VectorsFromDifferentSpacesCannotBeDotted") {
     const View::Vector v1(1, 2, 3);
     const Image::Vector v2(1, 2, 3);
-    
-    // We should not be able to compile this. 
+
+    // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        v1.Dot(v2);
+        auto dummy = v1.Dot(v2);
     }
 }
 
@@ -276,10 +285,10 @@ TEST_CASE("VectorsFromTheSameSpaceCanBeCrossed") {
 TEST_CASE("VectorsFromDifferentSpacesCannotBeCrossed") {
     const View::Vector v1(1, 2, 3);
     const Image::Vector v2(1, 2, 3);
-    
+
     // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        v1.Cross(v2);
+        auto dummy = v1.Cross(v2);
     }
 }
 
@@ -295,10 +304,10 @@ TEST_CASE("VectorsFromTheSameSpaceCanBeCrossedUsingStarOperator") {
 TEST_CASE("VectorsFromDifferentSpacesCannotBeCrossedUsingStarOperator") {
     const View::Vector v1(1, 2, 3);
     const Image::Vector v2(1, 2, 3);
-    
+
     // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        v1 * v2;
+        auto dummy = v1 * v2;
     }
 }
 
@@ -312,10 +321,10 @@ TEST_CASE("VectorsFromTheSameSpaceCanBeCrossedUsingStarEqualOperator") {
 }
 
 TEST_CASE("VectorsFromDifferentSpacesCannotBeCrossedUsingStarEqualOperator") {
-    const View::Vector v1(1, 2, 3);
+    View::Vector v1(1, 2, 3);
     const Image::Vector v2(1, 2, 3);
-    
-    // We should not be able to compile this. 
+
+    // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
         v1 *= v2;
     }
@@ -369,23 +378,19 @@ TEST_CASE("VectorsCanBeTransformedWithTheSTL") {
 
 TEST_CASE("VectorsSupportElementAccessByRandomAccess") {
     const Image::Vector v(2, 3, 4);
-    CHECK(v[0u] == 2);
-    CHECK(v[1u] == 3);
-    CHECK(v[2u] == 4);
+    CHECK(v[0] == 2);
+    CHECK(v[1] == 3);
+    CHECK(v[2] == 4);
 }
 
 TEST_CASE("VectorsDoNotCompileIfRandomAccessIsTooLow") {
     const Image::Vector v(2, 3, 4);
-    
-    // We should not be able to compile this. 
-    if constexpr (TEST_NON_COMPILATION) {
-        v[-1];
-    }
+    CHECK_THROWS_AS(v[-1], std::invalid_argument);
 }
 
 TEST_CASE("VectorsThrowIfRandomAccessIsTooHigh") {
     const Image::Vector v(2, 3, 4);
-    CHECK_THROWS_AS(v[3u], std::invalid_argument);
+    CHECK_THROWS_AS(v[3], std::invalid_argument);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -398,7 +403,7 @@ TEST_CASE("VectorsSupportElementAccessByAt") {
 }
 TEST_CASE("VectorsSupportElementAccessByAtDoesNotCompileIfTooLow") {
     const Image::Vector v(2, 3, 4);
-    
+
     // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
         v.at<-1>();
@@ -406,7 +411,7 @@ TEST_CASE("VectorsSupportElementAccessByAtDoesNotCompileIfTooLow") {
 }
 TEST_CASE("VectorsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
     const Image::Vector v(2, 3, 4);
-    
+
     // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
         v.at<3>();

@@ -19,7 +19,18 @@ namespace Space::detail {
     public:
         constexpr explicit BaseImpl(const std::array<double, 3> value) noexcept : m_values{value} {}
         constexpr explicit BaseImpl(const double x, const double y, const double z) noexcept : m_values{ x , y , z } {}
-        constexpr explicit BaseImpl(const double x, const double y) noexcept : m_values{ x , y , 0 }{}
+        constexpr explicit BaseImpl(const double x, const double y) noexcept : m_values{ x , y , 0 } {}
+        constexpr BaseImpl(const std::initializer_list<double> l) {
+            if (l.size() < 2 || l.size() > 3) {
+                throw new std::exception("You can only initialise with two or three elements");
+            }
+            auto iter = l.begin();
+            m_values[0] = *iter++;
+            m_values[1] = *iter++;
+            if (l.size() == 3) {
+                m_values[2] = *iter;
+            }
+        }
 
     protected:
         constexpr BaseImpl() = default;
@@ -28,13 +39,11 @@ namespace Space::detail {
         //------------------------------------------------------------------------------------
 
         [[nodiscard]] constexpr double operator[] (const unsigned int i) const {
+
             if (i > 2) {
                 throw std::invalid_argument("Index is out of range");
             }
             return m_values[i];
-        }
-        constexpr double operator[] (int) const {
-            StaticAssert::invalid_random_access{};
         }
 
         //------------------------------------------------------------------------------------
@@ -131,11 +140,12 @@ namespace Space::detail {
     class ModifiableBaseImpl : public BaseImpl<Space>
     {
         using _base = BaseImpl<Space>;
-    public: 
+    public:
 
         constexpr explicit ModifiableBaseImpl(const std::array<double, 3> value) noexcept : _base(value) {}
         constexpr explicit ModifiableBaseImpl(const double x, const double y, const double z) noexcept : _base(x, y, z) {}
         constexpr explicit ModifiableBaseImpl(const double x, const double y) noexcept : _base(x, y) {}
+        constexpr ModifiableBaseImpl(const std::initializer_list<double> l) : _base(l) {}
 
         [[nodiscard]] constexpr double* begin() noexcept {
             return reinterpret_cast<double*>(_base::m_values._Unchecked_begin());

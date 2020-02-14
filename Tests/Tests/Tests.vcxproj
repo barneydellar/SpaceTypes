@@ -161,6 +161,7 @@
     <ClInclude Include="SpaceHelpers.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CollectionTests.cpp" />
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>

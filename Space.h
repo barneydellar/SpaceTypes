@@ -10,9 +10,9 @@ namespace Space {
 
     template <typename SpaceName, typename Units>
     struct SpaceBase {
-        using Point = detail::Point<SpaceName>;
-        using Vector = detail::Vector<SpaceName>;
-        using NormalizedVector = detail::NormalizedVector<SpaceName>;
+        using Point = Point<SpaceName>;
+        using Vector = Vector<SpaceName>;
+        using NormalizedVector = NormalizedVector<SpaceName>;
         using Unit = Units;
     };
 }

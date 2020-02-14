@@ -8,6 +8,15 @@ constexpr bool TEST_NON_COMPILATION{ false };
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("Normalized Vectors can be created using initalizer lists") {
+    View::NormalizedVector v = { 1, 0, 0 };
+    CHECK(v[0] == 1);
+    CHECK(v[1] == 0);
+    CHECK(v[2] == 0);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("NormalizedVectorsCanBeConstructedAndNormalizedFromThreeDoubles") {
     const Patient::NormalizedVector v(2, 0, 0);
     CHECK(v.X() == 1);
@@ -90,10 +99,10 @@ TEST_CASE("NormalizedVectorsFromTheSameSpaceCanBeComparedUsingEqual_different") 
 TEST_CASE("NormalizedVectorsFromDiffefentSpacesCannotBeComparedUsingEqual") {
     const View::NormalizedVector v1(1, 0, 0);
     const Patient::NormalizedVector v2(1, 0, 0);
-    
+
     // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        v1 == v2;
+        auto dummy = v1 == v2;
     }
 }
 
@@ -114,10 +123,10 @@ TEST_CASE("NormalizedVectorsFromTheSameSpaceCanBeComparedUsingInequality_differe
 TEST_CASE("NormalizedVectorsFromDiffefentSpacesCannotBeComparedUsingInequality") {
     const View::NormalizedVector v1(1, 0, 0);
     const Patient::NormalizedVector v2(1, 0, 0);
-    
+
     // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        v1 != v2;
+        auto dummy = v1 != v2;
     }
 }
 
@@ -184,7 +193,7 @@ TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeAdded") {
     const Patient::NormalizedVector v_norm_2(0, 1, 0);
 
     if constexpr (TEST_NON_COMPILATION) {
-        v_norm_1 + v_norm_2;
+        auto dummy = v_norm_1 + v_norm_2;
     }
 }
 
@@ -233,7 +242,7 @@ TEST_CASE("VectorsAndNormalizedVectorsFromDifferentSpacesCannotBeAdded") {
     const Patient::NormalizedVector v_norm_2(0, 1, 0);
 
     if constexpr (TEST_NON_COMPILATION) {
-        v_norm_1 + v_norm_2;
+        auto dummy = v_norm_1 + v_norm_2;
     }
 }
 
@@ -243,9 +252,9 @@ TEST_CASE("NormalizedVectorsCannotBeInlineAdded") {
     const Image::NormalizedVector v_norm_1(1, 0, 0);
     const Image::NormalizedVector v_norm_2(0, 1, 0);
 
-    // We should not be able to compile this. 
+    // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        v_norm_1 += v_norm_2;
+        auto dummy = v_norm_1 += v_norm_2;
     }
 }
 
@@ -261,10 +270,10 @@ TEST_CASE("NormalizedVectorsFromTheSameSpaceCanBeDotted") {
 TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeDotted") {
     const View::NormalizedVector v1(1, 0, 0);
     const Image::NormalizedVector v2(1, 0, 0);
-    
+
     // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        v1.Dot(v2);
+        auto dummy = v1.Dot(v2);
     }
 }
 
@@ -451,7 +460,7 @@ TEST_CASE("NormalizedVectorsDoNotSupportNonConstBegin") {
     Image::NormalizedVector nv(2, 3, 4);
 
     if constexpr (TEST_NON_COMPILATION) {
-        nv.begin();
+        auto dummy = nv.begin();
     }
 }
 
@@ -461,7 +470,7 @@ TEST_CASE("NormalizedVectorsDoNotSupportNonConstEnd") {
     Image::NormalizedVector nv(2, 3, 4);
 
     if constexpr (TEST_NON_COMPILATION) {
-        nv.end();
+        auto dummy = nv.end();
     }
 }
 
@@ -469,23 +478,19 @@ TEST_CASE("NormalizedVectorsDoNotSupportNonConstEnd") {
 
 TEST_CASE("NormalizedVectorsSupportElementAccessByRandomAccess") {
     const Image::NormalizedVector v(0, 1, 0);
-    CHECK(v[0u] == 0);
-    CHECK(v[1u] == 1);
-    CHECK(v[2u] == 0);
+    CHECK(v[0] == 0);
+    CHECK(v[1] == 1);
+    CHECK(v[2] == 0);
 }
 
-TEST_CASE("NormalizedVectorsDoNotCompileIfRandomAccessIsTooLow") {
+TEST_CASE("NormalizedVectorsThrowIfRandomAccessIsTooLow") {
     const Image::NormalizedVector v(0, 0, 1);
-    
-    // We should not be able to compile this.
-    if constexpr (TEST_NON_COMPILATION) {
-        v[-1];
-    }
+    CHECK_THROWS_AS(v[-1], std::invalid_argument);
 }
 
 TEST_CASE("NormalizedVectorsThrowIfRandomAccessIsTooHigh") {
     const Image::NormalizedVector v(1, 0, 0);
-    CHECK_THROWS_AS(v[3u], std::invalid_argument);
+    CHECK_THROWS_AS(v[3], std::invalid_argument);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -498,18 +503,18 @@ TEST_CASE("NormalizedVectorsSupportElementAccessByAt") {
 }
 TEST_CASE("NormalizedVectorsSupportElementAccessByAtDoesNotCompileIfTooLow") {
     const Image::NormalizedVector v(1, 0, 0);
-    
+
     // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        v.at<-1>();
+        auto dummy = v.at<-1>();
     }
 }
 TEST_CASE("NormalizedVectorsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
     const Image::NormalizedVector v(1, 0, 0);
-    
-    // We should not be able to compile this. 
+
+    // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        v.at<3>();
+        auto dummy = v.at<3>();
     }
 }
 

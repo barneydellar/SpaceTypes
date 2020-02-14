@@ -8,6 +8,15 @@ constexpr bool TEST_NON_COMPILATION{ false };
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("Points can be created using initalizer lists") {
+    View::Point v = { 1, 2, 4 };
+    CHECK(v[0] == 1);
+    CHECK(v[1] == 2);
+    CHECK(v[2] == 4);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("PointsCanBeConstructedFromThreeDoubles") {
     const View::Point p(1, 2, 3);
     CHECK(p.X() == 1);
@@ -41,10 +50,10 @@ TEST_CASE("PointsFromTheSameSpaceCanBeComparedUsingEqual_different") {
 TEST_CASE("PointsFromDiffefentSpacesCannotBeComparedUsingEqual") {
     const View::Point p1(1, 0, 0);
     const Patient::Point p2(1, 0, 0);
-    
+
     // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        p1 == p2;
+        auto dummy = p1 == p2;
     }
 }
 
@@ -67,10 +76,10 @@ TEST_CASE("PointsFromTheSameSpaceCanBeComparedUsingInequality_different") {
 TEST_CASE("PointsFromDiffefentSpacesCannotBeComparedUsingInequality") {
     const View::Point p1(1, 0, 0);
     const Patient::Point p2(1, 0, 0);
-    
-    // We should not be able to compile this. 
+
+    // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        p1 != p2;
+        auto dummy = p1 != p2;
     }
 }
 
@@ -86,10 +95,10 @@ TEST_CASE("PointsFromTheSameSpaceCanBeSubtractedToGiveAVector") {
 TEST_CASE("PointsFromDifferfentSpacesCannotBeSubtracted") {
     const View::Point p1(2, 3, 4);
     const Patient::Point p2(1, 1, 1);
-    
-    // We should not be able to compile this. 
+
+    // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        p1 - p2;
+        auto dummy = p1 - p2;
     }
 }
 
@@ -157,23 +166,19 @@ TEST_CASE("PointsCanBeTransformedWithTheSTL") {
 
 TEST_CASE("PointsSupportElementAccessByRandomAccess") {
     const View::Point p(2, 3, 4);
-    CHECK(p[0u] == 2);
-    CHECK(p[1u] == 3);
-    CHECK(p[2u] == 4);
+    CHECK(p[0] == 2);
+    CHECK(p[1] == 3);
+    CHECK(p[2] == 4);
 }
 
 TEST_CASE("PointsDoNotCompileIfRandomAccessIsTooLow") {
     const View::Point p(2, 3, 4);
-    
-    // We should not be able to compile this.
-    if constexpr (TEST_NON_COMPILATION) {
-        p[-1];
-    }
+    CHECK_THROWS_AS(p[-1], std::invalid_argument);
 }
 
 TEST_CASE("PointsThrowIfRandomAccessIsTooHigh") {
     const View::Point p(2, 3, 4);
-    CHECK_THROWS_AS(p[3u], std::invalid_argument);
+    CHECK_THROWS_AS(p[3], std::invalid_argument);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -186,18 +191,18 @@ TEST_CASE("PointsSupportElementAccessByAt") {
 }
 TEST_CASE("PointsSupportElementAccessByAtDoesNotCompileIfTooLow") {
     const View::Point p(2, 3, 4);
-    
-    // We should not be able to compile this. 
+
+    // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        p.at<-1>();
+        auto dummy = p.at<-1>();
     }
 }
 TEST_CASE("PointsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
     const View::Point p(2, 3, 4);
-    
-    // We should not be able to compile this. 
+
+    // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        p.at<3>();
+        auto dummy = p.at<3>();
     }
 }
 
