@@ -17,12 +17,17 @@ This namespace provides three templated types: Point, Vector and NormalizedVecto
 Importantly, points and vectors can *only* interact with points and vectors from the same space.
 Attempting to, say, add a vector from one space to a vector from another will result in a compilation error.
 
+The library provides a strongly-typed wrapper around an existing implementation, which you will need to provide as a template argument.
+tra
 A Space can be defined as follows:
 
 ```cpp
 using NewSpaceUnits = ...;
 
-struct NewSpace final : Space::SpaceBase<NewSpace, NewSpaceUnits> {};
+// This is the full implemntation used to store the data.
+class Implementation{...};
+
+struct NewSpace final : Space::SpaceBase<NewSpace, Implementation, NewSpaceUnits> {};
 template <> const std::string SpaceTypeNameMap<Volume>::name = "NewSpace";
 ```
 
@@ -212,6 +217,7 @@ const auto b_inequality = p1 != p2; // true
 ## Conversion between spaces</H3>
 
 Actual geometric transformations are outsourced to a transform manager. This needs to implement two method templates: Transform and Transform33.
+Both of these methods receive an Implementation, and must return one.
 
 Vectors from one space can be converted to another space. Under the hood, this makes a call to Transform33 on the TransformManager.
 
@@ -239,10 +245,10 @@ enum class IDs
     FirstSpace,
     SecondSpace
 };
-struct FirstSpace final : SpaceBase<FirstSpace, double> {
+struct FirstSpace final : SpaceBase<FirstSpace, Implementation, double> {
     static inline constexpr SpaceIDs id = SpaceIDs::FirstSpace;
 };
-struct SecondSpace final : SpaceBase<SecondSpace, double> {
+struct SecondSpace final : SpaceBase<SecondSpace, Implementation, double> {
     static inline constexpr SpaceIDs id = SpaceIDs::SecondSpace;
 };
 ```
@@ -254,8 +260,8 @@ class TransformManager final
 {
 public:
     template <typename From, typename To>
-    std::array<double, 3> Transform33(
-        std::array<double, 3>
+    Implementation Transform33(
+        Implementation
     ) const noexcept {
         using namespace Space;
         if constexpr (From::id == SpaceIDs::FirstSpace) {
@@ -265,8 +271,8 @@ public:
         }
     }
     template <typename From, typename To>
-    std::array<double, 3> Transform(
-        std::array<double, 3>
+    Implementation Transform(
+        Implementation
     ) const noexcept {
         using namespace Space;
         if constexpr (From::id == SpaceIDs::FirstSpace) {
@@ -277,7 +283,6 @@ public:
     }
 };
 ```
-
 
 ## Access
 
