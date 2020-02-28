@@ -345,7 +345,7 @@ std::cout << p;
 
 ## Compile-time errors
 
-A key feature of this library is that it is a compile-time error to make points or vectors from different spaces inteact with eachother. 
+A key feature of this library is that it is a compile-time error to make points or vectors from different spaces interact with eachother. 
 The library also has human-readable errors, so if you try and see if points from different spaces are equal, for example, you get the following error:
 
-    It is not valid to compare items from different spaces.
+It is not valid to compare items from different spaces.
