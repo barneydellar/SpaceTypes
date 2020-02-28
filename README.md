@@ -196,7 +196,7 @@ const auto m = v1.Mag(); // m = 5 Millimetres
 
 ## Comparison
 
-Vectors from the same space can be compared using == or !=. Under the hood, this checks for approximate equality.
+Vectors from the same space can be compared using == or !=.
 
 ```cpp
 const NewSpace::Vector v1(1, 0, 0);
@@ -205,7 +205,7 @@ const auto b_equality = v1 == v2; // false
 const auto b_inequality = v1 != v2; // true
 ```
 
-Points from the same space can be compared using == or !=. Under the hood, this checks for approximate equality.
+Points from the same space can be compared using == or !=.
 
 ```cpp
 const NewSpace::Point p1(1, 0, 0);
