@@ -8,11 +8,31 @@ constexpr bool TEST_NON_COMPILATION{ false };
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Vectors can be created using initalizer lists") {
-    View::Vector v = { 1, 2, 4 };
+TEST_CASE("Vectors can be created using initalizer lists of two numbers") {
+    View::Vector v = { 1, 2};
+    CHECK(v[0] == 1);
+    CHECK(v[1] == 2);
+    CHECK(v[2] == 0);
+}
+TEST_CASE("Vectors can be created using initalizer lists of three numbers") {
+    View::Vector v{ 1, 2, 4 };
     CHECK(v[0] == 1);
     CHECK(v[1] == 2);
     CHECK(v[2] == 4);
+}
+TEST_CASE("Vectors throw when using initalizer lists that are too small") {
+    CHECK_THROWS_AS(View::Vector{ 1 }, std::invalid_argument);
+}
+TEST_CASE("Vectors throw when using initalizer lists that are too large") {
+    try
+    {
+        View::Vector v{ 1, 2, 3, 4 };
+    }
+    catch (std::invalid_argument)
+    {
+        return;
+    }
+    REQUIRE(false);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -256,6 +276,33 @@ TEST_CASE("ZeroSizeVectorsCannotBeNormalized") {
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("Vectors can be constructed and normalized from implementation") {
+    const detail::BaseImpl impl(3, 2, 1);
+    const Patient::Vector v(impl);
+    CHECK(v.X() == 3);
+    CHECK(v.Y() == 2);
+    CHECK(v.Z() == 1);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Vectors cannot be implicitly cast to the implementation") {
+    const Patient::Vector v(1, 0, 0);
+
+    if constexpr (TEST_NON_COMPILATION) {
+        //detail::BaseImpl impl = v;
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Vectors Can Be Cast To The Implementation") {
+    const Patient::Vector v(1, 0, 0);
+    auto impl = static_cast<detail::BaseImpl>(v);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("VectorsFromTheSameSpaceCanBeDotted") {
     const View::Vector v1(1, 2, 3);
     const View::Vector v2(1, 2, 3);
@@ -406,7 +453,7 @@ TEST_CASE("VectorsSupportElementAccessByAtDoesNotCompileIfTooLow") {
 
     // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        v.at<-1>();
+        auto dummy = v.at<-1>();
     }
 }
 TEST_CASE("VectorsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
@@ -414,7 +461,7 @@ TEST_CASE("VectorsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
 
     // We should not be able to compile this.
     if constexpr (TEST_NON_COMPILATION) {
-        v.at<3>();
+        auto dummy = v.at<3>();
     }
 }
 

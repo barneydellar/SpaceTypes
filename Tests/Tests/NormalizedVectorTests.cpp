@@ -8,11 +8,41 @@ constexpr bool TEST_NON_COMPILATION{ false };
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Normalized Vectors can be created using initalizer lists") {
-    View::NormalizedVector v = { 1, 0, 0 };
+TEST_CASE("Normalized Vectors can be created using initalizer lists of two numbers") {
+    View::NormalizedVector v( 10, 0);
     CHECK(v[0] == 1);
     CHECK(v[1] == 0);
     CHECK(v[2] == 0);
+}
+TEST_CASE("Normalized Vectors can be created using initalizer lists of three numbers") {
+    View::NormalizedVector v{ 10, 0, 0 };
+    CHECK(v[0] == 1);
+    CHECK(v[1] == 0);
+    CHECK(v[2] == 0);
+}
+TEST_CASE("Normalized Vectors throw when using initalizer lists that are too small") {
+    CHECK_THROWS_AS(View::NormalizedVector{ 1 }, std::invalid_argument);
+}
+TEST_CASE("Normalized Vectors throw when using initalizer lists that are too large") {
+    try
+    {
+        View::NormalizedVector v{ 1, 2, 3, 4 };
+    }
+    catch (std::invalid_argument)
+    {
+        return;
+    }
+    REQUIRE(false);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("NormalizedVectorsCanBeConstructedAndNormalizedFromImplementation") {
+    const detail::BaseImpl impl(3, 0, 0);
+    const Patient::NormalizedVector v(impl);
+    CHECK(v.X() == 1);
+    CHECK(v.Y() == 0);
+    CHECK(v.Z() == 0);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -46,6 +76,23 @@ TEST_CASE("NormalizedVectorsStartOffNormalized") {
 
 TEST_CASE("ZeroSizedNormalizedVectorsCannotBeCreated") {
     CHECK_THROWS_AS(Patient::NormalizedVector(0, 0, 0), std::invalid_argument);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Normalized Vectors cannot be implicitly cast to the implementation") {
+    const Patient::NormalizedVector v(1, 0, 0);
+
+    if constexpr (TEST_NON_COMPILATION) {
+        //detail::BaseImpl impl = v;
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Normalized Vectors can be cast to the implementation") {
+    const Patient::NormalizedVector v(1, 0, 0);
+    auto impl = static_cast<detail::BaseImpl>(v);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -140,7 +187,7 @@ TEST_CASE("NormalizedVectorsCanBeMultiplied") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("NormalizedVectorsCanBeScaledToProdueAVector") {
+TEST_CASE("NormalizedVectorsCanBeScaledToProduceAVector") {
     const Image::NormalizedVector v_norm(1, 0, 0);
 
     using converted_type = decltype(v_norm * 2);
@@ -174,7 +221,7 @@ TEST_CASE("NormalizedVectorsCanBeAdded") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("NormalizedVectorsCanBeAddedToProdueAVector") {
+TEST_CASE("NormalizedVectorsCanBeAddedToProduceAVector") {
     const Image::NormalizedVector v_norm_1(1, 0, 0);
     const Image::NormalizedVector v_norm_2(0, 1, 0);
 
@@ -209,7 +256,7 @@ TEST_CASE("NormalizedVectorsAndVectorsCanBeAdded") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("NormalizedVectorsAndVectorsCanBeAddedToProdueAVector") {
+TEST_CASE("NormalizedVectorsAndVectorsCanBeAddedToProduceAVector") {
     const Image::NormalizedVector v_norm_1(1, 0, 0);
     const Image::Vector v_2(0, 1, 0);
 
@@ -223,7 +270,7 @@ TEST_CASE("NormalizedVectorsAndVectorsCanBeAddedToProdueAVector") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("VectorsAndNormalizedVectorsCanBeAddedToProdueAVector") {
+TEST_CASE("VectorsAndNormalizedVectorsCanBeAddedToProduceAVector") {
     const Image::Vector v_1(1, 0, 0);
     const Image::NormalizedVector v_norm_2(0, 1, 0);
 

@@ -13,15 +13,60 @@ namespace Space {
     //--------------------------------------------------------------------------------------------
 
     template <typename Space>
-    class Point final : public detail::ModifiableBaseImpl<Space>
+    class Point final
     {
-        using _base = detail::ModifiableBaseImpl<Space>;
-
     public:
-        constexpr explicit Point(const std::array<double, 3> value) noexcept: _base(value) {}
-        constexpr explicit Point(const double x, const double y, const double z) noexcept : _base(x, y, z) {}
-        constexpr explicit Point(const double x, const double y) noexcept : _base(x, y) {}
-        constexpr Point(const std::initializer_list<double> l) : _base(l) {}
+        constexpr explicit Point(const detail::BaseImpl v) noexcept : m_impl(v) {}
+        constexpr explicit Point(const std::array<double, 3> value) noexcept : m_impl(value) {}
+        constexpr explicit Point(const double x, const double y, const double z) noexcept : m_impl(x, y, z) {}
+        constexpr explicit Point(const double x, const double y) noexcept : m_impl(x, y) {}
+        constexpr Point(const std::initializer_list<double> l) : m_impl(l) {}
+
+        //------------------------------------------------------------------------------------
+
+        explicit constexpr operator detail::BaseImpl() const noexcept {
+            return m_impl;
+        }
+
+        //------------------------------------------------------------------------------------
+
+        [[nodiscard]] constexpr double X() const noexcept { return m_impl.X(); }
+        [[nodiscard]] constexpr double Y() const noexcept { return m_impl.Y(); }
+        [[nodiscard]] constexpr double Z() const noexcept { return m_impl.Z(); }
+
+        [[nodiscard]] constexpr double operator[] (const unsigned int i) const {
+            if (i > 2) {
+                throw std::invalid_argument("Index is out of range");
+            }
+            return m_impl[i];
+        }
+
+        template <int I>
+        [[nodiscard]] constexpr double at(
+        ) const noexcept {
+            if constexpr (I != 0 && I != 1 && I != 2) {
+                StaticAssert::invalid_at_access{};
+            }
+            else {
+                return m_impl[I];
+            }
+        }
+
+        //------------------------------------------------------------------------------------
+
+        [[nodiscard]] constexpr double* begin() noexcept {
+            return m_impl.begin();
+        }
+        [[nodiscard]] constexpr double* end() noexcept {
+            return m_impl.end();
+        }
+
+        [[nodiscard]] constexpr const double* cbegin() const noexcept {
+            return m_impl.cbegin();
+        }
+        [[nodiscard]] constexpr const double* cend() const noexcept {
+            return m_impl.cend();
+        }
 
         //------------------------------------------------------------------------------------
 
@@ -29,9 +74,8 @@ namespace Space {
         [[nodiscard]] constexpr bool operator == (const Point<AnySpace>& other) const noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_equality{};
-            }
-            else {
-                return std::equal(_base::m_values.cbegin(), _base::m_values.cend(), other.m_values.cbegin());
+            } else {
+                return m_impl.operator==(other.m_impl);
             }
         }
 
@@ -50,9 +94,8 @@ namespace Space {
         [[nodiscard]] constexpr bool operator != (const Point<AnySpace>& other) const noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_equality{};
-            } else {
-                return !(operator==(other));
             }
+            return !(operator==(other));
         }
         template <typename AnySpace>
         constexpr bool operator != (const Vector<AnySpace>&) const noexcept {
@@ -63,67 +106,43 @@ namespace Space {
 
         template <typename OtherSpace, typename TransformManager>
         [[nodiscard]] constexpr typename OtherSpace::Point ConvertTo(const TransformManager& transform_manager) const {
-            return typename OtherSpace::Point(transform_manager.template Transform<Space, OtherSpace>(_base::m_values));
+            return OtherSpace::Point(m_impl.ConvertPointTo<Space, OtherSpace, TransformManager>(transform_manager));
         }
 
         //------------------------------------------------------------------------------------
 
         template <typename AnySpace>
         [[nodiscard]] constexpr typename Space::Vector operator-(
-            const Point<AnySpace>& rhs
+            const Point<AnySpace>& other
         ) const noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_subtraction{};
-            }
-            else {
-                std::array<double, 3> result{};
-                std::transform(
-                    _base::m_values.cbegin(),
-                    _base::m_values.cend(),
-                    rhs.m_values.cbegin(),
-                    result.begin(),
-                    std::minus<>()
-                );
-                return Space::Vector(result);
+            } else {
+                return Space::Vector(m_impl.operator-(other.m_impl));
             }
         }
 
         //------------------------------------------------------------------------------------
 
         template <typename AnySpace>
-        [[nodiscard]] constexpr typename Space::Point operator+(const Vector<AnySpace>& rhs) const noexcept {
+        [[nodiscard]] constexpr typename Space::Point operator+(const Vector<AnySpace>& other) const noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_vector_to_point_addition{};
             }
-            else {
-                std::array<double, 3> result{};
-                std::transform(
-                    _base::m_values.cbegin(),
-                    _base::m_values.cend(),
-                    rhs.m_values.cbegin(),
-                    result.begin(),
-                    std::plus<>()
-                );
-                return Space::Point(result);
-            }
+            return Space::Point(m_impl.operator+(static_cast<detail::BaseImpl>(other)));
         }
 
         template <typename AnySpace>
-        constexpr typename Space::Point operator+=(const Vector<AnySpace>& rhs) noexcept {
+        constexpr typename Space::Point operator+=(const Vector<AnySpace>& other) noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_vector_to_point_addition{};
             }
-            else {
-                std::transform(
-                    _base::m_values.cbegin(),
-                    _base::m_values.cend(),
-                    rhs.m_values.cbegin(),
-                    _base::m_values.begin(),
-                    std::plus<>()
-                );
-                return *this;
-            }
+            m_impl.operator+=(static_cast<detail::BaseImpl>(other));
+            return *this;
         }
+
+    private:
+        detail::BaseImpl m_impl;
     };
 
     template <typename Space>

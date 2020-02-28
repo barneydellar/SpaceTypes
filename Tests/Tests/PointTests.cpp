@@ -8,12 +8,32 @@ constexpr bool TEST_NON_COMPILATION{ false };
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Points can be created using initalizer lists") {
-    View::Point v = { 1, 2, 4 };
+TEST_CASE("Points can be created using initalizer lists of two numbers") {
+    View::Point v{ 1, 2 };
+    CHECK(v[0] == 1);
+    CHECK(v[1] == 2);
+    CHECK(v[2] == 0);
+}
+TEST_CASE("Points can be created using initalizer lists of three numbers") {
+    View::Point v{ 1, 2, 4 };
     CHECK(v[0] == 1);
     CHECK(v[1] == 2);
     CHECK(v[2] == 4);
 }
+TEST_CASE("Points throw when using initalizer lists that are too small") {
+    CHECK_THROWS_AS(View::Point{ 1 }, std::invalid_argument);
+}
+TEST_CASE("Points throw when using initalizer lists that are too large") {
+    try
+    {
+        View::Point v{ 1, 2, 3, 4 };
+    } catch (std::invalid_argument)
+    {
+        return;
+    }
+    REQUIRE(false);
+}
+
 
 //-------------------------------------------------------------------------------------------------
 
@@ -31,6 +51,33 @@ TEST_CASE("PointsCanBeConstructedFromTwoDoubles") {
     CHECK(p.X() == 1);
     CHECK(p.Y() == 2);
     CHECK(p.Z() == 0);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Points can be constructed and normalized from implementation") {
+    const detail::BaseImpl impl(3, 2, 1);
+    const Patient::Point p(impl);
+    CHECK(p.X() == 3);
+    CHECK(p.Y() == 2);
+    CHECK(p.Z() == 1);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Points cannot be implicitly cast to the implementation") {
+    const Patient::Point p(1, 0, 0);
+
+    if constexpr (TEST_NON_COMPILATION) {
+        //detail::BaseImpl impl = p;
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Pomts Can Be Cast To The Implementation") {
+    const Patient::Point p(1, 0, 0);
+    auto impl = static_cast<detail::BaseImpl>(p);
 }
 
 //-------------------------------------------------------------------------------------------------

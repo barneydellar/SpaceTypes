@@ -13,7 +13,8 @@ namespace Space {
 
 namespace Space::detail {
 
-    template <typename Space>
+    //------------------------------------------------------------------------------------
+
     class BaseImpl
     {
     public:
@@ -22,7 +23,7 @@ namespace Space::detail {
         constexpr explicit BaseImpl(const double x, const double y) noexcept : m_values{ x , y , 0 } {}
         constexpr BaseImpl(const std::initializer_list<double> l) {
             if (l.size() < 2 || l.size() > 3) {
-                throw new std::exception("You can only initialise with two or three elements");
+                throw std::invalid_argument("You can only initialise with two or three elements");
             }
             auto iter = l.begin();
             m_values[0] = *iter++;
@@ -35,6 +36,31 @@ namespace Space::detail {
     protected:
         constexpr BaseImpl() = default;
     public:
+
+        void Normalize() noexcept(false)
+        {
+            const auto mag = Mag();
+            if (mag == 0) {
+                throw std::invalid_argument("Zero-sized normal vectors are not allowed");
+            }
+            std::transform(
+                m_values.cbegin(),
+                m_values.cend(),
+                m_values.begin(),
+                [mag](auto v) {return v / mag;}
+            );
+        }
+
+        [[nodiscard]] double Mag() const noexcept {
+            return std::sqrt(
+                std::accumulate(
+                    m_values.cbegin(),
+                    m_values.cend(),
+                    0.0,
+                    [](const auto accumulation, const auto v) {return accumulation + v * v;}
+                )
+            );
+        }
 
         //------------------------------------------------------------------------------------
 
@@ -55,17 +81,11 @@ namespace Space::detail {
             return reinterpret_cast<const double*>(m_values._Unchecked_end());
         }
 
-        //------------------------------------------------------------------------------------
-
-        template <int I>
-        [[nodiscard]] constexpr typename std::enable_if<I == 0 || I == 1 || I == 2, double>::type at(
-        ) const noexcept {
-            return *reinterpret_cast<const double* const>(&m_values[I]);
+        [[nodiscard]] constexpr double* begin() noexcept {
+            return reinterpret_cast<double*>(m_values._Unchecked_begin());
         }
-        template <int I>
-        constexpr typename std::enable_if<I != 0 && I != 1 && I != 2, double>::type at(
-        ) const noexcept {
-            StaticAssert::invalid_at_access{};
+        [[nodiscard]] constexpr double* end() noexcept {
+            return reinterpret_cast<double*>(m_values._Unchecked_end());
         }
 
         //------------------------------------------------------------------------------------
@@ -74,59 +94,92 @@ namespace Space::detail {
         [[nodiscard]] constexpr double Y() const noexcept { return m_values[1]; }
         [[nodiscard]] constexpr double Z() const noexcept { return m_values[2]; }
 
-    protected:
-
-        [[nodiscard]] constexpr std::array<double, 3> SumArrays(const std::array<double, 3>& lhs, const std::array<double, 3>& rhs) const noexcept
-        {
+        [[nodiscard]] std::array<double, 3> operator*(const double& d) const noexcept {
             std::array<double, 3> result{};
             std::transform(
-                lhs.cbegin(),
-                lhs.cend(),
-                rhs.cbegin(),
+                m_values.cbegin(),
+                m_values.cend(),
                 result.begin(),
-                [](auto v1, auto v2) {return v1 + v2;}
+                [d] (auto v) {return v * d;}
             );
             return result;
         }
 
-        [[nodiscard]] constexpr std::array<double, 3> ScaleArray(const std::array<double, 3>& a, const double d) const noexcept
-        {
+        void operator*=(const double& d) noexcept {
+            m_values = operator*(d);
+        }
+
+        [[nodiscard]] std::array<double, 3> operator-(
+            const BaseImpl& rhs
+        ) const noexcept {
             std::array<double, 3> result{};
-            std::transform(a.cbegin(), a.cend(), result.begin(), [d](auto v) {return v * d;});
+            std::transform(
+                m_values.cbegin(),
+                m_values.cend(),
+                rhs.m_values.cbegin(),
+                result.begin(),
+                std::minus<>()
+            );
             return result;
         }
 
-        [[nodiscard]] constexpr double DotArrays(const std::array<double, 3>& lhs, const std::array<double, 3>& rhs) const noexcept
-        {
+        [[nodiscard]] std::array<double, 3> operator+(
+            const BaseImpl& rhs
+        ) const noexcept {
+            std::array<double, 3> result{};
+            std::transform(
+                m_values.cbegin(),
+                m_values.cend(),
+                rhs.m_values.cbegin(),
+                result.begin(),
+                std::plus<>()
+            );
+            return result;
+        }
+
+        void operator+=(
+            const BaseImpl& rhs
+        ) noexcept {
+            std::transform(
+                m_values.cbegin(),
+                m_values.cend(),
+                rhs.m_values.cbegin(),
+                m_values.begin(),
+                std::plus<>()
+            );
+        }
+
+        [[nodiscard]] double Dot(const BaseImpl& other) const noexcept {
             return std::transform_reduce(
-                lhs.cbegin(),
-                lhs.cend(),
-                rhs.cbegin(),
+                m_values.cbegin(),
+                m_values.cend(),
+                other.m_values.cbegin(),
                 0.0,
                 [](auto accumulation, auto v) {return accumulation + v;},
                 [](auto v1, auto v2) {return v1 * v2;}
             );
         }
 
-        [[nodiscard]] constexpr std::array<double, 3> CrossArrays(const std::array<double, 3>& lhs, const std::array<double, 3>& rhs) const noexcept
-        {
+        [[nodiscard]] std::array<double, 3> Cross(const BaseImpl& other) const noexcept {
             return {
-                lhs[1] * rhs[2] - lhs[2] * rhs[1],
-                lhs[2] * rhs[0] - lhs[0] * rhs[2],
-                lhs[0] * rhs[1] - lhs[1] * rhs[0]
+                m_values[1] * other.m_values[2] - m_values[2] * other.m_values[1],
+                m_values[2] * other.m_values[0] - m_values[0] * other.m_values[2],
+                m_values[0] * other.m_values[1] - m_values[1] * other.m_values[0]
             };
         }
 
-        [[nodiscard]] constexpr double MagHelper() const noexcept {
+        [[nodiscard]] bool operator == (const BaseImpl& other) const noexcept {
+            return std::equal(m_values.cbegin(), m_values.cend(), other.m_values.cbegin());
+        }
 
-            return std::sqrt(
-                std::accumulate(
-                    m_values.cbegin(),
-                    m_values.cend(),
-                    0.0,
-                    [](const auto accumulation, const auto v) {return accumulation + v * v;}
-                )
-            );
+        template <typename From, typename To, typename TransformManager>
+        [[nodiscard]] constexpr std::array<double, 3> ConvertVectorTo(const TransformManager& transform_manager) const noexcept {
+            return transform_manager.template Transform33<From, To>(m_values);
+        }
+
+        template <typename From, typename To, typename TransformManager>
+        [[nodiscard]] constexpr std::array<double, 3> ConvertPointTo(const TransformManager& transform_manager) const noexcept {
+            return transform_manager.template Transform<From, To>(m_values);
         }
 
         //------------------------------------------------------------------------------------
@@ -134,24 +187,4 @@ namespace Space::detail {
         std::array<double, 3> m_values{};
     };
 
-    //-----------------------------------------------------------------------------------------
-
-    template <typename Space>
-    class ModifiableBaseImpl : public BaseImpl<Space>
-    {
-        using _base = BaseImpl<Space>;
-    public:
-
-        constexpr explicit ModifiableBaseImpl(const std::array<double, 3> value) noexcept : _base(value) {}
-        constexpr explicit ModifiableBaseImpl(const double x, const double y, const double z) noexcept : _base(x, y, z) {}
-        constexpr explicit ModifiableBaseImpl(const double x, const double y) noexcept : _base(x, y) {}
-        constexpr ModifiableBaseImpl(const std::initializer_list<double> l) : _base(l) {}
-
-        [[nodiscard]] constexpr double* begin() noexcept {
-            return reinterpret_cast<double*>(_base::m_values._Unchecked_begin());
-        }
-        [[nodiscard]] constexpr double* end() noexcept {
-            return reinterpret_cast<double*>(_base::m_values._Unchecked_end());
-        }
-    };
 }
