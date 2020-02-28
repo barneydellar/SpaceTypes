@@ -1,22 +1,22 @@
 #pragma once
 
-#include "BaseImpl.h"
+#include "SpaceImpl.h"
 
 namespace Space {
 
-    template <typename Space>
+    template <typename Space, typename Impl>
     class Vector;
 
-    template <typename Space>
+    template <typename Space, typename Impl>
     class NormalizedVector;
 
     //--------------------------------------------------------------------------------------------
 
-    template <typename Space>
+    template <typename Space, typename Impl>
     class Point final
     {
     public:
-        constexpr explicit Point(const detail::BaseImpl v) noexcept : m_impl(v) {}
+        constexpr explicit Point(const Impl v) noexcept : m_impl(v) {}
         constexpr explicit Point(const std::array<double, 3> value) noexcept : m_impl(value) {}
         constexpr explicit Point(const double x, const double y, const double z) noexcept : m_impl(x, y, z) {}
         constexpr explicit Point(const double x, const double y) noexcept : m_impl(x, y) {}
@@ -24,7 +24,7 @@ namespace Space {
 
         //------------------------------------------------------------------------------------
 
-        explicit constexpr operator detail::BaseImpl() const noexcept {
+        explicit constexpr operator Impl() const noexcept {
             return m_impl;
         }
 
@@ -71,7 +71,7 @@ namespace Space {
         //------------------------------------------------------------------------------------
 
         template <typename AnySpace>
-        [[nodiscard]] constexpr bool operator == (const Point<AnySpace>& other) const noexcept {
+        [[nodiscard]] constexpr bool operator == (const Point<AnySpace, Impl>& other) const noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_equality{};
             } else {
@@ -80,25 +80,25 @@ namespace Space {
         }
 
         template <typename AnySpace>
-        constexpr bool operator == (const Vector<AnySpace>&) const noexcept {
+        constexpr bool operator == (const Vector<AnySpace, Impl>&) const noexcept {
             StaticAssert::invalid_point_vector_equality{};
         }
         template <typename AnySpace>
-        constexpr bool operator == (const NormalizedVector<AnySpace>&) const noexcept {
+        constexpr bool operator == (const NormalizedVector<AnySpace, Impl>&) const noexcept {
             StaticAssert::invalid_point_vector_equality{};
         }
 
         //------------------------------------------------------------------------------------
 
         template <typename AnySpace>
-        [[nodiscard]] constexpr bool operator != (const Point<AnySpace>& other) const noexcept {
+        [[nodiscard]] constexpr bool operator != (const Point<AnySpace, Impl>& other) const noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_equality{};
             }
             return !(operator==(other));
         }
         template <typename AnySpace>
-        constexpr bool operator != (const Vector<AnySpace>&) const noexcept {
+        constexpr bool operator != (const Vector<AnySpace, Impl>&) const noexcept {
             StaticAssert::invalid_point_vector_equality{};
         }
 
@@ -113,7 +113,7 @@ namespace Space {
 
         template <typename AnySpace>
         [[nodiscard]] constexpr typename Space::Vector operator-(
-            const Point<AnySpace>& other
+            const Point<AnySpace, Impl>& other
         ) const noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_subtraction{};
@@ -125,30 +125,30 @@ namespace Space {
         //------------------------------------------------------------------------------------
 
         template <typename AnySpace>
-        [[nodiscard]] constexpr typename Space::Point operator+(const Vector<AnySpace>& other) const noexcept {
+        [[nodiscard]] constexpr typename Space::Point operator+(const Vector<AnySpace, Impl>& other) const noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_vector_to_point_addition{};
             }
-            return Space::Point(m_impl.operator+(static_cast<detail::BaseImpl>(other)));
+            return Space::Point(m_impl.operator+(static_cast<Impl>(other)));
         }
 
         template <typename AnySpace>
-        constexpr typename Space::Point operator+=(const Vector<AnySpace>& other) noexcept {
+        constexpr typename Space::Point operator+=(const Vector<AnySpace, Impl>& other) noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_vector_to_point_addition{};
             }
-            m_impl.operator+=(static_cast<detail::BaseImpl>(other));
+            m_impl.operator+=(static_cast<Impl>(other));
             return *this;
         }
 
     private:
-        detail::BaseImpl m_impl;
+        Impl m_impl;
     };
 
-    template <typename Space>
+    template <typename Space, typename Impl>
     constexpr std::ostream& operator << (
         std::ostream& os,
-        const Point<Space>& item
+        const Point<Space, Impl>& item
     ) {
         const auto space = SpaceTypeNameMap<Space>::name;
         os << space << "::Point (" << item.X() << ", " << item.Y() << ", " << item.Z() << ")";

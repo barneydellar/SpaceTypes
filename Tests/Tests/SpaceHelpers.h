@@ -1,5 +1,6 @@
 #pragma once
 #include "Space.h"
+#include "BaseImpl.h"
 #include <array>
 
 class Millimetres final
@@ -39,22 +40,22 @@ namespace Space {
         View
     };
 
-    struct Volume final : SpaceBase<Volume, Voxels> {
+    struct Volume final : SpaceBase<Volume, detail::BaseImpl, Voxels> {
         static inline constexpr SpaceIDs id = SpaceIDs::Volume;
     };
     template <> const std::string SpaceTypeNameMap<Volume>::name = "Volume";
 
-    struct Patient final : SpaceBase<Patient, double> {
+    struct Patient final : SpaceBase<Patient, detail::BaseImpl, double> {
         static inline constexpr SpaceIDs id = SpaceIDs::Patient;
     };
     template <> const std::string SpaceTypeNameMap<Patient>::name = "Patient";
 
-    struct Image final : SpaceBase<Image, Millimetres> {
+    struct Image final : SpaceBase<Image, detail::BaseImpl, Millimetres> {
         static inline constexpr SpaceIDs id = SpaceIDs::Image;
     };
     template <> const std::string SpaceTypeNameMap<Image>::name = "Image";
 
-    struct View final : SpaceBase<View, Pixels> {
+    struct View final : SpaceBase<View, detail::BaseImpl, Pixels> {
         static inline constexpr SpaceIDs id = SpaceIDs::View;
     };
     template <> const std::string SpaceTypeNameMap<View>::name = "View";

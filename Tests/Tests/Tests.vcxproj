@@ -157,6 +157,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BaseImpl.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SpaceHelpers.h" />
   </ItemGroup>

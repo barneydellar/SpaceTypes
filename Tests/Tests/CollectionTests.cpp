@@ -6,7 +6,7 @@ using namespace Space;
 //-------------------------------------------------------------------------------------------------
 
 template<typename Space>
-Point<Space> ReturnFirst(std::vector<Point<Space>> v)
+typename Space::Point ReturnFirst(std::vector<typename Space::Point> v)
 {
     return v.front();
 }
@@ -36,7 +36,7 @@ TEST_CASE("Strongly typed collections can be used in templated functions: View S
         {2, 2, 2}
     };
 
-    const View::Point first = ReturnFirst(v);
+    const View::Point first = ReturnFirst<View>(v);
 
     CHECK(first == v.front());
 }
@@ -49,7 +49,7 @@ TEST_CASE("Strongly typed collections can be used in templated functions: Patien
         Patient::Point{2, 2, 2}
     };
 
-    const Patient::Point first = ReturnFirst(v);
+    const Patient::Point first = ReturnFirst<Patient>(v);
 
     CHECK(first == v.front());
 }

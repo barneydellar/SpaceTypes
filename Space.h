@@ -8,11 +8,11 @@ namespace Space {
 
     //--------------------------------------------------------------------------------------------
 
-    template <typename SpaceName, typename Units>
+    template <typename SpaceName, typename Impl, typename Units>
     struct SpaceBase {
-        using Point = Point<SpaceName>;
-        using Vector = Vector<SpaceName>;
-        using NormalizedVector = NormalizedVector<SpaceName>;
+        using Point = Point<SpaceName, Impl>;
+        using Vector = Vector<SpaceName, Impl>;
+        using NormalizedVector = NormalizedVector<SpaceName, Impl>;
         using Unit = Units;
     };
 }
