@@ -38,7 +38,7 @@ TEST_CASE("Normalized Vectors throw when using initalizer lists that are too lar
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("NormalizedVectorsCanBeConstructedAndNormalizedFromImplementation") {
-    const detail::BaseImpl impl(3, 0, 0);
+    const ExampleImpl impl(3, 0, 0);
     const Patient::NormalizedVector v(impl);
     CHECK(v.X() == 1);
     CHECK(v.Y() == 0);
@@ -84,7 +84,7 @@ TEST_CASE("Normalized Vectors cannot be implicitly cast to the implementation") 
     const Patient::NormalizedVector v(1, 0, 0);
 
     if constexpr (TEST_NON_COMPILATION) {
-        //detail::BaseImpl impl = v;
+        //ExampleImpl impl = v;
     }
 }
 
@@ -92,7 +92,7 @@ TEST_CASE("Normalized Vectors cannot be implicitly cast to the implementation") 
 
 TEST_CASE("Normalized Vectors can be cast to the implementation") {
     const Patient::NormalizedVector v(1, 0, 0);
-    auto impl = static_cast<detail::BaseImpl>(v);
+    auto impl = static_cast<ExampleImpl>(v);
 }
 
 //-------------------------------------------------------------------------------------------------

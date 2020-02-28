@@ -11,7 +11,7 @@ typename Space::Point ReturnFirst(std::vector<typename Space::Point> v)
     return v.front();
 }
 
-detail::BaseImpl ReturnFirstImpl(std::vector<detail::BaseImpl> v)
+ExampleImpl ReturnFirstImpl(std::vector<ExampleImpl> v)
 {
     return v.front();
 }
@@ -62,17 +62,17 @@ TEST_CASE("Strongly typed collections can be transformed for use in non-template
         {2, 2, 2}
     };
 
-    std::vector<detail::BaseImpl> impls;
+    std::vector<ExampleImpl> impls;
     std::transform(
         v.cbegin(),
         v.cend(),
         std::back_inserter(impls),
-        [](auto v) {return static_cast<detail::BaseImpl>(v);}
+        [](auto v) {return static_cast<ExampleImpl>(v);}
     );
 
     const auto first = ReturnFirstImpl(impls);
 
-    CHECK(first == static_cast<detail::BaseImpl>(v.front()));
+    CHECK(first == static_cast<ExampleImpl>(v.front()));
 }
 
 //-------------------------------------------------------------------------------------------------

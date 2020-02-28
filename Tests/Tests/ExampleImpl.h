@@ -1,16 +1,16 @@
 #pragma once
 
-namespace Space::detail {
+namespace Space {
 
     //------------------------------------------------------------------------------------
 
-    class BaseImpl
+    class ExampleImpl
     {
     public:
-        constexpr explicit BaseImpl(const std::array<double, 3> value) noexcept : m_values{value} {}
-        constexpr explicit BaseImpl(const double x, const double y, const double z) noexcept : m_values{ x , y , z } {}
-        constexpr explicit BaseImpl(const double x, const double y) noexcept : m_values{ x , y , 0 } {}
-        constexpr BaseImpl(const std::initializer_list<double> l) {
+        constexpr explicit ExampleImpl(const std::array<double, 3> value) noexcept : m_values{value} {}
+        constexpr explicit ExampleImpl(const double x, const double y, const double z) noexcept : m_values{ x , y , z } {}
+        constexpr explicit ExampleImpl(const double x, const double y) noexcept : m_values{ x , y , 0 } {}
+        constexpr ExampleImpl(const std::initializer_list<double> l) {
             if (l.size() < 2 || l.size() > 3) {
                 throw std::invalid_argument("You can only initialise with two or three elements");
             }
@@ -23,7 +23,7 @@ namespace Space::detail {
         }
 
     protected:
-        constexpr BaseImpl() = default;
+        constexpr ExampleImpl() = default;
     public:
 
         void Normalize() noexcept(false)
@@ -99,7 +99,7 @@ namespace Space::detail {
         }
 
         [[nodiscard]] std::array<double, 3> operator-(
-            const BaseImpl& rhs
+            const ExampleImpl& rhs
         ) const noexcept {
             std::array<double, 3> result{};
             std::transform(
@@ -113,7 +113,7 @@ namespace Space::detail {
         }
 
         [[nodiscard]] std::array<double, 3> operator+(
-            const BaseImpl& rhs
+            const ExampleImpl& rhs
         ) const noexcept {
             std::array<double, 3> result{};
             std::transform(
@@ -127,7 +127,7 @@ namespace Space::detail {
         }
 
         void operator+=(
-            const BaseImpl& rhs
+            const ExampleImpl& rhs
         ) noexcept {
             std::transform(
                 m_values.cbegin(),
@@ -138,7 +138,7 @@ namespace Space::detail {
             );
         }
 
-        [[nodiscard]] double Dot(const BaseImpl& other) const noexcept {
+        [[nodiscard]] double Dot(const ExampleImpl& other) const noexcept {
             return std::transform_reduce(
                 m_values.cbegin(),
                 m_values.cend(),
@@ -149,7 +149,7 @@ namespace Space::detail {
             );
         }
 
-        [[nodiscard]] std::array<double, 3> Cross(const BaseImpl& other) const noexcept {
+        [[nodiscard]] std::array<double, 3> Cross(const ExampleImpl& other) const noexcept {
             return {
                 m_values[1] * other.m_values[2] - m_values[2] * other.m_values[1],
                 m_values[2] * other.m_values[0] - m_values[0] * other.m_values[2],
@@ -157,18 +157,8 @@ namespace Space::detail {
             };
         }
 
-        [[nodiscard]] bool operator == (const BaseImpl& other) const noexcept {
+        [[nodiscard]] bool operator == (const ExampleImpl& other) const noexcept {
             return std::equal(m_values.cbegin(), m_values.cend(), other.m_values.cbegin());
-        }
-
-        template <typename From, typename To, typename TransformManager>
-        [[nodiscard]] constexpr std::array<double, 3> ConvertVectorTo(const TransformManager& transform_manager) const noexcept {
-            return transform_manager.template Transform33<From, To>(m_values);
-        }
-
-        template <typename From, typename To, typename TransformManager>
-        [[nodiscard]] constexpr std::array<double, 3> ConvertPointTo(const TransformManager& transform_manager) const noexcept {
-            return transform_manager.template Transform<From, To>(m_values);
         }
 
         //------------------------------------------------------------------------------------

@@ -4,7 +4,7 @@
 
 namespace Space {
 
-    template <typename Space, typename Impl>
+    template <typename Space, typename Implementation>
     class NormalizedVector final
     {
         void Normalize() noexcept(false)
@@ -16,7 +16,7 @@ namespace Space {
 
         //-------------------------------------------------------------------------------------
 
-        constexpr explicit NormalizedVector(const Impl v) noexcept(false) : m_impl(v) { Normalize(); }
+        constexpr explicit NormalizedVector(const Implementation v) noexcept(false) : m_impl(v) { Normalize(); }
         constexpr explicit NormalizedVector(const std::array<double, 3> value) noexcept(false) : m_impl(value) { Normalize();}
         constexpr explicit NormalizedVector(const double x, const double y, const double z) noexcept(false) : m_impl(x, y, z) {Normalize();}
         constexpr explicit NormalizedVector(const double x, const double y) noexcept(false) : m_impl(x, y, 0) {Normalize();}
@@ -24,11 +24,11 @@ namespace Space {
 
         //-------------------------------------------------------------------------------------
 
-        explicit constexpr operator Impl() const noexcept {
+        explicit constexpr operator Implementation() const noexcept {
             return m_impl;
         }
 
-        constexpr operator Vector<Space, Impl>() const noexcept {
+        constexpr operator Vector<Space, Implementation>() const noexcept {
             return Space::Vector(m_impl);
         }
 
@@ -59,28 +59,28 @@ namespace Space {
         //-------------------------------------------------------------------------------------
 
         template <typename AnySpace>
-        [[nodiscard]] constexpr bool operator == (const NormalizedVector<AnySpace, Impl>& other) const noexcept {
+        [[nodiscard]] constexpr bool operator == (const NormalizedVector<AnySpace, Implementation>& other) const noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_equality{};
             }
-            return m_impl.operator==(static_cast<Impl>(other));
+            return m_impl.operator==(static_cast<Implementation>(other));
         }
 
         template <typename AnySpace>
-        [[nodiscard]] constexpr bool operator == (const Vector<AnySpace, Impl>& other) const noexcept {
+        [[nodiscard]] constexpr bool operator == (const Vector<AnySpace, Implementation>& other) const noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_equality{};
             }
-            return m_impl.operator==(static_cast<Impl>(other));
+            return m_impl.operator==(static_cast<Implementation>(other));
         }
         template <typename AnySpace>
-        constexpr bool operator == (const Point<AnySpace, Impl>&) const noexcept {
+        constexpr bool operator == (const Point<AnySpace, Implementation>&) const noexcept {
             StaticAssert::invalid_point_vector_equality{};
         }
         //------------------------------------------------------------------------------------
 
         template <typename AnySpace>
-        [[nodiscard]] constexpr bool operator != (const NormalizedVector<AnySpace, Impl>& other) const noexcept {
+        [[nodiscard]] constexpr bool operator != (const NormalizedVector<AnySpace, Implementation>& other) const noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_equality{};
             }
@@ -88,7 +88,7 @@ namespace Space {
         }
 
         template <typename AnySpace>
-        [[nodiscard]] constexpr bool operator != (const Vector<AnySpace, Impl>& other) const noexcept {
+        [[nodiscard]] constexpr bool operator != (const Vector<AnySpace, Implementation>& other) const noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_equality{};
             }
@@ -96,30 +96,30 @@ namespace Space {
         }
 
         template <typename AnySpace>
-        constexpr bool operator != (const Point<AnySpace, Impl>&) const noexcept {
+        constexpr bool operator != (const Point<AnySpace, Implementation>&) const noexcept {
             StaticAssert::invalid_point_vector_equality{};
         }
 
         //-------------------------------------------------------------------------------------
 
         template <typename AnySpace>
-        [[nodiscard]] constexpr typename Space::Vector operator+(const NormalizedVector<AnySpace, Impl>& other) const noexcept {
+        [[nodiscard]] constexpr typename Space::Vector operator+(const NormalizedVector<AnySpace, Implementation>& other) const noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_vector_to_vector_addition{};
             }
-            return Space::Vector(m_impl.operator+(static_cast<Impl>(other)));
+            return Space::Vector(m_impl.operator+(static_cast<Implementation>(other)));
         }
 
         template <typename AnySpace>
-        [[nodiscard]] constexpr typename Space::Vector operator+(const Vector<AnySpace, Impl>& other) const noexcept {
+        [[nodiscard]] constexpr typename Space::Vector operator+(const Vector<AnySpace, Implementation>& other) const noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_vector_to_vector_addition{};
             }
-            return Space::Vector(m_impl.operator+(static_cast<Impl>(other)));
+            return Space::Vector(m_impl.operator+(static_cast<Implementation>(other)));
         }
 
         template <typename AnySpace>
-        constexpr typename AnySpace::Vector operator+(const Point<AnySpace, Impl>&) const noexcept {
+        constexpr typename AnySpace::Vector operator+(const Point<AnySpace, Implementation>&) const noexcept {
             StaticAssert::invalid_point_to_vector_addition{};
         }
 
@@ -130,11 +130,11 @@ namespace Space {
             StaticAssert::invalid_normalized_vector_scale{};
         }
         template <typename OtherSpace>
-        constexpr typename OtherSpace::Vector operator+=(const Vector<OtherSpace, Impl>&) const noexcept {
+        constexpr typename OtherSpace::Vector operator+=(const Vector<OtherSpace, Implementation>&) const noexcept {
             StaticAssert::invalid_normalized_vector_addition{};
         }
         template <typename OtherSpace>
-        constexpr typename OtherSpace::Vector operator+=(const NormalizedVector<OtherSpace, Impl>&) const noexcept {
+        constexpr typename OtherSpace::Vector operator+=(const NormalizedVector<OtherSpace, Implementation>&) const noexcept {
             StaticAssert::invalid_normalized_vector_addition{};
         }
 
@@ -147,35 +147,35 @@ namespace Space {
         //-------------------------------------------------------------------------------------
 
         template <typename AnySpace>
-        [[nodiscard]] constexpr double Dot(const NormalizedVector<AnySpace, Impl>& other) const noexcept {
+        [[nodiscard]] constexpr double Dot(const NormalizedVector<AnySpace, Implementation>& other) const noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_vector_dot{};
             }
-            return m_impl.Dot(static_cast<Impl>(other));
+            return m_impl.Dot(static_cast<Implementation>(other));
         }
 
         template <typename AnySpace>
-        [[nodiscard]] constexpr double Dot(const Vector<AnySpace, Impl>& other) const noexcept {
+        [[nodiscard]] constexpr double Dot(const Vector<AnySpace, Implementation>& other) const noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_vector_dot{};
             }
-            return m_impl.Dot(static_cast<Impl>(other));
+            return m_impl.Dot(static_cast<Implementation>(other));
         }
 
         //-------------------------------------------------------------------------------------
 
         // Crossing
-        [[nodiscard]] constexpr typename Space::NormalizedVector operator*(const NormalizedVector<Space, Impl>& rhs) const noexcept {
+        [[nodiscard]] constexpr typename Space::NormalizedVector operator*(const NormalizedVector<Space, Implementation>& rhs) const noexcept {
             return this->Cross(rhs);
         }
-        [[nodiscard]] constexpr typename Space::Vector operator*(const Vector<Space, Impl>& rhs) const noexcept {
+        [[nodiscard]] constexpr typename Space::Vector operator*(const Vector<Space, Implementation>& rhs) const noexcept {
             return this->Cross(rhs);
         }
-        [[nodiscard]] constexpr typename Space::NormalizedVector Cross(const NormalizedVector<Space, Impl>& other) const noexcept {
-            return Space::NormalizedVector(m_impl.Cross(static_cast<Impl>(other)));
+        [[nodiscard]] constexpr typename Space::NormalizedVector Cross(const NormalizedVector<Space, Implementation>& other) const noexcept {
+            return Space::NormalizedVector(m_impl.Cross(static_cast<Implementation>(other)));
         }
-        [[nodiscard]] constexpr typename Space::Vector Cross(const Vector<Space, Impl>& other) const noexcept {
-            return Space::Vector(m_impl.Cross(static_cast<Impl>(other)));
+        [[nodiscard]] constexpr typename Space::Vector Cross(const Vector<Space, Implementation>& other) const noexcept {
+            return Space::Vector(m_impl.Cross(static_cast<Implementation>(other)));
         }
 
         //-------------------------------------------------------------------------------------
@@ -191,11 +191,11 @@ namespace Space {
 
         template <typename OtherSpace, typename TransformManager>
         [[nodiscard]] constexpr typename OtherSpace::Vector ConvertTo(const TransformManager& transform_manager) const noexcept {
-            return OtherSpace::Vector(m_impl.ConvertVectorTo<Space, OtherSpace, TransformManager>(transform_manager));
+            return OtherSpace::Vector(transform_manager.template Transform33<Space, OtherSpace>(m_impl));
         }
 
     private:
-        Impl m_impl;
+        Implementation m_impl;
     };
 
     template <typename Space, typename Impl>

@@ -40,7 +40,7 @@
     <ClInclude Include="SpaceHelpers.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="BaseImpl.h">
+    <ClInclude Include="ExampleImpl.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

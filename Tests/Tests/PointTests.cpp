@@ -56,7 +56,7 @@ TEST_CASE("PointsCanBeConstructedFromTwoDoubles") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("Points can be constructed and normalized from implementation") {
-    const detail::BaseImpl impl(3, 2, 1);
+    const ExampleImpl impl(3, 2, 1);
     const Patient::Point p(impl);
     CHECK(p.X() == 3);
     CHECK(p.Y() == 2);
@@ -69,7 +69,7 @@ TEST_CASE("Points cannot be implicitly cast to the implementation") {
     const Patient::Point p(1, 0, 0);
 
     if constexpr (TEST_NON_COMPILATION) {
-        //detail::BaseImpl impl = p;
+        //ExampleImpl impl = p;
     }
 }
 
@@ -77,7 +77,7 @@ TEST_CASE("Points cannot be implicitly cast to the implementation") {
 
 TEST_CASE("Pomts Can Be Cast To The Implementation") {
     const Patient::Point p(1, 0, 0);
-    auto impl = static_cast<detail::BaseImpl>(p);
+    auto impl = static_cast<ExampleImpl>(p);
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 #pragma once
 #include "Space.h"
-#include "BaseImpl.h"
+#include "ExampleImpl.h"
 #include <array>
 
 class Millimetres final
@@ -40,22 +40,22 @@ namespace Space {
         View
     };
 
-    struct Volume final : SpaceBase<Volume, detail::BaseImpl, Voxels> {
+    struct Volume final : SpaceBase<Volume, ExampleImpl, Voxels> {
         static inline constexpr SpaceIDs id = SpaceIDs::Volume;
     };
     template <> const std::string SpaceTypeNameMap<Volume>::name = "Volume";
 
-    struct Patient final : SpaceBase<Patient, detail::BaseImpl, double> {
+    struct Patient final : SpaceBase<Patient, ExampleImpl, double> {
         static inline constexpr SpaceIDs id = SpaceIDs::Patient;
     };
     template <> const std::string SpaceTypeNameMap<Patient>::name = "Patient";
 
-    struct Image final : SpaceBase<Image, detail::BaseImpl, Millimetres> {
+    struct Image final : SpaceBase<Image, ExampleImpl, Millimetres> {
         static inline constexpr SpaceIDs id = SpaceIDs::Image;
     };
     template <> const std::string SpaceTypeNameMap<Image>::name = "Image";
 
-    struct View final : SpaceBase<View, detail::BaseImpl, Pixels> {
+    struct View final : SpaceBase<View, ExampleImpl, Pixels> {
         static inline constexpr SpaceIDs id = SpaceIDs::View;
     };
     template <> const std::string SpaceTypeNameMap<View>::name = "View";
@@ -68,29 +68,28 @@ class TransformManager final
 {
 public:
 
-    //--------------------------------
-    // Old
-
     template <typename From, typename To>
-    [[nodiscard]] std::array<double, 3> Transform33(
-        std::array<double, 3>
-    ) const noexcept {
-        using namespace Space;
-        if constexpr (From::id == SpaceIDs::View) {
-            return { 15, 16, 17 };
-        } else {
-            return { 1, 0, 0 };
-        }
-    }
-
-    template <typename From, typename To>
-    [[nodiscard]] std::array<double, 3> Transform(
-        std::array<double, 3>
+    [[nodiscard]] Space::ExampleImpl Transform(
+        Space::ExampleImpl
     ) const noexcept {
         using namespace Space;
         if constexpr (From::id == SpaceIDs::View) {
             return { -5, -6, -7 };
-        } else {
+        }
+        else {
+            return { 0, 0, 0 };
+        }
+    }
+
+    template <typename From, typename To>
+    [[nodiscard]] Space::ExampleImpl Transform33(
+        Space::ExampleImpl
+    ) const noexcept {
+        using namespace Space;
+        if constexpr (From::id == SpaceIDs::View) {
+            return { 15, 16, 17 };
+        }
+        else {
             return { 0, 0, 0 };
         }
     }
