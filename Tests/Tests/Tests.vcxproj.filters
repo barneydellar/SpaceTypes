@@ -43,5 +43,8 @@
     <ClInclude Include="ExampleImpl.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="ExampleTransformManager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
