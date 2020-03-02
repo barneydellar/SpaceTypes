@@ -196,7 +196,7 @@ const auto m = v1.Mag(); // m = 5 Millimetres
 
 ## Comparison
 
-Vectors from the same space can be compared using == or !=. Under the hood, this checks for approximate equality.
+Vectors from the same space can be compared using == or !=.
 
 ```cpp
 const NewSpace::Vector v1(1, 0, 0);
@@ -205,7 +205,7 @@ const auto b_equality = v1 == v2; // false
 const auto b_inequality = v1 != v2; // true
 ```
 
-Points from the same space can be compared using == or !=. Under the hood, this checks for approximate equality.
+Points from the same space can be compared using == or !=.
 
 ```cpp
 const NewSpace::Point p1(1, 0, 0);
@@ -345,7 +345,7 @@ std::cout << p;
 
 ## Compile-time errors
 
-A key feature of this library is that it is a compile-time error to make points or vectors from different spaces inteact with eachother. 
+A key feature of this library is that it is a compile-time error to make points or vectors from different spaces interact with eachother. 
 The library also has human-readable errors, so if you try and see if points from different spaces are equal, for example, you get the following error:
 
-    It is not valid to compare items from different spaces.
+It is not valid to compare items from different spaces.

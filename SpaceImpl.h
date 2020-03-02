@@ -1,6 +1,5 @@
 #pragma once
 
-
 namespace Space {
 
     template <typename T>
