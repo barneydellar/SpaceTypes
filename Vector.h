@@ -30,6 +30,8 @@ namespace Space {
         [[nodiscard]] constexpr double Y() const noexcept { return m_impl.Y(); }
         [[nodiscard]] constexpr double Z() const noexcept { return m_impl.Z(); }
 
+        [[nodiscard]]
+        constexpr double operator[] (const unsigned int i) const {
             if (i > 2) {
                 throw std::invalid_argument("Index is out of range");
             }
