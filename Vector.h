@@ -15,7 +15,7 @@ namespace Space {
         constexpr explicit Vector(const std::array<double, 3> value) noexcept : m_impl(value) {}
         constexpr explicit Vector(const double x, const double y, const double z) noexcept : m_impl(x, y, z) {}
         constexpr explicit Vector(const double x, const double y) noexcept : m_impl(x, y) {}
-        constexpr explicit Vector(const typename Space::NormalizedVector nv) noexcept : m_impl(nv.X(), nv.Y(), nv.Z()) {}
+        constexpr explicit Vector(const NormalizedVector<Space, Implementation> nv) noexcept : m_impl(nv.X(), nv.Y(), nv.Z()) {}
         constexpr Vector(const std::initializer_list<double> l) : m_impl(l) {}
 
         //------------------------------------------------------------------------------------
@@ -117,118 +117,118 @@ namespace Space {
         //-------------------------------------------------------------------------------------
 
         template <typename OtherSpace, typename TransformManager>
-        [[nodiscard]] constexpr typename OtherSpace::Vector ConvertTo(const TransformManager& transform_manager) const noexcept {
-            return OtherSpace::Vector(transform_manager.template Transform33<Space, OtherSpace>(m_impl));
+        [[nodiscard]] constexpr Vector<OtherSpace, Implementation> ConvertTo(const TransformManager& transform_manager) const noexcept {
+            return Vector<OtherSpace, Implementation>(transform_manager.template Transform33<Space, OtherSpace>(m_impl));
         }
 
         //------------------------------------------------------------------------------------
 
-        [[nodiscard]] constexpr typename Space::Vector operator*(const double& d) const noexcept {
-            return Space::Vector(m_impl.operator*(d));
+        [[nodiscard]] constexpr Vector<Space, Implementation> operator*(const double& d) const noexcept {
+            return Vector<Space, Implementation>(m_impl.operator*(d));
         }
-        constexpr typename Space::Vector& operator*=(const double& d) noexcept {
+        constexpr Vector<Space, Implementation>& operator*=(const double& d) noexcept {
             m_impl.operator*=(d);
             return *this;
         }
 
-        [[nodiscard]] constexpr typename Space::Vector operator*(const Vector<Space, Implementation>& rhs) const noexcept {
+        [[nodiscard]] constexpr Vector<Space, Implementation> operator*(const Vector<Space, Implementation>& rhs) const noexcept {
             return this->Cross(rhs);
         }
 
         template <typename OtherSpace>
-        constexpr typename Space::Vector operator*(const Vector<OtherSpace, Implementation>& rhs) const noexcept {
+        constexpr Vector<Space, Implementation> operator*(const Vector<OtherSpace, Implementation>& rhs) const noexcept {
             StaticAssert::invalid_vector_cross{};
         }
 
-        [[nodiscard]] constexpr typename Space::Vector operator*(const NormalizedVector<Space, Implementation>& rhs) const noexcept {
+        [[nodiscard]] constexpr typename Vector<Space, Implementation> operator*(const NormalizedVector<Space, Implementation>& rhs) const noexcept {
             return this->Cross(rhs);
         }
 
         template <typename OtherSpace>
-        constexpr typename Space::Vector operator*(const NormalizedVector<OtherSpace, Implementation>& rhs) const noexcept {
+        constexpr Vector<Space, Implementation> operator*(const NormalizedVector<OtherSpace, Implementation>& rhs) const noexcept {
             StaticAssert::invalid_vector_cross{};
         }
 
-        [[nodiscard]] constexpr typename Space::Vector Cross(const Vector<Space, Implementation>& other) const noexcept {
-            return Space::Vector(m_impl.Cross(static_cast<Implementation>(other)));
+        [[nodiscard]] constexpr Vector<Space, Implementation> Cross(const Vector<Space, Implementation>& other) const noexcept {
+            return Vector<Space, Implementation>(m_impl.Cross(static_cast<Implementation>(other)));
         }
 
         template <typename OtherSpace>
-        [[nodiscard]] constexpr typename Space::Vector Cross(const Vector<OtherSpace, Implementation>& other) const noexcept {
+        [[nodiscard]] constexpr Vector<Space, Implementation> Cross(const Vector<OtherSpace, Implementation>& other) const noexcept {
             StaticAssert::invalid_vector_cross{};
         }
 
-        [[nodiscard]] constexpr typename Space::Vector Cross(const NormalizedVector<Space, Implementation>& other) const noexcept {
-            return Space::Vector(m_impl.Cross(static_cast<Implementation>(other)));
+        [[nodiscard]] constexpr Vector<Space, Implementation> Cross(const NormalizedVector<Space, Implementation>& other) const noexcept {
+            return Vector<Space, Implementation>(m_impl.Cross(static_cast<Implementation>(other)));
         }
 
         template <typename OtherSpace>
-        constexpr typename Space::Vector Cross(const NormalizedVector<OtherSpace, Implementation>& other) const noexcept {
+        constexpr Vector<Space, Implementation> Cross(const NormalizedVector<OtherSpace, Implementation>& other) const noexcept {
             StaticAssert::invalid_vector_cross{};
         }
 
-        constexpr typename Space::Vector operator*=(const Vector<Space, Implementation>& other) noexcept {
+        constexpr Vector<Space, Implementation> operator*=(const Vector<Space, Implementation>& other) noexcept {
             return *this = this->Cross(other);
         }
 
         template <typename OtherSpace>
-        constexpr typename Space::Vector operator*=(const Vector<OtherSpace, Implementation>& other) noexcept {
+        constexpr Vector<Space, Implementation> operator*=(const Vector<OtherSpace, Implementation>& other) noexcept {
             StaticAssert::invalid_vector_cross{};
         }
 
-        constexpr typename Space::Vector operator*=(const NormalizedVector<Space, Implementation>& other) noexcept {
+        constexpr Vector<Space, Implementation> operator*=(const NormalizedVector<Space, Implementation>& other) noexcept {
             return *this = this->Cross(other);
         }
 
         template <typename OtherSpace>
-        constexpr typename Space::Vector operator*=(const NormalizedVector<OtherSpace, Implementation>& other) noexcept {
+        constexpr Vector<Space, Implementation> operator*=(const NormalizedVector<OtherSpace, Implementation>& other) noexcept {
             StaticAssert::invalid_vector_cross{};
         }
 
         //-------------------------------------------------------------------------------------
 
-        [[nodiscard]] constexpr typename Space::Vector operator+(const Vector<Space, Implementation>& other) const noexcept {
-            return Space::Vector(m_impl.operator+(static_cast<Implementation>(other)));
+        [[nodiscard]] constexpr Vector<Space, Implementation> operator+(const Vector<Space, Implementation>& other) const noexcept {
+            return Vector<Space, Implementation>(m_impl.operator+(static_cast<Implementation>(other)));
         }
 
         template <typename OtherSpace>
-        constexpr typename Space::Vector operator+(const Vector<OtherSpace, Implementation>& other) const noexcept {
+        constexpr Vector<Space, Implementation> operator+(const Vector<OtherSpace, Implementation>& other) const noexcept {
             StaticAssert::invalid_vector_to_vector_addition{};
         }
 
-        [[nodiscard]] constexpr typename Space::Vector operator+(const NormalizedVector<Space, Implementation>& other) const noexcept {
-            return Space::Vector(m_impl.operator+(static_cast<Implementation>(other)));
+        [[nodiscard]] constexpr Vector<Space, Implementation> operator+(const NormalizedVector<Space, Implementation>& other) const noexcept {
+            return Vector<Space, Implementation>(m_impl.operator+(static_cast<Implementation>(other)));
         }
 
         template <typename OtherSpace>
-        constexpr typename Space::Vector operator+(const NormalizedVector<OtherSpace, Implementation>& other) const noexcept {
+        constexpr Vector<Space, Implementation> operator+(const NormalizedVector<OtherSpace, Implementation>& other) const noexcept {
             StaticAssert::invalid_vector_to_vector_addition{};
         }
 
         template <typename AnySpace>
-        constexpr typename AnySpace::Vector operator+(const Point<AnySpace, Implementation>&) const noexcept {
+        constexpr Vector<AnySpace, Implementation> operator+(const Point<AnySpace, Implementation>&) const noexcept {
             StaticAssert::invalid_point_to_vector_addition{};
         }
 
         //-------------------------------------------------------------------------------------
 
-        constexpr typename Space::Vector operator+=(const Vector<Space, Implementation>& other) noexcept {
+        constexpr Vector<Space, Implementation> operator+=(const Vector<Space, Implementation>& other) noexcept {
             m_impl.operator+=(static_cast<Implementation>(other));
             return *this;
         }
 
         template <typename OtherSpace>
-        constexpr typename Space::Vector operator+=(const Vector<OtherSpace, Implementation>& other) noexcept {
+        constexpr Vector<Space, Implementation> operator+=(const Vector<OtherSpace, Implementation>& other) noexcept {
             StaticAssert::invalid_vector_to_vector_addition{};
         }
 
-        constexpr typename Space::Vector operator+=(const NormalizedVector<Space, Implementation>& other) noexcept {
+        constexpr Vector<Space, Implementation> operator+=(const NormalizedVector<Space, Implementation>& other) noexcept {
             m_impl.operator+=(static_cast<Implementation>(other));
             return *this;
         }
 
         template <typename OtherSpace>
-        constexpr typename Space::Vector operator+=(const NormalizedVector<OtherSpace, Implementation>& other) noexcept {
+        constexpr Vector<Space, Implementation> operator+=(const NormalizedVector<OtherSpace, Implementation>& other) noexcept {
             StaticAssert::invalid_vector_to_vector_addition{};
         }
 
@@ -242,8 +242,8 @@ namespace Space {
             return m_impl.Mag();
         }
 
-        [[nodiscard]] constexpr typename Space::NormalizedVector Norm() const {
-            return Space::NormalizedVector(m_impl);
+        [[nodiscard]] constexpr NormalizedVector<Space, Implementation> Norm() const {
+            return NormalizedVector<Space, Implementation>(m_impl);
         }
 
         [[nodiscard]] constexpr double Dot(const Vector<Space, Implementation>& other) const noexcept {

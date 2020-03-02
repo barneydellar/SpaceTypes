@@ -105,38 +105,38 @@ namespace Space {
         //------------------------------------------------------------------------------------
 
         template <typename OtherSpace, typename TransformManager>
-        [[nodiscard]] constexpr typename OtherSpace::Point ConvertTo(const TransformManager& transform_manager) const {
-            return OtherSpace::Point(transform_manager.template Transform<Space, OtherSpace>(m_impl));
+        [[nodiscard]] constexpr Point<OtherSpace, Implementation> ConvertTo(const TransformManager& transform_manager) const {
+            return Point<OtherSpace, Implementation>(transform_manager.template Transform<Space, OtherSpace>(m_impl));
         }
 
         //------------------------------------------------------------------------------------
 
-        [[nodiscard]] constexpr typename Space::Vector operator-(const Point<Space, Implementation>& other) const noexcept {
-            return Space::Vector(m_impl.operator-(other.m_impl));
+        [[nodiscard]] constexpr Vector<Space, Implementation> operator-(const Point<Space, Implementation>& other) const noexcept {
+            return Vector<Space, Implementation>(m_impl.operator-(other.m_impl));
         }
 
         template <typename OtherSpace>
-        constexpr typename Space::Vector operator-(const Point<OtherSpace, Implementation>& other) const noexcept {
+        constexpr Vector<Space, Implementation> operator-(const Point<OtherSpace, Implementation>& other) const noexcept {
             StaticAssert::invalid_subtraction{};
         }
 
         //------------------------------------------------------------------------------------
 
-        [[nodiscard]] constexpr typename Space::Point operator+(const Vector<Space, Implementation>& other) const noexcept {
-            return Space::Point(m_impl.operator+(static_cast<Implementation>(other)));
+        [[nodiscard]] constexpr Point<Space, Implementation> operator+(const Vector<Space, Implementation>& other) const noexcept {
+            return Point<Space, Implementation>(m_impl.operator+(static_cast<Implementation>(other)));
         }
 
         template <typename OtherSpace>
-        constexpr typename Space::Point operator+(const Vector<OtherSpace, Implementation>& other) const noexcept {
+        constexpr Point<Space, Implementation> operator+(const Vector<OtherSpace, Implementation>& other) const noexcept {
             StaticAssert::invalid_vector_to_point_addition{};
         }
 
-        constexpr typename Space::Point operator+=(const Vector<Space, Implementation>& other) noexcept {
+        constexpr Point<Space, Implementation> operator+=(const Vector<Space, Implementation>& other) noexcept {
             m_impl.operator+=(static_cast<Implementation>(other));
             return *this;
         }
         template <typename OtherSpace>
-        constexpr typename Space::Point operator+=(const Vector<OtherSpace, Implementation>& other) noexcept {
+        constexpr Point<Space, Implementation> operator+=(const Vector<OtherSpace, Implementation>& other) noexcept {
             StaticAssert::invalid_vector_to_point_addition{};
         }
 
