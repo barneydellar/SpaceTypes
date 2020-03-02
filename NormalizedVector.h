@@ -10,6 +10,10 @@ namespace Space {
     {
         void Normalize() noexcept(false)
         {
+            const auto mag = m_impl.Mag();
+            if (mag == 0) {
+                throw std::invalid_argument("Zero-sized normal vectors are not allowed");
+            }
             m_impl.Normalize();
         }
 
