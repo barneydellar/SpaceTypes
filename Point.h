@@ -112,12 +112,11 @@ namespace Space {
         //------------------------------------------------------------------------------------
 
         template <typename AnySpace>
-        [[nodiscard]] constexpr typename Space::Vector operator-(
-            const Point<AnySpace, Implementation>& other
-        ) const noexcept {
+        [[nodiscard]] constexpr typename Space::Vector operator-(const Point<AnySpace, Implementation>& other) const noexcept {
             if constexpr (!std::is_same_v<AnySpace, Space>) {
                 StaticAssert::invalid_subtraction{};
-            } else {
+            }
+            else {
                 return Space::Vector(m_impl.operator-(other.m_impl));
             }
         }

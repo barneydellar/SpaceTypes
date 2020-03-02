@@ -26,8 +26,7 @@ namespace Space {
         constexpr ExampleImpl() = default;
     public:
 
-        void Normalize() noexcept(false)
-        {
+        void Normalize() noexcept(false) {
             const auto mag = Mag();
             if (mag == 0) {
                 throw std::invalid_argument("Zero-sized normal vectors are not allowed");
@@ -98,9 +97,7 @@ namespace Space {
             m_values = operator*(d);
         }
 
-        [[nodiscard]] std::array<double, 3> operator-(
-            const ExampleImpl& rhs
-        ) const noexcept {
+        [[nodiscard]] std::array<double, 3> operator-(const ExampleImpl& rhs) const noexcept {
             std::array<double, 3> result{};
             std::transform(
                 m_values.cbegin(),
@@ -112,9 +109,7 @@ namespace Space {
             return result;
         }
 
-        [[nodiscard]] std::array<double, 3> operator+(
-            const ExampleImpl& rhs
-        ) const noexcept {
+        [[nodiscard]] std::array<double, 3> operator+(const ExampleImpl& rhs) const noexcept {
             std::array<double, 3> result{};
             std::transform(
                 m_values.cbegin(),
@@ -126,9 +121,7 @@ namespace Space {
             return result;
         }
 
-        void operator+=(
-            const ExampleImpl& rhs
-        ) noexcept {
+        void operator+=(const ExampleImpl& rhs) noexcept {
             std::transform(
                 m_values.cbegin(),
                 m_values.cend(),
