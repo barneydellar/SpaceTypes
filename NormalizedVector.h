@@ -145,7 +145,7 @@ namespace Space {
         //-------------------------------------------------------------------------------------
 
         [[nodiscard]] constexpr Vector<Space, Implementation> operator*(const double& d) const noexcept {
-            return Vector<Space, Implementation>(m_impl.operator*(d));
+            return Vector<Space, Implementation>(m_impl * d);
         }
 
         //-------------------------------------------------------------------------------------

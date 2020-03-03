@@ -125,11 +125,13 @@ namespace Space {
 
         //------------------------------------------------------------------------------------
 
-        [[nodiscard]] constexpr Vector<Space, Implementation> operator*(const double& d) const noexcept {
-            return Vector<Space, Implementation>(m_impl.operator*(d));
+        [[nodiscard]] friend Vector<Space, Implementation> operator*(Vector<Space, Implementation> lhs, const double& d) noexcept {
+            lhs *= d;
+            return lhs;
         }
+
         constexpr Vector<Space, Implementation>& operator*=(const double& d) noexcept {
-            m_impl.operator*=(d);
+            m_impl = m_impl * d;
             return *this;
         }
 
