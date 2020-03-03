@@ -32,7 +32,7 @@ namespace Space {
 
         friend ExampleImpl operator*(ExampleImpl lhs, const double& d) noexcept;
 
-        [[nodiscard]] ExampleImpl operator-(const ExampleImpl& rhs) const noexcept;
+        friend ExampleImpl operator-(ExampleImpl lhs, const ExampleImpl& rhs) noexcept;
 
         friend ExampleImpl operator+(ExampleImpl lhs, const ExampleImpl& rhs) noexcept;
 
@@ -75,19 +75,6 @@ namespace Space {
         );
     }
 
-    inline ExampleImpl ExampleImpl::operator-(const ExampleImpl& rhs) const noexcept
-    {
-        std::array<double, 3> result{};
-        std::transform(
-            m_values.cbegin(),
-            m_values.cend(),
-            rhs.m_values.cbegin(),
-            result.begin(),
-            std::minus<>()
-        );
-        return ExampleImpl{ result };
-    }
-
     inline ExampleImpl operator*(ExampleImpl lhs, const double& d) noexcept
     {
         std::transform(
@@ -107,6 +94,18 @@ namespace Space {
             rhs.m_values.cbegin(),
             lhs.m_values.begin(),
             std::plus<>()
+        );
+        return lhs;
+    }
+
+    inline ExampleImpl operator-(ExampleImpl lhs, const ExampleImpl& rhs) noexcept
+    {
+        std::transform(
+            lhs.m_values.cbegin(),
+            lhs.m_values.cend(),
+            rhs.m_values.cbegin(),
+            lhs.m_values.begin(),
+            std::minus<>()
         );
         return lhs;
     }

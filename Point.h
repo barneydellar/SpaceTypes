@@ -111,7 +111,7 @@ namespace Space {
         //------------------------------------------------------------------------------------
 
         [[nodiscard]] constexpr Vector<Space, Implementation> operator-(const Point<Space, Implementation>& other) const noexcept {
-            return Vector<Space, Implementation>(m_impl.operator-(other.m_impl));
+            return Vector<Space, Implementation>(m_impl - other.m_impl);
         }
 
         template <typename OtherSpace>
