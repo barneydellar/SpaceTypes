@@ -17,7 +17,6 @@ namespace Space {
     {
     public:
         constexpr explicit Point(const Implementation v) noexcept : m_impl(v) {}
-        constexpr explicit Point(const std::array<double, 3> value) noexcept : m_impl(value) {}
         constexpr explicit Point(const double x, const double y, const double z) noexcept : m_impl(x, y, z) {}
         constexpr explicit Point(const double x, const double y) noexcept : m_impl(x, y) {}
         constexpr Point(const std::initializer_list<double> l) : m_impl(l) {}
@@ -123,7 +122,7 @@ namespace Space {
         //------------------------------------------------------------------------------------
 
         [[nodiscard]] constexpr Point<Space, Implementation> operator+(const Vector<Space, Implementation>& other) const noexcept {
-            return Point<Space, Implementation>(m_impl.operator+(static_cast<Implementation>(other)));
+            return Point<Space, Implementation>(m_impl.operator+(other.m_impl));
         }
 
         template <typename OtherSpace>
@@ -132,7 +131,7 @@ namespace Space {
         }
 
         constexpr Point<Space, Implementation> operator+=(const Vector<Space, Implementation>& other) noexcept {
-            m_impl.operator+=(static_cast<Implementation>(other));
+            m_impl.operator+=(other.m_impl);
             return *this;
         }
         template <typename OtherSpace>

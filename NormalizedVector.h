@@ -8,21 +8,13 @@ namespace Space {
     template <typename Space, typename Implementation>
     class NormalizedVector final
     {
-        void Normalize() noexcept(false)
-        {
-            const auto mag = m_impl.Mag();
-            if (mag == 0) {
-                throw std::invalid_argument("Zero-sized normal vectors are not allowed");
-            }
-            m_impl.Normalize();
-        }
-
     public:
+
+        friend class Vector< Space, Implementation>;
 
         //-------------------------------------------------------------------------------------
 
         constexpr explicit NormalizedVector(const Implementation v) noexcept(false) : m_impl(v) { Normalize(); }
-        constexpr explicit NormalizedVector(const std::array<double, 3> value) noexcept(false) : m_impl(value) { Normalize();}
         constexpr explicit NormalizedVector(const double x, const double y, const double z) noexcept(false) : m_impl(x, y, z) {Normalize();}
         constexpr explicit NormalizedVector(const double x, const double y) noexcept(false) : m_impl(x, y, 0) {Normalize();}
         constexpr NormalizedVector(const std::initializer_list<double> l) : m_impl(l) { Normalize(); }
@@ -65,7 +57,7 @@ namespace Space {
         //-------------------------------------------------------------------------------------
 
         [[nodiscard]] constexpr bool operator == (const NormalizedVector<Space, Implementation>& other) const noexcept {
-            return m_impl.operator==(static_cast<Implementation>(other));
+            return m_impl.operator==(other.m_impl);
         }
 
         template <typename OtherSpace>
@@ -74,7 +66,7 @@ namespace Space {
         }
 
         [[nodiscard]] constexpr bool operator == (const Vector<Space, Implementation>& other) const noexcept {
-            return m_impl.operator==(static_cast<Implementation>(other));
+            return m_impl.operator==(other.m_impl);
         }
         template <typename OtherSpace>
         constexpr bool operator == (const Vector<OtherSpace, Implementation>& other) const noexcept {
@@ -113,7 +105,7 @@ namespace Space {
         //-------------------------------------------------------------------------------------
 
         [[nodiscard]] constexpr Vector<Space, Implementation> operator+(const NormalizedVector<Space, Implementation>& other) const noexcept {
-            return Vector<Space, Implementation>(m_impl.operator+(static_cast<Implementation>(other)));
+            return Vector<Space, Implementation>(m_impl.operator+(other.m_impl));
         }
 
         template <typename OtherSpace>
@@ -122,7 +114,7 @@ namespace Space {
         }
 
         [[nodiscard]] constexpr Vector<Space, Implementation> operator+(const Vector<Space, Implementation>& other) const noexcept {
-            return Vector<Space, Implementation>(m_impl.operator+(static_cast<Implementation>(other)));
+            return Vector<Space, Implementation>(m_impl.operator+(other.m_impl));
         }
 
         template <typename OtherSpace>
@@ -159,7 +151,7 @@ namespace Space {
         //-------------------------------------------------------------------------------------
 
         [[nodiscard]] constexpr double Dot(const NormalizedVector<Space, Implementation>& other) const noexcept {
-            return m_impl.Dot(static_cast<Implementation>(other));
+            return m_impl.Dot(other.m_impl);
         }
 
         template <typename OtherSpace>
@@ -168,7 +160,7 @@ namespace Space {
         }
 
         [[nodiscard]] constexpr double Dot(const Vector<Space, Implementation>& other) const noexcept {
-            return m_impl.Dot(static_cast<Implementation>(other));
+            return m_impl.Dot(other.m_impl);
         }
 
         template <typename OtherSpace>
@@ -186,10 +178,10 @@ namespace Space {
             return this->Cross(rhs);
         }
         [[nodiscard]] constexpr NormalizedVector<Space, Implementation> Cross(const NormalizedVector<Space, Implementation>& other) const noexcept {
-            return NormalizedVector<Space, Implementation>(m_impl.Cross(static_cast<Implementation>(other)));
+            return NormalizedVector<Space, Implementation>(m_impl.Cross(other.m_impl));
         }
         [[nodiscard]] constexpr Vector<Space, Implementation> Cross(const Vector<Space, Implementation>& other) const noexcept {
-            return Vector<Space, Implementation>(m_impl.Cross(static_cast<Implementation>(other)));
+            return Vector<Space, Implementation>(m_impl.Cross(other.m_impl));
         }
 
         //-------------------------------------------------------------------------------------
@@ -210,6 +202,17 @@ namespace Space {
         }
 
     private:
+
+        void Normalize() noexcept(false)
+        {
+            const auto mag = m_impl.Mag();
+            if (mag == 0) {
+                throw std::invalid_argument("Zero-sized normal vectors are not allowed");
+            }
+            m_impl.Normalize();
+        }
+
+
         Implementation m_impl;
     };
 

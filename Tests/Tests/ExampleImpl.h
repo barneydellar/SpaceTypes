@@ -30,16 +30,16 @@ namespace Space {
         [[nodiscard]] constexpr double Y() const noexcept;
         [[nodiscard]] constexpr double Z() const noexcept;
 
-        [[nodiscard]] std::array<double, 3> operator*(const double& d) const noexcept;
+        [[nodiscard]] ExampleImpl operator*(const double& d) const noexcept;
         void operator*=(const double& d) noexcept;
 
-        [[nodiscard]] std::array<double, 3> operator-(const ExampleImpl& rhs) const noexcept;
-        [[nodiscard]] std::array<double, 3> operator+(const ExampleImpl& rhs) const noexcept;
+        [[nodiscard]] ExampleImpl operator-(const ExampleImpl& rhs) const noexcept;
+        [[nodiscard]] ExampleImpl operator+(const ExampleImpl& rhs) const noexcept;
         void operator+=(const ExampleImpl& rhs) noexcept;
 
         [[nodiscard]] double Dot(const ExampleImpl& other) const noexcept;
 
-        [[nodiscard]] std::array<double, 3> Cross(const ExampleImpl& other) const noexcept;
+        [[nodiscard]] ExampleImpl Cross(const ExampleImpl& other) const noexcept;
 
         [[nodiscard]] bool operator ==(const ExampleImpl& other) const noexcept;
 
@@ -76,7 +76,7 @@ namespace Space {
         );
     }
 
-    inline std::array<double, 3> ExampleImpl::operator*(const double& d) const noexcept
+    inline ExampleImpl ExampleImpl::operator*(const double& d) const noexcept
     {
         std::array<double, 3> result{};
         std::transform(
@@ -85,15 +85,15 @@ namespace Space {
             result.begin(),
             [d](auto v) { return v * d; }
         );
-        return result;
+        return ExampleImpl{ result };
     }
 
     inline void ExampleImpl::operator*=(const double& d) noexcept
     {
-        m_values = operator*(d);
+        *this = operator*(d);
     }
 
-    inline std::array<double, 3> ExampleImpl::operator-(const ExampleImpl& rhs) const noexcept
+    inline ExampleImpl ExampleImpl::operator-(const ExampleImpl& rhs) const noexcept
     {
         std::array<double, 3> result{};
         std::transform(
@@ -103,10 +103,10 @@ namespace Space {
             result.begin(),
             std::minus<>()
         );
-        return result;
+        return ExampleImpl{ result };
     }
 
-    inline std::array<double, 3> ExampleImpl::operator+(const ExampleImpl& rhs) const noexcept
+    inline ExampleImpl ExampleImpl::operator+(const ExampleImpl& rhs) const noexcept
     {
         std::array<double, 3> result{};
         std::transform(
@@ -116,7 +116,7 @@ namespace Space {
             result.begin(),
             std::plus<>()
         );
-        return result;
+        return ExampleImpl{ result };
     }
 
     inline void ExampleImpl::operator+=(const ExampleImpl& rhs) noexcept
@@ -142,9 +142,9 @@ namespace Space {
         );
     }
 
-    inline std::array<double, 3> ExampleImpl::Cross(const ExampleImpl& other) const noexcept
+    inline ExampleImpl ExampleImpl::Cross(const ExampleImpl& other) const noexcept
     {
-        return {
+        return ExampleImpl{
             m_values[1] * other.m_values[2] - m_values[2] * other.m_values[1],
             m_values[2] * other.m_values[0] - m_values[0] * other.m_values[2],
             m_values[0] * other.m_values[1] - m_values[1] * other.m_values[0]
@@ -183,7 +183,7 @@ namespace Space {
         }
     }
 
-    constexpr double ExampleImpl::operator[](const unsigned i) const
+    inline constexpr double ExampleImpl::operator[](const unsigned int i) const
     {
         if (i > 2)
         {

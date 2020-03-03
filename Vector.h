@@ -9,10 +9,12 @@ namespace Space {
     template <typename Space, typename Implementation>
     class Vector final
     {
+        friend class NormalizedVector<Space, Implementation>;
+        friend class Point<Space, Implementation>;
+
     public:
 
         constexpr explicit Vector(const Implementation v) noexcept : m_impl(v) {}
-        constexpr explicit Vector(const std::array<double, 3> value) noexcept : m_impl(value) {}
         constexpr explicit Vector(const double x, const double y, const double z) noexcept : m_impl(x, y, z) {}
         constexpr explicit Vector(const double x, const double y) noexcept : m_impl(x, y) {}
         constexpr explicit Vector(const NormalizedVector<Space, Implementation> nv) noexcept : m_impl(nv.X(), nv.Y(), nv.Z()) {}
@@ -67,7 +69,7 @@ namespace Space {
         //------------------------------------------------------------------------------------
 
         [[nodiscard]] constexpr bool operator == (const Vector<Space, Implementation>& other) const noexcept {
-            return m_impl.operator==(static_cast<Implementation>(other));
+            return m_impl.operator==(other.m_impl);
         }
 
         template <typename OtherSpace>
@@ -76,7 +78,7 @@ namespace Space {
         }
 
         [[nodiscard]] constexpr bool operator == (const NormalizedVector<Space, Implementation>& other) const noexcept {
-            return m_impl.operator==(static_cast<Implementation>(other));
+            return m_impl.operator==(other.m_impl);
         }
 
         template <typename OtherSpace>
@@ -150,7 +152,7 @@ namespace Space {
         }
 
         [[nodiscard]] constexpr Vector<Space, Implementation> Cross(const Vector<Space, Implementation>& other) const noexcept {
-            return Vector<Space, Implementation>(m_impl.Cross(static_cast<Implementation>(other)));
+            return Vector<Space, Implementation>(m_impl.Cross(other.m_impl));
         }
 
         template <typename OtherSpace>
@@ -159,7 +161,7 @@ namespace Space {
         }
 
         [[nodiscard]] constexpr Vector<Space, Implementation> Cross(const NormalizedVector<Space, Implementation>& other) const noexcept {
-            return Vector<Space, Implementation>(m_impl.Cross(static_cast<Implementation>(other)));
+            return Vector<Space, Implementation>(m_impl.Cross(other.m_impl));
         }
 
         template <typename OtherSpace>
@@ -188,7 +190,7 @@ namespace Space {
         //-------------------------------------------------------------------------------------
 
         [[nodiscard]] constexpr Vector<Space, Implementation> operator+(const Vector<Space, Implementation>& other) const noexcept {
-            return Vector<Space, Implementation>(m_impl.operator+(static_cast<Implementation>(other)));
+            return Vector<Space, Implementation>(m_impl.operator+(other.m_impl));
         }
 
         template <typename OtherSpace>
@@ -197,7 +199,7 @@ namespace Space {
         }
 
         [[nodiscard]] constexpr Vector<Space, Implementation> operator+(const NormalizedVector<Space, Implementation>& other) const noexcept {
-            return Vector<Space, Implementation>(m_impl.operator+(static_cast<Implementation>(other)));
+            return Vector<Space, Implementation>(m_impl.operator+(other.m_impl));
         }
 
         template <typename OtherSpace>
@@ -213,7 +215,7 @@ namespace Space {
         //-------------------------------------------------------------------------------------
 
         constexpr Vector<Space, Implementation> operator+=(const Vector<Space, Implementation>& other) noexcept {
-            m_impl.operator+=(static_cast<Implementation>(other));
+            m_impl.operator+=(other.m_impl);
             return *this;
         }
 
@@ -223,7 +225,7 @@ namespace Space {
         }
 
         constexpr Vector<Space, Implementation> operator+=(const NormalizedVector<Space, Implementation>& other) noexcept {
-            m_impl.operator+=(static_cast<Implementation>(other));
+            m_impl.operator+=(other.m_impl);
             return *this;
         }
 
@@ -247,7 +249,7 @@ namespace Space {
         }
 
         [[nodiscard]] constexpr double Dot(const Vector<Space, Implementation>& other) const noexcept {
-            return m_impl.Dot(static_cast<Implementation>(other));
+            return m_impl.Dot(other.m_impl);
         }
 
         template <typename OtherSpace>
@@ -256,7 +258,7 @@ namespace Space {
         }
 
         [[nodiscard]] constexpr double Dot(const NormalizedVector<Space, Implementation>& other) const noexcept {
-            return m_impl.Dot(static_cast<Implementation>(other));
+            return m_impl.Dot(other.m_impl);
         }
 
         template <typename OtherSpace>
