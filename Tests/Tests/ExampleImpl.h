@@ -34,8 +34,8 @@ namespace Space {
         void operator*=(const double& d) noexcept;
 
         [[nodiscard]] ExampleImpl operator-(const ExampleImpl& rhs) const noexcept;
-        [[nodiscard]] ExampleImpl operator+(const ExampleImpl& rhs) const noexcept;
-        void operator+=(const ExampleImpl& rhs) noexcept;
+
+        friend ExampleImpl operator+(ExampleImpl lhs, const ExampleImpl& rhs) noexcept;
 
         [[nodiscard]] double Dot(const ExampleImpl& other) const noexcept;
 
@@ -106,28 +106,16 @@ namespace Space {
         return ExampleImpl{ result };
     }
 
-    inline ExampleImpl ExampleImpl::operator+(const ExampleImpl& rhs) const noexcept
-    {
-        std::array<double, 3> result{};
-        std::transform(
-            m_values.cbegin(),
-            m_values.cend(),
-            rhs.m_values.cbegin(),
-            result.begin(),
-            std::plus<>()
-        );
-        return ExampleImpl{ result };
-    }
-
-    inline void ExampleImpl::operator+=(const ExampleImpl& rhs) noexcept
+    inline ExampleImpl operator+(ExampleImpl lhs, const ExampleImpl& rhs) noexcept
     {
         std::transform(
-            m_values.cbegin(),
-            m_values.cend(),
+            lhs.m_values.cbegin(),
+            lhs.m_values.cend(),
             rhs.m_values.cbegin(),
-            m_values.begin(),
+            lhs.m_values.begin(),
             std::plus<>()
         );
+        return lhs;
     }
 
     inline double ExampleImpl::Dot(const ExampleImpl& other) const noexcept

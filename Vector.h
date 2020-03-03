@@ -189,17 +189,29 @@ namespace Space {
 
         //-------------------------------------------------------------------------------------
 
-        [[nodiscard]] constexpr Vector<Space, Implementation> operator+(const Vector<Space, Implementation>& other) const noexcept {
-            return Vector<Space, Implementation>(m_impl.operator+(other.m_impl));
+        friend Vector<Space, Implementation> operator+(Vector<Space, Implementation> lhs, const Vector<Space, Implementation>& rhs) noexcept {
+            lhs += rhs;
+            return lhs;
+        }
+
+        Vector<Space, Implementation>& operator+=(const Vector<Space, Implementation>& rhs) noexcept {
+            m_impl = m_impl + rhs.m_impl;
+            return *this;
+        }
+
+        friend Vector<Space, Implementation> operator+(Vector<Space, Implementation> lhs, const NormalizedVector<Space, Implementation>& rhs) noexcept {
+            lhs += rhs;
+            return lhs;
+        }
+
+        Vector<Space, Implementation>& operator+=(const NormalizedVector<Space, Implementation>& rhs) noexcept {
+            m_impl = m_impl + rhs.m_impl;
+            return *this;
         }
 
         template <typename OtherSpace>
         constexpr Vector<Space, Implementation> operator+(const Vector<OtherSpace, Implementation>& other) const noexcept {
             StaticAssert::invalid_vector_to_vector_addition{};
-        }
-
-        [[nodiscard]] constexpr Vector<Space, Implementation> operator+(const NormalizedVector<Space, Implementation>& other) const noexcept {
-            return Vector<Space, Implementation>(m_impl.operator+(other.m_impl));
         }
 
         template <typename OtherSpace>
@@ -212,21 +224,9 @@ namespace Space {
             StaticAssert::invalid_point_to_vector_addition{};
         }
 
-        //-------------------------------------------------------------------------------------
-
-        constexpr Vector<Space, Implementation> operator+=(const Vector<Space, Implementation>& other) noexcept {
-            m_impl.operator+=(other.m_impl);
-            return *this;
-        }
-
         template <typename OtherSpace>
         constexpr Vector<Space, Implementation> operator+=(const Vector<OtherSpace, Implementation>& other) noexcept {
             StaticAssert::invalid_vector_to_vector_addition{};
-        }
-
-        constexpr Vector<Space, Implementation> operator+=(const NormalizedVector<Space, Implementation>& other) noexcept {
-            m_impl.operator+=(other.m_impl);
-            return *this;
         }
 
         template <typename OtherSpace>
