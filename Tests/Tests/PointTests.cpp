@@ -90,7 +90,7 @@ TEST_CASE("PointsFromTheSameSpaceCanBeComparedUsingEqual_different") {
     const Patient::Point p2(2, 0, 0);
     CHECK(!(p1 == p2));
 }
-
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("PointsFromDiffefentSpacesCannotBeComparedUsingEqual") {
     const View::Point p1(1, 0, 0);
     const Patient::Point p2(1, 0, 0);
@@ -105,6 +105,7 @@ TEST_CASE("PointsFromDiffefentSpacesCannotBeComparedUsingEqual") {
         static_cast<bool>(std::is_same<converted_type, required_type>::value)
     );
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -121,7 +122,7 @@ TEST_CASE("PointsFromTheSameSpaceCanBeComparedUsingInequality_different") {
     const Patient::Point p2(2, 0, 0);
     CHECK(p1 != p2);
 }
-
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("PointsFromDiffefentSpacesCannotBeComparedUsingInequality") {
     const View::Point p1(1, 0, 0);
     const Patient::Point p2(1, 0, 0);
@@ -134,6 +135,7 @@ TEST_CASE("PointsFromDiffefentSpacesCannotBeComparedUsingInequality") {
     using required_type = StaticAssert::invalid_equality;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -143,7 +145,7 @@ TEST_CASE("PointsFromTheSameSpaceCanBeSubtractedToGiveAVector") {
     const auto v = p1 - p2;
     CHECK(v == View::Vector(1, 2, 3));
 }
-
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("PointsFromDifferfentSpacesCannotBeSubtracted") {
     const View::Point p1(2, 3, 4);
     const Patient::Point p2(1, 1, 1);
@@ -158,6 +160,7 @@ TEST_CASE("PointsFromDifferfentSpacesCannotBeSubtracted") {
         static_cast<bool>(std::is_same<converted_type, required_type>::value)
     );
 }
+#endif
 
 TEST_CASE("PointsCanBeCopied") {
     const View::Point p(2, 3, 4);
@@ -246,6 +249,7 @@ TEST_CASE("PointsSupportElementAccessByAt") {
     CHECK(p.at<1>() == 3);
     CHECK(p.at<2>() == 4);
 }
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("PointsSupportElementAccessByAtDoesNotCompileIfTooLow") {
     const View::Point p(2, 3, 4);
 
@@ -272,6 +276,7 @@ TEST_CASE("PointsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
         static_cast<bool>(std::is_same<converted_type, required_type>::value)
     );
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 

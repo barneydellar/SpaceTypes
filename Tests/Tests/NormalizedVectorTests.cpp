@@ -139,7 +139,7 @@ TEST_CASE("NormalizedVectorsFromTheSameSpaceCanBeComparedUsingEqual_different") 
     const Patient::NormalizedVector v2(0, 1, 0);
     CHECK(!(v1 == v2));
 }
-
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedVectorsFromDiffefentSpacesCannotBeComparedUsingEqual") {
     const View::NormalizedVector v1(1, 0, 0);
     const Patient::NormalizedVector v2(1, 0, 0);
@@ -152,7 +152,7 @@ TEST_CASE("NormalizedVectorsFromDiffefentSpacesCannotBeComparedUsingEqual") {
     using required_type = StaticAssert::invalid_equality;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
-
+#endif
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("NormalizedVectorsFromTheSameSpaceCanBeComparedUsingInequality_same") {
@@ -166,7 +166,7 @@ TEST_CASE("NormalizedVectorsFromTheSameSpaceCanBeComparedUsingInequality_differe
     const Patient::Vector v2(0, 1, 0);
     CHECK(v1 != v2);
 }
-
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedVectorsFromDiffefentSpacesCannotBeComparedUsingInequality") {
     const View::NormalizedVector v1(1, 0, 0);
     const Patient::NormalizedVector v2(1, 0, 0);
@@ -179,6 +179,7 @@ TEST_CASE("NormalizedVectorsFromDiffefentSpacesCannotBeComparedUsingInequality")
     using required_type = StaticAssert::invalid_equality;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -202,7 +203,7 @@ TEST_CASE("NormalizedVectorsCanBeScaledToProduceAVector") {
 }
 
 //-------------------------------------------------------------------------------------------------
-
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedVectorsCannotBeInlineScaled") {
     const Image::NormalizedVector v_norm(1, 0, 0);
 
@@ -214,6 +215,7 @@ TEST_CASE("NormalizedVectorsCannotBeInlineScaled") {
     using required_type = StaticAssert::invalid_normalized_vector_scale;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -240,7 +242,7 @@ TEST_CASE("NormalizedVectorsCanBeAddedToProduceAVector") {
 }
 
 //-------------------------------------------------------------------------------------------------
-
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeAdded") {
     const Image::NormalizedVector v_norm_1(1, 0, 0);
     const Patient::NormalizedVector v_norm_2(0, 1, 0);
@@ -253,6 +255,7 @@ TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeAdded") {
     using required_type = StaticAssert::invalid_vector_to_vector_addition;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -293,7 +296,7 @@ TEST_CASE("VectorsAndNormalizedVectorsCanBeAddedToProduceAVector") {
 }
 
 //-------------------------------------------------------------------------------------------------
-
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("VectorsAndNormalizedVectorsFromDifferentSpacesCannotBeAdded") {
     const Image::Vector v_norm_1(1, 0, 0);
     const Patient::NormalizedVector v_norm_2(0, 1, 0);
@@ -306,9 +309,10 @@ TEST_CASE("VectorsAndNormalizedVectorsFromDifferentSpacesCannotBeAdded") {
     using required_type = StaticAssert::invalid_vector_to_vector_addition;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
-
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedVectorsCannotBeInlineAdded") {
     const Image::NormalizedVector v_norm_1(1, 0, 0);
     const Image::NormalizedVector v_norm_2(0, 1, 0);
@@ -321,6 +325,7 @@ TEST_CASE("NormalizedVectorsCannotBeInlineAdded") {
     using required_type = StaticAssert::invalid_normalized_vector_addition;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -330,7 +335,7 @@ TEST_CASE("NormalizedVectorsFromTheSameSpaceCanBeDotted") {
     const auto dot = v1.Dot(v2);
     CHECK(dot == 1);
 }
-
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeDotted") {
     const View::NormalizedVector v1(1, 0, 0);
     const Image::NormalizedVector v2(1, 0, 0);
@@ -343,6 +348,7 @@ TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeDotted") {
     using required_type = StaticAssert::invalid_vector_dot;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -522,7 +528,7 @@ TEST_CASE("NormalizedVectorsSupportConstBeginAndEnd") {
 }
 
 //-------------------------------------------------------------------------------------------------
-
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedVectorsDoNotSupportNonConstBegin") {
     Image::NormalizedVector nv(2, 3, 4);
 
@@ -548,6 +554,7 @@ TEST_CASE("NormalizedVectorsDoNotSupportNonConstEnd") {
     using required_type = StaticAssert::normalized_vectors_do_not_support_non_const_iteration;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -576,6 +583,7 @@ TEST_CASE("NormalizedVectorsSupportElementAccessByAt") {
     CHECK(v.at<1>() == 0);
     CHECK(v.at<2>() == 0);
 }
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedVectorsSupportElementAccessByAtDoesNotCompileIfTooLow") {
     const Image::NormalizedVector v(1, 0, 0);
 
@@ -598,6 +606,7 @@ TEST_CASE("NormalizedVectorsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
     using required_type = StaticAssert::invalid_at_access;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 

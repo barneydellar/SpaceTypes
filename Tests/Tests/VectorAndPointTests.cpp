@@ -5,7 +5,7 @@
 using namespace Space;
 
 //-------------------------------------------------------------------------------------------------
-
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("PointsAndVectorsFromTheSameSpaceCannotBeComparedUsingEquality") {
     const View::Vector v(1, 0, 0);
     const View::Point p(1, 0, 0);
@@ -33,7 +33,6 @@ TEST_CASE("VectorsAndPointsFromTheSameSpaceCannotBeComparedUsingEquality") {
     using required_type = StaticAssert::invalid_point_vector_equality;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
-
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("PointsAndVectorsFromTheSameSpaceCannotBeComparedUsingInequality") {
@@ -48,7 +47,6 @@ TEST_CASE("PointsAndVectorsFromTheSameSpaceCannotBeComparedUsingInequality") {
     using required_type = StaticAssert::invalid_point_vector_equality;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
-
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("VectorsAndPointsFromTheSameSpaceCannotBeComparedUsingInequality") {
@@ -63,6 +61,7 @@ TEST_CASE("VectorsAndPointsFromTheSameSpaceCannotBeComparedUsingInequality") {
     using required_type = StaticAssert::invalid_point_vector_equality;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -72,7 +71,7 @@ TEST_CASE("VectorCanBeAddedToPointInTheSameSpace") {
     const auto p_new = p + v;
     CHECK(p_new == Volume::Point(1, 0, 1));
 }
-
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("PointCannotBeAddedToVectorInTheSameSpace") {
     const Volume::Vector v(1, 0, 0);
     const Volume::Point p(0, 0, 1);
@@ -99,13 +98,15 @@ TEST_CASE("VectorCannotBeAddedToPointInDifferentSpace") {
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 
+#endif
+
 TEST_CASE("VectorCanBeAddedToPointInTheSameSpaceInPlace") {
     Volume::Point p(0, 0, 1);
     const Volume::Vector v(1, 0, 0);
     p += v;
     CHECK(p == Volume::Point(1, 0, 1));
 }
-
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("VectorCannotBeAddedToPointInDifferentSpaceInPlace") {
     View::Point p(0, 0, 1);
     const Volume::Vector v(1, 0, 0);
@@ -118,5 +119,6 @@ TEST_CASE("VectorCannotBeAddedToPointInDifferentSpaceInPlace") {
     using required_type = StaticAssert::invalid_vector_to_point_addition;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------

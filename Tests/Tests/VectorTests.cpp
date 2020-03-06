@@ -98,6 +98,7 @@ TEST_CASE("VectorsFromTheSameSpaceCanBeComparedUsingEqual_different") {
     CHECK(!(v1 == v2));
 }
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("VectorsFromDiffefentSpacesCannotBeComparedUsingEqual") {
     const View::Vector v1(1, 0, 0);
     const Patient::Vector v2(1, 0, 0);
@@ -112,6 +113,7 @@ TEST_CASE("VectorsFromDiffefentSpacesCannotBeComparedUsingEqual") {
         static_cast<bool>(std::is_same<converted_type, required_type>::value)
     );
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -127,6 +129,7 @@ TEST_CASE("VectorsFromTheSameSpaceCanBeComparedUsingInequality_different") {
     CHECK(v1 != v2);
 }
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("VectorsFromDiffefentSpacesCannotBeComparedUsingInequality") {
     const View::Vector v1(1, 0, 0);
     const Patient::Vector v2(1, 0, 0);
@@ -139,6 +142,7 @@ TEST_CASE("VectorsFromDiffefentSpacesCannotBeComparedUsingInequality") {
     using required_type = StaticAssert::invalid_equality;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -149,6 +153,7 @@ TEST_CASE("VectorsInTheSameSpaceCanBeAddedTogether") {
     CHECK(v_new == Image::Vector(4, 4, 4));
 }
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("VectorsInDifferentSpacesCannotBeAddedTogether") {
     const View::Vector v1(1, 2, 3);
     const Image::Vector v2(3, 2, 1);
@@ -161,6 +166,7 @@ TEST_CASE("VectorsInDifferentSpacesCannotBeAddedTogether") {
     using required_type = StaticAssert::invalid_vector_to_vector_addition;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -171,6 +177,7 @@ TEST_CASE("VectorsAndNormalizedVectorsInTheSameSpaceCanBeAddedTogether") {
     CHECK(v_new == Image::Vector(2, 2, 3));
 }
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("VectorsAndNormalizedVectorsInDifferentSpacesCannotBeAddedTogether") {
     const View::Vector v1(1, 2, 3);
     const Image::NormalizedVector v2(1, 0, 0);
@@ -183,6 +190,7 @@ TEST_CASE("VectorsAndNormalizedVectorsInDifferentSpacesCannotBeAddedTogether") {
     using required_type = StaticAssert::invalid_vector_to_vector_addition;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -193,6 +201,7 @@ TEST_CASE("VectorsInTheSameSpaceCanBeAddedInPlace") {
     CHECK(v1 == Image::Vector(4, 4, 4));
 }
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("VectorsInDifferentSpacesCannotBeAddedInPlace") {
     View::Vector v1(1, 2, 3);
     const Image::Vector v2(3, 2, 1);
@@ -205,6 +214,7 @@ TEST_CASE("VectorsInDifferentSpacesCannotBeAddedInPlace") {
     using required_type = StaticAssert::invalid_vector_to_vector_addition;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -215,6 +225,7 @@ TEST_CASE("VectorsAndNormalizedVectorsInTheSameSpaceCanBeAddedInPlace") {
     CHECK(v1 == Image::Vector(2, 2, 3));
 }
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("VectorsAndNormalizedVectorsInDifferentSpacesCannotBeAddedInPlace") {
     View::Vector v1(1, 2, 3);
     const Image::NormalizedVector v2(1, 0, 0);
@@ -227,6 +238,7 @@ TEST_CASE("VectorsAndNormalizedVectorsInDifferentSpacesCannotBeAddedInPlace") {
     using required_type = StaticAssert::invalid_vector_to_vector_addition;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -326,6 +338,7 @@ TEST_CASE("VectorsFromTheSameSpaceCanBeDotted") {
     const auto dot = v1.Dot(v2);
     CHECK(dot == 1 * 1 + 2 * 2 + 3 * 3);
 }
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("VectorsFromDifferentSpacesCannotBeDotted") {
     const View::Vector v1(1, 2, 3);
     const Image::Vector v2(1, 2, 3);
@@ -338,6 +351,7 @@ TEST_CASE("VectorsFromDifferentSpacesCannotBeDotted") {
     using required_type = StaticAssert::invalid_vector_dot;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -349,6 +363,7 @@ TEST_CASE("VectorsFromTheSameSpaceCanBeCrossed") {
     CHECK(cross == View::Vector(0, 0, 1));
 }
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("VectorsFromDifferentSpacesCannotBeCrossed") {
     const View::Vector v1(1, 2, 3);
     const Image::Vector v2(1, 2, 3);
@@ -361,6 +376,7 @@ TEST_CASE("VectorsFromDifferentSpacesCannotBeCrossed") {
     using required_type = StaticAssert::invalid_vector_cross;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -371,6 +387,7 @@ TEST_CASE("VectorsFromTheSameSpaceCanBeCrossedUsingStarOperator") {
     CHECK(cross == View::Vector(0, 0, 1));
 }
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("VectorsFromDifferentSpacesCannotBeCrossedUsingStarOperator") {
     const View::Vector v1(1, 2, 3);
     const Image::Vector v2(1, 2, 3);
@@ -383,6 +400,7 @@ TEST_CASE("VectorsFromDifferentSpacesCannotBeCrossedUsingStarOperator") {
     using required_type = StaticAssert::invalid_vector_cross;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -393,6 +411,7 @@ TEST_CASE("VectorsFromTheSameSpaceCanBeCrossedUsingStarEqualOperator") {
     CHECK(v1 == View::Vector(0, 0, 1));
 }
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("VectorsFromDifferentSpacesCannotBeCrossedUsingStarEqualOperator") {
     View::Vector v1(1, 2, 3);
     const Image::Vector v2(1, 2, 3);
@@ -405,6 +424,7 @@ TEST_CASE("VectorsFromDifferentSpacesCannotBeCrossedUsingStarEqualOperator") {
     using required_type = StaticAssert::invalid_vector_cross;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -477,6 +497,7 @@ TEST_CASE("VectorsSupportElementAccessByAt") {
     CHECK(v.at<1>() == 3);
     CHECK(v.at<2>() == 4);
 }
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("VectorsSupportElementAccessByAtDoesNotCompileIfTooLow") {
     const Image::Vector v(2, 3, 4);
 
@@ -499,6 +520,7 @@ TEST_CASE("VectorsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
     using required_type = StaticAssert::invalid_at_access;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
