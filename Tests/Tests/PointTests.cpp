@@ -4,8 +4,6 @@
 
 using namespace Space;
 
-constexpr bool TEST_NON_COMPILATION{ false };
-
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("Points can be created using initalizer lists of two numbers") {
@@ -27,7 +25,7 @@ TEST_CASE("Points throw when using initalizer lists that are too large") {
     try
     {
         View::Point v{ 1, 2, 3, 4 };
-    } catch (std::invalid_argument)
+    } catch (std::invalid_argument&)
     {
         return;
     }
@@ -65,19 +63,18 @@ TEST_CASE("Points can be constructed and normalized from implementation") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Points cannot be implicitly cast to the implementation") {
+TEST_CASE("Pomts Can Be Cast To The Implementation") {
     const Patient::Point p(1, 0, 0);
-
-    if constexpr (TEST_NON_COMPILATION) {
-        //ExampleImpl impl = p;
-    }
+    auto impl = static_cast<ExampleImpl>(p);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Pomts Can Be Cast To The Implementation") {
+TEST_CASE("Points cannot be implicitly cast to the implementation") {
     const Patient::Point p(1, 0, 0);
-    auto impl = static_cast<ExampleImpl>(p);
+
+    // This does not compile:
+    // ExampleImpl impl = p;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -98,10 +95,15 @@ TEST_CASE("PointsFromDiffefentSpacesCannotBeComparedUsingEqual") {
     const View::Point p1(1, 0, 0);
     const Patient::Point p2(1, 0, 0);
 
-    // We should not be able to compile this.
-    if constexpr (TEST_NON_COMPILATION) {
-        auto dummy = p1 == p2;
-    }
+    // We should not be able to compile:
+    // auto dummy = p1 == p2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(p1 == p2);
+    using required_type = StaticAssert::invalid_equality;
+    CHECK(
+        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+    );
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -124,10 +126,13 @@ TEST_CASE("PointsFromDiffefentSpacesCannotBeComparedUsingInequality") {
     const View::Point p1(1, 0, 0);
     const Patient::Point p2(1, 0, 0);
 
-    // We should not be able to compile this.
-    if constexpr (TEST_NON_COMPILATION) {
-        auto dummy = p1 != p2;
-    }
+    // We should not be able to compile:
+    // auto dummy = p1 != p2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(p1 != p2);
+    using required_type = StaticAssert::invalid_equality;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -143,10 +148,15 @@ TEST_CASE("PointsFromDifferfentSpacesCannotBeSubtracted") {
     const View::Point p1(2, 3, 4);
     const Patient::Point p2(1, 1, 1);
 
-    // We should not be able to compile this.
-    if constexpr (TEST_NON_COMPILATION) {
-        auto dummy = p1 - p2;
-    }
+    // We should not be able to compile this:
+    // auto dummy = p1 - p2;
+    // But we can check the return type, 
+    // to make sure we get an invalid type:
+    using converted_type = decltype(p1 - p2);
+    using required_type = StaticAssert::invalid_subtraction;
+    CHECK(
+        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+    );
 }
 
 TEST_CASE("PointsCanBeCopied") {
@@ -239,18 +249,28 @@ TEST_CASE("PointsSupportElementAccessByAt") {
 TEST_CASE("PointsSupportElementAccessByAtDoesNotCompileIfTooLow") {
     const View::Point p(2, 3, 4);
 
-    // We should not be able to compile this.
-    if constexpr (TEST_NON_COMPILATION) {
-        auto dummy = p.at<-1>();
-    }
+    // We should not be able to compile:
+    // auto dummy = p.at<-1>();
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(p.at<-1>());
+    using required_type = StaticAssert::invalid_at_access;
+    CHECK(
+        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+    );
 }
 TEST_CASE("PointsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
     const View::Point p(2, 3, 4);
 
-    // We should not be able to compile this.
-    if constexpr (TEST_NON_COMPILATION) {
-        auto dummy = p.at<3>();
-    }
+    // We should not be able to compile:
+    // auto dummy = p.at<3>();
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(p.at<3>());
+    using required_type = StaticAssert::invalid_at_access;
+    CHECK(
+        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+    );
 }
 
 //-------------------------------------------------------------------------------------------------

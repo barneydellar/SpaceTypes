@@ -4,8 +4,6 @@
 
 using namespace Space;
 
-constexpr bool TEST_NON_COMPILATION{ false };
-
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("Normalized Vectors can be created using initalizer lists of two numbers") {
@@ -80,19 +78,18 @@ TEST_CASE("ZeroSizedNormalizedVectorsCannotBeCreated") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Normalized Vectors cannot be implicitly cast to the implementation") {
+TEST_CASE("Normalized Vectors can be cast to the implementation") {
     const Patient::NormalizedVector v(1, 0, 0);
-
-    if constexpr (TEST_NON_COMPILATION) {
-        //ExampleImpl impl = v;
-    }
+    auto impl = static_cast<ExampleImpl>(v);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Normalized Vectors can be cast to the implementation") {
+TEST_CASE("Normalized Vectors cannot be implicitly cast to the implementation") {
     const Patient::NormalizedVector v(1, 0, 0);
-    auto impl = static_cast<ExampleImpl>(v);
+
+    // This should not compile
+    //ExampleImpl impl = v;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -147,10 +144,13 @@ TEST_CASE("NormalizedVectorsFromDiffefentSpacesCannotBeComparedUsingEqual") {
     const View::NormalizedVector v1(1, 0, 0);
     const Patient::NormalizedVector v2(1, 0, 0);
 
-    // We should not be able to compile this.
-    if constexpr (TEST_NON_COMPILATION) {
-        auto dummy = v1 == v2;
-    }
+    // We should not be able to compile:
+    // auto dummy = v1 == v2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v1 == v2);
+    using required_type = StaticAssert::invalid_equality;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -171,10 +171,13 @@ TEST_CASE("NormalizedVectorsFromDiffefentSpacesCannotBeComparedUsingInequality")
     const View::NormalizedVector v1(1, 0, 0);
     const Patient::NormalizedVector v2(1, 0, 0);
 
-    // We should not be able to compile this.
-    if constexpr (TEST_NON_COMPILATION) {
-        auto dummy = v1 != v2;
-    }
+    // We should not be able to compile:
+    // auto dummy = v1 != v2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v1 != v2);
+    using required_type = StaticAssert::invalid_equality;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -203,10 +206,13 @@ TEST_CASE("NormalizedVectorsCanBeScaledToProduceAVector") {
 TEST_CASE("NormalizedVectorsCannotBeInlineScaled") {
     const Image::NormalizedVector v_norm(1, 0, 0);
 
-    // We should not be able to compile this.
-    if constexpr (TEST_NON_COMPILATION) {
-        v_norm *= 2.0f;
-    }
+    // We should not be able to compile:
+    // v_norm *= 2.0f;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v_norm *= 2.0f);
+    using required_type = StaticAssert::invalid_normalized_vector_scale;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -239,9 +245,13 @@ TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeAdded") {
     const Image::NormalizedVector v_norm_1(1, 0, 0);
     const Patient::NormalizedVector v_norm_2(0, 1, 0);
 
-    if constexpr (TEST_NON_COMPILATION) {
-        auto dummy = v_norm_1 + v_norm_2;
-    }
+    // We should not be able to compile:
+    // auto dummy = v_norm_1 + v_norm_2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v_norm_1 + v_norm_2);
+    using required_type = StaticAssert::invalid_vector_to_vector_addition;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -288,9 +298,13 @@ TEST_CASE("VectorsAndNormalizedVectorsFromDifferentSpacesCannotBeAdded") {
     const Image::Vector v_norm_1(1, 0, 0);
     const Patient::NormalizedVector v_norm_2(0, 1, 0);
 
-    if constexpr (TEST_NON_COMPILATION) {
-        auto dummy = v_norm_1 + v_norm_2;
-    }
+    // We should not be able to compile:
+    // auto dummy = v_norm_1 + v_norm_2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v_norm_1 + v_norm_2);
+    using required_type = StaticAssert::invalid_vector_to_vector_addition;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -299,10 +313,13 @@ TEST_CASE("NormalizedVectorsCannotBeInlineAdded") {
     const Image::NormalizedVector v_norm_1(1, 0, 0);
     const Image::NormalizedVector v_norm_2(0, 1, 0);
 
-    // We should not be able to compile this.
-    if constexpr (TEST_NON_COMPILATION) {
-        auto dummy = v_norm_1 += v_norm_2;
-    }
+    // We should not be able to compile:
+    // v_norm_1 += v_norm_2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v_norm_1 += v_norm_2);
+    using required_type = StaticAssert::invalid_normalized_vector_addition;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -318,10 +335,13 @@ TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeDotted") {
     const View::NormalizedVector v1(1, 0, 0);
     const Image::NormalizedVector v2(1, 0, 0);
 
-    // We should not be able to compile this.
-    if constexpr (TEST_NON_COMPILATION) {
-        auto dummy = v1.Dot(v2);
-    }
+    // We should not be able to compile:
+    // auto dummy = v1.Dot(v2);
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v1.Dot(v2));
+    using required_type = StaticAssert::invalid_vector_dot;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -506,9 +526,13 @@ TEST_CASE("NormalizedVectorsSupportConstBeginAndEnd") {
 TEST_CASE("NormalizedVectorsDoNotSupportNonConstBegin") {
     Image::NormalizedVector nv(2, 3, 4);
 
-    if constexpr (TEST_NON_COMPILATION) {
-        auto dummy = nv.begin();
-    }
+    // We should not be able to compile:
+    // auto dummy = nv.begin();
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(nv.begin());
+    using required_type = StaticAssert::normalized_vectors_do_not_support_non_const_iteration;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -516,9 +540,13 @@ TEST_CASE("NormalizedVectorsDoNotSupportNonConstBegin") {
 TEST_CASE("NormalizedVectorsDoNotSupportNonConstEnd") {
     Image::NormalizedVector nv(2, 3, 4);
 
-    if constexpr (TEST_NON_COMPILATION) {
-        auto dummy = nv.end();
-    }
+    // We should not be able to compile:
+    // auto dummy = nv.end();
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(nv.end());
+    using required_type = StaticAssert::normalized_vectors_do_not_support_non_const_iteration;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -551,18 +579,24 @@ TEST_CASE("NormalizedVectorsSupportElementAccessByAt") {
 TEST_CASE("NormalizedVectorsSupportElementAccessByAtDoesNotCompileIfTooLow") {
     const Image::NormalizedVector v(1, 0, 0);
 
-    // We should not be able to compile this.
-    if constexpr (TEST_NON_COMPILATION) {
-        auto dummy = v.at<-1>();
-    }
+    // We should not be able to compile:
+    // auto dummy = v.at<-1>();
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v.at<-1>());
+    using required_type = StaticAssert::invalid_at_access;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 TEST_CASE("NormalizedVectorsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
     const Image::NormalizedVector v(1, 0, 0);
 
-    // We should not be able to compile this.
-    if constexpr (TEST_NON_COMPILATION) {
-        auto dummy = v.at<3>();
-    }
+    // We should not be able to compile:
+    // auto dummy = v.at<3>();
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v.at<3>());
+    using required_type = StaticAssert::invalid_at_access;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 
 //-------------------------------------------------------------------------------------------------
