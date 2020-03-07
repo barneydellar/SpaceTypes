@@ -1,21 +1,14 @@
 #pragma once
 #include "SpaceImpl.h"
-#include "StaticAsserts.h"
-#include "PointOrVector.h"
 
 namespace Space {
 
     template <typename Space, typename ExternalImplementation>
-    class Vector;
-
-    template <typename Space, typename ExternalImplementation>
-    class NormalizedVector;
-
-    //--------------------------------------------------------------------------------------------
-
-    template <typename Space, typename ExternalImplementation>
     class Point final
     {
+        friend class NormalizedVector<Space, ExternalImplementation>;
+        friend class Vector<Space, ExternalImplementation>;
+
         using PointInThisSpace = PointInASpace<Space>;
         using VectorInThisSpace = VectorInASpace<Space>;
 
@@ -35,12 +28,7 @@ namespace Space {
         [[nodiscard]] constexpr double Y() const noexcept { return m_impl.Y(); }
         [[nodiscard]] constexpr double Z() const noexcept { return m_impl.Z(); }
 
-        [[nodiscard]] constexpr double operator[] (const unsigned int i) const {
-            if (i > 2) {
-                throw std::invalid_argument("Index is out of range");
-            }
-            return m_impl[i];
-        }
+        [[nodiscard]] constexpr double operator[] (const unsigned int i) const {return m_impl[i];}
 
         template <int I>
         [[nodiscard]] typename std::enable_if<I == 0 || I == 1 || I == 2, double>::type at() const {

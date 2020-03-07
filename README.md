@@ -17,16 +17,24 @@ This namespace provides three templated types: Point, Vector and NormalizedVecto
 Importantly, points and vectors can *only* interact with points and vectors from the same space.
 Attempting to, say, add a vector from one space to a vector from another will result in a compilation error.
 
-The library provides a strongly-typed wrapper around an existing implementation, which you will need to provide as a template argument.
+The library requires an existing implementation, which you will need to provide as a template argument. 
+The library also requires a Transform Manager which is able to convert the instances of the existing implementation from one Space to another.
 
-Given an existing implementation of a vector:
+The existing implementation of the 3D location or direction must implement the following API
 
 ```cpp
-// This is the full implemntation used to store the data.
-class Implementation{...};
+class ExistingImplementation
+{
+public:
+    explicit ExistingImplementation(double, double, double) noexcept;
+
+    [[nodiscard]] double X() const noexcept;
+    [[nodiscard]] double Y() const noexcept;
+    [[nodiscard]] double Z() const noexcept;
+};
 ```
 
-and units for the space:
+Once we have such an implementation, we also need units for the space:
 
 ```cpp
 using NewSpaceUnits = double;
@@ -34,7 +42,7 @@ using NewSpaceUnits = double;
 
 The units must be constructable from a double. They will be used to return the magnitude of a vector.
 
-And given a unique identifer for the space:
+Given a unique identifer for the space:
 
 ```cpp
 enum class SpaceIDs
@@ -46,10 +54,10 @@ enum class SpaceIDs
 Then a Space can be defined as follows:
 
 ```cpp
-struct NewSpace final : SpaceBase<NewSpace, Implementation, NewSpaceUnits> {
+struct MySpace final : SpaceBase<MySpace, ExistingImplementation, NewSpaceUnits> {
     static inline constexpr SpaceIDs id = NewSpaceId;
 };
-template <> const std::string SpaceTypeNameMap<NewSpace>::name = "NewSpace";
+template <> const std::string SpaceTypeNameMap<MySpace>::name = "MySpace";
 ```
 
 The entry in the SpaceTypeNameMap will be used to serialize a point, vector or normalized vector.
@@ -63,50 +71,59 @@ Once this is done, then the space will have a Point, a Vector and a NormalizedVe
 A point or vector can be declared like this:
 
 ```cpp
-const ViewSpace::Point p;
-const NewSpace::Vector v;
-const NewSpace::NormalizedVector nv;
+const YourSpace::Point p;
+const MySpace::Vector v;
+const MySpace::NormalizedVector nv;
 ```
 
 A point or vector can be created from three doubles.
 
 ```cpp
-const ViewSpace::Point p(1, 2, 3);
-const NewSpace::Vector v(1, 2, 3);
-const NewSpace::NormalizedVector nv(1, 0, 0);
+const YourSpace::Point p(1, 2, 3);
+const MySpace::Vector v(1, 2, 3);
+const MySpace::NormalizedVector nv(1, 0, 0);
 ```
 
 A point or vector can be created from two doubles. The z-value will be set to zero.
 
 ```cpp
-const ViewSpace::Point p(1, 2);
-const NewSpace::Vector v(1, 2);
-const NewSpace::NormalizedVector v(1, 0);
+const YourSpace::Point p(1, 2);
+const MySpace::Vector v(1, 2);
+const MySpace::NormalizedVector v(1, 0);
 ```
 
 Note that a NormalizedVector will always have unit length, even if you create with non-unit values
 
 ```cpp
-const ViewSpace::NormalizedVector v(5, 0, 0); // v = {1, 0, 0}
+const YourSpace::NormalizedVector v(5, 0, 0); // v = {1, 0, 0}
 ```
 
-It is an error to create a NormalizedVector with zero values.
+It is a runtime error to create a NormalizedVector with zero values.
+
+Points or vector can also be created for use in collections:
+
+```cpp
+std::vector<View::Point> vs{
+    {1, 1, 1},
+    {2, 2, 2}
+};
+```
 
 ## Adding vectors together
 
 Vectors from the same space can be added together to produce a new vector:
 
 ```cpp
-const NewSpace::Vector v1(1, 2, 3);
-const NewSpace::Vector v2(4, 5, 6);
-const auto sum = v1 + v2; // NewSpace::Vector(5, 7, 9)
+const MySpace::Vector v1(1, 2, 3);
+const MySpace::Vector v2(4, 5, 6);
+const auto sum = v1 + v2; // MySpace::Vector(5, 7, 9)
 ```
 
 Vectors from the same space can be added together in place:
 
 ```cpp
-NewSpace::Vector v1(1, 2, 3);
-const NewSpace::Vector v2(4, 5, 6);
+MySpace::Vector v1(1, 2, 3);
+const MySpace::Vector v2(4, 5, 6);
 v1 += v2; // v1 = (5, 7, 9)
 ```
 
@@ -115,32 +132,32 @@ v1 += v2; // v1 = (5, 7, 9)
 Vectors can be added to a point from the same space to produce a new point:
 
 ```cpp
-const NewSpace::Vector v(1, 2, 3);
-const NewSpace::Point p1(4, 5, 6);
-const auto p2 = p1 + v; // NewSpace::Point(5, 7, 9)
+const MySpace::Vector v(1, 2, 3);
+const MySpace::Point p1(4, 5, 6);
+const auto p2 = p1 + v; // MySpace::Point(5, 7, 9)
 ```
 
 Vectors can be added to a point from the same space in place:
 
 ```cpp
-NewSpace::Point p(4, 5, 6);
-const NewSpace::Vector v(1, 2, 3);
+MySpace::Point p(4, 5, 6);
+const MySpace::Vector v(1, 2, 3);
 const auto p += v; // p = (5, 7, 9)
 ```
 
 Vectors can be subtracted from a point from the same space to produce a new point:
 
 ```cpp
-const NewSpace::Vector v(1, 2, 3);
-const NewSpace::Point p1(4, 5, 6);
-const auto p2 = p1 - v; // NewSpace::Point(-3, -3, -3)
+const MySpace::Vector v(1, 2, 3);
+const MySpace::Point p1(4, 5, 6);
+const auto p2 = p1 - v; // MySpace::Point(-3, -3, -3)
 ```
 
-Vectors can be added to a point from the same space in place:
+Vectors can be subtracted from a point from the same space in place:
 
 ```cpp
-NewSpace::Point p(4, 5, 6);
-const NewSpace::Vector v(1, 2, 3);
+MySpace::Point p(4, 5, 6);
+const MySpace::Vector v(1, 2, 3);
 const auto p -= v; // p = (-3, -3, -3)
 ```
 
@@ -149,9 +166,9 @@ const auto p -= v; // p = (-3, -3, -3)
 Points from the same space can be subtracted to produce a vector:
 
 ```cpp
-const NewSpace::Point p1(4, 5, 6);
-const NewSpace::Point p2(1, 2, 3);
-const auto v = p1 - p2; // NewSpace::Vector(3, 3, 3)
+const MySpace::Point p1(4, 5, 6);
+const MySpace::Point p2(1, 2, 3);
+const auto v = p1 - p2; // MySpace::Vector(3, 3, 3)
 ```
 
 ## Scaling
@@ -159,14 +176,14 @@ const auto v = p1 - p2; // NewSpace::Vector(3, 3, 3)
 Vectors can be scaled to produce a new vector
 
 ```cpp
-const NewSpace::Vector v1(4, 5, 6);
-const auto v2 = v1 * 2; // NewSpace::Vector(8, 10, 12)
+const MySpace::Vector v1(4, 5, 6);
+const auto v2 = v1 * 2; // MySpace::Vector(8, 10, 12)
 ```
 
 Vectors can be scaled in place
 
 ```cpp
-NewSpace::Vector v(4, 5, 6);
+MySpace::Vector v(4, 5, 6);
 const auto v *= 2; // v = (8, 10, 12)
 ```
 
@@ -175,15 +192,15 @@ const auto v *= 2; // v = (8, 10, 12)
 You can get the normal form of a vector
 
 ```cpp
-const NewSpace::Vector v1(5, 0, 0);
-const auto v2 = v1.Norm(); // NewSpace::NormalizedVector(1, 0, 0)
+const MySpace::Vector v1(5, 0, 0);
+const auto v2 = v1.Norm(); // MySpace::NormalizedVector(1, 0, 0)
 ```
 
 In addition, you can construct a normalized vector as you would a normal vector, but the result will
 always be normalized:
 
 ```cpp
-const NewSpace::NormalizedVector v(5, 0, 0); // v = (1, 0, 0)
+const MySpace::NormalizedVector v(5, 0, 0); // v = (1, 0, 0)
 ```
 
 ## Dot Product
@@ -191,8 +208,8 @@ const NewSpace::NormalizedVector v(5, 0, 0); // v = (1, 0, 0)
 You can get the dot product from two vectors in the same space
 
 ```cpp
-const NewSpace::Vector v1(1, 2, 3);
-const NewSpace::Vector v2(4, 5, 6);
+const MySpace::Vector v1(1, 2, 3);
+const MySpace::Vector v2(4, 5, 6);
 const auto dot = v1.Dot(v2); // double dot = 4+10+18 = 32;
 ```
 
@@ -201,24 +218,24 @@ const auto dot = v1.Dot(v2); // double dot = 4+10+18 = 32;
 You can get the cross product from two vectors in the same space
 
 ```cpp
-const NewSpace::Vector v1(1, 0, 0);
-const NewSpace::Vector v2(0, 1, 0);
-const auto cross = v1.Cross(v2); // NewSpace::Vector(0, 0, 1);
+const MySpace::Vector v1(1, 0, 0);
+const MySpace::Vector v2(0, 1, 0);
+const auto cross = v1.Cross(v2); // MySpace::Vector(0, 0, 1);
 ```
 
 You can get the cross product from two vectors in the same space using the * operator:
 
 ```cpp
-const NewSpace::Vector v1(1, 0, 0);
-const NewSpace::Vector v2(0, 1, 0);
-const auto cross = v1 * v2; // NewSpace::Vector(0, 0, 1)
+const MySpace::Vector v1(1, 0, 0);
+const MySpace::Vector v2(0, 1, 0);
+const auto cross = v1 * v2; // MySpace::Vector(0, 0, 1)
 ```
 
 You can get the cross product from two vectors in the same space using the *= operator:
 
 ```cpp
-NewSpace::Vector v1(1, 0, 0);
-const NewSpace::Vector v2(0, 1, 0);
+MySpace::Vector v1(1, 0, 0);
+const MySpace::Vector v2(0, 1, 0);
 const auto v1 *= v2; // v1 = (0, 0, 1);
 ```
 
@@ -227,17 +244,17 @@ const auto v1 *= v2; // v1 = (0, 0, 1);
 The cross-product of two normalized vectors is always a normalized vector:
 
 ```cpp
-const NewSpace::NormalizedVector v1(1, 0, 0);
-const NewSpace::NormalizedVector v2(0, 1, 0);
-const auto cross = v1.Cross(v2); // NewSpace::Normalized(0, 0, 1);
+const MySpace::NormalizedVector v1(1, 0, 0);
+const MySpace::NormalizedVector v2(0, 1, 0);
+const auto cross = v1.Cross(v2); // MySpace::Normalized(0, 0, 1);
 ```
 
 ## Magnitude
 
-You can get the magnitude of a vector. This will be in strongly typed units, e.g. NewSpace is in NewSpaceUnits, ViewSpace is in Pixels.
+You can get the magnitude of a vector. This will be in strongly typed units, e.g. MySpace is in NewSpaceUnits, YourSpace is in Pixels.
 
 ```cpp
-const ViewSpace::Vector v1(5, 0, 0);
+const YourSpace::Vector v1(5, 0, 0);
 const auto m = v1.Mag(); // m = 5 Millimetres
 ```
 
@@ -246,8 +263,8 @@ const auto m = v1.Mag(); // m = 5 Millimetres
 Vectors from the same space can be compared using == or !=.
 
 ```cpp
-const NewSpace::Vector v1(1, 0, 0);
-const NewSpace::Vector v2(0, 1, 0);
+const MySpace::Vector v1(1, 0, 0);
+const MySpace::Vector v2(0, 1, 0);
 const auto b_equality = v1 == v2; // false
 const auto b_inequality = v1 != v2; // true
 ```
@@ -255,31 +272,31 @@ const auto b_inequality = v1 != v2; // true
 Points from the same space can be compared using == or !=.
 
 ```cpp
-const NewSpace::Point p1(1, 0, 0);
-const NewSpace::Point p2(0, 1, 0);
+const MySpace::Point p1(1, 0, 0);
+const MySpace::Point p2(0, 1, 0);
 const auto b_equality = p1 == p2; // false
 const auto b_inequality = p1 != p2; // true
 ```
 
-## Conversion between spaces</H3>
+## Conversion between spaces
 
 Actual geometric transformations are outsourced to a transform manager. This needs to implement two method templates: Transform and Transform33.
-Both of these methods receive an Implementation, and must return one.
+Both of these methods receive an ExistingImplementation, and must also return an ExistingImplementation.
 
 Vectors from one space can be converted to another space. Under the hood, this makes a call to Transform33 on the TransformManager.
 
 ```cpp
 const TransformManager tm;
-const NewSpace::Vector v_new_space(1, 0, 0);
-const auto v_view = v_new_space.ConvertTo<ViewSpace>(tm); // ViewSpace::Vector(x, y, z)
+const MySpace::Vector v_new_space(1, 0, 0);
+const auto v_view = v_new_space.ConvertTo<YourSpace>(tm); // YourSpace::Vector(x, y, z)
 ```
 
 Points from one space can be converted to another space. Under the hood, this makes a call to Transform on the TransformManager.
 
 ```cpp
 const TransformManager tm;
-const NewSpace::Point p_new_space(1, 0, 0);
-const auto p = p_view.ConvertTo<ViewSpace>(tm); // ViewSpace::Point(x, y, z)
+const MySpace::Point p_new_space(1, 0, 0);
+const auto p = p_view.ConvertTo<YourSpace>(tm); // YourSpace::Point(x, y, z)
 ```
 
 ### Example Transform Manager
@@ -292,10 +309,10 @@ enum class IDs
     FirstSpace,
     SecondSpace
 };
-struct FirstSpace final : SpaceBase<FirstSpace, Implementation, double> {
+struct FirstSpace final : SpaceBase<FirstSpace, ExistingImplementation, double> {
     static inline constexpr SpaceIDs id = SpaceIDs::FirstSpace;
 };
-struct SecondSpace final : SpaceBase<SecondSpace, Implementation, double> {
+struct SecondSpace final : SpaceBase<SecondSpace, ExistingImplementation, double> {
     static inline constexpr SpaceIDs id = SpaceIDs::SecondSpace;
 };
 ```
@@ -307,26 +324,24 @@ class TransformManager final
 {
 public:
     template <typename From, typename To>
-    Implementation Transform33(
-        Implementation
+    ExistingImplementation Transform33(
+        ExistingImplementation
     ) const noexcept {
         using namespace Space;
-        if constexpr (From::id == SpaceIDs::FirstSpace) {
-            return { 1, 2, 3 }; // Insert more useful logic here
-        } else {
-            return { -1, -2, -3 }; // Insert more useful logic here
+        if constexpr (From::id == SpaceIDs::FirstSpace && To::id == SpaceIDs::SecondSpace) {
+            // Insert more useful logic here
         }
+        // etc
     }
     template <typename From, typename To>
-    Implementation Transform(
-        Implementation
+    ExistingImplementation Transform(
+        ExistingImplementation
     ) const noexcept {
         using namespace Space;
-        if constexpr (From::id == SpaceIDs::FirstSpace) {
-            return { 5, 6, 7 }; // Insert more useful logic here
-        } else {
-            return { -5, -6, -7 }; // Insert more useful logic here
+        if constexpr (From::id == SpaceIDs::FirstSpace && To::id == SpaceIDs::SecondSpace) {
+            // Insert more useful logic here
         }
+        // etc
     }
 };
 ```
@@ -341,7 +356,7 @@ The data from a point or vector can be accessed using square brackets. The only 
 are 0, 1, or 2. Any other value will cause a runtime throw.
 
 ```cpp
-const NewSpace::Vector v(1, 2, 3);
+const MySpace::Vector v(1, 2, 3);
 // v[0] == 1;
 ```
 
@@ -350,7 +365,7 @@ const NewSpace::Vector v(1, 2, 3);
 The data from a point or vector can be accessed using the X(), Y() or Z() functions.
 
 ```cpp
-const NewSpace::Vector v(1, 2, 3);
+const MySpace::Vector v(1, 2, 3);
 // v.Y() == 2;
 ```
 
@@ -360,7 +375,7 @@ The data from a point or vector can be accessed using at(). The only valid indic
 Any other value will cause a compilation error.
 
 ```cpp
-const NewSpace::Vector v(1, 2, 3);
+const MySpace::Vector v(1, 2, 3);
 //v.at<2>() == 3;
 ```
 
@@ -369,7 +384,7 @@ const NewSpace::Vector v(1, 2, 3);
 You can iterate over the values, and use STL algorithms on Points, Vectors and NormalizedVectors:
 
 ```cpp
-NewSpace::Point p(2, 3, 4);
+MySpace::Point p(2, 3, 4);
 
 std::transform(
     p.cbegin(),
@@ -377,7 +392,7 @@ std::transform(
     p.begin(),
     [](const double d) {return d * 2; }
 );
-// p == NewSpace::Point(4, 6, 8);
+// p == MySpace::Point(4, 6, 8);
 ```
 
 ## Serialisation
@@ -385,9 +400,9 @@ std::transform(
 Points, Vectors and NormalisedVectors can be serialised:
 
 ```cpp
-const NewSpace::Point p(2, 3, 4);
+const MySpace::Point p(2, 3, 4);
 std::cout << p;
-// Prints "NewSpace::Point (2, 3, 4)"
+// Prints "MySpace::Point (2, 3, 4)"
 ```
 
 ## Compile-time errors
@@ -404,4 +419,4 @@ These checks can be disabled by defining the following Macro:
 #define IGNORE_SPACE_STATIC_ASSERT
 ```
 
-This could be usful if you want the extra checks available in a Debug build for example, but disabled in a Release build.
+This is usful if you want the extra checks available in a Debug build for example, but disabled in a Release build.

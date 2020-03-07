@@ -1,10 +1,7 @@
 #pragma once
 #include "SpaceImpl.h"
-#include "NormalizedVector.h"
 
 namespace Space {
-
-    //--------------------------------------------------------------------------------------------
 
     template <typename Space, typename ExternalImplementation>
     class Vector final
@@ -33,12 +30,7 @@ namespace Space {
         [[nodiscard]] double Y() const noexcept { return m_impl.Y(); }
         [[nodiscard]] double Z() const noexcept { return m_impl.Z(); }
 
-        [[nodiscard]] double operator[] (const unsigned int i) const {
-            if (i > 2) {
-                throw std::invalid_argument("Index is out of range");
-            }
-            return m_impl[i];
-        }
+        [[nodiscard]] double operator[] (const unsigned int i) const {return m_impl[i];}
 
         template <int I>
         [[nodiscard]] typename std::enable_if<I == 0 || I == 1 || I == 2, double>::type at() const {

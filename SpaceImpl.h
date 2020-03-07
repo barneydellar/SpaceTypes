@@ -1,4 +1,7 @@
 #pragma once
+#include "PointOrVector.h"
+#include "StaticAsserts.h"
+
 namespace Space {
 
     template <typename T>
