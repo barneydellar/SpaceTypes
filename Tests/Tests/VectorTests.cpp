@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "SpaceHelpers.h"
 
 using namespace Space;
@@ -26,7 +25,7 @@ TEST_CASE("Vectors throw when using initalizer lists that are too large") {
     {
         View::Vector v{ 1, 2, 3, 4 };
     }
-    catch (std::invalid_argument)
+    catch (std::invalid_argument&)
     {
         return;
     }
@@ -477,11 +476,6 @@ TEST_CASE("VectorsSupportElementAccessByRandomAccess") {
     CHECK(v[0] == 2);
     CHECK(v[1] == 3);
     CHECK(v[2] == 4);
-}
-
-TEST_CASE("VectorsDoNotCompileIfRandomAccessIsTooLow") {
-    const Image::Vector v(2, 3, 4);
-    CHECK_THROWS_AS(v[-1], std::invalid_argument);
 }
 
 TEST_CASE("VectorsThrowIfRandomAccessIsTooHigh") {

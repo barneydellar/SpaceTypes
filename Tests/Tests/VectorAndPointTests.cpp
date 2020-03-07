@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "SpaceHelpers.h"
 
 using namespace Space;

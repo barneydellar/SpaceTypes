@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "SpaceHelpers.h"
 
 using namespace Space;
@@ -26,7 +25,7 @@ TEST_CASE("Normalized Vectors throw when using initalizer lists that are too lar
     {
         View::NormalizedVector v{ 1, 2, 3, 4 };
     }
-    catch (std::invalid_argument)
+    catch (std::invalid_argument&)
     {
         return;
     }
@@ -139,6 +138,7 @@ TEST_CASE("NormalizedVectorsFromTheSameSpaceCanBeComparedUsingEqual_different") 
     const Patient::NormalizedVector v2(0, 1, 0);
     CHECK(!(v1 == v2));
 }
+
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedVectorsFromDiffefentSpacesCannotBeComparedUsingEqual") {
     const View::NormalizedVector v1(1, 0, 0);
@@ -563,11 +563,6 @@ TEST_CASE("NormalizedVectorsSupportElementAccessByRandomAccess") {
     CHECK(v[0] == 0);
     CHECK(v[1] == 1);
     CHECK(v[2] == 0);
-}
-
-TEST_CASE("NormalizedVectorsThrowIfRandomAccessIsTooLow") {
-    const Image::NormalizedVector v(0, 0, 1);
-    CHECK_THROWS_AS(v[-1], std::invalid_argument);
 }
 
 TEST_CASE("NormalizedVectorsThrowIfRandomAccessIsTooHigh") {

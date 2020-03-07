@@ -1,6 +1,5 @@
 #pragma once
 #include "ExampleImpl.h"
-#include "SpaceHelpers.h"
 
 class TransformManager final
 {
@@ -11,7 +10,7 @@ public:
         Space::ExampleImpl
     ) const noexcept {
         using namespace Space;
-        if constexpr (From::id == SpaceIDs::View) {
+        if constexpr (From::id == Space::SpaceIDs::View) {
             return { -5, -6, -7 };
         }
         else {
@@ -24,7 +23,7 @@ public:
         Space::ExampleImpl
     ) const noexcept {
         using namespace Space;
-        if constexpr (From::id == SpaceIDs::View) {
+        if constexpr (From::id == Space::SpaceIDs::View) {
             return { 15, 16, 17 };
         }
         else {

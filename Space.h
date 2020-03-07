@@ -15,5 +15,6 @@ namespace Space {
         using NormalizedVector = NormalizedVector<SpaceName, Implementation>;
         using Unit = Units;
     };
+
 }
 

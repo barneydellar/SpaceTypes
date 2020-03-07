@@ -6,7 +6,7 @@ namespace Space::StaticAssert {
     {
         template<typename T = void>
         constexpr invalid_equality() {
-            static_assert(false, "It is not valid to compare items from different spaces.");
+            static_assert(false, "It is not valid to compare things from different spaces.");
         }
     };
 
@@ -22,7 +22,7 @@ namespace Space::StaticAssert {
     {
         template<typename T = void>
         constexpr invalid_subtraction() {
-            static_assert(false, "It is not valid to subtract items from different spaces.");
+            static_assert(false, "It is not valid to subtract things from different spaces.");
         }
     };
 

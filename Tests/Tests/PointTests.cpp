@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "SpaceHelpers.h"
 
 using namespace Space;
@@ -229,11 +228,6 @@ TEST_CASE("PointsSupportElementAccessByRandomAccess") {
     CHECK(p[0] == 2);
     CHECK(p[1] == 3);
     CHECK(p[2] == 4);
-}
-
-TEST_CASE("PointsDoNotCompileIfRandomAccessIsTooLow") {
-    const View::Point p(2, 3, 4);
-    CHECK_THROWS_AS(p[-1], std::invalid_argument);
 }
 
 TEST_CASE("PointsThrowIfRandomAccessIsTooHigh") {

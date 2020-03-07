@@ -7,10 +7,10 @@ namespace Space {
     class ExampleImpl
     {
     public:
-        constexpr explicit ExampleImpl(std::array<double, 3> value) noexcept;
-        constexpr explicit ExampleImpl(double x, double y, double z) noexcept;
-        constexpr explicit ExampleImpl(double x, double y) noexcept;
-        constexpr ExampleImpl(std::initializer_list<double> l);
+        constexpr explicit ExampleImpl(std::array<double, 3>) noexcept;
+        constexpr explicit ExampleImpl(double, double, double) noexcept;
+        constexpr explicit ExampleImpl(double, double) noexcept;
+        constexpr ExampleImpl(std::initializer_list<double>);
 
     protected:
         constexpr ExampleImpl() = default;
@@ -19,7 +19,7 @@ namespace Space {
         void Normalize() noexcept(false);
 
         [[nodiscard]] double Mag() const noexcept;
-        [[nodiscard]] constexpr double operator[](const unsigned int i) const;
+        [[nodiscard]] constexpr double operator[](unsigned int) const;
 
         [[nodiscard]] constexpr const double* cbegin() const noexcept;
         [[nodiscard]] constexpr const double* cend() const noexcept;
@@ -30,17 +30,17 @@ namespace Space {
         [[nodiscard]] constexpr double Y() const noexcept;
         [[nodiscard]] constexpr double Z() const noexcept;
 
-        friend ExampleImpl operator*(ExampleImpl lhs, const double& d) noexcept;
+        friend ExampleImpl operator*(ExampleImpl, const double&) noexcept;
 
-        friend ExampleImpl operator-(ExampleImpl lhs, const ExampleImpl& rhs) noexcept;
+        friend ExampleImpl operator-(ExampleImpl, const ExampleImpl&) noexcept;
 
-        friend ExampleImpl operator+(ExampleImpl lhs, const ExampleImpl& rhs) noexcept;
+        friend ExampleImpl operator+(ExampleImpl, const ExampleImpl&) noexcept;
 
-        [[nodiscard]] double Dot(const ExampleImpl& other) const noexcept;
+        [[nodiscard]] double Dot(const ExampleImpl&) const noexcept;
 
-        [[nodiscard]] ExampleImpl Cross(const ExampleImpl& other) const noexcept;
+        [[nodiscard]] ExampleImpl Cross(const ExampleImpl&) const noexcept;
 
-        [[nodiscard]] bool operator ==(const ExampleImpl& other) const noexcept;
+        [[nodiscard]] bool operator ==(const ExampleImpl&) const noexcept;
 
     private:
         std::array<double, 3> m_values{};
@@ -163,12 +163,8 @@ namespace Space {
         }
     }
 
-    inline constexpr double ExampleImpl::operator[](const unsigned int i) const
+    constexpr double ExampleImpl::operator[](const unsigned int i) const
     {
-        if (i > 2)
-        {
-            throw std::invalid_argument("Index is out of range");
-        }
         return m_values[i];
     }
 
