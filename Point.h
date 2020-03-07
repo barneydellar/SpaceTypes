@@ -1,47 +1,34 @@
 #pragma once
 #include "SpaceImpl.h"
 #include "StaticAsserts.h"
+#include "PointOrVector.h"
 
 namespace Space {
 
-    template <typename Space, typename Implementation>
+    template <typename Space, typename ExternalImplementation>
     class Vector;
 
-    template <typename Space, typename Implementation>
+    template <typename Space, typename ExternalImplementation>
     class NormalizedVector;
 
     //--------------------------------------------------------------------------------------------
 
-    template <typename Space, typename Implementation>
+    template <typename Space, typename ExternalImplementation>
     class Point final
     {
         using PointInThisSpace = PointInASpace<Space>;
         using VectorInThisSpace = VectorInASpace<Space>;
 
     public:
+        Point(const detail::PointOrVector& v) noexcept : m_impl(v) {}
         constexpr Point() noexcept : m_impl(0, 0, 0) {}
-        constexpr explicit Point(const Implementation v) noexcept : m_impl(v) {}
+        constexpr explicit Point(const ExternalImplementation& v) noexcept : m_impl(v.X(), v.Y(), v.Z()) {}
         constexpr explicit Point(const double x, const double y, const double z) noexcept : m_impl(x, y, z) {}
         constexpr explicit Point(const double x, const double y) noexcept : m_impl(x, y, 0) {}
-        constexpr Point(const std::initializer_list<double> l) : m_impl(0, 0, 0)
-        {
-            if (l.size() < 2 || l.size() > 3)
-            {
-                throw std::invalid_argument("You can only initialise with two or three elements");
-            }
-            auto iter = l.begin();
-            const auto x = *iter++;
-            const auto y = *iter++;
-            auto z = 0.0;
-            if (l.size() == 3)
-            {
-                z = *iter;
-            }
-            m_impl = Implementation{ x, y, z };
-        }
+        constexpr Point(const std::initializer_list<double> l) : m_impl(l) {}
 
-        [[nodiscard]] explicit constexpr operator Implementation() const noexcept {
-            return m_impl;
+        [[nodiscard]] explicit constexpr operator ExternalImplementation() const noexcept {
+            return ExternalImplementation(m_impl.X(), m_impl.Y(), m_impl.Z());
         }
 
         [[nodiscard]] constexpr double X() const noexcept { return m_impl.X(); }
@@ -84,7 +71,7 @@ namespace Space {
 
         template <typename OtherSpace, typename TransformManager>
         [[nodiscard]] constexpr PointInASpace<OtherSpace> ConvertTo(const TransformManager& transform_manager) const {
-            return PointInASpace<OtherSpace>(transform_manager.template Transform<Space, OtherSpace>(m_impl));
+            return PointInASpace<OtherSpace>(transform_manager.template Transform<Space, OtherSpace>(static_cast<ExternalImplementation>(*this)));
         }
 
         [[nodiscard]] friend VectorInThisSpace operator-(PointInThisSpace lhs, const PointInThisSpace& rhs) {
@@ -121,50 +108,51 @@ namespace Space {
             return StaticAssert::invalid_at_access{};
         }
         template <typename OtherSpace>
-        StaticAssert::invalid_equality operator == (const Point<OtherSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_equality operator == (const Point<OtherSpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_equality{};
         }
         template <typename AnySpace>
-        StaticAssert::invalid_point_vector_equality operator == (const Vector<AnySpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_vector_equality operator == (const Vector<AnySpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
         template <typename AnySpace>
-        StaticAssert::invalid_point_vector_equality operator == (const NormalizedVector<AnySpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_vector_equality operator == (const NormalizedVector<AnySpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
         template <typename OtherSpace>
-        StaticAssert::invalid_equality operator != (const Point<OtherSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_equality operator != (const Point<OtherSpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_equality{};
         }
         template <typename AnySpace>
-        StaticAssert::invalid_point_vector_equality operator != (const Vector<AnySpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_vector_equality operator != (const Vector<AnySpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
         template <typename OtherSpace>
-        StaticAssert::invalid_subtraction operator-(const Point<OtherSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_subtraction operator-(const Point<OtherSpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_subtraction{};
         }
         template <typename OtherSpace>
-        StaticAssert::invalid_vector_to_point_addition operator+(const Vector<OtherSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_vector_to_point_addition operator+(const Vector<OtherSpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_vector_to_point_addition{};
         }
         template <typename OtherSpace>
-        StaticAssert::invalid_vector_to_point_addition operator+=(const Vector<OtherSpace, Implementation>&) noexcept {
+        StaticAssert::invalid_vector_to_point_addition operator+=(const Vector<OtherSpace, ExternalImplementation>&) noexcept {
             return StaticAssert::invalid_vector_to_point_addition{};
         }
         template <typename OtherSpace>
-        StaticAssert::invalid_vector_from_point_subtraction operator-(const Vector<OtherSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_vector_from_point_subtraction operator-(const Vector<OtherSpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_vector_from_point_subtraction{};
         }
         template <typename OtherSpace>
-        StaticAssert::invalid_vector_from_point_subtraction operator-=(const Vector<OtherSpace, Implementation>&) noexcept {
+        StaticAssert::invalid_vector_from_point_subtraction operator-=(const Vector<OtherSpace, ExternalImplementation>&) noexcept {
             return StaticAssert::invalid_vector_from_point_subtraction{};
         }
 
 #endif
 
     private:
-        Implementation m_impl;
+
+        detail::PointOrVector m_impl;
     };
 
     template <typename Space, typename Impl>

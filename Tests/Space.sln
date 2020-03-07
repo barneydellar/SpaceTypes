@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Space", "Space", "{4C7E07BA
 	ProjectSection(SolutionItems) = preProject
 		..\NormalizedVector.h = ..\NormalizedVector.h
 		..\Point.h = ..\Point.h
+		..\PointOrVector.h = ..\PointOrVector.h
 		..\README.md = ..\README.md
 		..\Space.h = ..\Space.h
 		..\SpaceImpl.h = ..\SpaceImpl.h
