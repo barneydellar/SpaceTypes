@@ -85,6 +85,17 @@ namespace Space {
             return *this;
         }
 
+        [[nodiscard]] friend PointInThisSpace operator-(PointInThisSpace lhs, const VectorInThisSpace& rhs) noexcept {
+            lhs -= rhs;
+            return lhs;
+        }
+
+        PointInThisSpace& operator-=(const VectorInThisSpace& rhs) noexcept {
+            m_impl = m_impl - rhs.m_impl;
+            return *this;
+        }
+
+
         //------------------------------------------------------------------------------------
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
@@ -124,6 +135,14 @@ namespace Space {
         template <typename OtherSpace>
         StaticAssert::invalid_vector_to_point_addition operator+=(const Vector<OtherSpace, Implementation>&) noexcept {
             return StaticAssert::invalid_vector_to_point_addition{};
+        }
+        template <typename OtherSpace>
+        StaticAssert::invalid_vector_from_point_subtraction operator-(const Vector<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_vector_from_point_subtraction{};
+        }
+        template <typename OtherSpace>
+        StaticAssert::invalid_vector_from_point_subtraction operator-=(const Vector<OtherSpace, Implementation>&) noexcept {
+            return StaticAssert::invalid_vector_from_point_subtraction{};
         }
 
 #endif

@@ -121,3 +121,61 @@ TEST_CASE("VectorCannotBeAddedToPointInDifferentSpaceInPlace") {
 #endif
 
 //-------------------------------------------------------------------------------------------------
+
+TEST_CASE("VectorCanBeSubtractedFromPointInTheSameSpace") {
+    const Volume::Point p(0, 0, 1);
+    const Volume::Vector v(1, 0, 0);
+    const auto p_new = p - v;
+    CHECK(p_new == Volume::Point(-1, 0, 1));
+}
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("PointCannotBeSubtractedFromVectorInTheSameSpace") {
+    const Volume::Vector v(1, 0, 0);
+    const Volume::Point p(0, 0, 1);
+
+    // We should not be able to compile:
+    // auto dummy = v - p;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v - p);
+    using required_type = StaticAssert::invalid_point_from_vector_subtraction;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+
+TEST_CASE("VectorCannotBeSubtractedFromPointInDifferentSpace") {
+    const View::Point p(0, 0, 1);
+    const Volume::Vector v(1, 0, 0);
+
+    // We should not be able to compile:
+    // auto dummy = p - v;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(p - v);
+    using required_type = StaticAssert::invalid_vector_from_point_subtraction;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+
+#endif
+
+TEST_CASE("VectorCanBeSubtractedFromPointInTheSameSpaceInPlace") {
+    Volume::Point p(0, 0, 1);
+    const Volume::Vector v(1, 0, 0);
+    p -= v;
+    CHECK(p == Volume::Point(-1, 0, 1));
+}
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("VectorCannotBeSubtractedFromPointInDifferentSpaceInPlace") {
+    View::Point p(0, 0, 1);
+    const Volume::Vector v(1, 0, 0);
+
+    // We should not be able to compile:
+    // auto dummy = p -= v;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(p -= v);
+    using required_type = StaticAssert::invalid_vector_from_point_subtraction;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+#endif
+
+//-------------------------------------------------------------------------------------------------

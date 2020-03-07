@@ -340,7 +340,7 @@ TEST_CASE("NormalizedVectorsCanBeSubtracted") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("NormalizedVectorsCanBeSubtractedToProduceAVector") {
+TEST_CASE("NormalizedVectorsCanBeSubtractedFromProduceAVector") {
     const Image::NormalizedVector v_norm_1(1, 0, 0);
     const Image::NormalizedVector v_norm_2(0, 1, 0);
 
@@ -380,7 +380,7 @@ TEST_CASE("NormalizedVectorsAndVectorsCanBeSubtracted") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("NormalizedVectorsAndVectorsCanBeSubtractedToProduceAVector") {
+TEST_CASE("NormalizedVectorsAndVectorsCanBeSubtractedFromProduceAVector") {
     const Image::NormalizedVector v_norm_1(1, 0, 0);
     const Image::Vector v_2(0, 1, 0);
 
@@ -394,7 +394,7 @@ TEST_CASE("NormalizedVectorsAndVectorsCanBeSubtractedToProduceAVector") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("VectorsAndNormalizedVectorsCanBeSubtractedToProduceAVector") {
+TEST_CASE("VectorsAndNormalizedVectorsCanBeSubtractedFromProduceAVector") {
     const Image::Vector v_1(1, 0, 0);
     const Image::NormalizedVector v_norm_2(0, 1, 0);
 

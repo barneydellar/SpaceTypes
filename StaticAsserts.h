@@ -34,6 +34,14 @@ namespace Space::StaticAssert {
         }
     };
 
+    struct invalid_point_from_vector_subtraction final
+    {
+        template<typename T = void>
+        constexpr invalid_point_from_vector_subtraction() {
+            static_assert(false, "You can't subtract points from vectors.");
+        }
+    };
+
     struct invalid_vector_to_point_addition final
     {
         template<typename T = void>
@@ -41,6 +49,15 @@ namespace Space::StaticAssert {
             static_assert(false, "You can't add vectors to points in other spaces.");
         }
     };
+
+    struct invalid_vector_from_point_subtraction final
+    {
+        template<typename T = void>
+        constexpr invalid_vector_from_point_subtraction() {
+            static_assert(false, "You can't subtract vectors from points in other spaces.");
+        }
+    };
+
 
     struct invalid_vector_to_vector_addition final
     {

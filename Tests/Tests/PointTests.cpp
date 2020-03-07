@@ -138,7 +138,7 @@ TEST_CASE("PointsFromDiffefentSpacesCannotBeComparedUsingInequality") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("PointsFromTheSameSpaceCanBeSubtractedToGiveAVector") {
+TEST_CASE("PointsFromTheSameSpaceCanBeSubtractedFromGiveAVector") {
     const View::Point p1(2, 3, 4);
     const View::Point p2(1, 1, 1);
     const auto v = p1 - p2;
