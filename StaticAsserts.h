@@ -58,6 +58,22 @@ namespace Space::StaticAssert {
         }
     };
 
+    struct invalid_normalized_vector_subtraction final
+    {
+        template<typename T = void>
+        constexpr invalid_normalized_vector_subtraction() {
+            static_assert(false, "You can't subtract from a normalized vector.");
+        }
+    };
+
+    struct invalid_vector_to_vector_subtraction final
+    {
+        template<typename T = void>
+        constexpr invalid_vector_to_vector_subtraction() {
+            static_assert(false, "You can't subtract vectors from different spaces.");
+        }
+    };
+
     struct invalid_vector_dot final
     {
         template<typename T = void>

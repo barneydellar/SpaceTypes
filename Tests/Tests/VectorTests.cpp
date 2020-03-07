@@ -241,6 +241,79 @@ TEST_CASE("VectorsAndNormalizedVectorsInDifferentSpacesCannotBeAddedInPlace") {
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("VectorsInTheSameSpaceCanBeSubtracted") {
+    const Image::Vector v1(3, 2, 1);
+    const Image::Vector v2(1, 2, 3);
+    const auto v_new = v1 - v2;
+    CHECK(v_new == Image::Vector(2, 0, -2));
+}
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("VectorsAndNormalizedVectorsInDifferentSpacesCannotBeSubtracted") {
+    const View::Vector v1(1, 2, 3);
+    const Image::NormalizedVector v2(1, 0, 0);
+
+    // We should not be able to compile:
+    // auto dummy = v1 - v2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v1 - v2);
+    using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+#endif
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("VectorsInTheSameSpaceCanBeSubtractedInPlace") {
+    Image::Vector v1(1, 2, 3);
+    const Image::Vector v2(3, 2, 1);
+    v1 -= v2;
+    CHECK(v1 == Image::Vector(-2, 0, 2));
+}
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("VectorsInDifferentSpacesCannotBeSubtractedInPlace") {
+    View::Vector v1(1, 2, 3);
+    const Image::Vector v2(3, 2, 1);
+
+    // We should not be able to compile:
+    // v1 -= v2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v1 -= v2);
+    using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+#endif
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("VectorsAndNormalizedVectorsInTheSameSpaceCanBeSubtractedInPlace") {
+    Image::Vector v1(1, 2, 3);
+    const Image::NormalizedVector v2(1, 0, 0);
+    v1 -= v2;
+    CHECK(v1 == Image::Vector(0, 2, 3));
+}
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("VectorsAndNormalizedVectorsInDifferentSpacesCannotBeSubtractedInPlace") {
+    View::Vector v1(1, 2, 3);
+    const Image::NormalizedVector v2(1, 0, 0);
+
+    // We should not be able to compile:
+    // v1 -= v2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v1 -= v2);
+    using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+#endif
+
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("VectorsCanBeMultiplied") {
     const View::Vector v(1, 2, 3);
     const auto scaled_v = v * 2;

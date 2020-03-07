@@ -327,6 +327,117 @@ TEST_CASE("NormalizedVectorsCannotBeInlineAdded") {
 }
 #endif
 
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("NormalizedVectorsCanBeSubtracted") {
+    const Image::NormalizedVector v_norm_1(1, 0, 0);
+    const Image::NormalizedVector v_norm_2(0, 1, 0);
+
+    const auto added = v_norm_1 - v_norm_2;
+    CHECK(added == Image::Vector(1, -1, 0));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("NormalizedVectorsCanBeSubtractedToProduceAVector") {
+    const Image::NormalizedVector v_norm_1(1, 0, 0);
+    const Image::NormalizedVector v_norm_2(0, 1, 0);
+
+    using converted_type = decltype(v_norm_1 - v_norm_2);
+    using required_type = decltype(Image::Vector{ 0, 0, 0 });
+
+    CHECK(
+        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+    );
+}
+
+//-------------------------------------------------------------------------------------------------
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeSubtracted") {
+    const Image::NormalizedVector v_norm_1(1, 0, 0);
+    const Patient::NormalizedVector v_norm_2(0, 1, 0);
+
+    // We should not be able to compile:
+    // auto dummy = v_norm_1 - v_norm_2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v_norm_1 - v_norm_2);
+    using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+#endif
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("NormalizedVectorsAndVectorsCanBeSubtracted") {
+    const Image::NormalizedVector v_norm_1(1, 0, 0);
+    const Image::Vector v_norm_2(0, 1, 0);
+
+    const auto added = v_norm_1 - v_norm_2;
+    CHECK(added == Image::Vector(1, -1, 0));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("NormalizedVectorsAndVectorsCanBeSubtractedToProduceAVector") {
+    const Image::NormalizedVector v_norm_1(1, 0, 0);
+    const Image::Vector v_2(0, 1, 0);
+
+    using converted_type = decltype(v_norm_1 - v_2);
+    using required_type = decltype(Image::Vector{ 0, 0, 0 });
+
+    CHECK(
+        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+    );
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("VectorsAndNormalizedVectorsCanBeSubtractedToProduceAVector") {
+    const Image::Vector v_1(1, 0, 0);
+    const Image::NormalizedVector v_norm_2(0, 1, 0);
+
+    using converted_type = decltype(v_1 - v_norm_2);
+    using required_type = decltype(Image::Vector{ 0, 0, 0 });
+
+    CHECK(
+        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+    );
+}
+
+//-------------------------------------------------------------------------------------------------
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("VectorsAndNormalizedVectorsFromDifferentSpacesCannotBeSubtracted") {
+    const Image::Vector v_norm_1(1, 0, 0);
+    const Patient::NormalizedVector v_norm_2(0, 1, 0);
+
+    // We should not be able to compile:
+    // auto dummy = v_norm_1 - v_norm_2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v_norm_1 - v_norm_2);
+    using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+#endif
+
+//-------------------------------------------------------------------------------------------------
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVectorsCannotBeInlineSubtracted") {
+    const Image::NormalizedVector v_norm_1(1, 0, 0);
+    const Image::NormalizedVector v_norm_2(0, 1, 0);
+
+    // We should not be able to compile:
+    // v_norm_1 -= v_norm_2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v_norm_1 -= v_norm_2);
+    using required_type = StaticAssert::invalid_normalized_vector_subtraction;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+#endif
+
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("NormalizedVectorsFromTheSameSpaceCanBeDotted") {

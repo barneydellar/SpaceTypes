@@ -110,6 +110,26 @@ namespace Space {
             return *this = this->Cross(other);
         }
 
+        [[nodiscard]] friend VectorInThisSpace operator-(VectorInThisSpace lhs, const VectorInThisSpace& rhs) noexcept {
+            lhs -= rhs;
+            return lhs;
+        }
+
+        VectorInThisSpace& operator-=(const VectorInThisSpace& rhs) noexcept {
+            m_impl = m_impl - rhs.m_impl;
+            return *this;
+        }
+
+        [[nodiscard]] friend VectorInThisSpace operator-(VectorInThisSpace lhs, const NormalizedVectorInThisSpace& rhs) noexcept {
+            lhs -= rhs;
+            return lhs;
+        }
+
+        VectorInThisSpace& operator-=(const NormalizedVectorInThisSpace& rhs) noexcept {
+            m_impl = m_impl - rhs.m_impl;
+            return *this;
+        }
+
         [[nodiscard]] friend VectorInThisSpace operator+(VectorInThisSpace lhs, const VectorInThisSpace& rhs) noexcept {
             lhs += rhs;
             return lhs;
@@ -225,6 +245,23 @@ namespace Space {
         template <typename OtherSpace>
         StaticAssert::invalid_vector_to_vector_addition operator+=(const NormalizedVector<OtherSpace, Implementation>&) noexcept {
             return StaticAssert::invalid_vector_to_vector_addition{};
+        }
+
+        template <typename OtherSpace>
+        StaticAssert::invalid_vector_to_vector_subtraction operator-(const Vector<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_vector_to_vector_subtraction{};
+        }
+        template <typename OtherSpace>
+        StaticAssert::invalid_vector_to_vector_subtraction operator-(const NormalizedVector<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_vector_to_vector_subtraction{};
+        }
+        template <typename OtherSpace>
+        StaticAssert::invalid_vector_to_vector_subtraction operator-=(const Vector<OtherSpace, Implementation>&) noexcept {
+            return StaticAssert::invalid_vector_to_vector_subtraction{};
+        }
+        template <typename OtherSpace>
+        StaticAssert::invalid_vector_to_vector_subtraction operator-=(const NormalizedVector<OtherSpace, Implementation>&) noexcept {
+            return StaticAssert::invalid_vector_to_vector_subtraction{};
         }
         template <typename OtherSpace>
         StaticAssert::invalid_vector_dot Dot(const Vector<OtherSpace, Implementation>&) const noexcept {
