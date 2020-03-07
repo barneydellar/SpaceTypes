@@ -12,19 +12,38 @@ namespace Space {
 
         friend class Vector< Space, Implementation>;
 
+        using VectorInThisSpace = VectorInASpace<Space>;
+        using NormalizedVectorInThisSpace = NormalizedVectorInASpace<Space>;
+
         //-------------------------------------------------------------------------------------
 
+        constexpr NormalizedVector() noexcept(false) : m_impl(1, 0, 0) { Normalize(); }
         constexpr explicit NormalizedVector(const Implementation v) noexcept(false) : m_impl(v) { Normalize(); }
         constexpr explicit NormalizedVector(const double x, const double y, const double z) noexcept(false) : m_impl(x, y, z) {Normalize();}
         constexpr explicit NormalizedVector(const double x, const double y) noexcept(false) : m_impl(x, y, 0) {Normalize();}
-        constexpr NormalizedVector(const std::initializer_list<double> l) : m_impl(l) { Normalize(); }
-
+        constexpr NormalizedVector(const std::initializer_list<double> l) noexcept(false) : m_impl(0, 0, 0)
+        {
+            if (l.size() < 2 || l.size() > 3)
+            {
+                throw std::invalid_argument("You can only initialise with two or three elements");
+            }
+            auto iter = l.begin();
+            const auto x = *iter++;
+            const auto y = *iter++;
+            auto z = 0.0;
+            if (l.size() == 3)
+            {
+                z = *iter;
+            }
+            m_impl = Implementation(x, y, z);
+            Normalize();
+        }
         [[nodiscard]] explicit constexpr operator Implementation() const noexcept {
             return m_impl;
         }
 
-        [[nodiscard]] constexpr operator Vector<Space, Implementation>() const noexcept {
-            return Vector<Space, Implementation>(m_impl);
+        [[nodiscard]] constexpr operator VectorInThisSpace() const noexcept {
+            return VectorInThisSpace(m_impl);
         }
 
         [[nodiscard]] constexpr double X() const noexcept { return m_impl.X(); }
@@ -41,54 +60,54 @@ namespace Space {
         [[nodiscard]] typename std::enable_if<I == 0 || I == 1 || I == 2, double>::type at() const {
             return m_impl[I];
         }
-        [[nodiscard]] constexpr bool operator == (const NormalizedVector<Space, Implementation>& other) const noexcept {
+        [[nodiscard]] constexpr bool operator == (const NormalizedVectorInThisSpace& other) const noexcept {
             return m_impl.operator==(other.m_impl);
         }
-        [[nodiscard]] constexpr bool operator == (const Vector<Space, Implementation>& other) const noexcept {
+        [[nodiscard]] constexpr bool operator == (const VectorInThisSpace& other) const noexcept {
             return m_impl.operator==(other.m_impl);
         }
-        [[nodiscard]] constexpr bool operator != (const NormalizedVector<Space, Implementation>& other) const noexcept {
+        [[nodiscard]] constexpr bool operator != (const NormalizedVectorInThisSpace& other) const noexcept {
             return !(operator==(other));
         }
-        [[nodiscard]] constexpr bool operator != (const Vector<Space, Implementation>& other) const noexcept {
+        [[nodiscard]] constexpr bool operator != (const VectorInThisSpace& other) const noexcept {
             return !(operator==(other));
         }
-        [[nodiscard]] constexpr Vector<Space, Implementation> operator+(const NormalizedVector<Space, Implementation>& other) const noexcept {
-            return Vector<Space, Implementation>(m_impl + other.m_impl);
+        [[nodiscard]] constexpr VectorInThisSpace operator+(const NormalizedVectorInThisSpace& other) const noexcept {
+            return VectorInThisSpace(m_impl + other.m_impl);
         }
-        [[nodiscard]] constexpr Vector<Space, Implementation> operator+(const Vector<Space, Implementation>& other) const noexcept {
-            return Vector<Space, Implementation>(m_impl + other.m_impl);
+        [[nodiscard]] constexpr VectorInThisSpace operator+(const VectorInThisSpace& other) const noexcept {
+            return VectorInThisSpace(m_impl + other.m_impl);
         }
-        [[nodiscard]] constexpr Vector<Space, Implementation> operator-(const NormalizedVector<Space, Implementation>& other) const noexcept {
-            return Vector<Space, Implementation>(m_impl - other.m_impl);
+        [[nodiscard]] constexpr VectorInThisSpace operator-(const NormalizedVectorInThisSpace& other) const noexcept {
+            return VectorInThisSpace(m_impl - other.m_impl);
         }
-        [[nodiscard]] constexpr Vector<Space, Implementation> operator-(const Vector<Space, Implementation>& other) const noexcept {
-            return Vector<Space, Implementation>(m_impl - other.m_impl);
+        [[nodiscard]] constexpr VectorInThisSpace operator-(const VectorInThisSpace& other) const noexcept {
+            return VectorInThisSpace(m_impl - other.m_impl);
         }
-        [[nodiscard]] constexpr Vector<Space, Implementation> operator*(const double& d) const noexcept {
-            return Vector<Space, Implementation>(m_impl * d);
+        [[nodiscard]] constexpr VectorInThisSpace operator*(const double& d) const noexcept {
+            return VectorInThisSpace(m_impl * d);
         }
-        [[nodiscard]] constexpr double Dot(const NormalizedVector<Space, Implementation>& other) const noexcept {
+        [[nodiscard]] constexpr double Dot(const NormalizedVectorInThisSpace& other) const noexcept {
             return m_impl.Dot(other.m_impl);
         }
-        [[nodiscard]] constexpr double Dot(const Vector<Space, Implementation>& other) const noexcept {
+        [[nodiscard]] constexpr double Dot(const VectorInThisSpace& other) const noexcept {
             return m_impl.Dot(other.m_impl);
         }
-        [[nodiscard]] constexpr NormalizedVector<Space, Implementation> operator*(const NormalizedVector<Space, Implementation>& rhs) const noexcept {
+        [[nodiscard]] constexpr NormalizedVectorInThisSpace operator*(const NormalizedVectorInThisSpace& rhs) const noexcept {
             return this->Cross(rhs);
         }
-        [[nodiscard]] constexpr Vector<Space, Implementation> operator*(const Vector<Space, Implementation>& rhs) const noexcept {
+        [[nodiscard]] constexpr VectorInThisSpace operator*(const VectorInThisSpace& rhs) const noexcept {
             return this->Cross(rhs);
         }
-        [[nodiscard]] constexpr NormalizedVector<Space, Implementation> Cross(const NormalizedVector<Space, Implementation>& other) const noexcept {
-            return NormalizedVector<Space, Implementation>(m_impl.Cross(other.m_impl));
+        [[nodiscard]] constexpr NormalizedVectorInThisSpace Cross(const NormalizedVectorInThisSpace& other) const noexcept {
+            return NormalizedVectorInThisSpace(m_impl.Cross(other.m_impl));
         }
-        [[nodiscard]] constexpr Vector<Space, Implementation> Cross(const Vector<Space, Implementation>& other) const noexcept {
-            return Vector<Space, Implementation>(m_impl.Cross(other.m_impl));
+        [[nodiscard]] constexpr VectorInThisSpace Cross(const VectorInThisSpace& other) const noexcept {
+            return VectorInThisSpace(m_impl.Cross(other.m_impl));
         }
         template <typename OtherSpace, typename TransformManager>
-        [[nodiscard]] constexpr Vector<OtherSpace, Implementation> ConvertTo(const TransformManager& transform_manager) const noexcept {
-            return Vector<OtherSpace, Implementation>(transform_manager.template Transform33<Space, OtherSpace>(m_impl));
+        [[nodiscard]] constexpr VectorInASpace<OtherSpace> ConvertTo(const TransformManager& transform_manager) const noexcept {
+            return VectorInASpace<OtherSpace>(transform_manager.template Transform33<Space, OtherSpace>(m_impl));
         }
 
         //-------------------------------------------------------------------------------------

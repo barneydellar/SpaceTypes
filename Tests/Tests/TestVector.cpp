@@ -1,40 +1,14 @@
 #include "pch.h"
 #include "TestVector.h"
 
-TestVector::TestVector(const std::array<double, 3> value) noexcept : m_values{ value }
-{
-}
 
 TestVector::TestVector(const double x, const double y, const double z) noexcept : m_values{ x, y, z }
 {
 }
 
-TestVector::TestVector(const double x, const double y) noexcept : m_values{ x, y, 0 }
-{
-}
-
-TestVector::TestVector(const std::initializer_list<double> l)
-{
-    if (l.size() < 2 || l.size() > 3)
-    {
-        throw std::invalid_argument("You can only initialise with two or three elements");
-    }
-    auto iter = l.begin();
-    m_values[0] = *iter++;
-    m_values[1] = *iter++;
-    if (l.size() == 3)
-    {
-        m_values[2] = *iter;
-    }
-}
-
 void TestVector::Normalize() noexcept(false)
 {
     const auto mag = Mag();
-    if (mag == 0)
-    {
-        throw std::invalid_argument("Zero-sized normal vectors are not allowed");
-    }
     std::transform(
         m_values.cbegin(),
         m_values.cend(),

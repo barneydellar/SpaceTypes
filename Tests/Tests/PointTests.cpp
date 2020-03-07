@@ -5,17 +5,28 @@ using namespace Space;
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("Points can be constructed") {
+    View::Point p;
+}
+
+TEST_CASE("Points have zero value by default") {
+    View::Point p;
+    CHECK(p[0] == 0);
+    CHECK(p[1] == 0);
+    CHECK(p[2] == 0);
+}
+
 TEST_CASE("Points can be created using initalizer lists of two numbers") {
-    View::Point v{ 1, 2 };
-    CHECK(v[0] == 1);
-    CHECK(v[1] == 2);
-    CHECK(v[2] == 0);
+    View::Point p{ 1, 2 };
+    CHECK(p[0] == 1);
+    CHECK(p[1] == 2);
+    CHECK(p[2] == 0);
 }
 TEST_CASE("Points can be created using initalizer lists of three numbers") {
-    View::Point v{ 1, 2, 4 };
-    CHECK(v[0] == 1);
-    CHECK(v[1] == 2);
-    CHECK(v[2] == 4);
+    View::Point p{ 1, 2, 4 };
+    CHECK(p[0] == 1);
+    CHECK(p[1] == 2);
+    CHECK(p[2] == 4);
 }
 TEST_CASE("Points throw when using initalizer lists that are too small") {
     CHECK_THROWS_AS(View::Point{ 1 }, std::invalid_argument);
@@ -23,7 +34,7 @@ TEST_CASE("Points throw when using initalizer lists that are too small") {
 TEST_CASE("Points throw when using initalizer lists that are too large") {
     try
     {
-        View::Point v{ 1, 2, 3, 4 };
+        View::Point p{ 1, 2, 3, 4 };
     } catch (std::invalid_argument&)
     {
         return;
@@ -151,7 +162,7 @@ TEST_CASE("PointsFromDifferfentSpacesCannotBeSubtracted") {
 
     // We should not be able to compile this:
     // auto dummy = p1 - p2;
-    // But we can check the return type, 
+    // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(p1 - p2);
     using required_type = StaticAssert::invalid_subtraction;

@@ -5,6 +5,17 @@ using namespace Space;
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("Normalized Vectors can be constructed") {
+    View::NormalizedVector v;
+}
+
+TEST_CASE("Normalized Vectors default to the i vector") {
+    View::NormalizedVector v;
+    CHECK(v[0] == 1);
+    CHECK(v[1] == 0);
+    CHECK(v[2] == 0);
+}
+
 TEST_CASE("Normalized Vectors can be created using initalizer lists of two numbers") {
     View::NormalizedVector v( 10, 0);
     CHECK(v[0] == 1);

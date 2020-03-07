@@ -5,6 +5,17 @@ using namespace Space;
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("Vectors can be constructed") {
+    View::Vector v;
+}
+
+TEST_CASE("Vectors have zero value by default") {
+    View::Vector v;
+    CHECK(v[0] == 0);
+    CHECK(v[1] == 0);
+    CHECK(v[2] == 0);
+}
+
 TEST_CASE("Vectors can be created using initalizer lists of two numbers") {
     View::Vector v = { 1, 2};
     CHECK(v[0] == 1);

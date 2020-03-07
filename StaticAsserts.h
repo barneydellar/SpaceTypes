@@ -58,7 +58,6 @@ namespace Space::StaticAssert {
         }
     };
 
-
     struct invalid_vector_to_vector_addition final
     {
         template<typename T = void>

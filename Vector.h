@@ -17,11 +17,27 @@ namespace Space {
 
     public:
 
+        explicit Vector() noexcept : m_impl(0, 0, 0) {}
         explicit Vector(const Implementation v) noexcept : m_impl(v) {}
         explicit Vector(const double x, const double y, const double z) noexcept : m_impl(x, y, z) {}
-        explicit Vector(const double x, const double y) noexcept : m_impl(x, y) {}
+        explicit Vector(const double x, const double y) noexcept : m_impl(x, y, 0) {}
         explicit Vector(const NormalizedVectorInThisSpace nv) noexcept : m_impl(nv.X(), nv.Y(), nv.Z()) {}
-        Vector(const std::initializer_list<double> l) : m_impl(l) {}
+        constexpr Vector(const std::initializer_list<double> l) : m_impl(0, 0, 0)
+        {
+            if (l.size() < 2 || l.size() > 3)
+            {
+                throw std::invalid_argument("You can only initialise with two or three elements");
+            }
+            auto iter = l.begin();
+            const auto x = *iter++;
+            const auto y = *iter++;
+            auto z = 0.0;
+            if (l.size() == 3)
+            {
+                z = *iter;
+            }
+            m_impl = Implementation{ x, y, z };
+        }
 
         [[nodiscard]] explicit operator Implementation() const noexcept {
             return m_impl;

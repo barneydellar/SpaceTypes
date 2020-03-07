@@ -18,32 +18,62 @@ Importantly, points and vectors can *only* interact with points and vectors from
 Attempting to, say, add a vector from one space to a vector from another will result in a compilation error.
 
 The library provides a strongly-typed wrapper around an existing implementation, which you will need to provide as a template argument.
-tra
-A Space can be defined as follows:
+
+Given an existing implementation of a vector:
 
 ```cpp
-using NewSpaceUnits = ...;
-
 // This is the full implemntation used to store the data.
 class Implementation{...};
-
-struct NewSpace final : Space::SpaceBase<NewSpace, Implementation, NewSpaceUnits> {};
-template <> const std::string SpaceTypeNameMap<Volume>::name = "NewSpace";
 ```
 
-The units must be constructable from a double. It will be used to return the magnitude of a vector.
+and units for the space:
+
+```cpp
+using NewSpaceUnits = double;
+```
+
+The units must be constructable from a double. They will be used to return the magnitude of a vector.
+
+And given a unique identifer for the space:
+
+```cpp
+enum class SpaceIDs
+{
+    NewSpaceId
+};
+```
+
+Then a Space can be defined as follows:
+
+```cpp
+struct NewSpace final : SpaceBase<NewSpace, Implementation, NewSpaceUnits> {
+    static inline constexpr SpaceIDs id = NewSpaceId;
+};
+template <> const std::string SpaceTypeNameMap<NewSpace>::name = "NewSpace";
+```
+
 The entry in the SpaceTypeNameMap will be used to serialize a point, vector or normalized vector.
 
 The *name* is used if and when a point or vector is serialised.  
 
+Once this is done, then the space will have a Point, a Vector and a NormalizedVector defined for it.
+
 ## Creation
+
+A point or vector can be declared like this:
+
+```cpp
+const ViewSpace::Point p;
+const NewSpace::Vector v;
+const NewSpace::NormalizedVector nv;
+```
 
 A point or vector can be created from three doubles.
 
 ```cpp
 const ViewSpace::Point p(1, 2, 3);
 const NewSpace::Vector v(1, 2, 3);
-const NewSpace::NormalizedVector v(1, 0, 0);
+const NewSpace::NormalizedVector nv(1, 0, 0);
 ```
 
 A point or vector can be created from two doubles. The z-value will be set to zero.
@@ -60,10 +90,9 @@ Note that a NormalizedVector will always have unit length, even if you create wi
 const ViewSpace::NormalizedVector v(5, 0, 0); // v = {1, 0, 0}
 ```
 
-It is an error to create a NormalizedVector with zero values. 
+It is an error to create a NormalizedVector with zero values.
 
-
-## Adding
+## Adding vectors together
 
 Vectors from the same space can be added together to produce a new vector:
 
@@ -81,7 +110,9 @@ const NewSpace::Vector v2(4, 5, 6);
 v1 += v2; // v1 = (5, 7, 9)
 ```
 
-Vectors can be added to a point from the same space can be added together to produce a new point:
+## Adding or subtracting vectors to points
+
+Vectors can be added to a point from the same space to produce a new point:
 
 ```cpp
 const NewSpace::Vector v(1, 2, 3);
@@ -89,7 +120,7 @@ const NewSpace::Point p1(4, 5, 6);
 const auto p2 = p1 + v; // NewSpace::Point(5, 7, 9)
 ```
 
-Vectors can be added to a point from the same space can be added together in place:
+Vectors can be added to a point from the same space in place:
 
 ```cpp
 NewSpace::Point p(4, 5, 6);
@@ -97,7 +128,23 @@ const NewSpace::Vector v(1, 2, 3);
 const auto p += v; // p = (5, 7, 9)
 ```
 
-## Subtracting
+Vectors can be subtracted from a point from the same space to produce a new point:
+
+```cpp
+const NewSpace::Vector v(1, 2, 3);
+const NewSpace::Point p1(4, 5, 6);
+const auto p2 = p1 - v; // NewSpace::Point(-3, -3, -3)
+```
+
+Vectors can be added to a point from the same space in place:
+
+```cpp
+NewSpace::Point p(4, 5, 6);
+const NewSpace::Vector v(1, 2, 3);
+const auto p -= v; // p = (-3, -3, -3)
+```
+
+## Subtracting points
 
 Points from the same space can be subtracted to produce a vector:
 
@@ -294,7 +341,7 @@ The data from a point or vector can be accessed using square brackets. The only 
 are 0, 1, or 2. Any other value will cause a runtime throw.
 
 ```cpp
-const NewSpace::Vector v(1, 2, 3); 
+const NewSpace::Vector v(1, 2, 3);
 // v[0] == 1;
 ```
 
@@ -345,7 +392,16 @@ std::cout << p;
 
 ## Compile-time errors
 
-A key feature of this library is that it is a compile-time error to make points or vectors from different spaces interact with eachother. 
-The library also has human-readable errors, so if you try and see if points from different spaces are equal, for example, you get the following error:
+A key feature of this library is that it is a compile-time error to make points or vectors from different spaces interact with eachother. The library also has human-readable errors, so if you try and add a vector from one space to a point from another space, for example, you get the following error:
 
-It is not valid to compare items from different spaces.
+```
+You can't add vectors to points in other spaces.
+```
+
+These checks can be disabled by defining the following Macro:
+
+```cpp
+#define IGNORE_SPACE_STATIC_ASSERT
+```
+
+This could be usful if you want the extra checks available in a Debug build for example, but disabled in a Release build.
