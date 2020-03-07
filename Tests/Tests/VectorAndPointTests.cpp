@@ -56,7 +56,7 @@ TEST_CASE("VectorsAndPointsFromTheSameSpaceCannotBeComparedUsingInequality") {
     // auto dummy = v != p;
     // But we can check the return type,
     // to make sure we get an invalid type:
-    using converted_type = decltype(v != p);
+    using converted_type = decltype(p != v);
     using required_type = StaticAssert::invalid_point_vector_equality;
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }

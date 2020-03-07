@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SpaceHelpers.h"
+#include "TestVector.h"
 
 
 using namespace Space;
@@ -12,7 +13,7 @@ typename Space::Point ReturnFirst(std::vector<typename Space::Point> v)
     return v.front();
 }
 
-ExampleImpl ReturnFirstImpl(std::vector<ExampleImpl> v)
+TestVector ReturnFirstImpl(std::vector<TestVector> v)
 {
     return v.front();
 }
@@ -63,17 +64,17 @@ TEST_CASE("Strongly typed collections can be transformed for use in non-template
         {2, 2, 2}
     };
 
-    std::vector<ExampleImpl> impls;
+    std::vector<TestVector> impls;
     std::transform(
         v.cbegin(),
         v.cend(),
         std::back_inserter(impls),
-        [](auto v) {return static_cast<ExampleImpl>(v);}
+        [](auto v) {return static_cast<TestVector>(v);}
     );
 
     const auto first = ReturnFirstImpl(impls);
 
-    CHECK(first == static_cast<ExampleImpl>(v.front()));
+    CHECK(first == static_cast<TestVector>(v.front()));
 }
 
 //-------------------------------------------------------------------------------------------------

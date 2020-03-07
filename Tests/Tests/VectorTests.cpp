@@ -306,7 +306,7 @@ TEST_CASE("ZeroSizeVectorsCannotBeNormalized") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("Vectors can be constructed and normalized from implementation") {
-    const ExampleImpl impl(3, 2, 1);
+    const TestVector impl(3, 2, 1);
     const Patient::Vector v(impl);
     CHECK(v.X() == 3);
     CHECK(v.Y() == 2);
@@ -317,7 +317,7 @@ TEST_CASE("Vectors can be constructed and normalized from implementation") {
 
 TEST_CASE("Vectors Can Be Cast To The Implementation") {
     const Patient::Vector v(1, 0, 0);
-    auto impl = static_cast<ExampleImpl>(v);
+    auto impl = static_cast<TestVector>(v);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -326,7 +326,7 @@ TEST_CASE("Vectors cannot be implicitly cast to the implementation") {
     const Patient::Vector v(1, 0, 0);
 
     // We should not be able to compile:
-    // ExampleImpl impl = v;
+    // TestVector impl = v;
 }
 
 //-------------------------------------------------------------------------------------------------

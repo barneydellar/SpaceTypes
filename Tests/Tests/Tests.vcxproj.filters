@@ -32,6 +32,9 @@
     <ClCompile Include="CollectionTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="TestVector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -40,10 +43,10 @@
     <ClInclude Include="SpaceHelpers.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="ExampleImpl.h">
+    <ClInclude Include="ExampleTransformManager.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="ExampleTransformManager.h">
+    <ClInclude Include="TestVector.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

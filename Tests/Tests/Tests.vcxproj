@@ -159,10 +159,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ExampleImpl.h" />
     <ClInclude Include="ExampleTransformManager.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SpaceHelpers.h" />
+    <ClInclude Include="TestVector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollectionTests.cpp" />
@@ -178,6 +178,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="PointTests.cpp" />
+    <ClCompile Include="TestVector.cpp" />
     <ClCompile Include="VectorAndPointTests.cpp" />
     <ClCompile Include="VectorTests.cpp" />
   </ItemGroup>

@@ -35,7 +35,7 @@ TEST_CASE("Normalized Vectors throw when using initalizer lists that are too lar
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("NormalizedVectorsCanBeConstructedAndNormalizedFromImplementation") {
-    const ExampleImpl impl(3, 0, 0);
+    const TestVector impl(3, 0, 0);
     const Patient::NormalizedVector v(impl);
     CHECK(v.X() == 1);
     CHECK(v.Y() == 0);
@@ -79,7 +79,7 @@ TEST_CASE("ZeroSizedNormalizedVectorsCannotBeCreated") {
 
 TEST_CASE("Normalized Vectors can be cast to the implementation") {
     const Patient::NormalizedVector v(1, 0, 0);
-    auto impl = static_cast<ExampleImpl>(v);
+    auto impl = static_cast<TestVector>(v);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -88,7 +88,7 @@ TEST_CASE("Normalized Vectors cannot be implicitly cast to the implementation") 
     const Patient::NormalizedVector v(1, 0, 0);
 
     // This should not compile
-    //ExampleImpl impl = v;
+    //TestVector impl = v;
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -17,21 +17,21 @@ namespace Space {
 
     public:
 
-        constexpr explicit Vector(const Implementation v) noexcept : m_impl(v) {}
-        constexpr explicit Vector(const double x, const double y, const double z) noexcept : m_impl(x, y, z) {}
-        constexpr explicit Vector(const double x, const double y) noexcept : m_impl(x, y) {}
-        constexpr explicit Vector(const NormalizedVectorInThisSpace nv) noexcept : m_impl(nv.X(), nv.Y(), nv.Z()) {}
-        constexpr Vector(const std::initializer_list<double> l) : m_impl(l) {}
+        explicit Vector(const Implementation v) noexcept : m_impl(v) {}
+        explicit Vector(const double x, const double y, const double z) noexcept : m_impl(x, y, z) {}
+        explicit Vector(const double x, const double y) noexcept : m_impl(x, y) {}
+        explicit Vector(const NormalizedVectorInThisSpace nv) noexcept : m_impl(nv.X(), nv.Y(), nv.Z()) {}
+        Vector(const std::initializer_list<double> l) : m_impl(l) {}
 
-        [[nodiscard]] explicit constexpr operator Implementation() const noexcept {
+        [[nodiscard]] explicit operator Implementation() const noexcept {
             return m_impl;
         }
 
-        [[nodiscard]] constexpr double X() const noexcept { return m_impl.X(); }
-        [[nodiscard]] constexpr double Y() const noexcept { return m_impl.Y(); }
-        [[nodiscard]] constexpr double Z() const noexcept { return m_impl.Z(); }
+        [[nodiscard]] double X() const noexcept { return m_impl.X(); }
+        [[nodiscard]] double Y() const noexcept { return m_impl.Y(); }
+        [[nodiscard]] double Z() const noexcept { return m_impl.Z(); }
 
-        [[nodiscard]] constexpr double operator[] (const unsigned int i) const {
+        [[nodiscard]] double operator[] (const unsigned int i) const {
             if (i > 2) {
                 throw std::invalid_argument("Index is out of range");
             }
@@ -39,41 +39,41 @@ namespace Space {
         }
 
         template <int I>
-        [[nodiscard]] constexpr typename std::enable_if<I == 0 || I == 1 || I == 2, double>::type at() const {
+        [[nodiscard]] typename std::enable_if<I == 0 || I == 1 || I == 2, double>::type at() const {
             return m_impl[I];
         }
 
-        [[nodiscard]] constexpr double* begin() noexcept {
+        [[nodiscard]] double* begin() noexcept {
             return m_impl.begin();
         }
-        [[nodiscard]] constexpr double* end() noexcept {
+        [[nodiscard]] double* end() noexcept {
             return m_impl.end();
         }
-        [[nodiscard]] constexpr const double* cbegin() const noexcept {
+        [[nodiscard]] const double* cbegin() const noexcept {
             return m_impl.cbegin();
         }
-        [[nodiscard]] constexpr const double* cend() const noexcept {
+        [[nodiscard]] const double* cend() const noexcept {
             return m_impl.cend();
         }
 
-        [[nodiscard]] constexpr bool operator == (const VectorInThisSpace& other) const noexcept {
+        [[nodiscard]] bool operator == (const VectorInThisSpace& other) const noexcept {
             return m_impl.operator==(other.m_impl);
         }
 
-        [[nodiscard]] constexpr bool operator == (const NormalizedVectorInThisSpace& other) const noexcept {
+        [[nodiscard]] bool operator == (const NormalizedVectorInThisSpace& other) const noexcept {
             return m_impl.operator==(other.m_impl);
         }
 
-        [[nodiscard]] constexpr bool operator != (const VectorInThisSpace& other) const noexcept {
+        [[nodiscard]] bool operator != (const VectorInThisSpace& other) const noexcept {
             return !(operator==(other));
         }
 
-        [[nodiscard]] constexpr bool operator != (const NormalizedVectorInThisSpace& other) const noexcept {
+        [[nodiscard]] bool operator != (const NormalizedVectorInThisSpace& other) const noexcept {
             return !(operator==(other));
         }
 
         template <typename OtherSpace, typename TransformManager>
-        [[nodiscard]] constexpr VectorInASpace<OtherSpace> ConvertTo(const TransformManager& transform_manager) const noexcept {
+        [[nodiscard]] VectorInASpace<OtherSpace> ConvertTo(const TransformManager& transform_manager) const noexcept {
             return VectorInASpace<OtherSpace>(transform_manager.template Transform33<Space, OtherSpace>(m_impl));
         }
 
@@ -82,71 +82,71 @@ namespace Space {
             return lhs;
         }
 
-        constexpr  VectorInThisSpace& operator*=(const double& d) noexcept {
+         VectorInThisSpace& operator*=(const double& d) noexcept {
             m_impl = m_impl * d;
             return *this;
         }
 
-        [[nodiscard]] constexpr VectorInThisSpace operator*(const VectorInThisSpace& rhs) const noexcept {
+        [[nodiscard]] VectorInThisSpace operator*(const VectorInThisSpace& rhs) const noexcept {
             return this->Cross(rhs);
         }
 
-        [[nodiscard]] constexpr VectorInThisSpace operator*(const NormalizedVectorInThisSpace& rhs) const noexcept {
+        [[nodiscard]] VectorInThisSpace operator*(const NormalizedVectorInThisSpace& rhs) const noexcept {
             return this->Cross(rhs);
         }
-        [[nodiscard]] constexpr VectorInThisSpace Cross(const VectorInThisSpace& other) const noexcept {
+        [[nodiscard]] VectorInThisSpace Cross(const VectorInThisSpace& other) const noexcept {
             return VectorInThisSpace(m_impl.Cross(other.m_impl));
         }
 
-        [[nodiscard]] constexpr VectorInThisSpace Cross(const NormalizedVectorInThisSpace& other) const noexcept {
+        [[nodiscard]] VectorInThisSpace Cross(const NormalizedVectorInThisSpace& other) const noexcept {
             return VectorInThisSpace(m_impl.Cross(other.m_impl));
         }
 
-        constexpr VectorInThisSpace operator*=(const VectorInThisSpace& other) noexcept {
+        VectorInThisSpace operator*=(const VectorInThisSpace& other) noexcept {
             return *this = this->Cross(other);
         }
 
-        constexpr VectorInThisSpace operator*=(const NormalizedVectorInThisSpace& other) noexcept {
+        VectorInThisSpace operator*=(const NormalizedVectorInThisSpace& other) noexcept {
             return *this = this->Cross(other);
         }
 
-        [[nodiscard]] constexpr friend VectorInThisSpace operator+(VectorInThisSpace lhs, const VectorInThisSpace& rhs) noexcept {
+        [[nodiscard]] friend VectorInThisSpace operator+(VectorInThisSpace lhs, const VectorInThisSpace& rhs) noexcept {
             lhs += rhs;
             return lhs;
         }
 
-        constexpr VectorInThisSpace& operator+=(const VectorInThisSpace& rhs) noexcept {
+        VectorInThisSpace& operator+=(const VectorInThisSpace& rhs) noexcept {
             m_impl = m_impl + rhs.m_impl;
             return *this;
         }
 
-        [[nodiscard]] constexpr friend VectorInThisSpace operator+(VectorInThisSpace lhs, const NormalizedVectorInThisSpace& rhs) noexcept {
+        [[nodiscard]] friend VectorInThisSpace operator+(VectorInThisSpace lhs, const NormalizedVectorInThisSpace& rhs) noexcept {
             lhs += rhs;
             return lhs;
         }
 
-        constexpr VectorInThisSpace& operator+=(const NormalizedVectorInThisSpace& rhs) noexcept {
+        VectorInThisSpace& operator+=(const NormalizedVectorInThisSpace& rhs) noexcept {
             m_impl = m_impl + rhs.m_impl;
             return *this;
         }
 
-        [[nodiscard]] constexpr typename Space::Unit Mag() const noexcept {
+        [[nodiscard]] typename Space::Unit Mag() const noexcept {
             return Space::Unit{m_impl.Mag()};
         }
 
-        [[nodiscard]] constexpr double Mag_double() const noexcept {
+        [[nodiscard]] double Mag_double() const noexcept {
             return m_impl.Mag();
         }
 
-        [[nodiscard]] constexpr NormalizedVectorInThisSpace Norm() const {
+        [[nodiscard]] NormalizedVectorInThisSpace Norm() const {
             return NormalizedVectorInThisSpace(m_impl);
         }
 
-        [[nodiscard]] constexpr double Dot(const VectorInThisSpace& other) const noexcept {
+        [[nodiscard]] double Dot(const VectorInThisSpace& other) const noexcept {
             return m_impl.Dot(other.m_impl);
         }
 
-        [[nodiscard]] constexpr double Dot(const NormalizedVectorInThisSpace& other) const noexcept {
+        [[nodiscard]] double Dot(const NormalizedVectorInThisSpace& other) const noexcept {
             return m_impl.Dot(other.m_impl);
         }
 
@@ -242,7 +242,7 @@ namespace Space {
     };
 
     template <typename Space, typename Impl>
-    constexpr std::ostream& operator << (
+    std::ostream& operator << (
         std::ostream& os,
         const Vector<Space, Impl>& item
     ) {

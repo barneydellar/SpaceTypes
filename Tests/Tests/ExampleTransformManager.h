@@ -1,13 +1,13 @@
 #pragma once
-#include "ExampleImpl.h"
+#include "TestVector.h"
 
 class TransformManager final
 {
 public:
 
     template <typename From, typename To>
-    [[nodiscard]] Space::ExampleImpl Transform(
-        Space::ExampleImpl
+    [[nodiscard]] TestVector Transform(
+        TestVector
     ) const noexcept {
         using namespace Space;
         if constexpr (From::id == Space::SpaceIDs::View) {
@@ -19,8 +19,8 @@ public:
     }
 
     template <typename From, typename To>
-    [[nodiscard]] Space::ExampleImpl Transform33(
-        Space::ExampleImpl
+    [[nodiscard]] TestVector Transform33(
+        TestVector
     ) const noexcept {
         using namespace Space;
         if constexpr (From::id == Space::SpaceIDs::View) {

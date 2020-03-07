@@ -1,6 +1,6 @@
 #pragma once
 #include "Space.h"
-#include "ExampleImpl.h"
+#include "TestVector.h"
 #include "ExampleTransformManager.h"
 
 class Millimetres final
@@ -40,22 +40,22 @@ namespace Space {
         View
     };
 
-    struct Volume final : SpaceBase<Volume, ExampleImpl, Voxels> {
+    struct Volume final : SpaceBase<Volume, TestVector, Voxels> {
         static inline constexpr SpaceIDs id = SpaceIDs::Volume;
     };
     template <> const std::string SpaceTypeNameMap<Volume>::name = "Volume";
 
-    struct Patient final : SpaceBase<Patient, ExampleImpl, double> {
+    struct Patient final : SpaceBase<Patient, TestVector, double> {
         static inline constexpr SpaceIDs id = SpaceIDs::Patient;
     };
     template <> const std::string SpaceTypeNameMap<Patient>::name = "Patient";
 
-    struct Image final : SpaceBase<Image, ExampleImpl, Millimetres> {
+    struct Image final : SpaceBase<Image, TestVector, Millimetres> {
         static inline constexpr SpaceIDs id = SpaceIDs::Image;
     };
     template <> const std::string SpaceTypeNameMap<Image>::name = "Image";
 
-    struct View final : SpaceBase<View, ExampleImpl, Pixels> {
+    struct View final : SpaceBase<View, TestVector, Pixels> {
         static inline constexpr SpaceIDs id = SpaceIDs::View;
     };
     template <> const std::string SpaceTypeNameMap<View>::name = "View";
