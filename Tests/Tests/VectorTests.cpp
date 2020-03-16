@@ -617,7 +617,7 @@ TEST_CASE("VectorsCanBeConvertedFromOneSpaceToAnotherProducingAVector") {
     const TransformManager tm;
     const View::Vector v_view(1, 0, 0);
     using converted_type = decltype(v_view.ConvertTo<Patient>(tm));
-    using required_type = decltype(Patient::Vector{ 1, 2, 3 });
+    using required_type = decltype(Patient::Vector{});
     CHECK(
         static_cast<bool>(std::is_same<converted_type, required_type>::value)
     );

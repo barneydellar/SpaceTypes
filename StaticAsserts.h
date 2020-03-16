@@ -106,6 +106,14 @@ namespace Space::StaticAssert {
         }
     };
 
+    struct invalid_vector2_in_place_cross final
+    {
+        template<typename T = void>
+        constexpr invalid_vector2_in_place_cross() {
+            static_assert(false, "You can't cross a vector2 in place.");
+        }
+    };
+
     struct invalid_normalized_vector_scale final
     {
         template<typename T = void>
@@ -135,6 +143,14 @@ namespace Space::StaticAssert {
         template<typename T = void>
         constexpr normalized_vectors_do_not_support_non_const_iteration() {
             static_assert(false, "Normalized vectors do not support non const iteration.");
+        }
+    };
+
+    struct normalized_vectors_do_not_support_norm final
+    {
+        template<typename T = void>
+        constexpr normalized_vectors_do_not_support_norm() {
+            static_assert(false, "Normalized vectors cannot be normalised.");
         }
     };
 }

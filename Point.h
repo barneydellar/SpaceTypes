@@ -6,7 +6,6 @@ namespace Space {
     template <typename Space, typename ExternalImplementation>
     class Point final
     {
-        friend class NormalizedVector<Space, ExternalImplementation>;
         friend class Vector<Space, ExternalImplementation>;
 
         using PointInThisSpace = PointInASpace<Space>;
@@ -101,10 +100,6 @@ namespace Space {
         }
         template <typename AnySpace>
         StaticAssert::invalid_point_vector_equality operator == (const Vector<AnySpace, ExternalImplementation>&) const noexcept {
-            return StaticAssert::invalid_point_vector_equality{};
-        }
-        template <typename AnySpace>
-        StaticAssert::invalid_point_vector_equality operator == (const NormalizedVector<AnySpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
         template <typename OtherSpace>

@@ -301,7 +301,7 @@ TEST_CASE("PointsCanBeConvertedFromOneSpaceToAnotherProducingAPoint") {
     const View::Point p_view(1, 2, 3);
 
     using converted_type = decltype(p_view.ConvertTo<Patient>(tm));
-    using required_type = decltype(Patient::Point{ 1, 2, 3 });
+    using required_type = decltype(Patient::Point{});
     CHECK(
         static_cast<bool>(std::is_same<converted_type, required_type>::value)
     );

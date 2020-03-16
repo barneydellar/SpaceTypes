@@ -4,9 +4,8 @@
 namespace Space {
 
     template <typename Space, typename ExternalImplementation>
-    class Vector final
+    class Vector
     {
-        friend class NormalizedVector<Space, ExternalImplementation>;
         friend class Point<Space, ExternalImplementation>;
 
         using VectorInThisSpace = VectorInASpace<Space>;
@@ -19,7 +18,6 @@ namespace Space {
         explicit Vector(const ExternalImplementation& v) noexcept : m_impl(v.X(), v.Y(), v.Z()) {}
         explicit Vector(const double x, const double y, const double z) noexcept : m_impl(x, y, z) {}
         explicit Vector(const double x, const double y) noexcept : m_impl(x, y, 0) {}
-        explicit Vector(const NormalizedVectorInThisSpace nv) noexcept : m_impl(nv.X(), nv.Y(), nv.Z()) {}
         constexpr Vector(const std::initializer_list<double> l) : m_impl(l){}
 
         [[nodiscard]] explicit operator ExternalImplementation() const noexcept {
@@ -54,15 +52,7 @@ namespace Space {
             return m_impl.operator==(other.m_impl);
         }
 
-        [[nodiscard]] bool operator == (const NormalizedVectorInThisSpace& other) const noexcept {
-            return m_impl.operator==(other.m_impl);
-        }
-
         [[nodiscard]] bool operator != (const VectorInThisSpace& other) const noexcept {
-            return !(operator==(other));
-        }
-
-        [[nodiscard]] bool operator != (const NormalizedVectorInThisSpace& other) const noexcept {
             return !(operator==(other));
         }
 
@@ -76,7 +66,7 @@ namespace Space {
             return lhs;
         }
 
-         VectorInThisSpace& operator*=(const double& d) noexcept {
+        VectorInThisSpace& operator*=(const double& d) noexcept {
             m_impl = m_impl * d;
             return *this;
         }
@@ -85,23 +75,12 @@ namespace Space {
             return this->Cross(rhs);
         }
 
-        [[nodiscard]] VectorInThisSpace operator*(const NormalizedVectorInThisSpace& rhs) const noexcept {
-            return this->Cross(rhs);
-        }
-        [[nodiscard]] VectorInThisSpace Cross(const VectorInThisSpace& other) const noexcept {
-            return VectorInThisSpace(m_impl.Cross(other.m_impl));
-        }
-
-        [[nodiscard]] VectorInThisSpace Cross(const NormalizedVectorInThisSpace& other) const noexcept {
-            return VectorInThisSpace(m_impl.Cross(other.m_impl));
-        }
-
         VectorInThisSpace operator*=(const VectorInThisSpace& other) noexcept {
             return *this = this->Cross(other);
         }
 
-        VectorInThisSpace operator*=(const NormalizedVectorInThisSpace& other) noexcept {
-            return *this = this->Cross(other);
+        [[nodiscard]] VectorInThisSpace Cross(const VectorInThisSpace& other) const noexcept {
+            return VectorInThisSpace(m_impl.Cross(other.m_impl));
         }
 
         [[nodiscard]] friend VectorInThisSpace operator-(VectorInThisSpace lhs, const VectorInThisSpace& rhs) noexcept {
@@ -110,16 +89,6 @@ namespace Space {
         }
 
         VectorInThisSpace& operator-=(const VectorInThisSpace& rhs) noexcept {
-            m_impl = m_impl - rhs.m_impl;
-            return *this;
-        }
-
-        [[nodiscard]] friend VectorInThisSpace operator-(VectorInThisSpace lhs, const NormalizedVectorInThisSpace& rhs) noexcept {
-            lhs -= rhs;
-            return lhs;
-        }
-
-        VectorInThisSpace& operator-=(const NormalizedVectorInThisSpace& rhs) noexcept {
             m_impl = m_impl - rhs.m_impl;
             return *this;
         }
@@ -134,16 +103,6 @@ namespace Space {
             return *this;
         }
 
-        [[nodiscard]] friend VectorInThisSpace operator+(VectorInThisSpace lhs, const NormalizedVectorInThisSpace& rhs) noexcept {
-            lhs += rhs;
-            return lhs;
-        }
-
-        VectorInThisSpace& operator+=(const NormalizedVectorInThisSpace& rhs) noexcept {
-            m_impl = m_impl + rhs.m_impl;
-            return *this;
-        }
-
         [[nodiscard]] typename Space::Unit Mag() const noexcept {
             return Space::Unit{m_impl.Mag()};
         }
@@ -152,20 +111,15 @@ namespace Space {
             return m_impl.Mag();
         }
 
-        [[nodiscard]] NormalizedVectorInThisSpace Norm() const {
-            return NormalizedVectorInThisSpace(m_impl);
-        }
-
         [[nodiscard]] double Dot(const VectorInThisSpace& other) const noexcept {
             return m_impl.Dot(other.m_impl);
         }
 
-        [[nodiscard]] double Dot(const NormalizedVectorInThisSpace& other) const noexcept {
-            return m_impl.Dot(other.m_impl);
+        [[nodiscard]] NormalizedVectorInThisSpace Norm() const {
+            return NormalizedVectorInThisSpace(m_impl);
         }
 
         //-------------------------------------------------------------------------------------
-
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 
         template <int I>
@@ -176,20 +130,12 @@ namespace Space {
         StaticAssert::invalid_equality operator == (const Vector<OtherSpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_equality{};
         }
-        template <typename OtherSpace>
-        StaticAssert::invalid_equality operator == (const NormalizedVector<OtherSpace, ExternalImplementation>&) const noexcept {
-            return StaticAssert::invalid_equality{};
-        }
         template <typename AnySpace>
         StaticAssert::invalid_point_vector_equality operator == (const Point<AnySpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
         template <typename OtherSpace>
         StaticAssert::invalid_equality operator != (const Vector<OtherSpace, ExternalImplementation>&) const noexcept {
-            return StaticAssert::invalid_equality{};
-        }
-        template <typename OtherSpace>
-        StaticAssert::invalid_equality operator != (const NormalizedVector<OtherSpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_equality{};
         }
         template <typename AnySpace>
@@ -201,15 +147,7 @@ namespace Space {
             return StaticAssert::invalid_vector_cross{};
         }
         template <typename OtherSpace>
-        StaticAssert::invalid_vector_cross operator*(const NormalizedVector<OtherSpace, ExternalImplementation>&) const noexcept {
-            return StaticAssert::invalid_vector_cross{};
-        }
-        template <typename OtherSpace>
         StaticAssert::invalid_vector_cross Cross(const Vector<OtherSpace, ExternalImplementation>&) const noexcept {
-            return StaticAssert::invalid_vector_cross{};
-        }
-        template <typename OtherSpace>
-        StaticAssert::invalid_vector_cross Cross(const NormalizedVector<OtherSpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_vector_cross{};
         }
         template <typename OtherSpace>
@@ -217,15 +155,7 @@ namespace Space {
             return StaticAssert::invalid_vector_cross{};
         }
         template <typename OtherSpace>
-        StaticAssert::invalid_vector_cross operator*=(const NormalizedVector<OtherSpace, ExternalImplementation>&) noexcept {
-            return StaticAssert::invalid_vector_cross{};
-        }
-        template <typename OtherSpace>
         StaticAssert::invalid_vector_to_vector_addition operator+(const Vector<OtherSpace, ExternalImplementation>&) const noexcept {
-            return StaticAssert::invalid_vector_to_vector_addition{};
-        }
-        template <typename OtherSpace>
-        StaticAssert::invalid_vector_to_vector_addition operator+(const NormalizedVector<OtherSpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_vector_to_vector_addition{};
         }
         template <typename AnySpace>
@@ -236,11 +166,6 @@ namespace Space {
         StaticAssert::invalid_vector_to_vector_addition operator+=(const Vector<OtherSpace, ExternalImplementation>&) noexcept {
             return StaticAssert::invalid_vector_to_vector_addition{};
         }
-        template <typename OtherSpace>
-        StaticAssert::invalid_vector_to_vector_addition operator+=(const NormalizedVector<OtherSpace, ExternalImplementation>&) noexcept {
-            return StaticAssert::invalid_vector_to_vector_addition{};
-        }
-
         template <typename AnySpace>
         StaticAssert::invalid_point_from_vector_subtraction operator-(const Point<AnySpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_point_from_vector_subtraction{};
@@ -250,29 +175,15 @@ namespace Space {
             return StaticAssert::invalid_vector_to_vector_subtraction{};
         }
         template <typename OtherSpace>
-        StaticAssert::invalid_vector_to_vector_subtraction operator-(const NormalizedVector<OtherSpace, ExternalImplementation>&) const noexcept {
-            return StaticAssert::invalid_vector_to_vector_subtraction{};
-        }
-        template <typename OtherSpace>
         StaticAssert::invalid_vector_to_vector_subtraction operator-=(const Vector<OtherSpace, ExternalImplementation>&) noexcept {
-            return StaticAssert::invalid_vector_to_vector_subtraction{};
-        }
-        template <typename OtherSpace>
-        StaticAssert::invalid_vector_to_vector_subtraction operator-=(const NormalizedVector<OtherSpace, ExternalImplementation>&) noexcept {
             return StaticAssert::invalid_vector_to_vector_subtraction{};
         }
         template <typename OtherSpace>
         StaticAssert::invalid_vector_dot Dot(const Vector<OtherSpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_vector_dot{};
         }
-        template <typename OtherSpace>
-        StaticAssert::invalid_vector_dot Dot(const NormalizedVector<OtherSpace, ExternalImplementation>&) const noexcept {
-            return StaticAssert::invalid_vector_dot{};
-        }
-
 #endif
-
-    private:
+    protected:
         detail::PointOrVector m_impl;
     };
 
