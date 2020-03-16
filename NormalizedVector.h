@@ -4,10 +4,10 @@
 namespace Space {
 
     template <typename Space, typename ExternalImplementation>
-    class NormalizedVector final : public Vector<Space, ExternalImplementation>
+    class NormalizedVector final : public Base<Space, ExternalImplementation>
     {
         using NormalizedVectorInThisSpace = NormalizedVectorInASpace<Space>;
-        using _base = Vector<Space, ExternalImplementation>;
+        using _base = Base<Space, ExternalImplementation>;
 
     public:
 
@@ -17,6 +17,11 @@ namespace Space {
         constexpr explicit NormalizedVector(const double x, const double y, const double z) noexcept(false) : _base(x, y, z) { _base::m_impl.Normalize();}
         constexpr explicit NormalizedVector(const double x, const double y) noexcept(false) : _base(x, y) { _base::m_impl.Normalize();}
         constexpr NormalizedVector(const std::initializer_list<double> l) noexcept(false) : _base(l) { _base::m_impl.Normalize();}
+
+
+        [[nodiscard]] operator Vector<Space, ExternalImplementation>() const noexcept {
+            return Vector<Space, ExternalImplementation>(_base::m_impl.X(), _base::m_impl.Y(), _base::m_impl.Z());
+        }
 
         using _base::operator*;
         [[nodiscard]] constexpr NormalizedVectorInThisSpace operator*(const NormalizedVectorInThisSpace& rhs) const noexcept {
@@ -28,22 +33,18 @@ namespace Space {
             return NormalizedVectorInThisSpace(_base::m_impl.Cross(other.m_impl));
         }
 
-        using _base::operator*=;
-        using _base::operator+=;
-        using _base::operator-=;
-
         //-------------------------------------------------------------------------------------
 #ifndef IGNORE_SPACE_STATIC_ASSERT
         StaticAssert::invalid_normalized_vector_scale operator*=(const double&) const noexcept {
             return StaticAssert::invalid_normalized_vector_scale{};
         }
-        template <typename OtherSpace>
-        StaticAssert::invalid_normalized_vector_addition operator+=(const Vector<OtherSpace, ExternalImplementation>&) const noexcept {
+        template <typename Anything>
+        StaticAssert::invalid_normalized_vector_addition operator+=(const Anything&) const noexcept {
             return StaticAssert::invalid_normalized_vector_addition{};
         }
 
-        template <typename OtherSpace>
-        StaticAssert::invalid_normalized_vector_subtraction operator-=(const Vector<OtherSpace, ExternalImplementation>&) const noexcept {
+        template <typename Anything>
+        StaticAssert::invalid_normalized_vector_subtraction operator-=(const Anything&) const noexcept {
             return StaticAssert::invalid_normalized_vector_subtraction{};
         }
 
