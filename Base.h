@@ -188,14 +188,4 @@ namespace Space {
     protected:
         detail::PointOrVector m_impl;
     };
-
-    template <typename Space, typename Impl>
-    std::ostream& operator << (
-        std::ostream& os,
-        const Base<Space, Impl>& item
-        ) {
-        const auto space = SpaceTypeNameMap<Space>::name;
-        os << space << "::Base (" << item.X() << ", " << item.Y() << ", " << item.Z() << ")";
-        return os;
-    }
 }
