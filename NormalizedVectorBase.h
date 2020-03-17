@@ -38,13 +38,13 @@ namespace Space {
         StaticAssert::invalid_normalized_vector_scale operator*=(const double&) const noexcept {
             return StaticAssert::invalid_normalized_vector_scale{};
         }
-        template <typename Anything>
-        StaticAssert::invalid_normalized_vector_addition operator+=(const Anything&) const noexcept {
+        template <typename AnySpace>
+        StaticAssert::invalid_normalized_vector_addition operator+=(const NormalizedVectorBase<AnySpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_addition{};
         }
 
-        template <typename Anything>
-        StaticAssert::invalid_normalized_vector_subtraction operator-=(const Anything&) const noexcept {
+        template <typename AnySpace>
+        StaticAssert::invalid_normalized_vector_subtraction operator-=(const NormalizedVectorBase<AnySpace, ExternalImplementation>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_subtraction{};
         }
 
