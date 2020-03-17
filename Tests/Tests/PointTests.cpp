@@ -55,7 +55,7 @@ TEST_CASE("PointsCanBeConstructedFromThreeDoubles") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Points can be constructed and normalized from implementation") {
+TEST_CASE("Points can be constructed from implementation") {
     const TestVector impl(3, 2, 1);
     const Patient::Point p(impl);
     CHECK(p.X() == 3);
@@ -65,7 +65,7 @@ TEST_CASE("Points can be constructed and normalized from implementation") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Pomts Can Be Cast To The Implementation") {
+TEST_CASE("Points Can Be Cast To The Implementation") {
     const Patient::Point p(1, 0, 0);
     auto impl = static_cast<TestVector>(p);
 }
