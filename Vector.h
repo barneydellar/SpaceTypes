@@ -1,12 +1,13 @@
 #pragma once
+#include "VectorBase.h"
 
 namespace Space {
 
     template <typename Space, typename ExternalImplementation>
-    class Vector : public Base<Space, ExternalImplementation>
+    class Vector : public VectorBase<Space, ExternalImplementation>
     {
     public:
-        using _base = Base<Space, ExternalImplementation>;
+        using _base = VectorBase<Space, ExternalImplementation>;
         using _base::_base;
 
         friend std::ostream& operator << (

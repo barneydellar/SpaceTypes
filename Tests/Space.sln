@@ -7,8 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxpro
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Space", "Space", "{4C7E07BA-0C85-44BD-B44B-369976086376}"
 	ProjectSection(SolutionItems) = preProject
-		..\Base.h = ..\Base.h
 		..\NormalizedVector.h = ..\NormalizedVector.h
+		..\NormalizedVectorBase.h = ..\NormalizedVectorBase.h
 		..\Point.h = ..\Point.h
 		..\PointOrVector.h = ..\PointOrVector.h
 		..\README.md = ..\README.md
@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Space", "Space", "{4C7E07BA
 		..\SpaceImpl.h = ..\SpaceImpl.h
 		..\StaticAsserts.h = ..\StaticAsserts.h
 		..\Vector.h = ..\Vector.h
+		..\VectorBase.h = ..\VectorBase.h
 	EndProjectSection
 EndProject
 Global

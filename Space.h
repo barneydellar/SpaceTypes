@@ -15,7 +15,7 @@ namespace Space {
     class NormalizedVector;
 }
 
-#include "Base.h"
+#include "VectorBase.h"
 #include "Point.h"
 #include "Vector.h"
 #include "NormalizedVector.h"
