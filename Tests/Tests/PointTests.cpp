@@ -15,13 +15,6 @@ TEST_CASE("Points have zero value by default") {
     CHECK(p[1] == 0);
     CHECK(p[2] == 0);
 }
-
-TEST_CASE("Points can be created using initalizer lists of two numbers") {
-    View::Point p{ 1, 2 };
-    CHECK(p[0] == 1);
-    CHECK(p[1] == 2);
-    CHECK(p[2] == 0);
-}
 TEST_CASE("Points can be created using initalizer lists of three numbers") {
     View::Point p{ 1, 2, 4 };
     CHECK(p[0] == 1);
@@ -29,7 +22,15 @@ TEST_CASE("Points can be created using initalizer lists of three numbers") {
     CHECK(p[2] == 4);
 }
 TEST_CASE("Points throw when using initalizer lists that are too small") {
-    CHECK_THROWS_AS(View::Point{ 1 }, std::invalid_argument);
+    try
+    {
+        View::Point p{1, 2};
+    }
+    catch (std::invalid_argument&)
+    {
+        return;
+    }
+    REQUIRE(false);
 }
 TEST_CASE("Points throw when using initalizer lists that are too large") {
     try
@@ -50,15 +51,6 @@ TEST_CASE("PointsCanBeConstructedFromThreeDoubles") {
     CHECK(p.X() == 1);
     CHECK(p.Y() == 2);
     CHECK(p.Z() == 3);
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("PointsCanBeConstructedFromTwoDoubles") {
-    const View::Point p(1, 2);
-    CHECK(p.X() == 1);
-    CHECK(p.Y() == 2);
-    CHECK(p.Z() == 0);
 }
 
 //-------------------------------------------------------------------------------------------------

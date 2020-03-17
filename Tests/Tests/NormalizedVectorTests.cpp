@@ -15,13 +15,6 @@ TEST_CASE("Normalized Vectors default to the i vector") {
     CHECK(v[1] == 0);
     CHECK(v[2] == 0);
 }
-
-TEST_CASE("Normalized Vectors can be created using initalizer lists of two numbers") {
-    View::NormalizedVector v(10, 0);
-    CHECK(v[0] == 1);
-    CHECK(v[1] == 0);
-    CHECK(v[2] == 0);
-}
 TEST_CASE("Normalized Vectors can be created using initalizer lists of three numbers") {
     View::NormalizedVector v{10, 0, 0 };
     CHECK(v[0] == 1);
@@ -29,7 +22,15 @@ TEST_CASE("Normalized Vectors can be created using initalizer lists of three num
     CHECK(v[2] == 0);
 }
 TEST_CASE("Normalized Vectors throw when using initalizer lists that are too small") {
-    CHECK_THROWS_AS(View::NormalizedVector{ 1 }, std::invalid_argument);
+    try
+    {
+        View::NormalizedVector v{ 1, 2 };
+    }
+    catch (std::invalid_argument&)
+    {
+        return;
+    }
+    REQUIRE(false);
 }
 TEST_CASE("Normalized Vectors throw when using initalizer lists that are too large") {
     try
@@ -57,15 +58,6 @@ TEST_CASE("NormalizedVectorsCanBeConstructedAndNormalizedFromImplementation") {
 
 TEST_CASE("NormalizedVectorsCanBeConstructedAndNormalizedFromThreeDoubles") {
     const Patient::NormalizedVector v(2, 0, 0);
-    CHECK(v.X() == 1);
-    CHECK(v.Y() == 0);
-    CHECK(v.Z() == 0);
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsCanBeConstructedAndNormalizedFromTwoDoubles") {
-    const Patient::NormalizedVector v(2, 0);
     CHECK(v.X() == 1);
     CHECK(v.Y() == 0);
     CHECK(v.Z() == 0);
