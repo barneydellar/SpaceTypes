@@ -57,7 +57,7 @@ namespace Space {
         }
 #endif
 
-    protected:
+    //protected:
         detail::PointOrVector m_impl;
     };
 }

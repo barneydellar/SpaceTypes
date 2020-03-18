@@ -76,7 +76,6 @@ namespace Space {
             return VectorInThisSpace(_base::m_impl.Cross(other._base::m_impl));
         }
 
-        using _base::operator-;
         [[nodiscard]] friend Vector2InThisSpace operator-(Vector2BaseInThisSpace lhs, const Vector2BaseInThisSpace& rhs) noexcept {
             lhs -= rhs;
             return Vector2InThisSpace(lhs._base::m_impl);
@@ -88,7 +87,6 @@ namespace Space {
             return Vector2InThisSpace(_base::m_impl);
         }
 
-        using _base::operator+;
         [[nodiscard]] friend Vector2InThisSpace operator+(Vector2BaseInThisSpace lhs, const Vector2BaseInThisSpace& rhs) noexcept {
             lhs += rhs;
             return Vector2InThisSpace(lhs.m_impl);
@@ -111,7 +109,6 @@ namespace Space {
         typename std::enable_if<I != 0 && I != 1, StaticAssert::invalid_at_access>::type at() const {
             return StaticAssert::invalid_at_access{};
         }
-
         StaticAssert::invalid_vector2_in_place_cross operator*=(const Vector2BaseInThisSpace& other) noexcept {
             return StaticAssert::invalid_vector2_in_place_cross{};
         }

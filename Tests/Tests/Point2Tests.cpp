@@ -182,12 +182,55 @@ TEST_CASE("Points and Point2s From The Same Space Can Be Compared") {
 
 //-------------------------------------------------------------------------------------------------
 
-//TEST_CASE("Point2sFromTheSameSpaceCanBeSubtractedFromGiveA3DVector") {
-//    const View::Point2 p1(2, 3);
-//    const View::Point2 p2(1, 1);
-//    const auto v = p1 - p2;
-//    CHECK(v == View::Vector2(1, 2));
-//}
+TEST_CASE("Point2s From The Same Space Can Be Subtracted From") {
+    const View::Point2 p1(2, 3);
+    const View::Point2 p2(1, 1);
+    const auto v = p1 - p2;
+    CHECK(v == View::Vector2(1, 2));
+}
+
+TEST_CASE("Point2s From The Same Space Can Be Subtracted From to give a 2D Vector") {
+    const View::Point2 p1;
+    const View::Point2 p2;
+    using converted_type = decltype(p1 - p2);
+    using required_type = decltype(View::Vector2{});
+    CHECK(
+        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+    );
+}
+TEST_CASE("Point2s Can Be Subtracted From Points in the same space") {
+    const View::Point p(2, 3, 4);
+    const View::Point2 p2(1, 1);
+    const auto v = p - p2;
+    CHECK(v == View::Vector(1, 2, 4));
+}
+
+TEST_CASE("Point2s Can Be Subtracted From Points in the same space to give a 3D Vector") {
+    const View::Point p;
+    const View::Point2 p2;
+    using converted_type = decltype(p - p2);
+    using required_type = decltype(View::Vector{});
+    CHECK(
+        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+    );
+}
+TEST_CASE("Points Can Be Subtracted From Point2s in the same space") {
+    const View::Point p(2, 3, 4);
+    const View::Point2 p2(1, 1);
+    const auto v = p2 - p;
+    CHECK(v == View::Vector(-1, -2, -4));
+}
+
+TEST_CASE("Points Can Be Subtracted From Point2s in the same space to give a 3D Vector") {
+    const View::Point p;
+    const View::Point2 p2;
+    using converted_type = decltype(p2 - p);
+    using required_type = decltype(View::Vector{});
+    CHECK(
+        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+    );
+}
+
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("Point2sFromDifferfentSpacesCannotBeSubtracted") {
     const View::Point2 p1;

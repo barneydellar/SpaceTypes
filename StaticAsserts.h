@@ -62,7 +62,7 @@ namespace Space::StaticAssert {
     {
         template<typename T = void>
         constexpr invalid_vector3_from_point2_subtraction() {
-            static_assert(false, "You can't asubtract a 3D vector from a 2D points in-place.");
+            static_assert(false, "You can't subtract a 3D vector from a 2D points in-place.");
         }
     };
 

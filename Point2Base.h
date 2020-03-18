@@ -1,6 +1,8 @@
 #pragma once
 #include "SpaceImpl.h"
 #include "PointBase.h"
+#include "VectorBase.h"
+#include "Vector2Base.h"
 
 namespace Space {
 
@@ -10,9 +12,13 @@ namespace Space {
         friend class NormalizedVector<Space, ExternalImplementation>;
         friend class Vector<Space, ExternalImplementation>;
 
+        using Point2BaseInThisSpace = Point2Base<Space, ExternalImplementation>;
+        using Vector2BaseInThisSpace = Vector2Base<Space, ExternalImplementation>;
+        using VectorBaseInThisSpace = VectorBase<Space, ExternalImplementation>;
+
         using Point2InThisSpace = Point2<Space, ExternalImplementation>;
+        using Vector2InThisSpace = Vector2<Space, ExternalImplementation>;
         using VectorInThisSpace = Vector<Space, ExternalImplementation>;
-        //using Vector2InThisSpace = Vector2InASpace<Space>;
 
     public:
 
@@ -51,12 +57,12 @@ namespace Space {
             return _base::m_impl[I];
         }
 
-        //[[nodiscard]] friend Vector2InThisSpace operator-(Point2InThisSpace lhs, const Point2InThisSpace& rhs) {
-        //    return Vector2InThisSpace(lhs.m_impl - rhs.m_impl);
-        //}
+        [[nodiscard]] friend Vector2InThisSpace operator-(Point2BaseInThisSpace lhs, const Point2BaseInThisSpace& rhs) {
+            return Vector2InThisSpace(lhs.m_impl - rhs.m_impl);
+        }
 
-        [[nodiscard]] friend Point2InThisSpace operator+(Point2InThisSpace lhs, const Point2InThisSpace& rhs) noexcept {
-            lhs += rhs;
+        [[nodiscard]] friend Point2InThisSpace operator+(Point2BaseInThisSpace lhs, const Point2BaseInThisSpace& rhs) noexcept {
+            lhs.m_impl += rhs.m_impl;
             return Point2InThisSpace(lhs.m_impl);
         }
 /*
@@ -65,9 +71,8 @@ namespace Space {
             return Point2InThisSpace(_base::m_impl);
         }*/
 
-        [[nodiscard]] friend Point2InThisSpace operator-(Point2InThisSpace lhs, const Point2InThisSpace& rhs) noexcept {
-            lhs -= rhs;
-            return Point2InThisSpace(lhs.m_impl);
+        [[nodiscard]] friend Point2InThisSpace operator-(Point2BaseInThisSpace lhs, const Vector2BaseInThisSpace& rhs) noexcept {
+            return Point2InThisSpace(lhs.m_impl - rhs.m_impl);
         }
 /*
         Point2InThisSpace operator-=(const Vector2InThisSpace& rhs) noexcept {
@@ -84,14 +89,13 @@ namespace Space {
             return StaticAssert::invalid_at_access{};
         }
 
-        StaticAssert::invalid_vector3_to_point2_addition operator+=(const VectorInThisSpace& rhs) noexcept {
+        StaticAssert::invalid_vector3_to_point2_addition operator+=(const VectorBaseInThisSpace&) noexcept {
             return StaticAssert::invalid_vector3_to_point2_addition{};
         }
 
-        StaticAssert::invalid_vector3_from_point2_subtraction operator-=(const VectorInThisSpace& rhs) noexcept {
+        StaticAssert::invalid_vector3_from_point2_subtraction operator-=(const VectorBaseInThisSpace&) noexcept {
             return StaticAssert::invalid_vector3_from_point2_subtraction{};
         }
-
 #endif
 
     };

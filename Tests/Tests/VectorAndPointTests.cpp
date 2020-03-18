@@ -185,6 +185,32 @@ TEST_CASE("Vector Can Be Subtracted From Point2 In The Same Space to produce a 3
     using required_type = decltype(Volume::Point{});
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+
+
+TEST_CASE("Vector2 Can Be Subtracted From Point In The Same Space") {
+    const Volume::Point p(0, 0, 1);
+    const Volume::Vector2 v(1, 0);
+    const auto p_new = p - v;
+    CHECK(p_new == Volume::Point(-1, 0, 1));
+}
+TEST_CASE("Vector2 Can Be Subtracted From Point2 In The Same Space") {
+    const Volume::Point2 p(3, 0);
+    const Volume::Vector2 v(1, 0);
+    std::cout << "H!";
+    const Volume::Point2 p_new = p - v;
+    std::cout << "W!";
+    CHECK(p_new == Volume::Point2(2, 0));
+}
+TEST_CASE("Vector2 Can Be Subtracted From Point2 In The Same Space to produce a 2D Point") {
+    const Volume::Point2 p;
+    const Volume::Vector2 v;
+
+    using converted_type = decltype(p - v);
+    using required_type = decltype(Volume::Point2{});
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+
+
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("PointCannotBeSubtractedFromVectorInTheSameSpace") {
     const Volume::Vector v(1, 0, 0);
