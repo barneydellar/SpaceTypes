@@ -177,7 +177,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Point2Tests .cpp" />
+    <ClCompile Include="Point2Tests.cpp" />
     <ClCompile Include="PointTests.cpp" />
     <ClCompile Include="TestVector.cpp" />
     <ClCompile Include="VectorAndPointTests.cpp" />
