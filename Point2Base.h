@@ -65,20 +65,22 @@ namespace Space {
             lhs.m_impl += rhs.m_impl;
             return Point2InThisSpace(lhs.m_impl);
         }
-/*
+
+        using _base::operator+=;
         Point2InThisSpace operator+=(const Vector2InThisSpace& rhs) noexcept {
             _base::m_impl = _base::m_impl + rhs.m_impl;
             return Point2InThisSpace(_base::m_impl);
-        }*/
+        }
 
         [[nodiscard]] friend Point2InThisSpace operator-(Point2BaseInThisSpace lhs, const Vector2BaseInThisSpace& rhs) noexcept {
             return Point2InThisSpace(lhs.m_impl - rhs.m_impl);
         }
-/*
+
+        using _base::operator-=;
         Point2InThisSpace operator-=(const Vector2InThisSpace& rhs) noexcept {
             _base::m_impl = _base::m_impl - rhs.m_impl;
             return Point2InThisSpace(_base::m_impl);
-        }*/
+        }
 
         //------------------------------------------------------------------------------------
 

@@ -132,6 +132,12 @@ TEST_CASE("VectorCanBeAddedToPointInTheSameSpaceInPlace") {
     p += v;
     CHECK(p == Volume::Point(1, 0, 1));
 }
+TEST_CASE("Vector2 Can Be Added To Point2 In The Same Space In Place") {
+    Volume::Point2 p(0, 1);
+    const Volume::Vector2 v(1, 0);
+    p += v;
+    CHECK(p == Volume::Point2(1, 1));
+}
 
 //-------------------------------------------------------------------------------------------------
 
@@ -150,8 +156,20 @@ TEST_CASE("Vector Cannot Be Added To Point2 In The Same Space In Place") {
 }
 
 TEST_CASE("VectorCannotBeAddedToPointInDifferentSpaceInPlace") {
-    View::Point p(0, 0, 1);
-    const Volume::Vector v(1, 0, 0);
+    View::Point p;
+    const Volume::Vector v;
+
+    // We should not be able to compile:
+    // auto dummy = p += v;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(p += v);
+    using required_type = StaticAssert::invalid_vector_to_point_addition;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+TEST_CASE("Vector2 Cannot Be Added To Point2 In Different Space In Place") {
+    View::Point2 p;
+    const Volume::Vector2 v;
 
     // We should not be able to compile:
     // auto dummy = p += v;
@@ -246,6 +264,12 @@ TEST_CASE("VectorCanBeSubtractedFromPointInTheSameSpaceInPlace") {
     p -= v;
     CHECK(p == Volume::Point(-1, 0, 1));
 }
+TEST_CASE("Vector2 Can Be Subtracted From Point In The Same Space In Place") {
+    Volume::Point2 p(0, 1);
+    const Volume::Vector2 v(1, 0);
+    p -= v;
+    CHECK(p == Volume::Point2(-1, 1));
+}
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("Vector Cannot Be Subtracted From Point2 In Place") {
     Volume::Point2 p;
@@ -260,8 +284,20 @@ TEST_CASE("Vector Cannot Be Subtracted From Point2 In Place") {
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 TEST_CASE("VectorCannotBeSubtractedFromPointInDifferentSpaceInPlace") {
-    View::Point p(0, 0, 1);
-    const Volume::Vector v(1, 0, 0);
+    View::Point p;
+    const Volume::Vector v;
+
+    // We should not be able to compile:
+    // auto dummy = p -= v;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(p -= v);
+    using required_type = StaticAssert::invalid_vector_from_point_subtraction;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+TEST_CASE("Vector2 Cannot Be Subtracted From Point In Different Space In Place") {
+    View::Point2 p;
+    const Volume::Vector2 v;
 
     // We should not be able to compile:
     // auto dummy = p -= v;
