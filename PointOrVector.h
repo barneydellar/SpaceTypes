@@ -41,10 +41,6 @@ namespace Space::detail {
 
     inline constexpr PointOrVector::PointOrVector(const std::initializer_list<double> l)
     {
-        if (l.size() < 2 || l.size() > 3)
-        {
-            throw std::invalid_argument("You can only initialise with two or three elements");
-        }
         auto iter = l.begin();
         m_values[0] = *iter++;
         m_values[1] = *iter++;

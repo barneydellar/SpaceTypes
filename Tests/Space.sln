@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Space", "Space", "{4C7E07BA
 		..\NormalizedVectorBase.h = ..\NormalizedVectorBase.h
 		..\Point.h = ..\Point.h
 		..\Point2.h = ..\Point2.h
+		..\Point2Base.h = ..\Point2Base.h
 		..\PointBase.h = ..\PointBase.h
 		..\PointOrVector.h = ..\PointOrVector.h
 		..\README.md = ..\README.md
@@ -19,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Space", "Space", "{4C7E07BA
 		..\SpaceImpl.h = ..\SpaceImpl.h
 		..\StaticAsserts.h = ..\StaticAsserts.h
 		..\Vector.h = ..\Vector.h
+		..\Vector2.h = ..\Vector2.h
+		..\Vector2Base.h = ..\Vector2Base.h
 		..\VectorBase.h = ..\VectorBase.h
 	EndProjectSection
 EndProject

@@ -11,8 +11,13 @@ namespace Space {
         constexpr Base() noexcept : m_impl(0, 0, 0) {}
         constexpr explicit Base(const ExternalImplementation& v) noexcept : m_impl(v.X(), v.Y(), v.Z()) {}
         constexpr explicit Base(const double x, const double y, const double z) noexcept : m_impl(x, y, z) {}
-        constexpr explicit Base(const double x, const double y) noexcept : m_impl(x, y, 0) {}
-        constexpr Base(const std::initializer_list<double> l) : m_impl(l) {}
+        constexpr Base(const std::initializer_list<double> l) : m_impl(l)
+        {
+            if (l.size() != 3)
+            {
+                throw std::invalid_argument("You can only initialise with three elements");
+            }
+        }
 
         [[nodiscard]] explicit constexpr operator ExternalImplementation() const noexcept {
             return ExternalImplementation(m_impl.X(), m_impl.Y(), m_impl.Z());

@@ -15,7 +15,6 @@ namespace Space {
         constexpr NormalizedVectorBase() noexcept(false) { _base::m_impl = { 1, 0, 0 }; }
         constexpr explicit NormalizedVectorBase(const ExternalImplementation& e) noexcept(false) : _base(e) { _base::m_impl.Normalize(); }
         constexpr explicit NormalizedVectorBase(const double x, const double y, const double z) noexcept(false) : _base(x, y, z) { _base::m_impl.Normalize();}
-        constexpr explicit NormalizedVectorBase(const double x, const double y) noexcept(false) : _base(x, y) { _base::m_impl.Normalize();}
         constexpr NormalizedVectorBase(const std::initializer_list<double> l) noexcept(false) : _base(l) { _base::m_impl.Normalize();}
 
 

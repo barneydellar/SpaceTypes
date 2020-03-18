@@ -20,18 +20,13 @@ TEST_CASE("Vector2s can be created using initalizer lists of two numbers") {
     CHECK(v[0] == 1);
     CHECK(v[1] == 2);
 }
-TEST_CASE("Vector2s can be created using initalizer lists of three numbers") {
-    View::Vector2 v{ 1, 2, 4 };
-    CHECK(v[0] == 1);
-    CHECK(v[1] == 2);
-}
 TEST_CASE("Vector2s throw when using initalizer lists that are too small") {
     CHECK_THROWS_AS(View::Vector2{ 1 }, std::invalid_argument);
 }
 TEST_CASE("Vector2s throw when using initalizer lists that are too large") {
     try
     {
-        View::Vector2 v{ 1, 2, 3, 4 };
+        View::Vector2 v{ 1, 2, 3 };
     }
     catch (std::invalid_argument&)
     {
@@ -50,13 +45,13 @@ TEST_CASE("Vector2sCanBeConstructedFromTwoDoubles") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Vector2sCanBeConstructedFromANormalizedVector2") {
-    const View::NormalizedVector2 nv(0, 1);
-    const View::Vector2 v(nv);
-
-    CHECK(v.X() == 0);
-    CHECK(v.Y() == 1);
-}
+//TEST_CASE("Vector2sCanBeConstructedFromANormalizedVector2") {
+//    const View::NormalizedVector2 nv(0, 1);
+//    const View::Vector2 v(nv);
+//
+//    CHECK(v.X() == 0);
+//    CHECK(v.Y() == 1);
+//}
 
 //-------------------------------------------------------------------------------------------------
 
@@ -70,13 +65,13 @@ TEST_CASE("Vector2sCanBeAssignedFromAVector2") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Vector2sCanBeAssignedFromANormalizedVector2") {
-    const View::NormalizedVector2 nv(0, 1);
-    const View::Vector2 v = nv;
-
-    CHECK(v.X() == 0);
-    CHECK(v.Y() == 1);
-}
+//TEST_CASE("Vector2sCanBeAssignedFromANormalizedVector2") {
+//    const View::NormalizedVector2 nv(0, 1);
+//    const View::Vector2 v = nv;
+//
+//    CHECK(v.X() == 0);
+//    CHECK(v.Y() == 1);
+//}
 
 //-------------------------------------------------------------------------------------------------
 
@@ -163,28 +158,28 @@ TEST_CASE("Vector2sInDifferentSpacesCannotBeAddedTogether") {
 #endif
 
 //-------------------------------------------------------------------------------------------------
-
-TEST_CASE("Vector2sAndNormalizedVector2sInTheSameSpaceCanBeAddedTogether") {
-    const Image::Vector2 v1(1, 2);
-    const Image::NormalizedVector2 v2(1, 0);
-    const auto v_new = v1 + v2;
-    CHECK(v_new == Image::Vector2(2, 2));
-}
-
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("Vector2sAndNormalizedVector2sInDifferentSpacesCannotBeAddedTogether") {
-    const View::Vector2 v1;
-    const Image::NormalizedVector2 v2;
-
-    // We should not be able to compile:
-    // auto dummy = v1 + v2;
-    // But we can check the return type,
-    // to make sure we get an invalid type:
-    using converted_type = decltype(v1 + v2);
-    using required_type = StaticAssert::invalid_vector_to_vector_addition;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
-}
-#endif
+//
+//TEST_CASE("Vector2sAndNormalizedVector2sInTheSameSpaceCanBeAddedTogether") {
+//    const Image::Vector2 v1(1, 2);
+//    const Image::NormalizedVector2 v2(1, 0);
+//    const auto v_new = v1 + v2;
+//    CHECK(v_new == Image::Vector2(2, 2));
+//}
+//
+//#ifndef IGNORE_SPACE_STATIC_ASSERT
+//TEST_CASE("Vector2sAndNormalizedVector2sInDifferentSpacesCannotBeAddedTogether") {
+//    const View::Vector2 v1;
+//    const Image::NormalizedVector2 v2;
+//
+//    // We should not be able to compile:
+//    // auto dummy = v1 + v2;
+//    // But we can check the return type,
+//    // to make sure we get an invalid type:
+//    using converted_type = decltype(v1 + v2);
+//    using required_type = StaticAssert::invalid_vector_to_vector_addition;
+//    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+//}
+//#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -211,28 +206,28 @@ TEST_CASE("Vector2sInDifferentSpacesCannotBeAddedInPlace") {
 #endif
 
 //-------------------------------------------------------------------------------------------------
-
-TEST_CASE("Vector2sAndNormalizedVector2sInTheSameSpaceCanBeAddedInPlace") {
-    Image::Vector2 v1(1, 2);
-    const Image::NormalizedVector2 v2(1, 0);
-    v1 += v2;
-    CHECK(v1 == Image::Vector2(2, 2));
-}
-
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("Vector2sAndNormalizedVector2sInDifferentSpacesCannotBeAddedInPlace") {
-    View::Vector2 v1;
-    const Image::NormalizedVector2 v2;
-
-    // We should not be able to compile:
-    // v1 += v2;
-    // But we can check the return type,
-    // to make sure we get an invalid type:
-    using converted_type = decltype(v1 += v2);
-    using required_type = StaticAssert::invalid_vector_to_vector_addition;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
-}
-#endif
+//
+//TEST_CASE("Vector2sAndNormalizedVector2sInTheSameSpaceCanBeAddedInPlace") {
+//    Image::Vector2 v1(1, 2);
+//    const Image::NormalizedVector2 v2(1, 0);
+//    v1 += v2;
+//    CHECK(v1 == Image::Vector2(2, 2));
+//}
+//
+//#ifndef IGNORE_SPACE_STATIC_ASSERT
+//TEST_CASE("Vector2sAndNormalizedVector2sInDifferentSpacesCannotBeAddedInPlace") {
+//    View::Vector2 v1;
+//    const Image::NormalizedVector2 v2;
+//
+//    // We should not be able to compile:
+//    // v1 += v2;
+//    // But we can check the return type,
+//    // to make sure we get an invalid type:
+//    using converted_type = decltype(v1 += v2);
+//    using required_type = StaticAssert::invalid_vector_to_vector_addition;
+//    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+//}
+//#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -243,20 +238,20 @@ TEST_CASE("Vector2sInTheSameSpaceCanBeSubtracted") {
     CHECK(v_new == Image::Vector2(2, 0));
 }
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("Vector2sAndNormalizedVector2sInDifferentSpacesCannotBeSubtracted") {
-    const View::Vector2 v1;
-    const Image::NormalizedVector2 v2;
-
-    // We should not be able to compile:
-    // auto dummy = v1 - v2;
-    // But we can check the return type,
-    // to make sure we get an invalid type:
-    using converted_type = decltype(v1 - v2);
-    using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
-}
-#endif
+//#ifndef IGNORE_SPACE_STATIC_ASSERT
+//TEST_CASE("Vector2sAndNormalizedVector2sInDifferentSpacesCannotBeSubtracted") {
+//    const View::Vector2 v1;
+//    const Image::NormalizedVector2 v2;
+//
+//    // We should not be able to compile:
+//    // auto dummy = v1 - v2;
+//    // But we can check the return type,
+//    // to make sure we get an invalid type:
+//    using converted_type = decltype(v1 - v2);
+//    using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
+//    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+//}
+//#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -283,28 +278,28 @@ TEST_CASE("Vector2sInDifferentSpacesCannotBeSubtractedInPlace") {
 #endif
 
 //-------------------------------------------------------------------------------------------------
-
-TEST_CASE("Vector2sAndNormalizedVector2sInTheSameSpaceCanBeSubtractedInPlace") {
-    Image::Vector2 v1(1, 2);
-    const Image::NormalizedVector2 v2(1, 0);
-    v1 -= v2;
-    CHECK(v1 == Image::Vector2(0, 2));
-}
-
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("Vector2sAndNormalizedVector2sInDifferentSpacesCannotBeSubtractedInPlace") {
-    View::Vector2 v1;
-    const Image::NormalizedVector2 v2;
-
-    // We should not be able to compile:
-    // v1 -= v2;
-    // But we can check the return type,
-    // to make sure we get an invalid type:
-    using converted_type = decltype(v1 -= v2);
-    using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
-}
-#endif
+//
+//TEST_CASE("Vector2sAndNormalizedVector2sInTheSameSpaceCanBeSubtractedInPlace") {
+//    Image::Vector2 v1(1, 2);
+//    const Image::NormalizedVector2 v2(1, 0);
+//    v1 -= v2;
+//    CHECK(v1 == Image::Vector2(0, 2));
+//}
+//
+//#ifndef IGNORE_SPACE_STATIC_ASSERT
+//TEST_CASE("Vector2sAndNormalizedVector2sInDifferentSpacesCannotBeSubtractedInPlace") {
+//    View::Vector2 v1;
+//    const Image::NormalizedVector2 v2;
+//
+//    // We should not be able to compile:
+//    // v1 -= v2;
+//    // But we can check the return type,
+//    // to make sure we get an invalid type:
+//    using converted_type = decltype(v1 -= v2);
+//    using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
+//    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+//}
+//#endif
 
 //-------------------------------------------------------------------------------------------------
 

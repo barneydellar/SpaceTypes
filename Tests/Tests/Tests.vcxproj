@@ -180,6 +180,7 @@
     <ClCompile Include="Point2Tests.cpp" />
     <ClCompile Include="PointTests.cpp" />
     <ClCompile Include="TestVector.cpp" />
+    <ClCompile Include="Vector2Tests.cpp" />
     <ClCompile Include="VectorAndPointTests.cpp" />
     <ClCompile Include="VectorTests.cpp" />
   </ItemGroup>

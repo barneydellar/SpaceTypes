@@ -50,6 +50,22 @@ namespace Space::StaticAssert {
         }
     };
 
+    struct invalid_vector3_to_point2_addition final
+    {
+        template<typename T = void>
+        constexpr invalid_vector3_to_point2_addition() {
+            static_assert(false, "You can't add a 3D vector to a 2D points in-place.");
+        }
+    };
+
+    struct invalid_vector3_from_point2_subtraction final
+    {
+        template<typename T = void>
+        constexpr invalid_vector3_from_point2_subtraction() {
+            static_assert(false, "You can't asubtract a 3D vector from a 2D points in-place.");
+        }
+    };
+
     struct invalid_vector_from_point_subtraction final
     {
         template<typename T = void>
@@ -153,4 +169,13 @@ namespace Space::StaticAssert {
             static_assert(false, "Normalized vectors cannot be normalised.");
         }
     };
+
+    struct z_not_supported final
+    {
+        template<typename T = void>
+        constexpr z_not_supported() {
+            static_assert(false, "2D vectors and points do not support z-access.");
+        }
+    };
+
 }

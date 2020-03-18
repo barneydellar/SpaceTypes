@@ -17,5 +17,8 @@ namespace Space {
     using PointInASpace = typename S::Point;
 
     template<typename S>
+    using Point2InASpace = typename S::Point2;
+
+    template<typename S>
     using NormalizedVectorInASpace = typename S::NormalizedVector;
 }

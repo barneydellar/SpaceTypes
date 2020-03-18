@@ -41,9 +41,9 @@ namespace Space {
             return VectorInThisSpace(lhs.m_impl - rhs.m_impl);
         }
 
-        [[nodiscard]] friend PointInThisSpace operator+(PointBaseInThisSpace lhs, const VectorBaseInThisSpace& rhs) noexcept {
+        [[nodiscard]] friend Point<Space, ExternalImplementation> operator+(PointBaseInThisSpace lhs, const VectorBaseInThisSpace& rhs) noexcept {
             lhs += rhs;
-            return PointInThisSpace(lhs.m_impl);
+            return Point<Space, ExternalImplementation>(lhs.m_impl);
         }
 
         PointInThisSpace operator+=(const VectorBaseInThisSpace& rhs) noexcept {

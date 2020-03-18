@@ -80,6 +80,38 @@ TEST_CASE("Point2s cannot be implicitly cast to the implementation") {
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("Point2s Can Be Passed By Value To Point") {
+
+    const Patient::Point2 nv{ 1, 2 };
+
+    const auto lambda = [](
+        const Patient::Point v
+    ) {
+        CHECK(v.X() == 1);
+        CHECK(v.Y() == 2);
+        CHECK(v.Z() == 0);
+    };
+
+    lambda(nv);
+}
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Point2s Can Be Passed By Const Ref To Point") {
+
+    const Patient::Point2 nv(0, 4);
+
+    const auto lambda = [](
+        const Patient::Point& v
+    ) {
+        CHECK(v.X() == 0);
+        CHECK(v.Y() == 4);
+    };
+
+    lambda(nv);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("Point2sFromTheSameSpaceCanBeComparedUsingEqual_same") {
     const View::Point2 p1(1, 0);
     const View::Point2 p2(1, 0);
