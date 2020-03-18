@@ -14,7 +14,7 @@ TEST_CASE("Point2s have zero value by default") {
     CHECK(p[0] == 0);
     CHECK(p[1] == 0);
 }
-TEST_CASE("Point2s can be created using initalizer lists of three numbers") {
+TEST_CASE("Point2s can be created using initalizer lists of two numbers") {
     View::Point2 p{ 1, 2 };
     CHECK(p[0] == 1);
     CHECK(p[1] == 2);
@@ -62,8 +62,11 @@ TEST_CASE("Point2s can be constructed from implementation") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("Point2s Can Be Cast To The Implementation") {
-    const Patient::Point2 p(1, 0);
+    const Patient::Point2 p(3, 2);
     auto impl = static_cast<TestVector>(p);
+    CHECK(impl.X() == 3);
+    CHECK(impl.Y() == 2);
+    CHECK(impl.Z() == 0);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -72,7 +75,7 @@ TEST_CASE("Point2s cannot be implicitly cast to the implementation") {
     const Patient::Point2 p;
 
     // This does not compile:
-    // TestVector impl = p;
+    //TestVector impl = p;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -120,6 +123,9 @@ TEST_CASE("Point2sFromTheSameSpaceCanBeComparedUsingInequality_different") {
     const Patient::Point2 p2(2, 0);
     CHECK(p1 != p2);
 }
+
+//-------------------------------------------------------------------------------------------------
+
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("Point2sFromDiffefentSpacesCannotBeComparedUsingInequality") {
     const View::Point2 p1;
@@ -135,9 +141,16 @@ TEST_CASE("Point2sFromDiffefentSpacesCannotBeComparedUsingInequality") {
 }
 #endif
 
+TEST_CASE("Points and Point2s From The Same Space Can Be Compared") {
+    const View::Point p(1, 0, 0);
+    const View::Point2 p2(1, 0);
+
+    CHECK(p == p2);
+}
+
 //-------------------------------------------------------------------------------------------------
 
-//TEST_CASE("Point2sFromTheSameSpaceCanBeSubtractedFromGiveAVector") {
+//TEST_CASE("Point2sFromTheSameSpaceCanBeSubtractedFromGiveA3DVector") {
 //    const View::Point2 p1(2, 3);
 //    const View::Point2 p2(1, 1);
 //    const auto v = p1 - p2;
