@@ -1,5 +1,4 @@
 #pragma once
-#include "SpaceImpl.h"
 #include "PointBase.h"
 #include "Base.h"
 #include "NormalizedVector2Base.h"

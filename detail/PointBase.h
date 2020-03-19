@@ -1,10 +1,8 @@
 #pragma once
-#include "SpaceImpl.h"
 #include "VectorBase.h"
 #include "Base.h"
 
 namespace Space {
-
 
     template <typename Space, typename ExternalImplementation>
     class VectorBase;

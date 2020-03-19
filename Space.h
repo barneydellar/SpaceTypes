@@ -43,6 +43,7 @@ namespace Space {
     class NormalizedVector2Base;
 }
 
+#include "detail/SpaceImpl.h"
 #include "Point.h"
 #include "Point2.h"
 #include "Vector.h"

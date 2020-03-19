@@ -1,5 +1,5 @@
 #pragma once
-#include "PointBase.h"
+#include "detail/PointBase.h"
 
 namespace Space {
 

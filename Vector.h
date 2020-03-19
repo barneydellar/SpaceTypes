@@ -1,5 +1,5 @@
 #pragma once
-#include "VectorBase.h"
+#include "detail/VectorBase.h"
 
 namespace Space {
 

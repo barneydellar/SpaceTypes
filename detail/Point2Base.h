@@ -1,5 +1,4 @@
 #pragma once
-#include "SpaceImpl.h"
 #include "PointBase.h"
 #include "VectorBase.h"
 #include "Vector2Base.h"

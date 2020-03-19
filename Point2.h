@@ -1,6 +1,5 @@
 #pragma once
-#include "SpaceImpl.h"
-#include "Point2Base.h"
+#include "detail/Point2Base.h"
 
 namespace Space {
 

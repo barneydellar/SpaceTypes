@@ -1,5 +1,5 @@
 #pragma once
-#include "NormalizedVector2Base.h"
+#include "detail/NormalizedVector2Base.h"
 
 namespace Space {
 
