@@ -2,6 +2,7 @@
 #include "SpaceImpl.h"
 #include "PointBase.h"
 #include "Base.h"
+#include "NormalizedVector2Base.h"
 
 namespace Space {
 
@@ -12,14 +13,11 @@ namespace Space {
     template <typename Space, typename ExternalImplementation>
     class Vector2Base : public virtual VectorBase<Space, ExternalImplementation>
     {
-        friend class PointBase<Space, ExternalImplementation>;
-
         using Vector2BaseInThisSpace = Vector2Base<Space, ExternalImplementation>;
         using VectorBaseInThisSpace = VectorBase<Space, ExternalImplementation>;
 
     public:
 
-        Vector2Base(const detail::PointOrVector& v) noexcept { VectorBaseInThisSpace::m_impl = { v.X(), v.Y(), 0 }; }
         Vector2Base() noexcept { VectorBaseInThisSpace::m_impl = { 0, 0, 0 }; }
         explicit Vector2Base(const ExternalImplementation& v) noexcept { VectorBaseInThisSpace::m_impl = { v.X(), v.Y(), 0 }; }
         explicit Vector2Base(const double x, const double y) noexcept { VectorBaseInThisSpace::m_impl = { x, y, 0 }; }

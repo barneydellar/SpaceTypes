@@ -11,7 +11,6 @@ namespace Space {
 
     public:
 
-        NormalizedVectorBase(const detail::PointOrVector& p) noexcept(false) { VectorBaseInThisSpace::m_impl = p; VectorBaseInThisSpace::m_impl.Normalize(); }
         NormalizedVectorBase() noexcept(false) { VectorBaseInThisSpace::m_impl = { 1, 0, 0 }; }
         explicit NormalizedVectorBase(const ExternalImplementation& e) noexcept(false) { VectorBaseInThisSpace::m_impl = { e.X(), e.Y(), e.Z() }; VectorBaseInThisSpace::m_impl.Normalize(); }
         explicit NormalizedVectorBase(const double x, const double y, const double z) noexcept(false) { VectorBaseInThisSpace::m_impl = {x, y, z}; VectorBaseInThisSpace::m_impl.Normalize();}

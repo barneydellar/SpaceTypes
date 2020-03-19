@@ -6,8 +6,12 @@ namespace Space {
     template <typename Space, typename ExternalImplementation>
     class Base
     {
+        friend class PointBase<Space, ExternalImplementation>;
+        friend class NormalizedVectorBase<Space, ExternalImplementation>;
+        friend class NormalizedVector2Base<Space, ExternalImplementation>;
+        friend class VectorBase<Space, ExternalImplementation>;
+        friend class Vector2Base<Space, ExternalImplementation>;
     public:
-        Base(const detail::PointOrVector& v) noexcept : m_impl(v) {}
         Base() noexcept : m_impl(0, 0, 0) {}
         explicit Base(const ExternalImplementation& v) noexcept : m_impl(v.X(), v.Y(), v.Z()) {}
         explicit Base(const double x, const double y, const double z) noexcept : m_impl(x, y, z) {}
@@ -57,7 +61,7 @@ namespace Space {
         }
 #endif
 
-    //protected:
-        detail::PointOrVector m_impl;
+    protected:
+        ExternalImplementation m_impl;
     };
 }

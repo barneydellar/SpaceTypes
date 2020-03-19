@@ -22,9 +22,27 @@ namespace Space {
 
     template <typename Space, typename ExternalImplementation>
     class NormalizedVector2;
+
+
+    template <typename Space, typename ExternalImplementation>
+    class VectorBase;
+
+    template <typename Space, typename ExternalImplementation>
+    class Vector2Base;
+
+    template <typename Space, typename ExternalImplementation>
+    class PointBase;
+
+    template <typename Space, typename ExternalImplementation>
+    class Point2Base;
+
+    template <typename Space, typename ExternalImplementation>
+    class NormalizedVectorBase;
+
+    template <typename Space, typename ExternalImplementation>
+    class NormalizedVector2Base;
 }
 
-#include "VectorBase.h"
 #include "Point.h"
 #include "Point2.h"
 #include "Vector.h"
@@ -35,7 +53,10 @@ namespace Space {
 namespace Space {
     template <typename SpaceName, typename Implementation, typename Units>
     struct SpaceBase {
-        using Point = Point<SpaceName, Implementation>;
+
+        using temp = Point<SpaceName, Implementation>;
+
+        using Point = temp;
         using Point2 = Point2<SpaceName, Implementation>;
         using Vector = Vector<SpaceName, Implementation>;
         using Vector2 = Vector2<SpaceName, Implementation>;

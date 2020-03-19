@@ -12,8 +12,6 @@ namespace Space {
     template <typename Space, typename ExternalImplementation>
     class PointBase : public Base<Space, ExternalImplementation>
     {
-        friend class Vector<Space, ExternalImplementation>;
-
         using VectorBaseInThisSpace = VectorBase<Space, ExternalImplementation>;
         using PointBaseInThisSpace = PointBase<Space, ExternalImplementation>;
 
