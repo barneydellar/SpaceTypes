@@ -21,6 +21,7 @@ TEST_CASE("Normalized Vectors can be created using initalizer lists of three num
     CHECK(v[1] == 0);
     CHECK(v[2] == 0);
 }
+
 TEST_CASE("Normalized Vectors throw when using initalizer lists that are too small") {
     try
     {
@@ -52,6 +53,17 @@ TEST_CASE("NormalizedVectorsCanBeConstructedAndNormalizedFromImplementation") {
     CHECK(v.X() == 1);
     CHECK(v.Y() == 0);
     CHECK(v.Z() == 0);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Normalized Vectors are normalised when constructed from an implementation") {
+    const TestVector impl_in(3, 0, 4);
+    const Patient::NormalizedVector v(impl_in);
+    auto impl = static_cast<TestVector>(v);
+    CHECK(impl.X() == 3 / 5.0);
+    CHECK(impl.Y() == 0);
+    CHECK(impl.Z() == 4 / 5.0);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -632,18 +644,19 @@ TEST_CASE("NormalizedVectorsSupportElementAccessByName") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("NormalizedVectorsSupportConstBeginAndEnd") {
-    const Image::Vector v(2, 3, 4);
+    const Image::NormalizedVector v(1, 0, 0);
     std::vector<double> values;
     std::copy(v.cbegin(), v.cend(), std::back_inserter(values));
-    CHECK(values[0] == 2);
-    CHECK(values[1] == 3);
-    CHECK(values[2] == 4);
+    CHECK(values.size() == 3);
+    CHECK(values[0] == 1);
+    CHECK(values[1] == 0);
+    CHECK(values[2] == 0);
 }
 
 //-------------------------------------------------------------------------------------------------
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedVectorsDoNotSupportNorm") {
-    Image::NormalizedVector nv(2, 3, 4);
+    Image::NormalizedVector nv;
 
     // We should not be able to compile:
     // auto dummy = nv.begin();
@@ -669,7 +682,7 @@ TEST_CASE("NormalizedVectorsDoNotSupportNonConstBegin") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("NormalizedVectorsDoNotSupportNonConstEnd") {
-    Image::NormalizedVector nv(2, 3, 4);
+    Image::NormalizedVector nv;
 
     // We should not be able to compile:
     // auto dummy = nv.end();
@@ -680,6 +693,21 @@ TEST_CASE("NormalizedVectorsDoNotSupportNonConstEnd") {
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 #endif
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Normalized Vectors Can Have their z-value removed") {
+    const Image::NormalizedVector v(1, 0, 0);
+    const auto v_norm = v.RemoveZ();
+    CHECK(v_norm == Image::NormalizedVector2(1, 0));
+}
+
+TEST_CASE("Normalized Vectors Can Have their z-value removed to produce a Normalized vector2") {
+    const Image::NormalizedVector v;
+    using converted_type = decltype(v.RemoveZ());
+    using required_type = decltype(Image::NormalizedVector2{});
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
 
 //-------------------------------------------------------------------------------------------------
 

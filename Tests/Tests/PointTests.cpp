@@ -193,6 +193,7 @@ TEST_CASE("PointsSupportConstBeginAndEnd") {
     const View::Point p(2, 3, 4);
     std::vector<double> values;
     std::copy(p.cbegin(), p.cend(), std::back_inserter(values));
+    CHECK(values.size() == 3);
     CHECK(values[0] == 2);
     CHECK(values[1] == 3);
     CHECK(values[2] == 4);
@@ -205,9 +206,27 @@ TEST_CASE("PointsSupportNonConstBeginAndEnd") {
     std::vector<double> values;
 
     std::copy(p.begin(), p.end(), std::back_inserter(values));
+    CHECK(values.size() == 3);
     CHECK(values[0] == 2);
     CHECK(values[1] == 3);
     CHECK(values[2] == 4);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Points Can Have their z-value removed") {
+    const Image::Point v(2, 3, 4);
+    const auto v_norm = v.RemoveZ();
+    CHECK(v_norm == Image::Point2(2, 3));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Points Can Have their z-value removed to produce a vector2") {
+    const Image::Point v;
+    using converted_type = decltype(v.RemoveZ());
+    using required_type = decltype(Image::Point2{});
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 
 //-------------------------------------------------------------------------------------------------

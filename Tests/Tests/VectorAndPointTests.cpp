@@ -214,9 +214,7 @@ TEST_CASE("Vector2 Can Be Subtracted From Point In The Same Space") {
 TEST_CASE("Vector2 Can Be Subtracted From Point2 In The Same Space") {
     const Volume::Point2 p(3, 0);
     const Volume::Vector2 v(1, 0);
-    std::cout << "H!";
     const Volume::Point2 p_new = p - v;
-    std::cout << "W!";
     CHECK(p_new == Volume::Point2(2, 0));
 }
 TEST_CASE("Vector2 Can Be Subtracted From Point2 In The Same Space to produce a 2D Point") {

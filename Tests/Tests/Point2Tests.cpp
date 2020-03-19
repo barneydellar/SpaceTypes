@@ -276,6 +276,7 @@ TEST_CASE("Point2sSupportConstBeginAndEnd") {
     const View::Point2 p(2, 3);
     std::vector<double> values;
     std::copy(p.cbegin(), p.cend(), std::back_inserter(values));
+    CHECK(values.size() == 2);
     CHECK(values[0] == 2);
     CHECK(values[1] == 3);
 }
@@ -287,6 +288,7 @@ TEST_CASE("Point2sSupportNonConstBeginAndEnd") {
     std::vector<double> values;
 
     std::copy(p.begin(), p.end(), std::back_inserter(values));
+    CHECK(values.size() == 2);
     CHECK(values[0] == 2);
     CHECK(values[1] == 3);
 }

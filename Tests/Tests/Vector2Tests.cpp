@@ -45,13 +45,13 @@ TEST_CASE("Vector2sCanBeConstructedFromTwoDoubles") {
 
 //-------------------------------------------------------------------------------------------------
 
-//TEST_CASE("Vector2sCanBeConstructedFromANormalizedVector2") {
-//    const View::NormalizedVector2 nv(0, 1);
-//    const View::Vector2 v(nv);
-//
-//    CHECK(v.X() == 0);
-//    CHECK(v.Y() == 1);
-//}
+TEST_CASE("Vector2s Can Be Constructed From A Normalized Vector2") {
+    const View::NormalizedVector2 nv(0, 1);
+    const View::Vector2 v(nv);
+
+    CHECK(v.X() == 0);
+    CHECK(v.Y() == 1);
+}
 
 //-------------------------------------------------------------------------------------------------
 
@@ -158,28 +158,28 @@ TEST_CASE("Vector2sInDifferentSpacesCannotBeAddedTogether") {
 #endif
 
 //-------------------------------------------------------------------------------------------------
-//
-//TEST_CASE("Vector2sAndNormalizedVector2sInTheSameSpaceCanBeAddedTogether") {
-//    const Image::Vector2 v1(1, 2);
-//    const Image::NormalizedVector2 v2(1, 0);
-//    const auto v_new = v1 + v2;
-//    CHECK(v_new == Image::Vector2(2, 2));
-//}
-//
-//#ifndef IGNORE_SPACE_STATIC_ASSERT
-//TEST_CASE("Vector2sAndNormalizedVector2sInDifferentSpacesCannotBeAddedTogether") {
-//    const View::Vector2 v1;
-//    const Image::NormalizedVector2 v2;
-//
-//    // We should not be able to compile:
-//    // auto dummy = v1 + v2;
-//    // But we can check the return type,
-//    // to make sure we get an invalid type:
-//    using converted_type = decltype(v1 + v2);
-//    using required_type = StaticAssert::invalid_vector_to_vector_addition;
-//    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
-//}
-//#endif
+
+TEST_CASE("Vector2s And Normalized Vector2s In The Same Space Can Be Added Together") {
+    const Image::Vector2 v1(1, 2);
+    const Image::NormalizedVector2 v2(1, 0);
+    const auto v_new = v1 + v2;
+    CHECK(v_new == Image::Vector2(2, 2));
+}
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("Vector2s And Normalized Vector2s In Different Spaces Cannot Be Added Together") {
+    const View::Vector2 v1;
+    const Image::NormalizedVector2 v2;
+
+    // We should not be able to compile:
+    // auto dummy = v1 + v2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v1 + v2);
+    using required_type = StaticAssert::invalid_vector_to_vector_addition;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -206,28 +206,28 @@ TEST_CASE("Vector2sInDifferentSpacesCannotBeAddedInPlace") {
 #endif
 
 //-------------------------------------------------------------------------------------------------
-//
-//TEST_CASE("Vector2sAndNormalizedVector2sInTheSameSpaceCanBeAddedInPlace") {
-//    Image::Vector2 v1(1, 2);
-//    const Image::NormalizedVector2 v2(1, 0);
-//    v1 += v2;
-//    CHECK(v1 == Image::Vector2(2, 2));
-//}
-//
-//#ifndef IGNORE_SPACE_STATIC_ASSERT
-//TEST_CASE("Vector2sAndNormalizedVector2sInDifferentSpacesCannotBeAddedInPlace") {
-//    View::Vector2 v1;
-//    const Image::NormalizedVector2 v2;
-//
-//    // We should not be able to compile:
-//    // v1 += v2;
-//    // But we can check the return type,
-//    // to make sure we get an invalid type:
-//    using converted_type = decltype(v1 += v2);
-//    using required_type = StaticAssert::invalid_vector_to_vector_addition;
-//    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
-//}
-//#endif
+
+TEST_CASE("Vector2s And Normalized Vector2s In The Same Space Can Be Added In Place") {
+    Image::Vector2 v1(1, 2);
+    const Image::NormalizedVector2 v2(1, 0);
+    v1 += v2;
+    CHECK(v1 == Image::Vector2(2, 2));
+}
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("Vector2s And Normalized Vector2s In Different Spaces Cannot Be Added In Place") {
+    View::Vector2 v1;
+    const Image::NormalizedVector2 v2;
+
+    // We should not be able to compile:
+    // v1 += v2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v1 += v2);
+    using required_type = StaticAssert::invalid_vector_to_vector_addition;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -238,20 +238,20 @@ TEST_CASE("Vector2sInTheSameSpaceCanBeSubtracted") {
     CHECK(v_new == Image::Vector2(2, 0));
 }
 
-//#ifndef IGNORE_SPACE_STATIC_ASSERT
-//TEST_CASE("Vector2sAndNormalizedVector2sInDifferentSpacesCannotBeSubtracted") {
-//    const View::Vector2 v1;
-//    const Image::NormalizedVector2 v2;
-//
-//    // We should not be able to compile:
-//    // auto dummy = v1 - v2;
-//    // But we can check the return type,
-//    // to make sure we get an invalid type:
-//    using converted_type = decltype(v1 - v2);
-//    using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
-//    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
-//}
-//#endif
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("Vector2s And Normalized Vector2s In Different Spaces Cannot Be Subtracted") {
+    const View::Vector2 v1;
+    const Image::NormalizedVector2 v2;
+
+    // We should not be able to compile:
+    // auto dummy = v1 - v2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v1 - v2);
+    using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -278,28 +278,28 @@ TEST_CASE("Vector2sInDifferentSpacesCannotBeSubtractedInPlace") {
 #endif
 
 //-------------------------------------------------------------------------------------------------
-//
-//TEST_CASE("Vector2sAndNormalizedVector2sInTheSameSpaceCanBeSubtractedInPlace") {
-//    Image::Vector2 v1(1, 2);
-//    const Image::NormalizedVector2 v2(1, 0);
-//    v1 -= v2;
-//    CHECK(v1 == Image::Vector2(0, 2));
-//}
-//
-//#ifndef IGNORE_SPACE_STATIC_ASSERT
-//TEST_CASE("Vector2sAndNormalizedVector2sInDifferentSpacesCannotBeSubtractedInPlace") {
-//    View::Vector2 v1;
-//    const Image::NormalizedVector2 v2;
-//
-//    // We should not be able to compile:
-//    // v1 -= v2;
-//    // But we can check the return type,
-//    // to make sure we get an invalid type:
-//    using converted_type = decltype(v1 -= v2);
-//    using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
-//    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
-//}
-//#endif
+
+TEST_CASE("Vector2s And Normalized Vector2s In TheS ame Space Can Be Subtracted In Place") {
+    Image::Vector2 v1(1, 2);
+    const Image::NormalizedVector2 v2(1, 0);
+    v1 -= v2;
+    CHECK(v1 == Image::Vector2(0, 2));
+}
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("Vector2s And Normalized Vector2s In Different Spaces Cannot Be Subtracted In Place") {
+    View::Vector2 v1;
+    const Image::NormalizedVector2 v2;
+
+    // We should not be able to compile:
+    // v1 -= v2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v1 -= v2);
+    using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -351,11 +351,20 @@ TEST_CASE("Vector2sSupportMag_double") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Vector2sCanBeNormalized") {
+TEST_CASE("Vector2 Can Be Normalized") {
     const Image::Vector2 v(3, 4);
     const auto v_norm = v.Norm();
     // Mag of v = sqrt(3*3 + 4*4) = 5
     CHECK(v_norm == Image::Vector2(3.0 / 5, 4.0 / 5));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Vector2s Can Be Normalized to produce a Normalized Vector2") {
+    const Image::Vector2 v;
+    using converted_type = decltype(v.Norm());
+    using required_type = decltype(Image::NormalizedVector2{});
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -425,6 +434,7 @@ TEST_CASE("Vector2s Can Be Passed By Const Ref To Vector") {
     ) {
         CHECK(v.X() == 0);
         CHECK(v.Y() == 4);
+        CHECK(v.Z() == 0);
     };
 
     lambda(nv);
@@ -534,10 +544,20 @@ TEST_CASE("Vector2s From Different Spaces Cannot Be Crossed Using Star Equal Ope
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Vector2sSupportElementAccessByName") {
+TEST_CASE("Vector2s Support Element Access By Name") {
     const Image::Vector2 v(2, 3);
     CHECK(v.X() == 2);
     CHECK(v.Y() == 3);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Vector2s Do Not Support Z Access By Name") {
+    const Image::Vector2 v2;
+
+    using converted_type = decltype(v2.Z());
+    using required_type = StaticAssert::z_not_supported;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -546,6 +566,7 @@ TEST_CASE("Vector2sSupportConstBeginAndEnd") {
     const Image::Vector2 v(2, 3);
     std::vector<double> values;
     std::copy(v.cbegin(), v.cend(), std::back_inserter(values));
+    CHECK(values.size() == 2);
     CHECK(values[0] == 2);
     CHECK(values[1] == 3);
 }
@@ -556,6 +577,7 @@ TEST_CASE("Vector2sSupportNonConstBeginAndEnd") {
     Image::Vector2 v(2, 3);
     std::vector<double> values;
     std::copy(v.begin(), v.end(), std::back_inserter(values));
+    CHECK(values.size() == 2);
     CHECK(values[0] == 2);
     CHECK(values[1] == 3);
 }

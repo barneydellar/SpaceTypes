@@ -10,7 +10,7 @@ public:
         TestVector
     ) const noexcept {
         using namespace Space;
-        if constexpr (From::id == Space::SpaceIDs::View) {
+        if (From::id == Space::SpaceIDs::View) {
             return TestVector{ -5, -6, -7 };
         }
         else {
@@ -23,7 +23,7 @@ public:
         TestVector
     ) const noexcept {
         using namespace Space;
-        if constexpr (From::id == Space::SpaceIDs::View) {
+        if (From::id == Space::SpaceIDs::View) {
             return TestVector{ 15, 16, 17 };
         }
         else {

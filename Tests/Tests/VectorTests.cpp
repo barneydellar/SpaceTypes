@@ -381,6 +381,23 @@ TEST_CASE("ZeroSizeVectorsCannotBeNormalized") {
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("Vectors Can Have their z-value removed") {
+    const Image::Vector v(2, 3, 4);
+    const auto v_norm = v.RemoveZ();
+    CHECK(v_norm == Image::Vector2(2, 3));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Vectors Can Have their z-value removed to produce a vector2") {
+    const Image::Vector v;
+    using converted_type = decltype(v.RemoveZ());
+    using required_type = decltype(Image::Vector2{});
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("Vectors can be constructed and normalized from implementation") {
     const TestVector impl(3, 2, 1);
     const Patient::Vector v(impl);
@@ -516,6 +533,7 @@ TEST_CASE("VectorsSupportConstBeginAndEnd") {
     const Image::Vector v(2, 3, 4);
     std::vector<double> values;
     std::copy(v.cbegin(), v.cend(), std::back_inserter(values));
+    CHECK(values.size() == 3);
     CHECK(values[0] == 2);
     CHECK(values[1] == 3);
     CHECK(values[2] == 4);
@@ -527,6 +545,7 @@ TEST_CASE("VectorsSupportNonConstBeginAndEnd") {
     Image::Vector v(2, 3, 4);
     std::vector<double> values;
     std::copy(v.begin(), v.end(), std::back_inserter(values));
+    CHECK(values.size() == 3);
     CHECK(values[0] == 2);
     CHECK(values[1] == 3);
     CHECK(values[2] == 4);
