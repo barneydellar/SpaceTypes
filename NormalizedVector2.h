@@ -3,19 +3,19 @@
 
 namespace Space {
 
-    template <typename Space, typename ExternalImplementation>
-    class NormalizedVector2 final : public NormalizedVector2Base<Space, ExternalImplementation>
+    template <typename ThisSpace, typename Implementation>
+    class NormalizedVector2 final : public NormalizedVector2Base<ThisSpace, Implementation>
     {
-        using _base = NormalizedVector2Base<Space, ExternalImplementation>;
+        using _base = NormalizedVector2Base<ThisSpace, Implementation>;
         using _base::_base;
 
     public:
 
         friend std::ostream& operator << (
             std::ostream& os,
-            const NormalizedVector2<Space, ExternalImplementation>& item
+            const NormalizedVector2<ThisSpace, Implementation>& item
         ) {
-            const auto space = SpaceTypeNameMap<Space>::name;
+            const auto space = SpaceTypeNameMap<ThisSpace>::name;
             os << space << "::NormalizedVector2 (" << item.X() << ", " << item.Y() << ")";
             return os;
         }

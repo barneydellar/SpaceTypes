@@ -1,5 +1,4 @@
 #pragma once
-#include "StaticAsserts.h"
 
 namespace Space {
 

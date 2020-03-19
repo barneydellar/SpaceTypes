@@ -2,17 +2,17 @@
 
 namespace Space {
 
-    template <typename Space, typename ExternalImplementation>
+    template <typename ThisSpace, typename Implementation>
     class Base
     {
-        friend class PointBase<Space, ExternalImplementation>;
-        friend class NormalizedVectorBase<Space, ExternalImplementation>;
-        friend class NormalizedVector2Base<Space, ExternalImplementation>;
-        friend class VectorBase<Space, ExternalImplementation>;
-        friend class Vector2Base<Space, ExternalImplementation>;
+        friend class PointBase<ThisSpace, Implementation>;
+        friend class NormalizedVectorBase<ThisSpace, Implementation>;
+        friend class NormalizedVector2Base<ThisSpace, Implementation>;
+        friend class VectorBase<ThisSpace, Implementation>;
+        friend class Vector2Base<ThisSpace, Implementation>;
     public:
         Base() noexcept : m_impl(0, 0, 0) {}
-        explicit Base(const ExternalImplementation& v) noexcept : m_impl(v.X(), v.Y(), v.Z()) {}
+        explicit Base(const Implementation& v) noexcept : m_impl(v.X(), v.Y(), v.Z()) {}
         explicit Base(const double x, const double y, const double z) noexcept : m_impl(x, y, z) {}
         Base(const std::initializer_list<double> l) : m_impl(l)
         {
@@ -22,15 +22,20 @@ namespace Space {
             }
         }
 
-        [[nodiscard]] explicit operator ExternalImplementation() const noexcept {
-            return ExternalImplementation(m_impl.X(), m_impl.Y(), m_impl.Z());
+        [[nodiscard]] explicit operator Implementation() const noexcept {
+            return Implementation(m_impl.X(), m_impl.Y(), m_impl.Z());
         }
 
         [[nodiscard]] double X() const noexcept { return m_impl.X(); }
         [[nodiscard]] double Y() const noexcept { return m_impl.Y(); }
         [[nodiscard]] double Z() const noexcept { return m_impl.Z(); }
 
-        [[nodiscard]] double operator[] (const unsigned int i) const {return m_impl[i];}
+        [[nodiscard]] double operator[] (const unsigned int i) const {
+            if (i > 2) {
+                throw std::invalid_argument("Index is out of range");
+            }
+            return m_impl[i];
+        }
 
         template <int I>
         [[nodiscard]] typename std::enable_if<I == 0 || I == 1 || I == 2, double>::type at() const {
@@ -61,6 +66,6 @@ namespace Space {
 #endif
 
     protected:
-        ExternalImplementation m_impl;
+        Implementation m_impl;
     };
 }

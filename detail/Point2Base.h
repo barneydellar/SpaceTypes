@@ -1,22 +1,19 @@
 #pragma once
-#include "PointBase.h"
-#include "VectorBase.h"
-#include "Vector2Base.h"
 
 namespace Space {
 
-    template <typename Space, typename ExternalImplementation>
-    class Point2Base : public PointBase<Space, ExternalImplementation>
+    template <typename ThisSpace, typename Implementation>
+    class Point2Base : public PointBase<ThisSpace, Implementation>
     {
-        using Point2BaseInThisSpace = Point2Base<Space, ExternalImplementation>;
-        using Vector2BaseInThisSpace = Vector2Base<Space, ExternalImplementation>;
-        using VectorBaseInThisSpace = VectorBase<Space, ExternalImplementation>;
-        using PointBaseInThisSpace = PointBase<Space, ExternalImplementation>;
+        using Point2BaseInThisSpace = Point2Base<ThisSpace, Implementation>;
+        using Vector2BaseInThisSpace = Vector2Base<ThisSpace, Implementation>;
+        using VectorBaseInThisSpace = VectorBase<ThisSpace, Implementation>;
+        using PointBaseInThisSpace = PointBase<ThisSpace, Implementation>;
 
     public:
 
         Point2Base() noexcept { PointBaseInThisSpace::m_impl = { 0, 0, 0 }; }
-        explicit Point2Base(const ExternalImplementation& v) noexcept { PointBaseInThisSpace::m_impl = { v.X(), v.Y(), 0 }; }
+        explicit Point2Base(const Implementation& v) noexcept { PointBaseInThisSpace::m_impl = { v.X(), v.Y(), 0 }; }
         explicit Point2Base(const double x, const double y) noexcept {PointBaseInThisSpace::m_impl = { x, y, 0 };}
         Point2Base(const std::initializer_list<double> l)
         {
@@ -37,8 +34,8 @@ namespace Space {
             return reinterpret_cast<double*>(std::prev(PointBaseInThisSpace::m_impl.end()));
         }
 
-        [[nodiscard]] operator Point<Space, ExternalImplementation>() const noexcept {
-            return Point<Space, ExternalImplementation>(PointBaseInThisSpace::m_impl.X(), PointBaseInThisSpace::m_impl.Y(), PointBaseInThisSpace::m_impl.Z());
+        [[nodiscard]] operator Point<ThisSpace, Implementation>() const noexcept {
+            return Point<ThisSpace, Implementation>(PointBaseInThisSpace::m_impl.X(), PointBaseInThisSpace::m_impl.Y(), PointBaseInThisSpace::m_impl.Z());
         }
 
         [[nodiscard]] StaticAssert::z_not_supported Z() const noexcept { return StaticAssert::z_not_supported{}; }
@@ -56,29 +53,29 @@ namespace Space {
             return PointBaseInThisSpace::m_impl[I];
         }
 
-        [[nodiscard]] friend Vector2<Space, ExternalImplementation> operator-(Point2BaseInThisSpace lhs, const Point2BaseInThisSpace& rhs) {
-            return Vector2<Space, ExternalImplementation>(static_cast<ExternalImplementation>(lhs) - static_cast<ExternalImplementation>(rhs));
+        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator-(Point2BaseInThisSpace lhs, const Point2BaseInThisSpace& rhs) {
+            return Vector2<ThisSpace, Implementation>(static_cast<Implementation>(lhs) - static_cast<Implementation>(rhs));
         }
 
-        [[nodiscard]] friend Point2<Space, ExternalImplementation> operator+(Point2BaseInThisSpace lhs, const Point2BaseInThisSpace& rhs) noexcept {
+        [[nodiscard]] friend Point2<ThisSpace, Implementation> operator+(Point2BaseInThisSpace lhs, const Point2BaseInThisSpace& rhs) noexcept {
             lhs.m_impl += rhs.m_impl;
-            return Point2<Space, ExternalImplementation>(static_cast<ExternalImplementation>(lhs));
+            return Point2<ThisSpace, Implementation>(static_cast<Implementation>(lhs));
         }
 
         using PointBaseInThisSpace::operator+=;
-        Point2<Space, ExternalImplementation> operator+=(const Vector2<Space, ExternalImplementation>& rhs) noexcept {
-            PointBaseInThisSpace::m_impl = PointBaseInThisSpace::m_impl + static_cast<ExternalImplementation>(rhs);
-            return Point2<Space, ExternalImplementation>(PointBaseInThisSpace::m_impl);
+        Point2<ThisSpace, Implementation> operator+=(const Vector2<ThisSpace, Implementation>& rhs) noexcept {
+            PointBaseInThisSpace::m_impl = PointBaseInThisSpace::m_impl + static_cast<Implementation>(rhs);
+            return Point2<ThisSpace, Implementation>(PointBaseInThisSpace::m_impl);
         }
 
-        [[nodiscard]] friend Point2<Space, ExternalImplementation> operator-(Point2BaseInThisSpace lhs, const Vector2BaseInThisSpace& rhs) noexcept {
-            return Point2<Space, ExternalImplementation>(static_cast<ExternalImplementation>(lhs) - static_cast<ExternalImplementation>(rhs));
+        [[nodiscard]] friend Point2<ThisSpace, Implementation> operator-(Point2BaseInThisSpace lhs, const Vector2BaseInThisSpace& rhs) noexcept {
+            return Point2<ThisSpace, Implementation>(static_cast<Implementation>(lhs) - static_cast<Implementation>(rhs));
         }
 
         using PointBaseInThisSpace::operator-=;
-        Point2<Space, ExternalImplementation> operator-=(const Vector2<Space, ExternalImplementation>& rhs) noexcept {
-            PointBaseInThisSpace::m_impl = PointBaseInThisSpace::m_impl - static_cast<ExternalImplementation>(rhs);
-            return Point2<Space, ExternalImplementation>(PointBaseInThisSpace::m_impl);
+        Point2<ThisSpace, Implementation> operator-=(const Vector2<ThisSpace, Implementation>& rhs) noexcept {
+            PointBaseInThisSpace::m_impl = PointBaseInThisSpace::m_impl - static_cast<Implementation>(rhs);
+            return Point2<ThisSpace, Implementation>(PointBaseInThisSpace::m_impl);
         }
 
         //------------------------------------------------------------------------------------

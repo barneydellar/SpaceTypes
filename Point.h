@@ -3,19 +3,19 @@
 
 namespace Space {
 
-    template <typename Space, typename ExternalImplementation>
-    class Point : public PointBase<Space, ExternalImplementation>
+    template <typename ThisSpace, typename Implementation>
+    class Point : public PointBase<ThisSpace, Implementation>
     {
-        using _base = PointBase<Space, ExternalImplementation>;
+        using _base = PointBase<ThisSpace, Implementation>;
         using _base::_base;
     public:
 
 
         friend std::ostream& operator << (
             std::ostream& os,
-            const Point<Space, ExternalImplementation>& item
+            const Point<ThisSpace, Implementation>& item
         ) {
-            const auto space = SpaceTypeNameMap<Space>::name;
+            const auto space = SpaceTypeNameMap<ThisSpace>::name;
             os << space << "::Point (" << item.X() << ", " << item.Y() << ", " << item.Z() << ")";
             return os;
         }

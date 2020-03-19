@@ -1,24 +1,17 @@
 #pragma once
-#include "PointBase.h"
-#include "Base.h"
-#include "NormalizedVector2Base.h"
 
 namespace Space {
 
-    template <typename Space, typename ExternalImplementation>
-    class PointBase;
-
-
-    template <typename Space, typename ExternalImplementation>
-    class Vector2Base : public virtual VectorBase<Space, ExternalImplementation>
+    template <typename ThisSpace, typename Implementation>
+    class Vector2Base : public virtual VectorBase<ThisSpace, Implementation>
     {
-        using Vector2BaseInThisSpace = Vector2Base<Space, ExternalImplementation>;
-        using VectorBaseInThisSpace = VectorBase<Space, ExternalImplementation>;
+        using Vector2BaseInThisSpace = Vector2Base<ThisSpace, Implementation>;
+        using VectorBaseInThisSpace = VectorBase<ThisSpace, Implementation>;
 
     public:
 
         Vector2Base() noexcept { VectorBaseInThisSpace::m_impl = { 0, 0, 0 }; }
-        explicit Vector2Base(const ExternalImplementation& v) noexcept { VectorBaseInThisSpace::m_impl = { v.X(), v.Y(), 0 }; }
+        explicit Vector2Base(const Implementation& v) noexcept { VectorBaseInThisSpace::m_impl = { v.X(), v.Y(), 0 }; }
         explicit Vector2Base(const double x, const double y) noexcept { VectorBaseInThisSpace::m_impl = { x, y, 0 }; }
         Vector2Base(const std::initializer_list<double> l)
         {
@@ -29,8 +22,8 @@ namespace Space {
             VectorBaseInThisSpace::m_impl = l;
         }
 
-        [[nodiscard]] operator Vector<Space, ExternalImplementation>() const noexcept {
-            return Vector<Space, ExternalImplementation>(VectorBaseInThisSpace::m_impl.X(), VectorBaseInThisSpace::m_impl.Y(), VectorBaseInThisSpace::m_impl.Z());
+        [[nodiscard]] operator Vector<ThisSpace, Implementation>() const noexcept {
+            return Vector<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl.X(), VectorBaseInThisSpace::m_impl.Y(), VectorBaseInThisSpace::m_impl.Z());
         }
 
         [[nodiscard]] StaticAssert::z_not_supported Z() const noexcept { return StaticAssert::z_not_supported{}; }
@@ -58,51 +51,51 @@ namespace Space {
             return VectorBaseInThisSpace::m_impl[I];
         }
 
-        [[nodiscard]] friend Vector2<Space, ExternalImplementation> operator*(Vector2BaseInThisSpace lhs, const double& d) noexcept {
+        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator*(Vector2BaseInThisSpace lhs, const double& d) noexcept {
             lhs *= d;
-            return Vector2<Space, ExternalImplementation>(lhs.VectorBaseInThisSpace::m_impl);
+            return Vector2<ThisSpace, Implementation>(lhs.VectorBaseInThisSpace::m_impl);
         }
 
         using VectorBaseInThisSpace::operator*=;
-        Vector2<Space, ExternalImplementation> operator*=(const double& d) noexcept {
+        Vector2<ThisSpace, Implementation> operator*=(const double& d) noexcept {
             VectorBaseInThisSpace::m_impl = VectorBaseInThisSpace::m_impl * d;
-            return Vector2<Space, ExternalImplementation>(VectorBaseInThisSpace::m_impl);
+            return Vector2<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl);
         }
 
         using VectorBaseInThisSpace::operator*;
-        [[nodiscard]] Vector<Space, ExternalImplementation> operator*(const Vector2BaseInThisSpace& rhs) const noexcept {
+        [[nodiscard]] Vector<ThisSpace, Implementation> operator*(const Vector2BaseInThisSpace& rhs) const noexcept {
             return this->Cross(rhs);
         }
 
         using VectorBaseInThisSpace::Cross;
-        [[nodiscard]] Vector<Space, ExternalImplementation> Cross(const Vector2BaseInThisSpace& other) const noexcept {
-            return Vector<Space, ExternalImplementation>(VectorBaseInThisSpace::m_impl.Cross(other.VectorBaseInThisSpace::m_impl));
+        [[nodiscard]] Vector<ThisSpace, Implementation> Cross(const Vector2BaseInThisSpace& other) const noexcept {
+            return Vector<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl.Cross(other.VectorBaseInThisSpace::m_impl));
         }
 
-        [[nodiscard]] friend Vector2<Space, ExternalImplementation> operator-(Vector2BaseInThisSpace lhs, const Vector2BaseInThisSpace& rhs) noexcept {
+        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator-(Vector2BaseInThisSpace lhs, const Vector2BaseInThisSpace& rhs) noexcept {
             lhs -= rhs;
-            return Vector2<Space, ExternalImplementation>(lhs.VectorBaseInThisSpace::m_impl);
+            return Vector2<ThisSpace, Implementation>(lhs.VectorBaseInThisSpace::m_impl);
         }
 
         using VectorBaseInThisSpace::operator-=;
-        Vector2<Space, ExternalImplementation> operator-=(const Vector2BaseInThisSpace& rhs) noexcept {
+        Vector2<ThisSpace, Implementation> operator-=(const Vector2BaseInThisSpace& rhs) noexcept {
             VectorBaseInThisSpace::m_impl = VectorBaseInThisSpace::m_impl - rhs.VectorBaseInThisSpace::m_impl;
-            return Vector2<Space, ExternalImplementation>(VectorBaseInThisSpace::m_impl);
+            return Vector2<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl);
         }
 
-        [[nodiscard]] friend Vector2<Space, ExternalImplementation> operator+(Vector2BaseInThisSpace lhs, const Vector2BaseInThisSpace& rhs) noexcept {
+        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator+(Vector2BaseInThisSpace lhs, const Vector2BaseInThisSpace& rhs) noexcept {
             lhs += rhs;
-            return Vector2<Space, ExternalImplementation>(lhs.m_impl);
+            return Vector2<ThisSpace, Implementation>(lhs.m_impl);
         }
 
         using VectorBaseInThisSpace::operator+=;
-        Vector2<Space, ExternalImplementation> operator+=(const Vector2BaseInThisSpace& rhs) noexcept {
+        Vector2<ThisSpace, Implementation> operator+=(const Vector2BaseInThisSpace& rhs) noexcept {
             VectorBaseInThisSpace::m_impl = VectorBaseInThisSpace::m_impl + rhs.VectorBaseInThisSpace::m_impl;
-            return Vector2<Space, ExternalImplementation>(VectorBaseInThisSpace::m_impl);
+            return Vector2<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl);
         }
 
-        [[nodiscard]] NormalizedVector2<Space, ExternalImplementation> Norm() const {
-            return NormalizedVector2<Space, ExternalImplementation>(VectorBaseInThisSpace::m_impl);
+        [[nodiscard]] NormalizedVector2<ThisSpace, Implementation> Norm() const {
+            return NormalizedVector2<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl);
         }
 
         //-------------------------------------------------------------------------------------

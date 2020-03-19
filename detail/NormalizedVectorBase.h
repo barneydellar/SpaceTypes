@@ -2,42 +2,42 @@
 
 namespace Space {
 
-    template <typename Space, typename ExternalImplementation>
-    class NormalizedVectorBase : public virtual VectorBase<Space, ExternalImplementation>
+    template <typename ThisSpace, typename Implementation>
+    class NormalizedVectorBase : public virtual VectorBase<ThisSpace, Implementation>
     {
-        using NormalizedVectorBaseInThisSpace = NormalizedVectorBase<Space, ExternalImplementation>;
-        using VectorBaseInThisSpace = VectorBase<Space, ExternalImplementation>;
+        using NormalizedVectorBaseInThisSpace = NormalizedVectorBase<ThisSpace, Implementation>;
+        using VectorBaseInThisSpace = VectorBase<ThisSpace, Implementation>;
 
     public:
 
         NormalizedVectorBase() noexcept(false) { VectorBaseInThisSpace::m_impl = { 1, 0, 0 }; }
-        explicit NormalizedVectorBase(const ExternalImplementation& e) noexcept(false) { VectorBaseInThisSpace::m_impl = { e.X(), e.Y(), e.Z() }; VectorBaseInThisSpace::m_impl.Normalize(); }
-        explicit NormalizedVectorBase(const double x, const double y, const double z) noexcept(false) { VectorBaseInThisSpace::m_impl = {x, y, z}; VectorBaseInThisSpace::m_impl.Normalize();}
+        explicit NormalizedVectorBase(const Implementation& e) noexcept(false) { VectorBaseInThisSpace::m_impl = { e.X(), e.Y(), e.Z() };  Normalize(); }
+        explicit NormalizedVectorBase(const double x, const double y, const double z) noexcept(false) { VectorBaseInThisSpace::m_impl = { x, y, z }; Normalize(); }
         NormalizedVectorBase(const std::initializer_list<double> l) noexcept(false) {
             if (l.size() != 3)
             {
                 throw std::invalid_argument("You can only initialise with three elements");
             }
             VectorBaseInThisSpace::m_impl = l;
-            VectorBaseInThisSpace::m_impl.Normalize();
+            Normalize();
         }
 
-        [[nodiscard]] operator Vector<Space, ExternalImplementation>() const noexcept {
-            return Vector<Space, ExternalImplementation>(VectorBaseInThisSpace::m_impl.X(), VectorBaseInThisSpace::m_impl.Y(), VectorBaseInThisSpace::m_impl.Z());
+        [[nodiscard]] operator Vector<ThisSpace, Implementation>() const noexcept {
+            return Vector<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl.X(), VectorBaseInThisSpace::m_impl.Y(), VectorBaseInThisSpace::m_impl.Z());
         }
 
         using VectorBaseInThisSpace::operator*;
-        [[nodiscard]] NormalizedVector<Space, ExternalImplementation> operator*(const NormalizedVectorBaseInThisSpace& rhs) const noexcept {
+        [[nodiscard]] NormalizedVector<ThisSpace, Implementation> operator*(const NormalizedVectorBaseInThisSpace& rhs) const noexcept {
             return this->Cross(rhs);
         }
 
         using VectorBaseInThisSpace::Cross;
-        [[nodiscard]] NormalizedVector<Space, ExternalImplementation> Cross(const NormalizedVectorBaseInThisSpace& other) const noexcept {
-            return NormalizedVector<Space, ExternalImplementation>(VectorBaseInThisSpace::m_impl.Cross(other.m_impl));
+        [[nodiscard]] NormalizedVector<ThisSpace, Implementation> Cross(const NormalizedVectorBaseInThisSpace& other) const noexcept {
+            return NormalizedVector<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl.Cross(other.m_impl));
         }
 
-        [[nodiscard]] NormalizedVector2<Space, ExternalImplementation> RemoveZ() const {
-            return NormalizedVector2<Space, ExternalImplementation>(VectorBaseInThisSpace::m_impl);
+        [[nodiscard]] NormalizedVector2<ThisSpace, Implementation> RemoveZ() const {
+            return NormalizedVector2<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl);
         }
 
         //-------------------------------------------------------------------------------------
@@ -46,12 +46,12 @@ namespace Space {
             return StaticAssert::invalid_normalized_vector_scale{};
         }
         template <typename AnySpace>
-        StaticAssert::invalid_normalized_vector_addition operator+=(const NormalizedVectorBase<AnySpace, ExternalImplementation>&) const noexcept {
+        StaticAssert::invalid_normalized_vector_addition operator+=(const NormalizedVectorBase<AnySpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_addition{};
         }
 
         template <typename AnySpace>
-        StaticAssert::invalid_normalized_vector_subtraction operator-=(const NormalizedVectorBase<AnySpace, ExternalImplementation>&) const noexcept {
+        StaticAssert::invalid_normalized_vector_subtraction operator-=(const NormalizedVectorBase<AnySpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_subtraction{};
         }
 
@@ -66,5 +66,13 @@ namespace Space {
             return StaticAssert::normalized_vectors_do_not_support_norm();
         }
 #endif
+
+    protected:
+        void Normalize() {
+            if (std::abs(VectorBaseInThisSpace::Mag_double()) < 1e-6) {
+                throw std::invalid_argument("Zero-sized normal vectors are not allowed");
+            }
+            VectorBaseInThisSpace::m_impl.Normalize();
+        }
     };
 }
