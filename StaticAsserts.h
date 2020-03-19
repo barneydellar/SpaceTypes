@@ -5,7 +5,7 @@ namespace Space::StaticAssert {
     struct invalid_equality final
     {
         template<typename T = void>
-        constexpr invalid_equality() {
+        invalid_equality() {
             static_assert(false, "It is not valid to compare things from different spaces.");
         }
     };
@@ -13,7 +13,7 @@ namespace Space::StaticAssert {
     struct invalid_point_vector_equality final
     {
         template<typename T = void>
-        constexpr invalid_point_vector_equality() {
+        invalid_point_vector_equality() {
             static_assert(false, "It is not valid to compare points and vectors.");
         }
     };
@@ -21,7 +21,7 @@ namespace Space::StaticAssert {
     struct invalid_subtraction final
     {
         template<typename T = void>
-        constexpr invalid_subtraction() {
+        invalid_subtraction() {
             static_assert(false, "It is not valid to subtract things from different spaces.");
         }
     };
@@ -29,7 +29,7 @@ namespace Space::StaticAssert {
     struct invalid_point_to_vector_addition final
     {
         template<typename T = void>
-        constexpr invalid_point_to_vector_addition() {
+        invalid_point_to_vector_addition() {
             static_assert(false, "You can't add points to vectors.");
         }
     };
@@ -37,7 +37,7 @@ namespace Space::StaticAssert {
     struct invalid_point_from_vector_subtraction final
     {
         template<typename T = void>
-        constexpr invalid_point_from_vector_subtraction() {
+        invalid_point_from_vector_subtraction() {
             static_assert(false, "You can't subtract points from vectors.");
         }
     };
@@ -45,7 +45,7 @@ namespace Space::StaticAssert {
     struct invalid_vector_to_point_addition final
     {
         template<typename T = void>
-        constexpr invalid_vector_to_point_addition() {
+        invalid_vector_to_point_addition() {
             static_assert(false, "You can't add vectors to points in other spaces.");
         }
     };
@@ -53,7 +53,7 @@ namespace Space::StaticAssert {
     struct invalid_vector3_to_point2_addition final
     {
         template<typename T = void>
-        constexpr invalid_vector3_to_point2_addition() {
+        invalid_vector3_to_point2_addition() {
             static_assert(false, "You can't add a 3D vector to a 2D points in-place.");
         }
     };
@@ -61,7 +61,7 @@ namespace Space::StaticAssert {
     struct invalid_vector3_from_point2_subtraction final
     {
         template<typename T = void>
-        constexpr invalid_vector3_from_point2_subtraction() {
+        invalid_vector3_from_point2_subtraction() {
             static_assert(false, "You can't subtract a 3D vector from a 2D points in-place.");
         }
     };
@@ -69,7 +69,7 @@ namespace Space::StaticAssert {
     struct invalid_vector_from_point_subtraction final
     {
         template<typename T = void>
-        constexpr invalid_vector_from_point_subtraction() {
+        invalid_vector_from_point_subtraction() {
             static_assert(false, "You can't subtract vectors from points in other spaces.");
         }
     };
@@ -77,7 +77,7 @@ namespace Space::StaticAssert {
     struct invalid_vector_to_vector_addition final
     {
         template<typename T = void>
-        constexpr invalid_vector_to_vector_addition() {
+        invalid_vector_to_vector_addition() {
             static_assert(false, "You can't add vectors from different spaces.");
         }
     };
@@ -85,7 +85,7 @@ namespace Space::StaticAssert {
     struct invalid_normalized_vector_addition final
     {
         template<typename T = void>
-        constexpr invalid_normalized_vector_addition() {
+        invalid_normalized_vector_addition() {
             static_assert(false, "You can't add to a normalized vector.");
         }
     };
@@ -93,7 +93,7 @@ namespace Space::StaticAssert {
     struct invalid_normalized_vector_subtraction final
     {
         template<typename T = void>
-        constexpr invalid_normalized_vector_subtraction() {
+        invalid_normalized_vector_subtraction() {
             static_assert(false, "You can't subtract from a normalized vector.");
         }
     };
@@ -101,7 +101,7 @@ namespace Space::StaticAssert {
     struct invalid_vector_to_vector_subtraction final
     {
         template<typename T = void>
-        constexpr invalid_vector_to_vector_subtraction() {
+        invalid_vector_to_vector_subtraction() {
             static_assert(false, "You can't subtract vectors from different spaces.");
         }
     };
@@ -109,7 +109,7 @@ namespace Space::StaticAssert {
     struct invalid_vector_dot final
     {
         template<typename T = void>
-        constexpr invalid_vector_dot() {
+        invalid_vector_dot() {
             static_assert(false, "You can't dot vectors from different spaces.");
         }
     };
@@ -117,7 +117,7 @@ namespace Space::StaticAssert {
     struct invalid_vector_cross final
     {
         template<typename T = void>
-        constexpr invalid_vector_cross() {
+        invalid_vector_cross() {
             static_assert(false, "You can't cross vectors from different spaces.");
         }
     };
@@ -125,7 +125,7 @@ namespace Space::StaticAssert {
     struct invalid_vector2_in_place_cross final
     {
         template<typename T = void>
-        constexpr invalid_vector2_in_place_cross() {
+        invalid_vector2_in_place_cross() {
             static_assert(false, "You can't cross a vector2 in place.");
         }
     };
@@ -133,7 +133,7 @@ namespace Space::StaticAssert {
     struct invalid_normalized_vector_scale final
     {
         template<typename T = void>
-        constexpr invalid_normalized_vector_scale() {
+        invalid_normalized_vector_scale() {
             static_assert(false, "You can't scale a normalized vector.");
         }
     };
@@ -141,7 +141,7 @@ namespace Space::StaticAssert {
     struct invalid_random_access final
     {
         template<typename T = void>
-        constexpr invalid_random_access() {
+        invalid_random_access() {
             static_assert(false, "Negative indices are invalid.");
         }
     };
@@ -149,7 +149,7 @@ namespace Space::StaticAssert {
     struct invalid_at_access final
     {
         template<typename T = void>
-        constexpr invalid_at_access() {
+        invalid_at_access() {
             static_assert(false, "Index out of range.");
         }
     };
@@ -157,7 +157,7 @@ namespace Space::StaticAssert {
     struct normalized_vectors_do_not_support_non_const_iteration final
     {
         template<typename T = void>
-        constexpr normalized_vectors_do_not_support_non_const_iteration() {
+        normalized_vectors_do_not_support_non_const_iteration() {
             static_assert(false, "Normalized vectors do not support non const iteration.");
         }
     };
@@ -165,7 +165,7 @@ namespace Space::StaticAssert {
     struct normalized_vectors_do_not_support_norm final
     {
         template<typename T = void>
-        constexpr normalized_vectors_do_not_support_norm() {
+        normalized_vectors_do_not_support_norm() {
             static_assert(false, "Normalized vectors cannot be normalised.");
         }
     };
@@ -173,7 +173,7 @@ namespace Space::StaticAssert {
     struct z_not_supported final
     {
         template<typename T = void>
-        constexpr z_not_supported() {
+        z_not_supported() {
             static_assert(false, "2D vectors and points do not support z-access.");
         }
     };

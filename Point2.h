@@ -7,9 +7,9 @@ namespace Space {
     template <typename Space, typename ExternalImplementation>
     class Point2 : public Point2Base<Space, ExternalImplementation>
     {
-    public:
         using _base = Point2Base<Space, ExternalImplementation>;
         using _base::_base;
+    public:
 
         friend std::ostream& operator << (
             std::ostream& os,

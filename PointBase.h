@@ -16,29 +16,27 @@ namespace Space {
 
         using VectorBaseInThisSpace = VectorBase<Space, ExternalImplementation>;
         using PointBaseInThisSpace = PointBase<Space, ExternalImplementation>;
-        using PointInThisSpace = PointInASpace<Space>;
-        using VectorInThisSpace = VectorInASpace<Space>;
-
-    public:
 
         using _base = Base<Space, ExternalImplementation>;
         using _base::_base;
 
-        [[nodiscard]] constexpr bool operator == (const PointBaseInThisSpace& other) const noexcept {
+    public:
+
+        [[nodiscard]] bool operator == (const PointBaseInThisSpace& other) const noexcept {
             return _base::m_impl.operator==(other.m_impl);
         }
 
-        [[nodiscard]] constexpr bool operator != (const PointBaseInThisSpace& other) const noexcept {
+        [[nodiscard]] bool operator != (const PointBaseInThisSpace& other) const noexcept {
             return !(operator==(other));
         }
 
         template <typename OtherSpace, typename TransformManager>
-        [[nodiscard]] constexpr PointInASpace<OtherSpace> ConvertTo(const TransformManager& transform_manager) const {
-            return PointInASpace<OtherSpace>(transform_manager.template Transform<Space, OtherSpace>(static_cast<ExternalImplementation>(*this)));
+        [[nodiscard]] Point<OtherSpace, ExternalImplementation> ConvertTo(const TransformManager& transform_manager) const {
+            return Point<OtherSpace, ExternalImplementation>(transform_manager.template Transform<Space, OtherSpace>(static_cast<ExternalImplementation>(*this)));
         }
 
-        [[nodiscard]] friend VectorInThisSpace operator-(PointBaseInThisSpace lhs, const PointBaseInThisSpace& rhs) {
-            return VectorInThisSpace(lhs.m_impl - rhs.m_impl);
+        [[nodiscard]] friend Vector<Space, ExternalImplementation> operator-(PointBaseInThisSpace lhs, const PointBaseInThisSpace& rhs) {
+            return Vector<Space, ExternalImplementation>(lhs.m_impl - rhs.m_impl);
         }
 
         [[nodiscard]] friend Point<Space, ExternalImplementation> operator+(PointBaseInThisSpace lhs, const VectorBaseInThisSpace& rhs) noexcept {
@@ -46,21 +44,24 @@ namespace Space {
             return Point<Space, ExternalImplementation>(lhs.m_impl);
         }
 
-        PointInThisSpace operator+=(const VectorBaseInThisSpace& rhs) noexcept {
+        Point<Space, ExternalImplementation> operator+=(const VectorBaseInThisSpace& rhs) noexcept {
             _base::m_impl = _base::m_impl + rhs.m_impl;
-            return PointInThisSpace(_base::m_impl);
+            return Point<Space, ExternalImplementation>(_base::m_impl);
         }
 
-        [[nodiscard]] friend PointInThisSpace operator-(PointBaseInThisSpace lhs, const VectorBaseInThisSpace& rhs) noexcept {
+        [[nodiscard]] friend Point<Space, ExternalImplementation> operator-(PointBaseInThisSpace lhs, const VectorBaseInThisSpace& rhs) noexcept {
             lhs -= rhs;
-            return PointInThisSpace(lhs.m_impl);
+            return Point<Space, ExternalImplementation>(lhs.m_impl);
         }
 
-        PointInThisSpace operator-=(const VectorBaseInThisSpace& rhs) noexcept {
+        Point<Space, ExternalImplementation> operator-=(const VectorBaseInThisSpace& rhs) noexcept {
             _base::m_impl = _base::m_impl - rhs.m_impl;
-            return PointInThisSpace(_base::m_impl);
+            return Point<Space, ExternalImplementation>(_base::m_impl);
         }
 
+        [[nodiscard]] Point2<Space, ExternalImplementation> RemoveZ() const {
+            return Point2<Space, ExternalImplementation>(_base::m_impl);
+        }
 
         //------------------------------------------------------------------------------------
 

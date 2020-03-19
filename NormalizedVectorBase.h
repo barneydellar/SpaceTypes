@@ -4,32 +4,42 @@
 namespace Space {
 
     template <typename Space, typename ExternalImplementation>
-    class NormalizedVectorBase : public VectorBase<Space, ExternalImplementation>
+    class NormalizedVectorBase : public virtual VectorBase<Space, ExternalImplementation>
     {
-        using NormalizedVectorInThisSpace = NormalizedVectorInASpace<Space>;
-        using _base = VectorBase<Space, ExternalImplementation>;
+        using NormalizedVectorBaseInThisSpace = NormalizedVectorBase<Space, ExternalImplementation>;
+        using VectorBaseInThisSpace = VectorBase<Space, ExternalImplementation>;
 
     public:
 
-        NormalizedVectorBase(const detail::PointOrVector& p) noexcept(false) : _base(p) { _base::m_impl.Normalize(); }
-        constexpr NormalizedVectorBase() noexcept(false) { _base::m_impl = { 1, 0, 0 }; }
-        constexpr explicit NormalizedVectorBase(const ExternalImplementation& e) noexcept(false) : _base(e) { _base::m_impl.Normalize(); }
-        constexpr explicit NormalizedVectorBase(const double x, const double y, const double z) noexcept(false) : _base(x, y, z) { _base::m_impl.Normalize();}
-        constexpr NormalizedVectorBase(const std::initializer_list<double> l) noexcept(false) : _base(l) { _base::m_impl.Normalize();}
-
-
-        [[nodiscard]] operator Vector<Space, ExternalImplementation>() const noexcept {
-            return Vector<Space, ExternalImplementation>(_base::m_impl.X(), _base::m_impl.Y(), _base::m_impl.Z());
+        NormalizedVectorBase(const detail::PointOrVector& p) noexcept(false) { VectorBaseInThisSpace::m_impl = p; VectorBaseInThisSpace::m_impl.Normalize(); }
+        NormalizedVectorBase() noexcept(false) { VectorBaseInThisSpace::m_impl = { 1, 0, 0 }; }
+        explicit NormalizedVectorBase(const ExternalImplementation& e) noexcept(false) { VectorBaseInThisSpace::m_impl = { e.X(), e.Y(), e.Z() }; VectorBaseInThisSpace::m_impl.Normalize(); }
+        explicit NormalizedVectorBase(const double x, const double y, const double z) noexcept(false) { VectorBaseInThisSpace::m_impl = {x, y, z}; VectorBaseInThisSpace::m_impl.Normalize();}
+        NormalizedVectorBase(const std::initializer_list<double> l) noexcept(false) {
+            if (l.size() != 3)
+            {
+                throw std::invalid_argument("You can only initialise with three elements");
+            }
+            VectorBaseInThisSpace::m_impl = l;
+            VectorBaseInThisSpace::m_impl.Normalize();
         }
 
-        using _base::operator*;
-        [[nodiscard]] constexpr NormalizedVectorInThisSpace operator*(const NormalizedVectorInThisSpace& rhs) const noexcept {
+        [[nodiscard]] operator Vector<Space, ExternalImplementation>() const noexcept {
+            return Vector<Space, ExternalImplementation>(VectorBaseInThisSpace::m_impl.X(), VectorBaseInThisSpace::m_impl.Y(), VectorBaseInThisSpace::m_impl.Z());
+        }
+
+        using VectorBaseInThisSpace::operator*;
+        [[nodiscard]] NormalizedVector<Space, ExternalImplementation> operator*(const NormalizedVectorBaseInThisSpace& rhs) const noexcept {
             return this->Cross(rhs);
         }
 
-        using _base::Cross;
-        [[nodiscard]] NormalizedVectorInThisSpace Cross(const NormalizedVectorInThisSpace& other) const noexcept {
-            return NormalizedVectorInThisSpace(_base::m_impl.Cross(other.m_impl));
+        using VectorBaseInThisSpace::Cross;
+        [[nodiscard]] NormalizedVector<Space, ExternalImplementation> Cross(const NormalizedVectorBaseInThisSpace& other) const noexcept {
+            return NormalizedVector<Space, ExternalImplementation>(VectorBaseInThisSpace::m_impl.Cross(other.m_impl));
+        }
+
+        [[nodiscard]] NormalizedVector2<Space, ExternalImplementation> RemoveZ() const {
+            return NormalizedVector2<Space, ExternalImplementation>(VectorBaseInThisSpace::m_impl);
         }
 
         //-------------------------------------------------------------------------------------

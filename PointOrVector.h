@@ -6,7 +6,7 @@ namespace Space::detail {
     {
     public:
         explicit PointOrVector(double, double, double) noexcept;
-        constexpr PointOrVector(const std::initializer_list<double> l);
+        PointOrVector(const std::initializer_list<double> l);
 
         void Normalize() noexcept(false);
 
@@ -39,7 +39,7 @@ namespace Space::detail {
     {
     }
 
-    inline constexpr PointOrVector::PointOrVector(const std::initializer_list<double> l)
+    inline PointOrVector::PointOrVector(const std::initializer_list<double> l)
     {
         auto iter = l.begin();
         m_values[0] = *iter++;

@@ -19,6 +19,9 @@ namespace Space {
 
     template <typename Space, typename ExternalImplementation>
     class NormalizedVector;
+
+    template <typename Space, typename ExternalImplementation>
+    class NormalizedVector2;
 }
 
 #include "VectorBase.h"
@@ -27,6 +30,7 @@ namespace Space {
 #include "Vector.h"
 #include "Vector2.h"
 #include "NormalizedVector.h"
+#include "NormalizedVector2.h"
 
 namespace Space {
     template <typename SpaceName, typename Implementation, typename Units>
@@ -36,6 +40,7 @@ namespace Space {
         using Vector = Vector<SpaceName, Implementation>;
         using Vector2 = Vector2<SpaceName, Implementation>;
         using NormalizedVector = NormalizedVector<SpaceName, Implementation>;
+        using NormalizedVector2 = NormalizedVector2<SpaceName, Implementation>;
         using Unit = Units;
     };
 }

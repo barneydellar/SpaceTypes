@@ -6,9 +6,10 @@ namespace Space {
     template <typename Space, typename ExternalImplementation>
     class NormalizedVector final : public NormalizedVectorBase<Space, ExternalImplementation>
     {
-    public:
         using _base = NormalizedVectorBase<Space, ExternalImplementation>;
         using _base::_base;
+
+    public:
 
         friend std::ostream& operator << (
             std::ostream& os,

@@ -6,9 +6,9 @@ namespace Space {
     template <typename Space, typename ExternalImplementation>
     class Vector : public VectorBase<Space, ExternalImplementation>
     {
-    public:
         using _base = VectorBase<Space, ExternalImplementation>;
         using _base::_base;
+    public:
 
         friend std::ostream& operator << (
             std::ostream& os,

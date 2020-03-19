@@ -55,7 +55,7 @@ Then a Space can be defined as follows:
 
 ```cpp
 struct MySpace final : SpaceBase<MySpace, ExistingImplementation, NewSpaceUnits> {
-    static inline constexpr SpaceIDs id = NewSpaceId;
+    static inline SpaceIDs id = NewSpaceId;
 };
 template <> const std::string SpaceTypeNameMap<MySpace>::name = "MySpace";
 ```
@@ -310,10 +310,10 @@ enum class IDs
     SecondSpace
 };
 struct FirstSpace final : SpaceBase<FirstSpace, ExistingImplementation, double> {
-    static inline constexpr SpaceIDs id = SpaceIDs::FirstSpace;
+    static inline SpaceIDs id = SpaceIDs::FirstSpace;
 };
 struct SecondSpace final : SpaceBase<SecondSpace, ExistingImplementation, double> {
-    static inline constexpr SpaceIDs id = SpaceIDs::SecondSpace;
+    static inline SpaceIDs id = SpaceIDs::SecondSpace;
 };
 ```
 
@@ -328,7 +328,7 @@ public:
         ExistingImplementation
     ) const noexcept {
         using namespace Space;
-        if constexpr (From::id == SpaceIDs::FirstSpace && To::id == SpaceIDs::SecondSpace) {
+        if (From::id == SpaceIDs::FirstSpace && To::id == SpaceIDs::SecondSpace) {
             // Insert more useful logic here
         }
         // etc
@@ -338,7 +338,7 @@ public:
         ExistingImplementation
     ) const noexcept {
         using namespace Space;
-        if constexpr (From::id == SpaceIDs::FirstSpace && To::id == SpaceIDs::SecondSpace) {
+        if (From::id == SpaceIDs::FirstSpace && To::id == SpaceIDs::SecondSpace) {
             // Insert more useful logic here
         }
         // etc

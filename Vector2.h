@@ -9,7 +9,7 @@ namespace Space {
     {
         using _base = Vector2Base<Space, ExternalImplementation>;
         using _base::_base;
-
+    public:
         friend std::ostream& operator << (
             std::ostream& os,
             const Vector2<Space, ExternalImplementation>& item
