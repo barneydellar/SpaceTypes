@@ -8,6 +8,8 @@ namespace Space {
         using Vector2BaseInThisSpace = Vector2Base<ThisSpace, Implementation>;
         using VectorBaseInThisSpace = VectorBase<ThisSpace, Implementation>;
 
+        friend class NormalizedVector2Base<ThisSpace, Implementation>;
+
     public:
 
         Vector2Base() noexcept { VectorBaseInThisSpace::m_impl = { 0, 0, 0 }; }

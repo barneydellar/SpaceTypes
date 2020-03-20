@@ -4,7 +4,7 @@
 namespace Space {
 
     template <typename ThisSpace, typename Implementation>
-    class Vector : public VectorBase<ThisSpace, Implementation>
+    class Vector final : public VectorBase<ThisSpace, Implementation>
     {
         using _base = VectorBase<ThisSpace, Implementation>;
         using _base::_base;

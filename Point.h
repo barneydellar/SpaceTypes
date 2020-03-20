@@ -4,7 +4,7 @@
 namespace Space {
 
     template <typename ThisSpace, typename Implementation>
-    class Point : public PointBase<ThisSpace, Implementation>
+    class Point final : public PointBase<ThisSpace, Implementation>
     {
         using _base = PointBase<ThisSpace, Implementation>;
         using _base::_base;

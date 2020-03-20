@@ -3,7 +3,7 @@
 namespace Space {
 
     template <typename ThisSpace, typename Implementation>
-    class NormalizedVector2Base : public virtual NormalizedVectorBase<ThisSpace, Implementation>, public virtual Vector2Base<ThisSpace, Implementation>
+    class NormalizedVector2Base : public NormalizedVectorBase<ThisSpace, Implementation>, public Vector2Base<ThisSpace, Implementation>
     {
         using Vector2BaseInThisSpace = Vector2Base<ThisSpace, Implementation>;
         using NormalizedVector2BaseInThisSpace = NormalizedVector2Base<ThisSpace, Implementation>;
@@ -42,22 +42,23 @@ namespace Space {
         using NormalizedVectorBaseInThisSpace::operator*=;
 
         [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator+(NormalizedVector2BaseInThisSpace lhs, const NormalizedVector2BaseInThisSpace& rhs) noexcept {
-            return Vector2<ThisSpace, Implementation>(static_cast<Implementation>(lhs) + static_cast<Implementation>(rhs));
+            return Vector2<ThisSpace, Implementation>(lhs.m_impl + rhs.m_impl);
         }
         [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator+(Vector2BaseInThisSpace lhs, const NormalizedVector2BaseInThisSpace& rhs) noexcept {
-            return Vector2<ThisSpace, Implementation>(static_cast<Implementation>(lhs) + static_cast<Implementation>(rhs));
+            return Vector2<ThisSpace, Implementation>(static_cast<Implementation>(lhs) + rhs.m_impl);
         }
         [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator+(NormalizedVector2BaseInThisSpace lhs, const Vector2BaseInThisSpace& rhs) noexcept {
-            return Vector2<ThisSpace, Implementation>(static_cast<Implementation>(lhs) + static_cast<Implementation>(rhs));
+            return Vector2<ThisSpace, Implementation>(lhs.m_impl + static_cast<Implementation>(rhs));
         }
 
         using NormalizedVectorBaseInThisSpace::operator+=;
 
         [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator-(NormalizedVector2BaseInThisSpace lhs, const NormalizedVector2BaseInThisSpace& rhs) noexcept {
-            return Vector2<ThisSpace, Implementation>(static_cast<Implementation>(lhs) - static_cast<Implementation>(rhs));
+            return Vector2<ThisSpace, Implementation>(lhs.m_impl - rhs.m_impl);
         }
-        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator-(Vector2BaseInThisSpace lhs, const NormalizedVector2BaseInThisSpace& rhs) noexcept {
-            return Vector2<ThisSpace, Implementation>(static_cast<Implementation>(lhs) - static_cast<Implementation>(rhs));
+        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator-(Vector2BaseInThisSpace lhs, const NormalizedVector2BaseInThisSpace& rhs) noexcept 
+        {
+            return Vector2<ThisSpace, Implementation>(static_cast<Implementation>(lhs) - rhs.m_impl);
         }
         [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator-(NormalizedVector2BaseInThisSpace lhs, const Vector2BaseInThisSpace& rhs) noexcept {
             return Vector2<ThisSpace, Implementation>(static_cast<Implementation>(lhs) - static_cast<Implementation>(rhs));

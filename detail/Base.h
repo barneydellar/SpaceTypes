@@ -23,7 +23,7 @@ namespace Space {
         }
 
         [[nodiscard]] explicit operator Implementation() const noexcept {
-            return Implementation(m_impl.X(), m_impl.Y(), m_impl.Z());
+            return m_impl;
         }
 
         [[nodiscard]] double X() const noexcept { return m_impl.X(); }

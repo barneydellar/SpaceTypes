@@ -3,7 +3,7 @@
 namespace Space {
 
     template <typename ThisSpace, typename Implementation>
-    class VectorBase : public virtual Base<ThisSpace, Implementation>
+    class VectorBase : public Base<ThisSpace, Implementation>
     {
         using VectorBaseInThisSpace = VectorBase<ThisSpace, Implementation>;
 
