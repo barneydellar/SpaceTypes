@@ -105,11 +105,6 @@ bool TestVector::operator==(const TestVector& other) const noexcept
     return std::equal(m_values.cbegin(), m_values.cend(), other.m_values.cbegin());
 }
 
-double TestVector::operator[](const unsigned int i) const
-{
-    return m_values[i];
-}
-
 double TestVector::X() const noexcept
 {
     return m_values[0];

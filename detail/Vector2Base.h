@@ -50,7 +50,7 @@ namespace Space {
 
         template <int I>
         [[nodiscard]] typename std::enable_if<I == 0 || I == 1, double>::type at() const {
-            return VectorBaseInThisSpace::m_impl[I];
+            return VectorBaseInThisSpace::operator[](I);
         }
 
         [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator*(Vector2BaseInThisSpace lhs, const double& d) noexcept {

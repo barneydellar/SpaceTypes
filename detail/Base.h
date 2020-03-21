@@ -34,12 +34,12 @@ namespace Space {
             if (i > 2) {
                 throw std::invalid_argument("Index is out of range");
             }
-            return m_impl[i];
+            return *(cbegin() + i);
         }
 
         template <int I>
         [[nodiscard]] typename std::enable_if<I == 0 || I == 1 || I == 2, double>::type at() const {
-            return m_impl[I];
+            return operator[](I);
         }
 
         [[nodiscard]] double* begin() noexcept {

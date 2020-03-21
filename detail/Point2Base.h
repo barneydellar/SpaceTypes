@@ -50,7 +50,7 @@ namespace Space {
 
         template <int I>
         [[nodiscard]] typename std::enable_if<I == 0 || I == 1, double>::type at() const {
-            return PointBaseInThisSpace::m_impl[I];
+            return PointBaseInThisSpace::operator[](I);
         }
 
         [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator-(Point2BaseInThisSpace lhs, const Point2BaseInThisSpace& rhs) {

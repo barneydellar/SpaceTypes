@@ -8,8 +8,6 @@ public:
 
     void Normalize() noexcept(false);
 
-    [[nodiscard]] double operator[](unsigned int) const;
-
     [[nodiscard]] double X() const noexcept;
     [[nodiscard]] double Y() const noexcept;
     [[nodiscard]] double Z() const noexcept;
