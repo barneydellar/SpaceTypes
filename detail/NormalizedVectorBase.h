@@ -69,10 +69,18 @@ namespace Space {
 
     protected:
         void Normalize() {
-            if (std::abs(VectorBaseInThisSpace::Mag_double()) < 1e-6) {
+
+            const auto mag = VectorBaseInThisSpace::Mag_double();
+            if (std::abs(mag) < 1e-6) {
                 throw std::invalid_argument("Zero-sized normal vectors are not allowed");
             }
-            VectorBaseInThisSpace::m_impl.Normalize();
+
+            std::transform(
+                VectorBaseInThisSpace::cbegin(),
+                VectorBaseInThisSpace::cend(),
+                VectorBaseInThisSpace::begin(),
+                [mag](auto v) { return v / mag; }
+            );
         }
     };
 }

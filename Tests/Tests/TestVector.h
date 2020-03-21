@@ -6,8 +6,6 @@ public:
     explicit TestVector(double, double, double) noexcept;
     TestVector(const std::initializer_list<double> l);
 
-    void Normalize() noexcept(false);
-
     [[nodiscard]] double X() const noexcept;
     [[nodiscard]] double Y() const noexcept;
     [[nodiscard]] double Z() const noexcept;

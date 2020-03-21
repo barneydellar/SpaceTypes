@@ -20,18 +20,6 @@ TestVector::TestVector(const std::initializer_list<double> l)
     }
 }
 
-
-void TestVector::Normalize() noexcept(false)
-{
-    const auto mag = Mag();
-    std::transform(
-        m_values.cbegin(),
-        m_values.cend(),
-        m_values.begin(),
-        [mag](auto v) { return v / mag; }
-    );
-}
-
 double TestVector::Mag() const noexcept
 {
     return std::sqrt(
