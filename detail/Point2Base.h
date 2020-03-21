@@ -26,12 +26,12 @@ namespace Space {
 
         [[nodiscard]] const double* cend() const noexcept
         {
-            return reinterpret_cast<const double*>(std::prev(PointBaseInThisSpace::m_impl.cend()));
+            return reinterpret_cast<const double*>(std::prev(PointBaseInThisSpace::cend()));
         }
 
         [[nodiscard]] double* end() noexcept
         {
-            return reinterpret_cast<double*>(std::prev(PointBaseInThisSpace::m_impl.end()));
+            return reinterpret_cast<double*>(std::prev(PointBaseInThisSpace::end()));
         }
 
         [[nodiscard]] operator Point<ThisSpace, Implementation>() const noexcept {

@@ -43,17 +43,17 @@ namespace Space {
         }
 
         [[nodiscard]] double* begin() noexcept {
-            return m_impl.begin();
+            return reinterpret_cast<double*>(&m_impl);
         }
         [[nodiscard]] double* end() noexcept {
-            return m_impl.end();
+            return reinterpret_cast<double*>(&m_impl) + 3;
         }
 
         [[nodiscard]] const double* cbegin() const noexcept {
-            return m_impl.cbegin();
+            return reinterpret_cast<const double*>(&m_impl);
         }
         [[nodiscard]] const double* cend() const noexcept {
-            return m_impl.cend();
+            return reinterpret_cast<const double*>(&m_impl) + 3;
         }
 
         //------------------------------------------------------------------------------------

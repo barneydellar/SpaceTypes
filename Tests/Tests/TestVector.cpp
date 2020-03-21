@@ -49,7 +49,7 @@ TestVector operator*(TestVector lhs, const double& d) noexcept
     std::transform(
         lhs.m_values.cbegin(),
         lhs.m_values.cend(),
-        lhs.begin(),
+        lhs.m_values.begin(),
         [d](auto v) { return v * d; }
     );
     return lhs;
@@ -108,26 +108,6 @@ bool TestVector::operator==(const TestVector& other) const noexcept
 double TestVector::operator[](const unsigned int i) const
 {
     return m_values[i];
-}
-
-const double* TestVector::cbegin() const noexcept
-{
-    return reinterpret_cast<const double*>(m_values._Unchecked_begin());
-}
-
-const double* TestVector::cend() const noexcept
-{
-    return reinterpret_cast<const double*>(m_values._Unchecked_end());
-}
-
-double* TestVector::begin() noexcept
-{
-    return reinterpret_cast<double*>(m_values._Unchecked_begin());
-}
-
-double* TestVector::end() noexcept
-{
-    return reinterpret_cast<double*>(m_values._Unchecked_end());
 }
 
 double TestVector::X() const noexcept

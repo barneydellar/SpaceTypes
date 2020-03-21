@@ -10,11 +10,6 @@ public:
 
     [[nodiscard]] double operator[](unsigned int) const;
 
-    [[nodiscard]] const double* cbegin() const noexcept;
-    [[nodiscard]] const double* cend() const noexcept;
-    [[nodiscard]] double* begin() noexcept;
-    [[nodiscard]] double* end() noexcept;
-
     [[nodiscard]] double X() const noexcept;
     [[nodiscard]] double Y() const noexcept;
     [[nodiscard]] double Z() const noexcept;

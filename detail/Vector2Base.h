@@ -40,12 +40,12 @@ namespace Space {
 
         [[nodiscard]] const double* cend() const noexcept
         {
-            return reinterpret_cast<const double*>(std::prev(VectorBaseInThisSpace::m_impl.cend()));
+            return reinterpret_cast<const double*>(std::prev(VectorBaseInThisSpace::cend()));
         }
 
         [[nodiscard]] double* end() noexcept
         {
-            return reinterpret_cast<double*>(std::prev(VectorBaseInThisSpace::m_impl.end()));
+            return reinterpret_cast<double*>(std::prev(VectorBaseInThisSpace::end()));
         }
 
         template <int I>

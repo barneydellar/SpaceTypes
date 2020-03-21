@@ -56,7 +56,7 @@ namespace Space {
         [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator-(NormalizedVector2BaseInThisSpace lhs, const NormalizedVector2BaseInThisSpace& rhs) noexcept {
             return Vector2<ThisSpace, Implementation>(lhs.m_impl - rhs.m_impl);
         }
-        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator-(Vector2BaseInThisSpace lhs, const NormalizedVector2BaseInThisSpace& rhs) noexcept 
+        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator-(Vector2BaseInThisSpace lhs, const NormalizedVector2BaseInThisSpace& rhs) noexcept
         {
             return Vector2<ThisSpace, Implementation>(static_cast<Implementation>(lhs) - rhs.m_impl);
         }
