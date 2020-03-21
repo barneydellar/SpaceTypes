@@ -71,7 +71,7 @@ namespace Space {
 
         using VectorBaseInThisSpace::Cross;
         [[nodiscard]] Vector<ThisSpace, Implementation> Cross(const Vector2BaseInThisSpace& other) const noexcept {
-            return Vector<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl.Cross(other.VectorBaseInThisSpace::m_impl));
+            return Vector<ThisSpace, Implementation>(VectorBaseInThisSpace::Cross(other));
         }
 
         [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator-(Vector2BaseInThisSpace lhs, const Vector2BaseInThisSpace& rhs) noexcept {

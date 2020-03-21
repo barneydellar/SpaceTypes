@@ -33,7 +33,7 @@ namespace Space {
 
         using VectorBaseInThisSpace::Cross;
         [[nodiscard]] NormalizedVector<ThisSpace, Implementation> Cross(const NormalizedVectorBaseInThisSpace& other) const noexcept {
-            return NormalizedVector<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl.Cross(other.m_impl));
+            return NormalizedVector<ThisSpace, Implementation>(VectorBaseInThisSpace::Cross(other).Norm());
         }
 
         [[nodiscard]] NormalizedVector2<ThisSpace, Implementation> RemoveZ() const {

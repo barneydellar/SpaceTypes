@@ -55,27 +55,6 @@ TestVector operator-(TestVector lhs, const TestVector& rhs) noexcept
     return lhs;
 }
 
-double TestVector::Dot(const TestVector& other) const noexcept
-{
-    return std::transform_reduce(
-        m_values.cbegin(),
-        m_values.cend(),
-        other.m_values.cbegin(),
-        0.0,
-        [](auto accumulation, auto v) { return accumulation + v; },
-        [](auto v1, auto v2) { return v1 * v2; }
-    );
-}
-
-TestVector TestVector::Cross(const TestVector& other) const noexcept
-{
-    return TestVector{
-        m_values[1] * other.m_values[2] - m_values[2] * other.m_values[1],
-        m_values[2] * other.m_values[0] - m_values[0] * other.m_values[2],
-        m_values[0] * other.m_values[1] - m_values[1] * other.m_values[0]
-    };
-}
-
 bool TestVector::operator==(const TestVector& other) const noexcept
 {
     return std::equal(m_values.cbegin(), m_values.cend(), other.m_values.cbegin());

@@ -13,7 +13,7 @@ namespace Space {
     public:
 
         [[nodiscard]] bool operator == (const VectorBaseInThisSpace& other) const noexcept {
-            return _base::m_impl.operator==(other._base::m_impl);
+            return _base::m_impl.operator==(other.m_impl);
         }
 
         [[nodiscard]] bool operator != (const VectorBaseInThisSpace& other) const noexcept {
@@ -45,7 +45,12 @@ namespace Space {
         }
 
         [[nodiscard]] Vector<ThisSpace, Implementation> Cross(const VectorBaseInThisSpace& other) const noexcept {
-            return Vector<ThisSpace, Implementation>(_base::m_impl.Cross(other._base::m_impl));
+
+            return Vector<ThisSpace, Implementation>{
+                _base::Y() * other.Z() - _base::Z() * other.Y(),
+                _base::Z() * other.X() - _base::X() * other.Z(),
+                _base::X() * other.Y() - _base::Y() * other.X()
+            };
         }
 
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(VectorBaseInThisSpace lhs, const VectorBaseInThisSpace& rhs) noexcept {
@@ -85,7 +90,15 @@ namespace Space {
         }
 
         [[nodiscard]] double Dot(const VectorBaseInThisSpace& other) const noexcept {
-            return _base::m_impl.Dot(other._base::m_impl);
+
+            return std::transform_reduce(
+                _base::cbegin(),
+                _base::cend(),
+                other.cbegin(),
+                0.0,
+                [](auto accumulation, auto v) { return accumulation + v; },
+                [](auto v1, auto v2) { return v1 * v2; }
+            );
         }
 
         [[nodiscard]] NormalizedVector<ThisSpace, Implementation> Norm() const {

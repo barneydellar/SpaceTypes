@@ -68,7 +68,7 @@ namespace Space {
 
         using NormalizedVectorBaseInThisSpace::Cross;
         [[nodiscard]] NormalizedVector<ThisSpace, Implementation> Cross(const NormalizedVector2BaseInThisSpace& other) const noexcept {
-            return NormalizedVector<ThisSpace, Implementation>(Vector2BaseInThisSpace::m_impl.Cross(other.m_impl));
+            return NormalizedVector<ThisSpace, Implementation>(Vector2BaseInThisSpace::Cross(other).Norm());
         }
 
         using NormalizedVectorBaseInThisSpace::operator*;

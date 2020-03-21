@@ -15,9 +15,6 @@ public:
     [[nodiscard]] friend TestVector operator+(TestVector, const TestVector&) noexcept;
     [[nodiscard]] bool operator==(const TestVector&) const noexcept;
 
-    [[nodiscard]] double Dot(const TestVector&) const noexcept;
-    [[nodiscard]] TestVector Cross(const TestVector&) const noexcept;
-
 private:
     std::array<double, 3> m_values{};
 };
