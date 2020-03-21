@@ -87,9 +87,9 @@ TEST_CASE("Normalized Vector2s are normalised and lose their Z when constructed 
     const TestVector impl_in(3, 4, 5);
     const Patient::NormalizedVector2 v(impl_in);
     auto impl = static_cast<TestVector>(v);
-    CHECK(impl.X() == 3 / 5.0);
-    CHECK(impl.Y() == 4 / 5.0);
-    CHECK(impl.Z() == 0);
+    CHECK(impl.m_values[0] == 3 / 5.0);
+    CHECK(impl.m_values[1] == 4 / 5.0);
+    CHECK(impl.m_values[2] == 0);
 }
 
 //-------------------------------------------------------------------------------------------------

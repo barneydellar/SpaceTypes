@@ -12,7 +12,7 @@ namespace Space {
     public:
 
         NormalizedVector2Base() noexcept(false) { Vector2BaseInThisSpace::m_impl = { 1, 0, 0 }; }
-        explicit NormalizedVector2Base(const Implementation& e) noexcept(false) { Vector2BaseInThisSpace::m_impl = { e.X(), e.Y(), 0 }; NormalizedVector2BaseInThisSpace::Normalize(); }
+        explicit NormalizedVector2Base(const Implementation& e) noexcept(false) { Vector2BaseInThisSpace::m_impl = { e.m_values[0], e.m_values[1], 0 }; NormalizedVector2BaseInThisSpace::Normalize(); }
         explicit NormalizedVector2Base(const double x, const double y) noexcept(false) { Vector2BaseInThisSpace::m_impl = { x, y, 0 }; NormalizedVector2BaseInThisSpace::Normalize(); }
         NormalizedVector2Base(const std::initializer_list<double> l) noexcept(false) {
             if (l.size() != 2)
@@ -24,15 +24,15 @@ namespace Space {
         }
 
         [[nodiscard]] operator Vector<ThisSpace, Implementation>() const noexcept {
-            return Vector<ThisSpace, Implementation>(Vector2BaseInThisSpace::m_impl.X(), Vector2BaseInThisSpace::m_impl.Y(), 0);
+            return Vector<ThisSpace, Implementation>(Vector2BaseInThisSpace::X(), Vector2BaseInThisSpace::Y(), 0);
         }
 
         [[nodiscard]] operator Vector2<ThisSpace, Implementation>() const noexcept {
-            return Vector2<ThisSpace, Implementation>(Vector2BaseInThisSpace::m_impl.X(), Vector2BaseInThisSpace::m_impl.Y());
+            return Vector2<ThisSpace, Implementation>(Vector2BaseInThisSpace::X(), Vector2BaseInThisSpace::Y());
         }
 
         [[nodiscard]] operator NormalizedVector<ThisSpace, Implementation>() const noexcept {
-            return NormalizedVector<ThisSpace, Implementation>(Vector2BaseInThisSpace::m_impl.X(), Vector2BaseInThisSpace::m_impl.Y(), 0);
+            return NormalizedVector<ThisSpace, Implementation>(Vector2BaseInThisSpace::X(), Vector2BaseInThisSpace::Y(), 0);
         }
 
         [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator*(NormalizedVector2BaseInThisSpace lhs, const double& d) noexcept {

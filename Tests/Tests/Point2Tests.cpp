@@ -64,9 +64,9 @@ TEST_CASE("Point2s can be constructed from implementation") {
 TEST_CASE("Point2s Can Be Cast To The Implementation") {
     const Patient::Point2 p(3, 2);
     auto impl = static_cast<TestVector>(p);
-    CHECK(impl.X() == 3);
-    CHECK(impl.Y() == 2);
-    CHECK(impl.Z() == 0);
+    CHECK(impl.m_values[0] == 3);
+    CHECK(impl.m_values[1] == 2);
+    CHECK(impl.m_values[2] == 0);
 }
 
 //-------------------------------------------------------------------------------------------------

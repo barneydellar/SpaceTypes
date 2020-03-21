@@ -55,17 +55,3 @@ TestVector operator-(TestVector lhs, const TestVector& rhs) noexcept
     return lhs;
 }
 
-double TestVector::X() const noexcept
-{
-    return m_values[0];
-}
-
-double TestVector::Y() const noexcept
-{
-    return m_values[1];
-}
-
-double TestVector::Z() const noexcept
-{
-    return m_values[2];
-}

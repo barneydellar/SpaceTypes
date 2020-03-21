@@ -61,9 +61,9 @@ TEST_CASE("Normalized Vectors are normalised when constructed from an implementa
     const TestVector impl_in(3, 0, 4);
     const Patient::NormalizedVector v(impl_in);
     auto impl = static_cast<TestVector>(v);
-    CHECK(impl.X() == 3 / 5.0);
-    CHECK(impl.Y() == 0);
-    CHECK(impl.Z() == 4 / 5.0);
+    CHECK(impl.m_values[0] == 3 / 5.0);
+    CHECK(impl.m_values[1] == 0);
+    CHECK(impl.m_values[2] == 4 / 5.0);
 }
 
 //-------------------------------------------------------------------------------------------------

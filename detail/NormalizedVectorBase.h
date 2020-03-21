@@ -11,7 +11,7 @@ namespace Space {
     public:
 
         NormalizedVectorBase() noexcept(false) { VectorBaseInThisSpace::m_impl = { 1, 0, 0 }; }
-        explicit NormalizedVectorBase(const Implementation& e) noexcept(false) { VectorBaseInThisSpace::m_impl = { e.X(), e.Y(), e.Z() };  Normalize(); }
+        explicit NormalizedVectorBase(const Implementation& e) noexcept(false) { VectorBaseInThisSpace::m_impl = { e.m_values[0], e.m_values[1], e.m_values[2] };  Normalize(); }
         explicit NormalizedVectorBase(const double x, const double y, const double z) noexcept(false) { VectorBaseInThisSpace::m_impl = { x, y, z }; Normalize(); }
         NormalizedVectorBase(const std::initializer_list<double> l) noexcept(false) {
             if (l.size() != 3)
@@ -23,7 +23,7 @@ namespace Space {
         }
 
         [[nodiscard]] operator Vector<ThisSpace, Implementation>() const noexcept {
-            return Vector<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl.X(), VectorBaseInThisSpace::m_impl.Y(), VectorBaseInThisSpace::m_impl.Z());
+            return Vector<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y(), VectorBaseInThisSpace::Z());
         }
 
         using VectorBaseInThisSpace::operator*;

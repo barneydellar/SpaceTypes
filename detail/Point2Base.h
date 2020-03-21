@@ -13,7 +13,7 @@ namespace Space {
     public:
 
         Point2Base() noexcept { PointBaseInThisSpace::m_impl = { 0, 0, 0 }; }
-        explicit Point2Base(const Implementation& v) noexcept { PointBaseInThisSpace::m_impl = { v.X(), v.Y(), 0 }; }
+        explicit Point2Base(const Implementation& v) noexcept { PointBaseInThisSpace::m_impl = { v.m_values[0], v.m_values[1], 0 }; }
         explicit Point2Base(const double x, const double y) noexcept {PointBaseInThisSpace::m_impl = { x, y, 0 };}
         Point2Base(const std::initializer_list<double> l)
         {
@@ -35,7 +35,7 @@ namespace Space {
         }
 
         [[nodiscard]] operator Point<ThisSpace, Implementation>() const noexcept {
-            return Point<ThisSpace, Implementation>(PointBaseInThisSpace::m_impl.X(), PointBaseInThisSpace::m_impl.Y(), PointBaseInThisSpace::m_impl.Z());
+            return Point<ThisSpace, Implementation>(PointBaseInThisSpace::X(), PointBaseInThisSpace::Y(), PointBaseInThisSpace::Z());
         }
 
         [[nodiscard]] StaticAssert::z_not_supported Z() const noexcept { return StaticAssert::z_not_supported{}; }

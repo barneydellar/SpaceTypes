@@ -74,9 +74,9 @@ TEST_CASE("Strongly typed collections can be transformed for use in non-template
 
     const auto first = ReturnFirstImpl(impls);
 
-    CHECK(first.X() == static_cast<TestVector>(v.front()).X());
-    CHECK(first.Y() == static_cast<TestVector>(v.front()).Y());
-    CHECK(first.Z() == static_cast<TestVector>(v.front()).Z());
+    CHECK(first.m_values[0] == static_cast<TestVector>(v.front()).m_values[0]);
+    CHECK(first.m_values[1] == static_cast<TestVector>(v.front()).m_values[1]);
+    CHECK(first.m_values[2] == static_cast<TestVector>(v.front()).m_values[2]);
 }
 
 //-------------------------------------------------------------------------------------------------
