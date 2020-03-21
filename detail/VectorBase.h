@@ -69,11 +69,19 @@ namespace Space {
         }
 
         [[nodiscard]] typename ThisSpace::Unit Mag() const noexcept {
-            return ThisSpace::Unit{ _base::m_impl.Mag() };
+            return ThisSpace::Unit{ Mag_double() };
         }
 
         [[nodiscard]] double Mag_double() const noexcept {
-            return _base::m_impl.Mag();
+
+            return std::sqrt(
+                std::accumulate(
+                    _base::cbegin(),
+                    _base::cend(),
+                    0.0,
+                    [](const auto accumulation, const auto v) { return accumulation + v * v; }
+                )
+            );
         }
 
         [[nodiscard]] double Dot(const VectorBaseInThisSpace& other) const noexcept {

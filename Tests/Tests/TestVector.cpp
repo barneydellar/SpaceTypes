@@ -20,18 +20,6 @@ TestVector::TestVector(const std::initializer_list<double> l)
     }
 }
 
-double TestVector::Mag() const noexcept
-{
-    return std::sqrt(
-        std::accumulate(
-            m_values.cbegin(),
-            m_values.cend(),
-            0.0,
-            [](const auto accumulation, const auto v) { return accumulation + v * v; }
-        )
-    );
-}
-
 TestVector operator*(TestVector lhs, const double& d) noexcept
 {
     std::transform(
