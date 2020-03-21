@@ -14,7 +14,7 @@ namespace Space {
     public:
 
         [[nodiscard]] bool operator == (const PointBaseInThisSpace& other) const noexcept {
-            return _base::m_impl.operator==(other.m_impl);
+            return std::equal(_base::cbegin(), _base::cend(), other.cbegin(), _base::Equality);
         }
 
         [[nodiscard]] bool operator != (const PointBaseInThisSpace& other) const noexcept {

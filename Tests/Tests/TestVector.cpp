@@ -55,11 +55,6 @@ TestVector operator-(TestVector lhs, const TestVector& rhs) noexcept
     return lhs;
 }
 
-bool TestVector::operator==(const TestVector& other) const noexcept
-{
-    return std::equal(m_values.cbegin(), m_values.cend(), other.m_values.cbegin());
-}
-
 double TestVector::X() const noexcept
 {
     return m_values[0];

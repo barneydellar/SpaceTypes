@@ -13,7 +13,6 @@ public:
     [[nodiscard]] friend TestVector operator*(TestVector, const double&) noexcept;
     [[nodiscard]] friend TestVector operator-(TestVector, const TestVector&) noexcept;
     [[nodiscard]] friend TestVector operator+(TestVector, const TestVector&) noexcept;
-    [[nodiscard]] bool operator==(const TestVector&) const noexcept;
 
 private:
     std::array<double, 3> m_values{};

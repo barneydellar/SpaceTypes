@@ -66,6 +66,12 @@ namespace Space {
 #endif
 
     protected:
+
+        [[nodiscard]] static bool Equality(const double& x, const double& y)
+        {
+            return std::abs(x - y) < 1e-6;
+        }
+
         Implementation m_impl;
     };
 }
