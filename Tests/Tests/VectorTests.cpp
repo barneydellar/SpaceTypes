@@ -399,7 +399,10 @@ TEST_CASE("Vectors Can Have their z-value removed to produce a vector2") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("Vectors can be constructed and normalized from implementation") {
-    const TestVector impl(3, 2, 1);
+    TestVector impl;
+    impl.m_values[0] = 3;
+    impl.m_values[1] = 2;
+    impl.m_values[2] = 1;
     const Patient::Vector v(impl);
     CHECK(v.X() == 3);
     CHECK(v.Y() == 2);

@@ -48,7 +48,10 @@ TEST_CASE("Normalized Vectors throw when using initalizer lists that are too lar
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("NormalizedVectorsCanBeConstructedAndNormalizedFromImplementation") {
-    const TestVector impl(3, 0, 0);
+    TestVector impl;
+    impl.m_values[0] = 3;
+    impl.m_values[1] = 0;
+    impl.m_values[2] = 0;
     const Patient::NormalizedVector v(impl);
     CHECK(v.X() == 1);
     CHECK(v.Y() == 0);
@@ -58,7 +61,10 @@ TEST_CASE("NormalizedVectorsCanBeConstructedAndNormalizedFromImplementation") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("Normalized Vectors are normalised when constructed from an implementation") {
-    const TestVector impl_in(3, 0, 4);
+    TestVector impl_in;
+    impl_in.m_values[0] = 3;
+    impl_in.m_values[1] = 0;
+    impl_in.m_values[2] = 4;
     const Patient::NormalizedVector v(impl_in);
     auto impl = static_cast<TestVector>(v);
     CHECK(impl.m_values[0] == 3 / 5.0);

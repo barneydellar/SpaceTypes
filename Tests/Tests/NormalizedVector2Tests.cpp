@@ -46,7 +46,11 @@ TEST_CASE("Normalized Vector2s throw when using initalizer lists that are too la
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("Normalized Vector2s Can Be Constructed And Normalized From Implementation") {
-    const TestVector impl(3, 0, 0);
+    TestVector impl;
+    impl.m_values[0] = 3;
+    impl.m_values[1] = 0;
+    impl.m_values[2] = 0;
+
     const Patient::NormalizedVector2 v(impl);
     CHECK(v.X() == 1);
     CHECK(v.Y() == 0);
@@ -84,7 +88,11 @@ TEST_CASE("Normalized Vector2s can be cast to the implementation") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("Normalized Vector2s are normalised and lose their Z when constructed from an implementation") {
-    const TestVector impl_in(3, 4, 5);
+    TestVector impl_in;
+    impl_in.m_values[0] = 3;
+    impl_in.m_values[1] = 4;
+    impl_in.m_values[2] = 5;
+
     const Patient::NormalizedVector2 v(impl_in);
     auto impl = static_cast<TestVector>(v);
     CHECK(impl.m_values[0] == 3 / 5.0);

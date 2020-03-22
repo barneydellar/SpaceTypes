@@ -11,10 +11,18 @@ public:
     ) const noexcept {
         using namespace Space;
         if (From::id == Space::SpaceIDs::View) {
-            return TestVector{ -5, -6, -7 };
+            TestVector t;
+            t.m_values[0] = -5;
+            t.m_values[1] = -6;
+            t.m_values[2] = -7;
+            return t;
         }
         else {
-            return TestVector{ 0, 0, 0 };
+            TestVector t;
+            t.m_values[0] = 0;
+            t.m_values[1] = 0;
+            t.m_values[2] = 0;
+            return t;
         }
     }
 
@@ -24,10 +32,18 @@ public:
     ) const noexcept {
         using namespace Space;
         if (From::id == Space::SpaceIDs::View) {
-            return TestVector{ 15, 16, 17 };
+            TestVector t;
+            t.m_values[0] = 15;
+            t.m_values[1] = 16;
+            t.m_values[2] = 17;
+            return t;
         }
         else {
-            return TestVector{ 0, 0, 0 };
+            TestVector t;
+            t.m_values[0] = 0;
+            t.m_values[1] = 0;
+            t.m_values[2] = 0;
+            return t;
         }
     }
 };

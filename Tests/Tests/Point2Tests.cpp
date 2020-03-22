@@ -53,7 +53,10 @@ TEST_CASE("Point2sCanBeConstructedFromTwoDoubles") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("Point2s can be constructed from implementation") {
-    const TestVector impl(3, 2, 1);
+    TestVector impl;
+    impl.m_values[0] = 3;
+    impl.m_values[1] = 2;
+    impl.m_values[2] = 1;
     const Patient::Point2 p(impl);
     CHECK(p.X() == 3);
     CHECK(p.Y() == 2);

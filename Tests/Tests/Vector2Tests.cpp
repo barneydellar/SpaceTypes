@@ -377,7 +377,10 @@ TEST_CASE("ZeroSizeVector2sCannotBeNormalized") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("Vector2s can be constructed from implementation") {
-    const TestVector impl(3, 4, 5);
+    TestVector impl;
+    impl.m_values[0] = 3;
+    impl.m_values[1] = 4;
+    impl.m_values[2] = 5;
     const Patient::Vector2 v(impl);
     CHECK(v.X() == 3);
     CHECK(v.Y() == 4);
@@ -386,7 +389,10 @@ TEST_CASE("Vector2s can be constructed from implementation") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("Vector2s ignore Z when constructed from implementation") {
-    const TestVector impl(3, 4, 5);
+    TestVector impl;
+    impl.m_values[0] = 3;
+    impl.m_values[1] = 4;
+    impl.m_values[2] = 5;
     const Patient::Vector2 v(impl);
     CHECK(v.Mag_double() == 5);
 }

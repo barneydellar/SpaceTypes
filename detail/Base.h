@@ -11,24 +11,38 @@ namespace Space {
         friend class VectorBase<ThisSpace, Implementation>;
         friend class Vector2Base<ThisSpace, Implementation>;
     public:
-        Base() noexcept : m_impl(0, 0, 0) {}
-        explicit Base(const Implementation& v) noexcept : m_impl(v.m_values[0], v.m_values[1], v.m_values[2]) {}
-        explicit Base(const double x, const double y, const double z) noexcept : m_impl(x, y, z) {}
-        Base(const std::initializer_list<double> l) : m_impl(l)
+        Base() noexcept
+        {
+            std::fill(begin(), end(), 0);
+        }
+        explicit Base(const Implementation& v) noexcept : m_impl(v) {}
+        explicit Base(const double x, const double y, const double z) noexcept
+        {
+            auto iter = begin();
+            *iter++ = x;
+            *iter++ = y;
+            *iter = z;
+        }
+        Base(const std::initializer_list<double> l)
         {
             if (l.size() != 3)
             {
                 throw std::invalid_argument("You can only initialise with three elements");
             }
+            std::copy(
+                std::cbegin(l),
+                std::cend(l),
+                begin()
+            );
         }
 
         [[nodiscard]] explicit operator Implementation() const noexcept {
             return m_impl;
         }
 
-        [[nodiscard]] double X() const noexcept { return m_impl.m_values[0]; }
-        [[nodiscard]] double Y() const noexcept { return m_impl.m_values[1]; }
-        [[nodiscard]] double Z() const noexcept { return m_impl.m_values[2]; }
+        [[nodiscard]] double X() const noexcept { return *(cbegin() + 0); }
+        [[nodiscard]] double Y() const noexcept { return *(cbegin() + 1); }
+        [[nodiscard]] double Z() const noexcept { return *(cbegin() + 2); }
 
         [[nodiscard]] double operator[] (const unsigned int i) const {
             if (i > 2) {
