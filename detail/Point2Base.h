@@ -13,7 +13,10 @@ namespace Space {
     public:
 
         Point2Base() noexcept : PointBaseInThisSpace() {}
-        explicit Point2Base(const Implementation& v) noexcept { PointBaseInThisSpace::m_impl = { v.m_values[0], v.m_values[1], 0 }; }
+        explicit Point2Base(const Implementation& v) noexcept : PointBaseInThisSpace(v)
+        {
+            *(std::prev(PointBaseInThisSpace::end())) = 0;
+        }
         explicit Point2Base(const double x, const double y) noexcept
         {
             auto iter = PointBaseInThisSpace::begin();
