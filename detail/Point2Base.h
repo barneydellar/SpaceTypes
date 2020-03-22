@@ -54,14 +54,12 @@ namespace Space {
         }
 
         [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator-(Point2BaseInThisSpace lhs, const Point2BaseInThisSpace& rhs) {
-            return Vector2<ThisSpace, Implementation>(static_cast<Implementation>(lhs) - static_cast<Implementation>(rhs));
+            lhs.Sub(rhs);
+            Vector2<ThisSpace, Implementation> v(lhs.X(), lhs.Y());
+            return v;
         }
 
         using PointBaseInThisSpace::operator+=;
-
-        [[nodiscard]] friend Point2<ThisSpace, Implementation> operator-(Point2BaseInThisSpace lhs, const Vector2BaseInThisSpace& rhs) noexcept {
-            return Point2<ThisSpace, Implementation>(static_cast<Implementation>(lhs) - static_cast<Implementation>(rhs));
-        }
 
         using PointBaseInThisSpace::operator-=;
         Point2<ThisSpace, Implementation> operator-=(const Vector2<ThisSpace, Implementation>& rhs) noexcept {

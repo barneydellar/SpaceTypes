@@ -23,6 +23,21 @@ namespace Space {
             return *this;
         }
 
+        //---------------------------------------------------------------------
+
+        [[nodiscard]] friend Point<ThisSpace, Implementation> operator-(Point<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
+            lhs -= rhs;
+            return lhs;
+        }
+
+        using _base::operator-=;
+        Point<ThisSpace, Implementation> operator-=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
+            _base::Sub(rhs);
+            return *this;
+        }
+
+        //---------------------------------------------------------------------
+
         friend std::ostream& operator << (
             std::ostream& os,
             const Point<ThisSpace, Implementation>& item

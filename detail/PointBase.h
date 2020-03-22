@@ -11,7 +11,19 @@ namespace Space {
         using _base = Base<ThisSpace, Implementation>;
         using _base::_base;
 
+        friend class PointBase<ThisSpace, Implementation>;
+        friend class Point2Base<ThisSpace, Implementation>;
+        friend class NormalizedVectorBase<ThisSpace, Implementation>;
+        friend class NormalizedVector2Base<ThisSpace, Implementation>;
+        friend class VectorBase<ThisSpace, Implementation>;
+        friend class Vector2Base<ThisSpace, Implementation>;
+
+        friend class Point<ThisSpace, Implementation>;
         friend class Point2<ThisSpace, Implementation>;
+        friend class NormalizedVector<ThisSpace, Implementation>;
+        friend class NormalizedVector2<ThisSpace, Implementation>;
+        friend class Vector<ThisSpace, Implementation>;
+        friend class Vector2<ThisSpace, Implementation>;
 
     public:
 
@@ -29,17 +41,9 @@ namespace Space {
         }
 
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(PointBaseInThisSpace lhs, const PointBaseInThisSpace& rhs) {
-            return Vector<ThisSpace, Implementation>(lhs.m_impl - rhs.m_impl);
-        }
-
-        [[nodiscard]] friend Point<ThisSpace, Implementation> operator-(PointBaseInThisSpace lhs, const VectorBaseInThisSpace& rhs) noexcept {
-            lhs -= rhs;
-            return Point<ThisSpace, Implementation>(lhs.m_impl);
-        }
-
-        Point<ThisSpace, Implementation> operator-=(const VectorBaseInThisSpace& rhs) noexcept {
-            _base::m_impl = _base::m_impl - rhs.m_impl;
-            return Point<ThisSpace, Implementation>(_base::m_impl);
+            lhs.Sub(rhs);
+            Vector<ThisSpace, Implementation> v(lhs.X(), lhs.Y(), lhs.Z());
+            return v;
         }
 
         [[nodiscard]] Point2<ThisSpace, Implementation> RemoveZ() const {
