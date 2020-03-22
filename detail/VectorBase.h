@@ -71,10 +71,15 @@ namespace Space {
             return lhs;
         }
 
-        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(VectorBaseInThisSpace lhs, const VectorBaseInThisSpace& rhs) noexcept {
-            lhs += rhs;
-            return Vector<ThisSpace, Implementation>(lhs.m_impl);
+        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(Vector<ThisSpace, Implementation> lhs, const VectorBaseInThisSpace& rhs) noexcept {
+            lhs.Add(rhs);
+            return lhs;
         }
+
+        //[[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(VectorBaseInThisSpace lhs, const VectorBaseInThisSpace& rhs) noexcept {
+        //    lhs += rhs;
+        //    return Vector<ThisSpace, Implementation>(lhs.m_impl);
+        //}
 
         Vector<ThisSpace, Implementation> operator+=(const VectorBaseInThisSpace& rhs) noexcept {
             _base::m_impl = _base::m_impl + rhs._base::m_impl;

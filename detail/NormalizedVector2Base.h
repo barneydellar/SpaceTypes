@@ -55,6 +55,7 @@ namespace Space {
         using NormalizedVectorBaseInThisSpace::operator-=;
 
         using NormalizedVectorBaseInThisSpace::operator-;
+        // Is this needed? TODO
         [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator-(NormalizedVector2<ThisSpace, Implementation> lhs, const NormalizedVector2BaseInThisSpace& rhs) noexcept {
             lhs.Sub(rhs);
             return lhs;
@@ -65,6 +66,20 @@ namespace Space {
         }
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(NormalizedVector2<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
             lhs.Sub(rhs);
+            return lhs;
+        }
+
+        using NormalizedVectorBaseInThisSpace::operator+;
+        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator+(NormalizedVector2<ThisSpace, Implementation> lhs, const NormalizedVector2<ThisSpace, Implementation>& rhs) noexcept {
+            lhs.Add(rhs);
+            return lhs;
+        }
+        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator+(NormalizedVector2<ThisSpace, Implementation> lhs, const Vector2<ThisSpace, Implementation>& rhs) noexcept {
+            lhs.Add(rhs);
+            return lhs;
+        }
+        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(NormalizedVector2<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
+            lhs.Add(rhs);
             return lhs;
         }
 

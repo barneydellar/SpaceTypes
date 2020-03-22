@@ -46,6 +46,12 @@ namespace Space {
             return lhs;
         }
 
+        using VectorBaseInThisSpace::operator+;
+        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(NormalizedVector<ThisSpace, Implementation> lhs, const VectorBaseInThisSpace& rhs) noexcept {
+            lhs.Add(rhs);
+            return lhs;
+        }
+
         using VectorBaseInThisSpace::operator-=;
 
         //-------------------------------------------------------------------------------------
