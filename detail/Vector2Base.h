@@ -53,9 +53,9 @@ namespace Space {
             return VectorBaseInThisSpace::operator[](I);
         }
 
-        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator*(Vector2BaseInThisSpace lhs, const double& d) noexcept {
+        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator*(Vector2<ThisSpace, Implementation> lhs, const double& d) noexcept {
             lhs *= d;
-            return Vector2<ThisSpace, Implementation>(lhs.VectorBaseInThisSpace::m_impl);
+            return lhs;
         }
 
         using VectorBaseInThisSpace::operator*=;
