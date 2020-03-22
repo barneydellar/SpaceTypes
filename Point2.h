@@ -8,15 +8,29 @@ namespace Space {
     {
         using _base = Point2Base<ThisSpace, Implementation>;
         using _base::_base;
+
+        friend class PointBase<ThisSpace, Implementation>;
+        friend class Point2Base<ThisSpace, Implementation>;
+        friend class NormalizedVectorBase<ThisSpace, Implementation>;
+        friend class NormalizedVector2Base<ThisSpace, Implementation>;
+        friend class VectorBase<ThisSpace, Implementation>;
+        friend class Vector2Base<ThisSpace, Implementation>;
+
+        friend class Point<ThisSpace, Implementation>;
+        friend class Point2<ThisSpace, Implementation>;
+        friend class NormalizedVector<ThisSpace, Implementation>;
+        friend class NormalizedVector2<ThisSpace, Implementation>;
+        friend class Vector<ThisSpace, Implementation>;
+        friend class Vector2<ThisSpace, Implementation>;
     public:
 
-        [[nodiscard]] friend Point<ThisSpace, Implementation> operator+(Point2<ThisSpace, Implementation> lhs, const Vector<ThisSpace, Implementation>& rhs) noexcept {
+        [[nodiscard]] friend Point<ThisSpace, Implementation> operator+(Point2<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
             Point<ThisSpace, Implementation> point3(lhs.X(), lhs.Y(), 0);
             point3 += rhs;
             return point3;
         }
 
-        [[nodiscard]] friend Point2<ThisSpace, Implementation> operator+(Point2<ThisSpace, Implementation> lhs, const Vector2<ThisSpace, Implementation>& rhs) noexcept {
+        [[nodiscard]] friend Point2<ThisSpace, Implementation> operator+(Point2<ThisSpace, Implementation> lhs, const Vector2Base<ThisSpace, Implementation>& rhs) noexcept {
             lhs += rhs;
             return lhs;
         }
@@ -29,14 +43,14 @@ namespace Space {
 
         //---------------------------------------------------------------------
 
-        [[nodiscard]] friend Point2<ThisSpace, Implementation> operator-(Point2<ThisSpace, Implementation> lhs, const Vector2<ThisSpace, Implementation>& rhs) noexcept {
-            lhs -= rhs;
+        [[nodiscard]] friend Point2<ThisSpace, Implementation> operator-(Point2<ThisSpace, Implementation> lhs, const Vector2Base<ThisSpace, Implementation>& rhs) noexcept {
+            lhs.Sub(rhs);
             return lhs;
         }
 
-        [[nodiscard]] friend Point<ThisSpace, Implementation> operator-(Point2<ThisSpace, Implementation> lhs, const Vector<ThisSpace, Implementation>& rhs) noexcept {
+        [[nodiscard]] friend Point<ThisSpace, Implementation> operator-(Point2<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
+            lhs.Sub(rhs);
             Point<ThisSpace, Implementation> point3(lhs.X(), lhs.Y(), 0);
-            point3 -= rhs;
             return point3;
         }
 

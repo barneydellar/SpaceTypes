@@ -10,15 +10,28 @@ namespace Space {
 
         using _base = PointBase<ThisSpace, Implementation>;
         using _base::_base;
+        friend class PointBase<ThisSpace, Implementation>;
+        friend class Point2Base<ThisSpace, Implementation>;
+        friend class NormalizedVectorBase<ThisSpace, Implementation>;
+        friend class NormalizedVector2Base<ThisSpace, Implementation>;
+        friend class VectorBase<ThisSpace, Implementation>;
+        friend class Vector2Base<ThisSpace, Implementation>;
+
+        friend class Point<ThisSpace, Implementation>;
+        friend class Point2<ThisSpace, Implementation>;
+        friend class NormalizedVector<ThisSpace, Implementation>;
+        friend class NormalizedVector2<ThisSpace, Implementation>;
+        friend class Vector<ThisSpace, Implementation>;
+        friend class Vector2<ThisSpace, Implementation>;
     public:
 
-        [[nodiscard]] friend Point<ThisSpace, Implementation> operator+(Point<ThisSpace, Implementation> lhs, const Vector<ThisSpace, Implementation>& rhs) noexcept {
+        [[nodiscard]] friend Point<ThisSpace, Implementation> operator+(Point<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
             lhs += rhs;
             return lhs;
         }
 
         using _base::operator+=;
-        Point<ThisSpace, Implementation> operator+=(const Vector<ThisSpace, Implementation>& rhs) noexcept {
+        Point<ThisSpace, Implementation> operator+=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
             _base::Add(rhs);
             return *this;
         }
