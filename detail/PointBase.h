@@ -70,6 +70,10 @@ namespace Space {
         friend StaticAssert::invalid_subtraction operator-(PointBaseInThisSpace, const PointBase<OtherSpace, Implementation>&) {
             return StaticAssert::invalid_subtraction{};
         }
+        template <typename OtherSpace>
+        friend StaticAssert::invalid_point_to_point_addition operator+(PointBaseInThisSpace, const PointBase<OtherSpace, Implementation>&) {
+            return StaticAssert::invalid_point_to_point_addition{};
+        }
 
         template <typename OtherSpace>
         StaticAssert::invalid_vector_to_point_addition operator+(const VectorBase<OtherSpace, Implementation>&) const noexcept {

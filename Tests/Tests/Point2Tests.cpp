@@ -251,6 +251,30 @@ TEST_CASE("Point2sFromDifferfentSpacesCannotBeSubtracted") {
 }
 #endif
 
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Point2s cannot be added") {
+    const View::Point2 p1;
+    const View::Point2 p2;
+    using converted_type = decltype(p1 + p2);
+    using required_type = StaticAssert::invalid_point_to_point_addition;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Point2s and Points cannot be added") {
+    const View::Point p1;
+    const View::Point2 p2;
+    using converted_type_A = decltype(p1 + p2);
+    using converted_type_B = decltype(p2 + p1);
+    using required_type = StaticAssert::invalid_point_to_point_addition;
+    CHECK(static_cast<bool>(std::is_same<converted_type_A, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same<converted_type_B, required_type>::value));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("Point2sCanBeCopied") {
     const View::Point2 p(2, 3);
 

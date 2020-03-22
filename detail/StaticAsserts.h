@@ -34,6 +34,14 @@ namespace Space::StaticAssert {
         }
     };
 
+    struct invalid_point_to_point_addition final : public invalid_base
+    {
+        template<typename T = void>
+        invalid_point_to_point_addition() {
+            static_assert(false, "It is not valid to add points together.");
+        }
+    };
+
     struct invalid_point_to_vector_addition final : public invalid_base
     {
         template<typename T = void>
