@@ -90,7 +90,7 @@ namespace Space {
 
     protected:
 
-        void Add(Base<ThisSpace, Implementation> other)
+        void Add(const Base<ThisSpace, Implementation>& other)
         {
             std::transform(
                 cbegin(),
@@ -101,7 +101,7 @@ namespace Space {
             );
         }
 
-        void Sub(Base<ThisSpace, Implementation> other)
+        void Sub(const Base<ThisSpace, Implementation>& other)
         {
             std::transform(
                 cbegin(),

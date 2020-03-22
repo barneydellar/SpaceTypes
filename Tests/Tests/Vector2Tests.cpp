@@ -65,13 +65,13 @@ TEST_CASE("Vector2sCanBeAssignedFromAVector2") {
 
 //-------------------------------------------------------------------------------------------------
 
-//TEST_CASE("Vector2sCanBeAssignedFromANormalizedVector2") {
-//    const View::NormalizedVector2 nv(0, 1);
-//    const View::Vector2 v = nv;
-//
-//    CHECK(v.X() == 0);
-//    CHECK(v.Y() == 1);
-//}
+TEST_CASE("Vector2sCanBeAssignedFromANormalizedVector2") {
+    const View::NormalizedVector2 nv(0, 1);
+    const View::Vector2 v = nv;
+
+    CHECK(v.X() == 0);
+    CHECK(v.Y() == 1);
+}
 
 //-------------------------------------------------------------------------------------------------
 

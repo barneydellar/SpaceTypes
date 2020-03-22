@@ -66,14 +66,9 @@ namespace Space {
             };
         }
 
-        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(VectorBaseInThisSpace lhs, const VectorBaseInThisSpace& rhs) noexcept {
-            lhs -= rhs;
-            return Vector<ThisSpace, Implementation>(lhs._base::m_impl);
-        }
-
-        Vector<ThisSpace, Implementation> operator-=(const VectorBaseInThisSpace& rhs) noexcept {
-            _base::m_impl = _base::m_impl - rhs._base::m_impl;
-            return Vector<ThisSpace, Implementation>(_base::m_impl);
+        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(Vector<ThisSpace, Implementation> lhs, const VectorBaseInThisSpace& rhs) noexcept {
+            lhs.Sub(rhs);
+            return lhs;
         }
 
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(VectorBaseInThisSpace lhs, const VectorBaseInThisSpace& rhs) noexcept {

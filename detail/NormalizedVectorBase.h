@@ -40,6 +40,14 @@ namespace Space {
             return NormalizedVector2<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl);
         }
 
+        using VectorBaseInThisSpace::operator-;
+        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(NormalizedVector<ThisSpace, Implementation> lhs, const VectorBaseInThisSpace& rhs) noexcept {
+            lhs.Sub(rhs);
+            return lhs;
+        }
+
+        using VectorBaseInThisSpace::operator-=;
+
         //-------------------------------------------------------------------------------------
 #ifndef IGNORE_SPACE_STATIC_ASSERT
         StaticAssert::invalid_normalized_vector_scale operator*=(const double&) const noexcept {

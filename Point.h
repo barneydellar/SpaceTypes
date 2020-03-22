@@ -33,7 +33,6 @@ namespace Space {
 
         //---------------------------------------------------------------------
 
-
         using _base::operator-=;
         Point<ThisSpace, Implementation> operator-=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
             _base::Sub(rhs);

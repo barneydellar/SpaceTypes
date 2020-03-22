@@ -24,6 +24,12 @@ namespace Space {
         friend class Vector2<ThisSpace, Implementation>;
     public:
 
+        using _base::operator-=;
+        Vector<ThisSpace, Implementation> operator-=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
+            _base::Sub(rhs);
+            return *this;
+        }
+
         friend std::ostream& operator << (
             std::ostream& os,
             const Vector<ThisSpace, Implementation>& item

@@ -86,16 +86,13 @@ namespace Space {
             return Vector<ThisSpace, Implementation>(VectorBaseInThisSpace::Cross(other));
         }
 
-        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator-(Vector2BaseInThisSpace lhs, const Vector2BaseInThisSpace& rhs) noexcept {
+        using VectorBaseInThisSpace::operator-;
+        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator-(Vector2<ThisSpace, Implementation> lhs, const Vector2BaseInThisSpace& rhs) noexcept {
             lhs -= rhs;
-            return Vector2<ThisSpace, Implementation>(lhs.VectorBaseInThisSpace::m_impl);
+            return lhs;
         }
-
+        
         using VectorBaseInThisSpace::operator-=;
-        Vector2<ThisSpace, Implementation> operator-=(const Vector2BaseInThisSpace& rhs) noexcept {
-            VectorBaseInThisSpace::m_impl = VectorBaseInThisSpace::m_impl - rhs.VectorBaseInThisSpace::m_impl;
-            return Vector2<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl);
-        }
 
         [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator+(Vector2BaseInThisSpace lhs, const Vector2BaseInThisSpace& rhs) noexcept {
             lhs += rhs;
@@ -121,6 +118,12 @@ namespace Space {
         }
         StaticAssert::invalid_vector2_in_place_cross operator*=(const Vector2BaseInThisSpace& other) noexcept {
             return StaticAssert::invalid_vector2_in_place_cross{};
+        }
+
+
+        template <typename OtherSpace>
+        StaticAssert::invalid_vector_to_vector_subtraction operator-=(const VectorBase<OtherSpace, Implementation>&) noexcept {
+            return StaticAssert::invalid_vector_to_vector_subtraction{};
         }
 
 #endif
