@@ -57,9 +57,9 @@ namespace Space {
             return Vector2<ThisSpace, Implementation>(static_cast<Implementation>(lhs) - static_cast<Implementation>(rhs));
         }
 
-        [[nodiscard]] friend Point2<ThisSpace, Implementation> operator+(Point2BaseInThisSpace lhs, const Point2BaseInThisSpace& rhs) noexcept {
-            lhs.m_impl += rhs.m_impl;
-            return Point2<ThisSpace, Implementation>(static_cast<Implementation>(lhs));
+        [[nodiscard]] friend Point2<ThisSpace, Implementation> operator+(Point2<ThisSpace, Implementation> lhs, const Point2<ThisSpace, Implementation>& rhs) noexcept {
+            lhs.Add(rhs);
+            return lhs;
         }
 
         using PointBaseInThisSpace::operator+=;

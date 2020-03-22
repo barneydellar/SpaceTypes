@@ -81,6 +81,17 @@ namespace Space {
 
     protected:
 
+        void Add(Base<ThisSpace, Implementation> other)
+        {
+            std::transform(
+                cbegin(),
+                cend(),
+                other.cbegin(),
+                begin(),
+                std::plus<>()
+            );
+        }
+
         [[nodiscard]] static bool Equality(const double& x, const double& y)
         {
             return std::abs(x - y) < 1e-6;
