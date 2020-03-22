@@ -62,7 +62,6 @@ namespace Space {
 
         //---------------------------------------------------------------------
 
-
         friend std::ostream& operator << (
             std::ostream& os,
             const Point2<ThisSpace, Implementation>& item

@@ -226,7 +226,6 @@ TEST_CASE("Vector2 Can Be Subtracted From Point2 In The Same Space to produce a 
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
 
-
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("PointCannotBeSubtractedFromVectorInTheSameSpace") {
     const Volume::Vector v(1, 0, 0);

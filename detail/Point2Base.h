@@ -12,16 +12,26 @@ namespace Space {
 
     public:
 
-        Point2Base() noexcept { PointBaseInThisSpace::m_impl = { 0, 0, 0 }; }
+        Point2Base() noexcept : PointBaseInThisSpace() {}
         explicit Point2Base(const Implementation& v) noexcept { PointBaseInThisSpace::m_impl = { v.m_values[0], v.m_values[1], 0 }; }
-        explicit Point2Base(const double x, const double y) noexcept {PointBaseInThisSpace::m_impl = { x, y, 0 };}
+        explicit Point2Base(const double x, const double y) noexcept
+        {
+            auto iter = PointBaseInThisSpace::begin();
+            *iter++ = x;
+            *iter++ = y;
+            *iter = 0;
+        }
         Point2Base(const std::initializer_list<double> l)
         {
             if (l.size() != 2)
             {
                 throw std::invalid_argument("You can only initialise with two elements");
             }
-            PointBaseInThisSpace::m_impl = l;
+            std::copy(
+                std::cbegin(l),
+                std::cend(l),
+                PointBaseInThisSpace::begin()
+            );
         }
 
         [[nodiscard]] const double* cend() const noexcept
@@ -62,10 +72,6 @@ namespace Space {
         using PointBaseInThisSpace::operator+=;
 
         using PointBaseInThisSpace::operator-=;
-        Point2<ThisSpace, Implementation> operator-=(const Vector2<ThisSpace, Implementation>& rhs) noexcept {
-            PointBaseInThisSpace::m_impl = PointBaseInThisSpace::m_impl - static_cast<Implementation>(rhs);
-            return Point2<ThisSpace, Implementation>(PointBaseInThisSpace::m_impl);
-        }
 
         //------------------------------------------------------------------------------------
 

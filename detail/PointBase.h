@@ -47,7 +47,7 @@ namespace Space {
         }
 
         [[nodiscard]] Point2<ThisSpace, Implementation> RemoveZ() const {
-            return Point2<ThisSpace, Implementation>(_base::m_impl);
+            return Point2<ThisSpace, Implementation>(_base::X(), _base::Y());
         }
 
         //------------------------------------------------------------------------------------
