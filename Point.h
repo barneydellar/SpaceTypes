@@ -25,11 +25,6 @@ namespace Space {
         friend class Vector2<ThisSpace, Implementation>;
     public:
 
-        [[nodiscard]] friend Point<ThisSpace, Implementation> operator+(Point<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
-            lhs += rhs;
-            return lhs;
-        }
-
         using _base::operator+=;
         Point<ThisSpace, Implementation> operator+=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
             _base::Add(rhs);
@@ -38,10 +33,6 @@ namespace Space {
 
         //---------------------------------------------------------------------
 
-        [[nodiscard]] friend Point<ThisSpace, Implementation> operator-(Point<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
-            lhs -= rhs;
-            return lhs;
-        }
 
         using _base::operator-=;
         Point<ThisSpace, Implementation> operator-=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {

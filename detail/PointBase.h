@@ -46,6 +46,16 @@ namespace Space {
             return v;
         }
 
+        [[nodiscard]] friend Point<ThisSpace, Implementation> operator+(Point<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
+            lhs += rhs;
+            return lhs;
+        }
+
+        [[nodiscard]] friend Point<ThisSpace, Implementation> operator-(Point<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
+            lhs -= rhs;
+            return lhs;
+        }
+
         [[nodiscard]] Point2<ThisSpace, Implementation> RemoveZ() const {
             return Point2<ThisSpace, Implementation>(_base::X(), _base::Y());
         }
