@@ -11,6 +11,8 @@ namespace Space {
         using _base = Base<ThisSpace, Implementation>;
         using _base::_base;
 
+        friend class Point2<ThisSpace, Implementation>;
+
     public:
 
         [[nodiscard]] bool operator == (const PointBaseInThisSpace& other) const noexcept {
@@ -28,16 +30,6 @@ namespace Space {
 
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(PointBaseInThisSpace lhs, const PointBaseInThisSpace& rhs) {
             return Vector<ThisSpace, Implementation>(lhs.m_impl - rhs.m_impl);
-        }
-
-        [[nodiscard]] friend Point<ThisSpace, Implementation> operator+(PointBaseInThisSpace lhs, const VectorBaseInThisSpace& rhs) noexcept {
-            lhs += rhs;
-            return Point<ThisSpace, Implementation>(lhs.m_impl);
-        }
-
-        Point<ThisSpace, Implementation> operator+=(const VectorBaseInThisSpace& rhs) noexcept {
-            _base::m_impl = _base::m_impl + rhs.m_impl;
-            return Point<ThisSpace, Implementation>(_base::m_impl);
         }
 
         [[nodiscard]] friend Point<ThisSpace, Implementation> operator-(PointBaseInThisSpace lhs, const VectorBaseInThisSpace& rhs) noexcept {
