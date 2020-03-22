@@ -89,14 +89,33 @@ TEST_CASE("Vector Can Be Added To Point2 In The Same Space") {
     CHECK(p_new == Volume::Point(1, 1, 0));
 }
 TEST_CASE("Vector Can Be Added ToPoint2 In The Same Space To Produce A Point 3") {
-
     const Volume::Point2 p;
     const Volume::Vector v;
-
     using converted_type = decltype(p + v);
     using required_type = decltype(Volume::Point{});
     CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
 }
+
+TEST_CASE("Normalised Vector Can Be Added To Point In The Same Space") {
+    const Volume::Point p(0, 0, 1);
+    const Volume::NormalizedVector v(1, 0, 0);
+    const auto p_new = p + v;
+    CHECK(p_new == Volume::Point(1, 0, 1));
+}
+TEST_CASE("Normalised Vector Can Be Added To Point2 In The Same Space") {
+    const Volume::Point2 p(0, 1);
+    const Volume::NormalizedVector v(1, 0, 0);
+    const auto p_new = p + v;
+    CHECK(p_new == Volume::Point(1, 1, 0));
+}
+TEST_CASE("Normalised Vector Can Be Added ToPoint2 In The Same Space To Produce A Point 3") {
+    const Volume::Point2 p;
+    const Volume::NormalizedVector v;
+    using converted_type = decltype(p + v);
+    using required_type = decltype(Volume::Point{});
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("PointCannotBeAddedToVectorInTheSameSpace") {
     const Volume::Vector v;
@@ -137,6 +156,13 @@ TEST_CASE("Vector2 Can Be Added To Point2 In The Same Space In Place") {
     const Volume::Vector2 v(1, 0);
     p += v;
     CHECK(p == Volume::Point2(1, 1));
+}
+
+TEST_CASE("Normalised Vector2 Can Be Added To Point In The Same Space In Place") {
+    Volume::Point p(0, 0, 1);
+    const Volume::NormalizedVector2 v(1, 0);
+    p += v;
+    CHECK(p == Volume::Point(1, 0, 1));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -220,6 +246,35 @@ TEST_CASE("Vector2 Can Be Subtracted From Point2 In The Same Space") {
 TEST_CASE("Vector2 Can Be Subtracted From Point2 In The Same Space to produce a 2D Point") {
     const Volume::Point2 p;
     const Volume::Vector2 v;
+
+    using converted_type = decltype(p - v);
+    using required_type = decltype(Volume::Point2{});
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+
+TEST_CASE("Normalised Vector2 Can Be Subtracted From Point In The Same Space") {
+    const Volume::Point p(3, 0, 0);
+    const Volume::NormalizedVector2 v(1, 0);
+    const auto p_new = p - v;
+    CHECK(p_new == Volume::Point(2, 0, 0));
+}
+TEST_CASE("Normalised Vector2 Can Be Subtracted From Point In The Same Space to produce a 3D Point") {
+    const Volume::Point p;
+    const Volume::NormalizedVector2 v;
+
+    using converted_type = decltype(p - v);
+    using required_type = decltype(Volume::Point{});
+}
+
+TEST_CASE("Normalised Vector2 Can Be Subtracted From Point2 In The Same Space") {
+    const Volume::Point2 p(3, 0);
+    const Volume::NormalizedVector2 v(1, 0);
+    const auto p_new = p - v;
+    CHECK(p_new == Volume::Point2(2, 0));
+}
+TEST_CASE("Normalised Vector2 Can Be Subtracted From Point2 In The Same Space to produce a 2D Point") {
+    const Volume::Point2 p;
+    const Volume::NormalizedVector2 v;
 
     using converted_type = decltype(p - v);
     using required_type = decltype(Volume::Point2{});
