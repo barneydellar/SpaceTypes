@@ -99,12 +99,6 @@ namespace Space {
             return lhs;
         }
 
-        using VectorBaseInThisSpace::operator+=;
-        Vector2<ThisSpace, Implementation> operator+=(const Vector2BaseInThisSpace& rhs) noexcept {
-            VectorBaseInThisSpace::m_impl = VectorBaseInThisSpace::m_impl + rhs.VectorBaseInThisSpace::m_impl;
-            return Vector2<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl);
-        }
-
         [[nodiscard]] NormalizedVector2<ThisSpace, Implementation> Norm() const {
             return NormalizedVector2<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl);
         }

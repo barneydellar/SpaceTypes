@@ -30,6 +30,12 @@ namespace Space {
             return *this;
         }
 
+        using _base::operator+=;
+        Vector2<ThisSpace, Implementation> operator+=(const Vector2Base<ThisSpace, Implementation>& rhs) noexcept {
+            _base::Add(rhs);
+            return *this;
+        }
+
         friend std::ostream& operator << (
             std::ostream& os,
             const Vector2<ThisSpace, Implementation>& item

@@ -27,11 +27,11 @@ namespace Space {
 
     public:
 
-        [[nodiscard]] bool operator == (const PointBaseInThisSpace& other) const noexcept {
+        [[nodiscard]] bool operator== (const PointBaseInThisSpace& other) const noexcept {
             return std::equal(_base::cbegin(), _base::cend(), other.cbegin(), _base::Equality);
         }
 
-        [[nodiscard]] bool operator != (const PointBaseInThisSpace& other) const noexcept {
+        [[nodiscard]] bool operator!= (const PointBaseInThisSpace& other) const noexcept {
             return !(operator==(other));
         }
 
@@ -65,19 +65,19 @@ namespace Space {
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 
         template <typename OtherSpace>
-        StaticAssert::invalid_equality operator == (const PointBase<OtherSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_equality operator== (const PointBase<OtherSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_equality{};
         }
         template <typename AnySpace>
-        StaticAssert::invalid_point_vector_equality operator == (const VectorBase<AnySpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_vector_equality operator== (const VectorBase<AnySpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
         template <typename OtherSpace>
-        StaticAssert::invalid_equality operator != (const PointBase<OtherSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_equality operator!= (const PointBase<OtherSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_equality{};
         }
         template <typename AnySpace>
-        StaticAssert::invalid_point_vector_equality operator != (const VectorBase<AnySpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_vector_equality operator!= (const VectorBase<AnySpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
         template <typename OtherSpace>

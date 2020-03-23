@@ -25,11 +25,11 @@ namespace Space {
 
     public:
 
-        [[nodiscard]] bool operator == (const VectorBaseInThisSpace& other) const noexcept {
+        [[nodiscard]] bool operator== (const VectorBaseInThisSpace& other) const noexcept {
             return std::equal(_base::cbegin(), _base::cend(), other.cbegin(), _base::Equality);
         }
 
-        [[nodiscard]] bool operator != (const VectorBaseInThisSpace& other) const noexcept {
+        [[nodiscard]] bool operator!= (const VectorBaseInThisSpace& other) const noexcept {
             return !(operator==(other));
         }
 
@@ -76,16 +76,6 @@ namespace Space {
             return lhs;
         }
 
-        //[[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(VectorBaseInThisSpace lhs, const VectorBaseInThisSpace& rhs) noexcept {
-        //    lhs += rhs;
-        //    return Vector<ThisSpace, Implementation>(lhs.m_impl);
-        //}
-
-        Vector<ThisSpace, Implementation> operator+=(const VectorBaseInThisSpace& rhs) noexcept {
-            _base::m_impl = _base::m_impl + rhs._base::m_impl;
-            return Vector<ThisSpace, Implementation>(_base::m_impl);
-        }
-
         [[nodiscard]] typename ThisSpace::Unit Mag() const noexcept {
             return ThisSpace::Unit{ Mag_double() };
         }
@@ -126,19 +116,19 @@ namespace Space {
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 
         template <typename OtherSpace>
-        StaticAssert::invalid_equality operator == (const VectorBase<OtherSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_equality operator== (const VectorBase<OtherSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_equality{};
         }
         template <typename AnySpace>
-        StaticAssert::invalid_point_vector_equality operator == (const PointBase<AnySpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_vector_equality operator== (const PointBase<AnySpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
         template <typename OtherSpace>
-        StaticAssert::invalid_equality operator != (const VectorBase<OtherSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_equality operator!= (const VectorBase<OtherSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_equality{};
         }
         template <typename AnySpace>
-        StaticAssert::invalid_point_vector_equality operator != (const PointBase<AnySpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_vector_equality operator!= (const PointBase<AnySpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
         template <typename OtherSpace>

@@ -215,6 +215,19 @@ TEST_CASE("Vector2s And Normalized Vector2s In The Same Space Can Be Added In Pl
 }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("Vector2s And 3D Vectors In The Same Space Cannot Be Added In Place") {
+    const View::Vector v1;
+    View::Vector2 v2;
+
+    // We should not be able to compile:
+    // v1 += v2;
+    // But we can check the return type,
+    // to make sure we get an invalid type:
+    using converted_type = decltype(v2 += v1);
+    using required_type = StaticAssert::invalid_vector_to_vector_addition;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
+
 TEST_CASE("Vector2s And Normalized Vector2s In Different Spaces Cannot Be Added In Place") {
     View::Vector2 v1;
     const Image::NormalizedVector2 v2;

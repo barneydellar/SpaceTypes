@@ -31,15 +31,3 @@ TestVector operator*(TestVector lhs, const double& d) noexcept
     return lhs;
 }
 
-TestVector operator+(TestVector lhs, const TestVector& rhs) noexcept
-{
-    std::transform(
-        lhs.m_values.cbegin(),
-        lhs.m_values.cend(),
-        rhs.m_values.cbegin(),
-        lhs.m_values.begin(),
-        std::plus<>()
-    );
-    return lhs;
-}
-
