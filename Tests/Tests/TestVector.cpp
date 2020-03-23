@@ -19,15 +19,3 @@ TestVector::TestVector(const std::initializer_list<double> l)
         m_values[2] = 0;
     }
 }
-
-TestVector operator*(TestVector lhs, const double& d) noexcept
-{
-    std::transform(
-        lhs.m_values.cbegin(),
-        lhs.m_values.cend(),
-        lhs.m_values.begin(),
-        [d](auto v) { return v * d; }
-    );
-    return lhs;
-}
-

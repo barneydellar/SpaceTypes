@@ -112,6 +112,16 @@ namespace Space {
             );
         }
 
+        void Scale(const double& d)
+        {
+            std::transform(
+                cbegin(),
+                cend(),
+                begin(),
+                [d](auto v) { return v * d; }
+            );
+        }
+
         [[nodiscard]] static bool Equality(const double& x, const double& y)
         {
             return std::abs(x - y) < 1e-6;

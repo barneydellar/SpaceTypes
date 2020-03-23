@@ -36,6 +36,12 @@ namespace Space {
             return *this;
         }
 
+        using _base::operator*=;
+        Vector2<ThisSpace, Implementation> operator*=(const double& d) noexcept {
+            _base::Scale(d);
+            return *this;
+        }
+
         friend std::ostream& operator << (
             std::ostream& os,
             const Vector2<ThisSpace, Implementation>& item

@@ -35,16 +35,14 @@ namespace Space {
             return NormalizedVector<ThisSpace, Implementation>(Vector2BaseInThisSpace::X(), Vector2BaseInThisSpace::Y(), 0);
         }
 
-        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator*(NormalizedVector2BaseInThisSpace lhs, const double& d) noexcept {
-            return Vector2<ThisSpace, Implementation>(lhs.m_impl * d);
+        using NormalizedVectorBaseInThisSpace::operator*;
+        using NormalizedVectorBaseInThisSpace::operator*=;
+        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator*(NormalizedVector2<ThisSpace, Implementation> lhs, const double& d) noexcept {
+            lhs.Scale(d);
+            return lhs;
         }
 
-        using NormalizedVectorBaseInThisSpace::operator*=;
-
-
-        using NormalizedVectorBaseInThisSpace::operator+=;
         using NormalizedVectorBaseInThisSpace::operator-=;
-
         using NormalizedVectorBaseInThisSpace::operator-;
         // Is this needed? TODO
         [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator-(NormalizedVector2<ThisSpace, Implementation> lhs, const NormalizedVector2BaseInThisSpace& rhs) noexcept {
@@ -60,6 +58,7 @@ namespace Space {
             return lhs;
         }
 
+        using NormalizedVectorBaseInThisSpace::operator+=;
         using NormalizedVectorBaseInThisSpace::operator+;
         [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator+(NormalizedVector2<ThisSpace, Implementation> lhs, const NormalizedVector2<ThisSpace, Implementation>& rhs) noexcept {
             lhs.Add(rhs);
@@ -79,7 +78,6 @@ namespace Space {
             return NormalizedVector<ThisSpace, Implementation>(Vector2BaseInThisSpace::Cross(other).Norm());
         }
 
-        using NormalizedVectorBaseInThisSpace::operator*;
         using NormalizedVectorBaseInThisSpace::end;
         using NormalizedVectorBaseInThisSpace::Norm;
     };

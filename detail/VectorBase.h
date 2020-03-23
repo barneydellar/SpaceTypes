@@ -38,14 +38,9 @@ namespace Space {
             return Vector < OtherSpace, Implementation>(transform_manager.template Transform33<ThisSpace, OtherSpace>(static_cast<Implementation>(*this)));
         }
 
-        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator*(VectorBaseInThisSpace lhs, const double& d) noexcept {
+        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator*(Vector<ThisSpace, Implementation> lhs, const double& d) noexcept {
             lhs *= d;
-            return Vector<ThisSpace, Implementation>(lhs._base::m_impl);
-        }
-
-        Vector<ThisSpace, Implementation> operator*=(const double& d) noexcept {
-            _base::m_impl = _base::m_impl * d;
-            return Vector<ThisSpace, Implementation>(_base::m_impl);
+            return lhs;
         }
 
         [[nodiscard]] Vector<ThisSpace, Implementation> operator*(const VectorBaseInThisSpace& rhs) const noexcept {

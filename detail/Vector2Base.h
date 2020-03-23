@@ -71,10 +71,6 @@ namespace Space {
         }
 
         using VectorBaseInThisSpace::operator*=;
-        Vector2<ThisSpace, Implementation> operator*=(const double& d) noexcept {
-            VectorBaseInThisSpace::m_impl = VectorBaseInThisSpace::m_impl * d;
-            return Vector2<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl);
-        }
 
         using VectorBaseInThisSpace::operator*;
         [[nodiscard]] Vector<ThisSpace, Implementation> operator*(const Vector2BaseInThisSpace& rhs) const noexcept {
@@ -113,8 +109,6 @@ namespace Space {
         StaticAssert::invalid_vector2_in_place_cross operator*=(const Vector2BaseInThisSpace& other) noexcept {
             return StaticAssert::invalid_vector2_in_place_cross{};
         }
-
-
         template <typename OtherSpace>
         StaticAssert::invalid_vector_to_vector_subtraction operator-=(const VectorBase<OtherSpace, Implementation>&) noexcept {
             return StaticAssert::invalid_vector_to_vector_subtraction{};
