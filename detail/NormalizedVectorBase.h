@@ -60,7 +60,8 @@ namespace Space {
         StaticAssert::invalid_normalized_vector_scale operator*=(const double&) const noexcept {
             return StaticAssert::invalid_normalized_vector_scale{};
         }
-        StaticAssert::invalid_normalized_vector_in_place_cross operator*=(Vector2<ThisSpace, Implementation>&) const noexcept {
+
+        StaticAssert::invalid_normalized_vector_in_place_cross operator*=(const Vector<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_in_place_cross{};
         }
 

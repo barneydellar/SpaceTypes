@@ -130,7 +130,7 @@ namespace Space {
             return StaticAssert::invalid_vector_cross{};
         }
         template <typename OtherSpace>
-        StaticAssert::invalid_vector_cross operator*=(const VectorBase<OtherSpace, Implementation>&) noexcept {
+        std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_vector_cross> operator*=(const VectorBase<OtherSpace, Implementation>&) noexcept {
             return StaticAssert::invalid_vector_cross{};
         }
         template <typename OtherSpace>

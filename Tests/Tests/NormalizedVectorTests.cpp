@@ -649,13 +649,13 @@ TEST_CASE("NormalisedVectorsFromTheSameSpaceCanBeCrossedUsingStarEqualOperator")
 
 //-------------------------------------------------------------------------------------------------
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-//TEST_CASE("NormalisedVectors And Vectors From The Same Space Cannot Be Crossed Using Star Equal Operator") {
-//    View::NormalizedVector v1;
-//    const View::Vector v2;
-//    using converted_type = decltype(v1 *= v2);
-//    using required_type = StaticAssert::normalized_vectors_do_not_support_norm;
-//    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
-//}
+TEST_CASE("NormalisedVectors And Vectors From The Same Space Cannot Be Crossed Using Star Equal Operator") {
+    View::NormalizedVector v1;
+    const View::Vector v2;
+    using converted_type = decltype(v1 *= v2);
+    using required_type = StaticAssert::invalid_normalized_vector_in_place_cross;
+    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+}
 #endif
 
 //-------------------------------------------------------------------------------------------------
