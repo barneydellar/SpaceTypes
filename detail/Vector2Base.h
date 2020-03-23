@@ -91,12 +91,12 @@ namespace Space {
             lhs -= rhs;
             return lhs;
         }
-        
+
         using VectorBaseInThisSpace::operator-=;
 
-        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator+(Vector2BaseInThisSpace lhs, const Vector2BaseInThisSpace& rhs) noexcept {
+        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator+(Vector2<ThisSpace, Implementation> lhs, const Vector2BaseInThisSpace& rhs) noexcept {
             lhs += rhs;
-            return Vector2<ThisSpace, Implementation>(lhs.m_impl);
+            return lhs;
         }
 
         using VectorBaseInThisSpace::operator+=;
