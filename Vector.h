@@ -42,6 +42,11 @@ namespace Space {
             return *this;
         }
 
+        Vector<ThisSpace, Implementation> operator*=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
+            *this = this->Cross(rhs);
+            return *this;
+        }
+
         friend std::ostream& operator << (
             std::ostream& os,
             const Vector<ThisSpace, Implementation>& item

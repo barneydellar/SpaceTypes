@@ -53,12 +53,17 @@ namespace Space {
         }
 
         using VectorBaseInThisSpace::operator-=;
+        using VectorBaseInThisSpace::operator*=;
 
         //-------------------------------------------------------------------------------------
 #ifndef IGNORE_SPACE_STATIC_ASSERT
         StaticAssert::invalid_normalized_vector_scale operator*=(const double&) const noexcept {
             return StaticAssert::invalid_normalized_vector_scale{};
         }
+        StaticAssert::invalid_normalized_vector_in_place_cross operator*=(Vector2<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_normalized_vector_in_place_cross{};
+        }
+
         template <typename AnySpace>
         StaticAssert::invalid_normalized_vector_addition operator+=(const NormalizedVectorBase<AnySpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_addition{};

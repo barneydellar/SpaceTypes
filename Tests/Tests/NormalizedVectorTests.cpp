@@ -640,6 +640,26 @@ TEST_CASE("VectorsAndNormalizedVectorsCanBeCrossedUsingStarToGiveANewVector") {
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("NormalisedVectorsFromTheSameSpaceCanBeCrossedUsingStarEqualOperator") {
+    View::NormalizedVector v1(1, 0, 0);
+    const View::NormalizedVector v2(0, 1, 0);
+    v1 *= v2;
+    CHECK(v1 == View::Vector(0, 0, 1));
+}
+
+//-------------------------------------------------------------------------------------------------
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+//TEST_CASE("NormalisedVectors And Vectors From The Same Space Cannot Be Crossed Using Star Equal Operator") {
+//    View::NormalizedVector v1;
+//    const View::Vector v2;
+//    using converted_type = decltype(v1 *= v2);
+//    using required_type = StaticAssert::normalized_vectors_do_not_support_norm;
+//    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+//}
+#endif
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("NormalizedVectorsSupportElementAccessByName") {
     const Image::NormalizedVector v(1, 0, 0);
     CHECK(v.X() == 1);

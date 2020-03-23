@@ -146,6 +146,14 @@ namespace Space::StaticAssert {
         }
     };
 
+    struct invalid_normalized_vector_in_place_cross final : public invalid_base
+    {
+        template<typename T = void>
+        invalid_normalized_vector_in_place_cross() {
+            static_assert(false, "You can't cross a normalized vector in place with a non-normalized vector.");
+        }
+    };
+
     struct invalid_normalized_vector_scale final : public invalid_base
     {
         template<typename T = void>

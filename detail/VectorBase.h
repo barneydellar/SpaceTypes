@@ -47,11 +47,6 @@ namespace Space {
             return this->Cross(rhs);
         }
 
-        Vector<ThisSpace, Implementation> operator*=(const VectorBaseInThisSpace& other) noexcept {
-            *this = this->Cross(other);
-            return Vector<ThisSpace, Implementation>(_base::m_impl);
-        }
-
         [[nodiscard]] Vector<ThisSpace, Implementation> Cross(const VectorBaseInThisSpace& other) const noexcept {
 
             return Vector<ThisSpace, Implementation>{

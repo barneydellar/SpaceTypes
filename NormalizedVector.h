@@ -11,6 +11,12 @@ namespace Space {
 
     public:
 
+        using _base::operator*=;
+        NormalizedVector<ThisSpace, Implementation> operator*=(const NormalizedVectorBase<ThisSpace, Implementation>& rhs) noexcept {
+            *this = this->Cross(rhs);
+            return *this;
+        }
+
         friend std::ostream& operator << (
             std::ostream& os,
             const NormalizedVector<ThisSpace, Implementation>& item
