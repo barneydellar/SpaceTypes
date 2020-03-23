@@ -1,9 +1,6 @@
 #include "pch.h"
 #include "TestVector.h"
 
-TestVector::TestVector(const double x, const double y, const double z) noexcept : m_values{ x, y, z }
-{
-}
 
 TestVector::TestVector(const std::initializer_list<double> l)
 {
