@@ -170,7 +170,7 @@ TEST_CASE("NormalizedVectorsFromDiffefentSpacesCannotBeComparedUsingEqual") {
     // to make sure we get an invalid type:
     using converted_type = decltype(v1 == v2);
     using required_type = StaticAssert::invalid_equality;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 //-------------------------------------------------------------------------------------------------
@@ -197,7 +197,7 @@ TEST_CASE("NormalizedVectorsFromDiffefentSpacesCannotBeComparedUsingInequality")
     // to make sure we get an invalid type:
     using converted_type = decltype(v1 != v2);
     using required_type = StaticAssert::invalid_equality;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 
@@ -218,7 +218,7 @@ TEST_CASE("NormalizedVectorsCanBeScaledToProduceAVector") {
     using required_type = decltype(Image::Vector{});
 
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 
@@ -233,7 +233,7 @@ TEST_CASE("NormalizedVectorsCannotBeInlineScaled") {
     // to make sure we get an invalid type:
     using converted_type = decltype(v_norm *= 2.0);
     using required_type = StaticAssert::invalid_normalized_vector_scale;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 
@@ -257,7 +257,7 @@ TEST_CASE("NormalizedVectorsCanBeAddedToProduceAVector") {
     using required_type = decltype(Image::Vector{});
 
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 
@@ -273,7 +273,7 @@ TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeAdded") {
     // to make sure we get an invalid type:
     using converted_type = decltype(v_norm_1 + v_norm_2);
     using required_type = StaticAssert::invalid_vector_to_vector_addition;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 
@@ -297,7 +297,7 @@ TEST_CASE("NormalizedVectorsAndVectorsCanBeAddedToProduceAVector") {
     using required_type = decltype(Image::Vector{});
 
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 
@@ -311,7 +311,7 @@ TEST_CASE("VectorsAndNormalizedVectorsCanBeAddedToProduceAVector") {
     using required_type = decltype(Image::Vector{});
 
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 
@@ -327,7 +327,7 @@ TEST_CASE("VectorsAndNormalizedVectorsFromDifferentSpacesCannotBeAdded") {
     // to make sure we get an invalid type:
     using converted_type = decltype(v_norm_1 + v_norm_2);
     using required_type = StaticAssert::invalid_vector_to_vector_addition;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 
@@ -343,7 +343,7 @@ TEST_CASE("NormalizedVectorsCannotBeInlineAdded") {
     // to make sure we get an invalid type:
     using converted_type = decltype(v_norm_1 += v_norm_2);
     using required_type = StaticAssert::invalid_normalized_vector_addition;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 
@@ -368,7 +368,7 @@ TEST_CASE("NormalizedVectorsCanBeSubtractedFromProduceAVector") {
     using required_type = decltype(Image::Vector{});
 
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 
@@ -384,7 +384,7 @@ TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeSubtracted") {
     // to make sure we get an invalid type:
     using converted_type = decltype(v_norm_1 - v_norm_2);
     using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 
@@ -408,7 +408,7 @@ TEST_CASE("NormalizedVectorsAndVectorsCanBeSubtractedFromProduceAVector") {
     using required_type = decltype(Image::Vector{});
 
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 
@@ -422,7 +422,7 @@ TEST_CASE("VectorsAndNormalizedVectorsCanBeSubtractedFromProduceAVector") {
     using required_type = decltype(Image::Vector{});
 
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 
@@ -438,7 +438,7 @@ TEST_CASE("VectorsAndNormalizedVectorsFromDifferentSpacesCannotBeSubtracted") {
     // to make sure we get an invalid type:
     using converted_type = decltype(v_norm_1 - v_norm_2);
     using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 
@@ -454,7 +454,7 @@ TEST_CASE("NormalizedVectorsCannotBeInlineSubtracted") {
     // to make sure we get an invalid type:
     using converted_type = decltype(v_norm_1 -= v_norm_2);
     using required_type = StaticAssert::invalid_normalized_vector_subtraction;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 
@@ -477,7 +477,7 @@ TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeDotted") {
     // to make sure we get an invalid type:
     using converted_type = decltype(v1.Dot(v2));
     using required_type = StaticAssert::invalid_vector_dot;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 
@@ -529,7 +529,7 @@ TEST_CASE("NormalizedVectorsCanBeCrossedToGiveANewNormalizedVector") {
     using converted_type = decltype(v_norm_x.Cross(v_norm_y));
     using required_type = decltype(Image::NormalizedVector{});
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 
@@ -550,7 +550,7 @@ TEST_CASE("NormalizedVectorsCanBeCrossedUsingStarToGiveANewNormalizedVector") {
     using converted_type = decltype(v_norm_x * v_norm_y);
     using required_type = decltype(Image::NormalizedVector{});
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 
@@ -571,7 +571,7 @@ TEST_CASE("NormalizedVectorsAndVectorsCanBeCrossedToGiveANewVector") {
     using converted_type = decltype(v_norm_x.Cross(v_y));
     using required_type = decltype(Image::Vector{});
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 
@@ -592,7 +592,7 @@ TEST_CASE("NormalizedVectorsAndVectorsCanBeCrossedUsingStarToGiveANewVector") {
     using converted_type = decltype(v_norm_x * v_y);
     using required_type = decltype(Image::Vector{});
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 
@@ -613,7 +613,7 @@ TEST_CASE("VectorsAndNormalizedVectorsCanBeCrossedToGiveANewVector") {
     using converted_type = decltype(v_x.Cross(v_norm_y));
     using required_type = decltype(Image::Vector{});
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 
@@ -634,7 +634,7 @@ TEST_CASE("VectorsAndNormalizedVectorsCanBeCrossedUsingStarToGiveANewVector") {
     using converted_type = decltype(v_x * v_norm_y);
     using required_type = decltype(Image::Vector{});
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 
@@ -654,7 +654,7 @@ TEST_CASE("NormalisedVectors And Vectors From The Same Space Cannot Be Crossed U
     const View::Vector v2;
     using converted_type = decltype(v1 *= v2);
     using required_type = StaticAssert::invalid_normalized_vector_in_place_cross;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 
@@ -690,7 +690,7 @@ TEST_CASE("NormalizedVectorsDoNotSupportNorm") {
     // to make sure we get an invalid type:
     using converted_type = decltype(nv.Norm());
     using required_type = StaticAssert::normalized_vectors_do_not_support_norm;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 TEST_CASE("NormalizedVectorsDoNotSupportNonConstBegin") {
@@ -702,7 +702,7 @@ TEST_CASE("NormalizedVectorsDoNotSupportNonConstBegin") {
     // to make sure we get an invalid type:
     using converted_type = decltype(nv.begin());
     using required_type = StaticAssert::normalized_vectors_do_not_support_non_const_iteration;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -716,7 +716,7 @@ TEST_CASE("NormalizedVectorsDoNotSupportNonConstEnd") {
     // to make sure we get an invalid type:
     using converted_type = decltype(nv.end());
     using required_type = StaticAssert::normalized_vectors_do_not_support_non_const_iteration;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 
@@ -732,7 +732,7 @@ TEST_CASE("Normalized Vectors Can Have their z-value removed to produce a Normal
     const Image::NormalizedVector v;
     using converted_type = decltype(v.RemoveZ());
     using required_type = decltype(Image::NormalizedVector2{});
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -767,7 +767,7 @@ TEST_CASE("NormalizedVectorsSupportElementAccessByAtDoesNotCompileIfTooLow") {
     // to make sure we get an invalid type:
     using converted_type = decltype(v.at<-1>());
     using required_type = StaticAssert::invalid_at_access;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 TEST_CASE("NormalizedVectorsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
     const Image::NormalizedVector v(1, 0, 0);
@@ -778,7 +778,7 @@ TEST_CASE("NormalizedVectorsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
     // to make sure we get an invalid type:
     using converted_type = decltype(v.at<3>());
     using required_type = StaticAssert::invalid_at_access;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 
@@ -801,7 +801,7 @@ TEST_CASE("NormalizedVectorsCanBeConvertedFromOneSpaceToAnotherProducingAVector"
     using converted_type = decltype(v_view.ConvertTo<Patient>(tm));
     using required_type = decltype(Patient::Vector{});
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 

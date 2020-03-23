@@ -107,7 +107,7 @@ TEST_CASE("PointsFromDiffefentSpacesCannotBeComparedUsingEqual") {
     using converted_type = decltype(p1 == p2);
     using required_type = StaticAssert::invalid_equality;
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 #endif
@@ -138,7 +138,7 @@ TEST_CASE("PointsFromDiffefentSpacesCannotBeComparedUsingInequality") {
     // to make sure we get an invalid type:
     using converted_type = decltype(p1 != p2);
     using required_type = StaticAssert::invalid_equality;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 
@@ -162,7 +162,7 @@ TEST_CASE("PointsFromDifferfentSpacesCannotBeSubtracted") {
     using converted_type = decltype(p1 - p2);
     using required_type = StaticAssert::invalid_subtraction;
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 #endif
@@ -174,7 +174,7 @@ TEST_CASE("Points cannot be added") {
     const View::Point p2;
     using converted_type = decltype(p1 + p2);
     using required_type = StaticAssert::invalid_point_to_point_addition;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -241,7 +241,7 @@ TEST_CASE("Points Can Have their z-value removed to produce a vector2") {
     const Image::Point v;
     using converted_type = decltype(v.RemoveZ());
     using required_type = decltype(Image::Point2{});
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -291,7 +291,7 @@ TEST_CASE("PointsSupportElementAccessByAtDoesNotCompileIfTooLow") {
     using converted_type = decltype(p.at<-1>());
     using required_type = StaticAssert::invalid_at_access;
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 TEST_CASE("PointsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
@@ -304,7 +304,7 @@ TEST_CASE("PointsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
     using converted_type = decltype(p.at<3>());
     using required_type = StaticAssert::invalid_at_access;
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 #endif
@@ -329,7 +329,7 @@ TEST_CASE("PointsCanBeConvertedFromOneSpaceToAnotherProducingAPoint") {
     using converted_type = decltype(p_view.ConvertTo<Patient>(tm));
     using required_type = decltype(Patient::Point{});
     CHECK(
-        static_cast<bool>(std::is_same<converted_type, required_type>::value)
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
 

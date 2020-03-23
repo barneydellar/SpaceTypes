@@ -15,7 +15,7 @@ TEST_CASE("PointsAndVectorsFromTheSameSpaceCannotBeComparedUsingEquality") {
     // to make sure we get an invalid type:
     using converted_type = decltype(p == v);
     using required_type = StaticAssert::invalid_point_vector_equality;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 TEST_CASE("Point2s And Vectors From The Same Space Cannot Be Compared Using Equality") {
     const View::Vector v;
@@ -27,7 +27,7 @@ TEST_CASE("Point2s And Vectors From The Same Space Cannot Be Compared Using Equa
     // to make sure we get an invalid type:
     using converted_type = decltype(p == v);
     using required_type = StaticAssert::invalid_point_vector_equality;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ TEST_CASE("VectorsAndPointsFromTheSameSpaceCannotBeComparedUsingEquality") {
     // to make sure we get an invalid type:
     using converted_type = decltype(v == p);
     using required_type = StaticAssert::invalid_point_vector_equality;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -56,7 +56,7 @@ TEST_CASE("PointsAndVectorsFromTheSameSpaceCannotBeComparedUsingInequality") {
     // to make sure we get an invalid type:
     using converted_type = decltype(p != v);
     using required_type = StaticAssert::invalid_point_vector_equality;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -70,7 +70,7 @@ TEST_CASE("VectorsAndPointsFromTheSameSpaceCannotBeComparedUsingInequality") {
     // to make sure we get an invalid type:
     using converted_type = decltype(p != v);
     using required_type = StaticAssert::invalid_point_vector_equality;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 
@@ -93,7 +93,7 @@ TEST_CASE("Vector Can Be Added ToPoint2 In The Same Space To Produce A Point 3")
     const Volume::Vector v;
     using converted_type = decltype(p + v);
     using required_type = decltype(Volume::Point{});
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 TEST_CASE("Normalised Vector Can Be Added To Point In The Same Space") {
@@ -113,7 +113,7 @@ TEST_CASE("Normalised Vector Can Be Added ToPoint2 In The Same Space To Produce 
     const Volume::NormalizedVector v;
     using converted_type = decltype(p + v);
     using required_type = decltype(Volume::Point{});
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
@@ -127,7 +127,7 @@ TEST_CASE("PointCannotBeAddedToVectorInTheSameSpace") {
     // to make sure we get an invalid type:
     using converted_type = decltype(v + p);
     using required_type = StaticAssert::invalid_point_to_vector_addition;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 TEST_CASE("VectorCannotBeAddedToPointInDifferentSpace") {
@@ -140,7 +140,7 @@ TEST_CASE("VectorCannotBeAddedToPointInDifferentSpace") {
     // to make sure we get an invalid type:
     using converted_type = decltype(p + v);
     using required_type = StaticAssert::invalid_vector_to_point_addition;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 #endif
@@ -178,7 +178,7 @@ TEST_CASE("Vector Cannot Be Added To Point2 In The Same Space In Place") {
     // to make sure we get an invalid type:
     using converted_type = decltype(p += v);
     using required_type = StaticAssert::invalid_vector3_to_point2_addition;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 TEST_CASE("VectorCannotBeAddedToPointInDifferentSpaceInPlace") {
@@ -191,7 +191,7 @@ TEST_CASE("VectorCannotBeAddedToPointInDifferentSpaceInPlace") {
     // to make sure we get an invalid type:
     using converted_type = decltype(p += v);
     using required_type = StaticAssert::invalid_vector_to_point_addition;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 TEST_CASE("Vector2 Cannot Be Added To Point2 In Different Space In Place") {
     View::Point2 p;
@@ -203,7 +203,7 @@ TEST_CASE("Vector2 Cannot Be Added To Point2 In Different Space In Place") {
     // to make sure we get an invalid type:
     using converted_type = decltype(p += v);
     using required_type = StaticAssert::invalid_vector_to_point_addition;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 
@@ -227,7 +227,7 @@ TEST_CASE("Vector Can Be Subtracted From Point2 In The Same Space to produce a 3
 
     using converted_type = decltype(p - v);
     using required_type = decltype(Volume::Point{});
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 
@@ -249,7 +249,7 @@ TEST_CASE("Vector2 Can Be Subtracted From Point2 In The Same Space to produce a 
 
     using converted_type = decltype(p - v);
     using required_type = decltype(Volume::Point2{});
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 TEST_CASE("Normalised Vector2 Can Be Subtracted From Point In The Same Space") {
@@ -278,7 +278,7 @@ TEST_CASE("Normalised Vector2 Can Be Subtracted From Point2 In The Same Space to
 
     using converted_type = decltype(p - v);
     using required_type = decltype(Volume::Point2{});
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
@@ -292,7 +292,7 @@ TEST_CASE("PointCannotBeSubtractedFromVectorInTheSameSpace") {
     // to make sure we get an invalid type:
     using converted_type = decltype(v - p);
     using required_type = StaticAssert::invalid_point_from_vector_subtraction;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 TEST_CASE("VectorCannotBeSubtractedFromPointInDifferentSpace") {
@@ -305,7 +305,7 @@ TEST_CASE("VectorCannotBeSubtractedFromPointInDifferentSpace") {
     // to make sure we get an invalid type:
     using converted_type = decltype(p - v);
     using required_type = StaticAssert::invalid_vector_from_point_subtraction;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 #endif
@@ -333,7 +333,7 @@ TEST_CASE("Vector Cannot Be Subtracted From Point2 In Place") {
     // to make sure we get an invalid type:
     using converted_type = decltype(p -= v);
     using required_type = StaticAssert::invalid_vector3_from_point2_subtraction;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 TEST_CASE("VectorCannotBeSubtractedFromPointInDifferentSpaceInPlace") {
     View::Point p;
@@ -345,7 +345,7 @@ TEST_CASE("VectorCannotBeSubtractedFromPointInDifferentSpaceInPlace") {
     // to make sure we get an invalid type:
     using converted_type = decltype(p -= v);
     using required_type = StaticAssert::invalid_vector_from_point_subtraction;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 TEST_CASE("Vector2 Cannot Be Subtracted From Point In Different Space In Place") {
     View::Point2 p;
@@ -357,7 +357,7 @@ TEST_CASE("Vector2 Cannot Be Subtracted From Point In Different Space In Place")
     // to make sure we get an invalid type:
     using converted_type = decltype(p -= v);
     using required_type = StaticAssert::invalid_vector_from_point_subtraction;
-    CHECK(static_cast<bool>(std::is_same<converted_type, required_type>::value));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 
