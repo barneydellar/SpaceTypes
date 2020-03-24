@@ -110,9 +110,6 @@ namespace Space {
         StaticAssert::invalid_vector2_in_place_cross operator*=(const Vector2BaseInThisSpace& other) noexcept {
             return StaticAssert::invalid_vector2_in_place_cross{};
         }
-        StaticAssert::invalid_vector_to_vector_subtraction operator-=(const VectorBase<ThisSpace, Implementation>&) noexcept {
-            return StaticAssert::invalid_vector_to_vector_subtraction{};
-        }
 
         StaticAssert::invalid_vector_to_vector_addition operator+=(const VectorBase<ThisSpace, Implementation>&) noexcept {
             return StaticAssert::invalid_vector_to_vector_addition{};
