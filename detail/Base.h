@@ -86,6 +86,47 @@ namespace Space {
         typename std::enable_if<I != 0 && I != 1 && I != 2, StaticAssert::invalid_at_access>::type at() const {
             return StaticAssert::invalid_at_access{};
         }
+        template <typename OtherSpace>
+        std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_space> operator== (const Base<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace>
+        std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_space> operator!= (const Base<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace>
+        std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_space> operator*(const Base<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace>
+        std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_space> Cross(const Base<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace>
+        std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_space> operator*=(const Base<OtherSpace, Implementation>&) noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace>
+        std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_space> operator+(const Base<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace>
+        std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_space> operator+=(const Base<OtherSpace, Implementation>&) noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace>
+        std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_space> operator-(const Base<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace>
+        std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_space> operator-=(const Base<OtherSpace, Implementation>&) noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace>
+        std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_space> Dot(const Base<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+
 #endif
 
     protected:

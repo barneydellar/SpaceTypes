@@ -10,6 +10,16 @@ namespace Space::StaticAssert {
         }
     };
 
+
+
+    struct invalid_space final : public invalid_base
+    {
+        template<typename T = void>
+        invalid_space() {
+            static_assert(false, "You can't do anything with vectors or points from different spaces.");
+        }
+    };
+
     struct invalid_equality final : public invalid_base
     {
         template<typename T = void>

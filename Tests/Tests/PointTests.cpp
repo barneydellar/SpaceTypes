@@ -96,7 +96,7 @@ TEST_CASE("PointsFromTheSameSpaceCanBeComparedUsingEqual_different") {
     CHECK(!(p1 == p2));
 }
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("PointsFromDiffefentSpacesCannotBeComparedUsingEqual") {
+TEST_CASE("PointsFromDifferentSpacesCannotBeComparedUsingEqual") {
     const View::Point p1(1, 0, 0);
     const Patient::Point p2(1, 0, 0);
 
@@ -105,7 +105,7 @@ TEST_CASE("PointsFromDiffefentSpacesCannotBeComparedUsingEqual") {
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(p1 == p2);
-    using required_type = StaticAssert::invalid_equality;
+    using required_type = StaticAssert::invalid_space;
     CHECK(
         static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
@@ -128,7 +128,7 @@ TEST_CASE("PointsFromTheSameSpaceCanBeComparedUsingInequality_different") {
     CHECK(p1 != p2);
 }
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("PointsFromDiffefentSpacesCannotBeComparedUsingInequality") {
+TEST_CASE("PointsFromDifferentSpacesCannotBeComparedUsingInequality") {
     const View::Point p1(1, 0, 0);
     const Patient::Point p2(1, 0, 0);
 
@@ -137,7 +137,7 @@ TEST_CASE("PointsFromDiffefentSpacesCannotBeComparedUsingInequality") {
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(p1 != p2);
-    using required_type = StaticAssert::invalid_equality;
+    using required_type = StaticAssert::invalid_space;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
@@ -160,7 +160,7 @@ TEST_CASE("PointsFromDifferfentSpacesCannotBeSubtracted") {
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(p1 - p2);
-    using required_type = StaticAssert::invalid_subtraction;
+    using required_type = StaticAssert::invalid_space;
     CHECK(
         static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );

@@ -127,7 +127,7 @@ TEST_CASE("Point2sFromTheSameSpaceCanBeComparedUsingEqual_different") {
     CHECK(!(p1 == p2));
 }
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("Point2sFromDiffefentSpacesCannotBeComparedUsingEqual") {
+TEST_CASE("Point2sFromDifferentSpacesCannotBeComparedUsingEqual") {
     const View::Point2 p1;
     const Patient::Point2 p2;
 
@@ -136,7 +136,7 @@ TEST_CASE("Point2sFromDiffefentSpacesCannotBeComparedUsingEqual") {
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(p1 == p2);
-    using required_type = StaticAssert::invalid_equality;
+    using required_type = StaticAssert::invalid_space;
     CHECK(
         static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
@@ -162,7 +162,7 @@ TEST_CASE("Point2sFromTheSameSpaceCanBeComparedUsingInequality_different") {
 //-------------------------------------------------------------------------------------------------
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("Point2sFromDiffefentSpacesCannotBeComparedUsingInequality") {
+TEST_CASE("Point2sFromDifferentSpacesCannotBeComparedUsingInequality") {
     const View::Point2 p1;
     const Patient::Point2 p2;
 
@@ -171,7 +171,7 @@ TEST_CASE("Point2sFromDiffefentSpacesCannotBeComparedUsingInequality") {
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(p1 != p2);
-    using required_type = StaticAssert::invalid_equality;
+    using required_type = StaticAssert::invalid_space;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
@@ -244,7 +244,7 @@ TEST_CASE("Point2sFromDifferfentSpacesCannotBeSubtracted") {
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(p1 - p2);
-    using required_type = StaticAssert::invalid_subtraction;
+    using required_type = StaticAssert::invalid_space;
     CHECK(
         static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );

@@ -60,50 +60,29 @@ namespace Space {
             return Point2<ThisSpace, Implementation>(_base::X(), _base::Y());
         }
 
+        using _base::operator==;
+        using _base::operator!=;
+        using _base::operator+;
+        using _base::operator+=;
+        using _base::operator-;
+        using _base::operator-=;
+
         //------------------------------------------------------------------------------------
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 
-        template <typename OtherSpace>
-        StaticAssert::invalid_equality operator== (const PointBase<OtherSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_equality{};
-        }
         template <typename AnySpace>
         StaticAssert::invalid_point_vector_equality operator== (const VectorBase<AnySpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
-        }
-        template <typename OtherSpace>
-        StaticAssert::invalid_equality operator!= (const PointBase<OtherSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_equality{};
         }
         template <typename AnySpace>
         StaticAssert::invalid_point_vector_equality operator!= (const VectorBase<AnySpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
-        template <typename OtherSpace>
-        friend StaticAssert::invalid_subtraction operator-(PointBaseInThisSpace, const PointBase<OtherSpace, Implementation>&) {
-            return StaticAssert::invalid_subtraction{};
-        }
-        template <typename OtherSpace>
-        friend StaticAssert::invalid_point_to_point_addition operator+(PointBaseInThisSpace, const PointBase<OtherSpace, Implementation>&) {
-            return StaticAssert::invalid_point_to_point_addition{};
-        }
 
-        template <typename OtherSpace>
-        StaticAssert::invalid_vector_to_point_addition operator+(const VectorBase<OtherSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_vector_to_point_addition{};
-        }
-        template <typename OtherSpace>
-        StaticAssert::invalid_vector_to_point_addition operator+=(const VectorBase<OtherSpace, Implementation>&) noexcept {
-            return StaticAssert::invalid_vector_to_point_addition{};
-        }
-        template <typename OtherSpace>
-        StaticAssert::invalid_vector_from_point_subtraction operator-(const VectorBase<OtherSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_vector_from_point_subtraction{};
-        }
-        template <typename OtherSpace>
-        StaticAssert::invalid_vector_from_point_subtraction operator-=(const VectorBase<OtherSpace, Implementation>&) noexcept {
-            return StaticAssert::invalid_vector_from_point_subtraction{};
+        template <typename AnySpace>
+        friend StaticAssert::invalid_point_to_point_addition operator+(PointBaseInThisSpace, const PointBase<AnySpace, Implementation>&) {
+            return StaticAssert::invalid_point_to_point_addition{};
         }
 #endif
     };

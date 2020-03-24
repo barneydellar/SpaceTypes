@@ -88,6 +88,7 @@ namespace Space {
             return lhs;
         }
 
+        using VectorBaseInThisSpace::operator+=;
         using VectorBaseInThisSpace::operator-=;
 
         [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator+(Vector2<ThisSpace, Implementation> lhs, const Vector2BaseInThisSpace& rhs) noexcept {
@@ -109,9 +110,12 @@ namespace Space {
         StaticAssert::invalid_vector2_in_place_cross operator*=(const Vector2BaseInThisSpace& other) noexcept {
             return StaticAssert::invalid_vector2_in_place_cross{};
         }
-        template <typename OtherSpace>
-        StaticAssert::invalid_vector_to_vector_subtraction operator-=(const VectorBase<OtherSpace, Implementation>&) noexcept {
+        StaticAssert::invalid_vector_to_vector_subtraction operator-=(const VectorBase<ThisSpace, Implementation>&) noexcept {
             return StaticAssert::invalid_vector_to_vector_subtraction{};
+        }
+
+        StaticAssert::invalid_vector_to_vector_addition operator+=(const VectorBase<ThisSpace, Implementation>&) noexcept {
+            return StaticAssert::invalid_vector_to_vector_addition{};
         }
 
 #endif

@@ -105,47 +105,16 @@ namespace Space {
         //-------------------------------------------------------------------------------------
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 
-        template <typename OtherSpace>
-        std::enable_if_t < !std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_equality> operator== (const VectorBase<OtherSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_equality{};
-        }
-        template <typename OtherSpace>
-        std::enable_if_t < !std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_equality> operator!= (const VectorBase<OtherSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_equality{};
-        }
-        template <typename OtherSpace>
-        std::enable_if_t < !std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_vector_cross> operator*(const VectorBase<OtherSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_vector_cross{};
-        }
-        template <typename OtherSpace>
-        std::enable_if_t < !std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_vector_cross> Cross(const VectorBase<OtherSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_vector_cross{};
-        }
-        template <typename OtherSpace>
-        std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_vector_cross> operator*=(const VectorBase<OtherSpace, Implementation>&) noexcept {
-            return StaticAssert::invalid_vector_cross{};
-        }
-        template <typename OtherSpace>
-        std::enable_if_t < !std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_vector_to_vector_addition> operator+(const VectorBase<OtherSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_vector_to_vector_addition{};
-        }
-        // TODO
-        template <typename OtherSpace>
-        StaticAssert::invalid_vector_to_vector_addition operator+=(const VectorBase<OtherSpace, Implementation>&) noexcept {
-            return StaticAssert::invalid_vector_to_vector_addition{};
-        }
-        template <typename OtherSpace>
-        std::enable_if_t < !std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_vector_to_vector_subtraction> operator-(const VectorBase<OtherSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_vector_to_vector_subtraction{};
-        }
-        template <typename OtherSpace>
-        std::enable_if_t < !std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_vector_to_vector_subtraction> operator-=(const VectorBase<OtherSpace, Implementation>&) noexcept {
-            return StaticAssert::invalid_vector_to_vector_subtraction{};
-        }
-        template <typename OtherSpace>
-        std::enable_if_t < !std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_vector_dot> Dot(const VectorBase<OtherSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_vector_dot{};
-        }
+        using _base::operator==;
+        using _base::operator!=;
+        using _base::operator+;
+        using _base::operator+=;
+        using _base::operator-;
+        using _base::operator-=;
+        using _base::operator*;
+        using _base::operator*=;
+        using _base::Cross;
+        using _base::Dot;
 
         template <typename AnySpace>
         StaticAssert::invalid_point_vector_equality operator== (const PointBase<AnySpace, Implementation>&) const noexcept {

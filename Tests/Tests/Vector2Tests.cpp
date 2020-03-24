@@ -88,7 +88,7 @@ TEST_CASE("Vector2sFromTheSameSpaceCanBeComparedUsingEqual_different") {
 }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("Vector2sFromDiffefentSpacesCannotBeComparedUsingEqual") {
+TEST_CASE("Vector2sFromDifferentSpacesCannotBeComparedUsingEqual") {
     const View::Vector2 v1(1, 0);
     const Patient::Vector2 v2(1, 0);
 
@@ -97,7 +97,7 @@ TEST_CASE("Vector2sFromDiffefentSpacesCannotBeComparedUsingEqual") {
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(v1 == v2);
-    using required_type = StaticAssert::invalid_equality;
+    using required_type = StaticAssert::invalid_space;
     CHECK(
         static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
@@ -119,7 +119,7 @@ TEST_CASE("Vector2sFromTheSameSpaceCanBeComparedUsingInequality_different") {
 }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("Vector2sFromDiffefentSpacesCannotBeComparedUsingInequality") {
+TEST_CASE("Vector2sFromDifferentSpacesCannotBeComparedUsingInequality") {
     const View::Vector2 v1(1, 0);
     const Patient::Vector2 v2(1, 0);
 
@@ -128,7 +128,7 @@ TEST_CASE("Vector2sFromDiffefentSpacesCannotBeComparedUsingInequality") {
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(v1 != v2);
-    using required_type = StaticAssert::invalid_equality;
+    using required_type = StaticAssert::invalid_space;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
@@ -152,7 +152,7 @@ TEST_CASE("Vector2sInDifferentSpacesCannotBeAddedTogether") {
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(v1 + v2);
-    using required_type = StaticAssert::invalid_vector_to_vector_addition;
+    using required_type = StaticAssert::invalid_space;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
@@ -176,7 +176,7 @@ TEST_CASE("Vector2s And Normalized Vector2s In Different Spaces Cannot Be Added 
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(v1 + v2);
-    using required_type = StaticAssert::invalid_vector_to_vector_addition;
+    using required_type = StaticAssert::invalid_space;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
@@ -200,7 +200,7 @@ TEST_CASE("Vector2sInDifferentSpacesCannotBeAddedInPlace") {
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(v1 += v2);
-    using required_type = StaticAssert::invalid_vector_to_vector_addition;
+    using required_type = StaticAssert::invalid_space;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
@@ -237,7 +237,7 @@ TEST_CASE("Vector2s And Normalized Vector2s In Different Spaces Cannot Be Added 
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(v1 += v2);
-    using required_type = StaticAssert::invalid_vector_to_vector_addition;
+    using required_type = StaticAssert::invalid_space;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
@@ -261,7 +261,7 @@ TEST_CASE("Vector2s And Normalized Vector2s In Different Spaces Cannot Be Subtra
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(v1 - v2);
-    using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
+    using required_type = StaticAssert::invalid_space;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
@@ -285,7 +285,7 @@ TEST_CASE("Vector2sInDifferentSpacesCannotBeSubtractedInPlace") {
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(v1 -= v2);
-    using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
+    using required_type = StaticAssert::invalid_space;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
@@ -309,7 +309,7 @@ TEST_CASE("Vector2s And Normalized Vector2s In Different Spaces Cannot Be Subtra
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(v1 -= v2);
-    using required_type = StaticAssert::invalid_vector_to_vector_subtraction;
+    using required_type = StaticAssert::invalid_space;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
@@ -477,7 +477,7 @@ TEST_CASE("Vector2sFromDifferentSpacesCannotBeDotted") {
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(v1.Dot(v2));
-    using required_type = StaticAssert::invalid_vector_dot;
+    using required_type = StaticAssert::invalid_space;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
@@ -502,7 +502,7 @@ TEST_CASE("Vector2sFromDifferentSpacesCannotBeCrossed") {
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(v1.Cross(v2));
-    using required_type = StaticAssert::invalid_vector_cross;
+    using required_type = StaticAssert::invalid_space;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
@@ -526,7 +526,7 @@ TEST_CASE("Vector2sFromDifferentSpacesCannotBeCrossedUsingStarOperator") {
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(v1 * v2);
-    using required_type = StaticAssert::invalid_vector_cross;
+    using required_type = StaticAssert::invalid_space;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
@@ -556,7 +556,7 @@ TEST_CASE("Vector2s From Different Spaces Cannot Be Crossed Using Star Equal Ope
     // But we can check the return type,
     // to make sure we get an invalid type:
     using converted_type = decltype(v1 *= v2);
-    using required_type = StaticAssert::invalid_vector_cross;
+    using required_type = StaticAssert::invalid_space;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
