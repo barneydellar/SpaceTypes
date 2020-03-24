@@ -24,7 +24,7 @@ namespace Space {
 
     public:
 
-        Vector2Base() noexcept { VectorBaseInThisSpace::m_impl = { 0, 0, 0 }; }
+        Vector2Base() noexcept : VectorBaseInThisSpace() {}
         explicit Vector2Base(const Implementation& v) noexcept { VectorBaseInThisSpace::m_impl = { v.m_values[0], v.m_values[1], 0 }; }
         explicit Vector2Base(const double x, const double y) noexcept { VectorBaseInThisSpace::m_impl = { x, y, 0 }; }
         Vector2Base(const std::initializer_list<double> l)
