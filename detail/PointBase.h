@@ -71,17 +71,14 @@ namespace Space {
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 
-        template <typename AnySpace>
-        StaticAssert::invalid_point_vector_equality operator== (const VectorBase<AnySpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_vector_equality operator== (const VectorBase<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
-        template <typename AnySpace>
-        StaticAssert::invalid_point_vector_equality operator!= (const VectorBase<AnySpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_vector_equality operator!= (const VectorBase<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
 
-        template <typename AnySpace>
-        friend StaticAssert::invalid_point_to_point_addition operator+(PointBaseInThisSpace, const PointBase<AnySpace, Implementation>&) {
+        friend StaticAssert::invalid_point_to_point_addition operator+(PointBaseInThisSpace, const PointBase<ThisSpace, Implementation>&) {
             return StaticAssert::invalid_point_to_point_addition{};
         }
 #endif

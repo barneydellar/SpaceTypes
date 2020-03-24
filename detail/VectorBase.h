@@ -116,20 +116,16 @@ namespace Space {
         using _base::Cross;
         using _base::Dot;
 
-        template <typename AnySpace>
-        StaticAssert::invalid_point_vector_equality operator== (const PointBase<AnySpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_vector_equality operator== (const PointBase<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
-        template <typename AnySpace>
-        StaticAssert::invalid_point_vector_equality operator!= (const PointBase<AnySpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_vector_equality operator!= (const PointBase<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
-        template <typename AnySpace>
-        StaticAssert::invalid_point_to_vector_addition operator+(const PointBase<AnySpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_to_vector_addition operator+(const PointBase<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_to_vector_addition{};
         }
-        template <typename AnySpace>
-        StaticAssert::invalid_point_from_vector_subtraction operator-(const PointBase<AnySpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_from_vector_subtraction operator-(const PointBase<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_from_vector_subtraction{};
         }
 #endif

@@ -65,13 +65,11 @@ namespace Space {
             return StaticAssert::invalid_normalized_vector_in_place_cross{};
         }
 
-        template <typename AnySpace>
-        StaticAssert::invalid_normalized_vector_addition operator+=(const NormalizedVectorBase<AnySpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_normalized_vector_addition operator+=(const NormalizedVectorBase<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_addition{};
         }
 
-        template <typename AnySpace>
-        StaticAssert::invalid_normalized_vector_subtraction operator-=(const NormalizedVectorBase<AnySpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_normalized_vector_subtraction operator-=(const NormalizedVectorBase<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_subtraction{};
         }
 
