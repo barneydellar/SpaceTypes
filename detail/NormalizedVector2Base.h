@@ -3,7 +3,7 @@
 namespace Space {
 
     template <typename ThisSpace, typename Implementation>
-    class NormalizedVector2Base : public NormalizedVectorBase<ThisSpace, Implementation>, public Vector2Base<ThisSpace, Implementation>
+    class NormalizedVector2Base : public Vector2Base<ThisSpace, Implementation>, public NormalizedVectorBase<ThisSpace, Implementation>
     {
         using Vector2BaseInThisSpace = Vector2Base<ThisSpace, Implementation>;
         using NormalizedVector2BaseInThisSpace = NormalizedVector2Base<ThisSpace, Implementation>;
@@ -11,8 +11,8 @@ namespace Space {
 
     public:
 
-        NormalizedVector2Base() noexcept(false) { Vector2BaseInThisSpace::m_impl = { 1, 0, 0 }; }
-        explicit NormalizedVector2Base(const Implementation& e) noexcept(false) { Vector2BaseInThisSpace::m_impl = { e.m_values[0], e.m_values[1], 0 }; NormalizedVector2BaseInThisSpace::Normalize(); }
+        NormalizedVector2Base() noexcept(false) : Vector2BaseInThisSpace() { *Vector2BaseInThisSpace::begin() = 1; }
+        explicit NormalizedVector2Base(const Implementation& e) noexcept(false) : Vector2BaseInThisSpace(e), NormalizedVectorBaseInThisSpace(e) { }
         explicit NormalizedVector2Base(const double x, const double y) noexcept(false) { Vector2BaseInThisSpace::m_impl = { x, y, 0 }; NormalizedVector2BaseInThisSpace::Normalize(); }
         NormalizedVector2Base(const std::initializer_list<double> l) noexcept(false) {
             if (l.size() != 2)

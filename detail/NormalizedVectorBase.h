@@ -11,7 +11,10 @@ namespace Space {
     public:
 
         NormalizedVectorBase() noexcept(false) { VectorBaseInThisSpace::m_impl = { 1, 0, 0 }; }
-        explicit NormalizedVectorBase(const Implementation& e) noexcept(false) { VectorBaseInThisSpace::m_impl = { e.m_values[0], e.m_values[1], e.m_values[2] };  Normalize(); }
+        explicit NormalizedVectorBase(const Implementation& e) noexcept(false): VectorBaseInThisSpace(e)
+        {
+            Normalize();
+        }
         explicit NormalizedVectorBase(const double x, const double y, const double z) noexcept(false) { VectorBaseInThisSpace::m_impl = { x, y, z }; Normalize(); }
         NormalizedVectorBase(const std::initializer_list<double> l) noexcept(false) {
             if (l.size() != 3)
