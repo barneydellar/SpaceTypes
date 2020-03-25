@@ -8,20 +8,6 @@ namespace Space {
         using Vector2BaseInThisSpace = Vector2Base<ThisSpace, Implementation>;
         using VectorBaseInThisSpace = VectorBase<ThisSpace, Implementation>;
 
-        friend class PointBase<ThisSpace, Implementation>;
-        friend class Point2Base<ThisSpace, Implementation>;
-        friend class NormalizedVectorBase<ThisSpace, Implementation>;
-        friend class NormalizedVector2Base<ThisSpace, Implementation>;
-        friend class VectorBase<ThisSpace, Implementation>;
-        friend class Vector2Base<ThisSpace, Implementation>;
-
-        friend class Point<ThisSpace, Implementation>;
-        friend class Point2<ThisSpace, Implementation>;
-        friend class NormalizedVector<ThisSpace, Implementation>;
-        friend class NormalizedVector2<ThisSpace, Implementation>;
-        friend class Vector<ThisSpace, Implementation>;
-        friend class Vector2<ThisSpace, Implementation>;
-
     public:
 
         Vector2Base() noexcept : VectorBaseInThisSpace() {}
