@@ -7,9 +7,13 @@ namespace Space {
     class NormalizedVector final : public NormalizedVectorBase<ThisSpace, Implementation>
     {
         using _base = NormalizedVectorBase<ThisSpace, Implementation>;
-        using _base::_base;
 
     public:
+
+        NormalizedVector() noexcept(false) : VectorBase<ThisSpace, Implementation>(), NormalizedVectorBase<ThisSpace, Implementation>() {}
+        explicit NormalizedVector(const Implementation& e) noexcept(false) : VectorBase<ThisSpace, Implementation>(e), NormalizedVectorBase<ThisSpace, Implementation>(e) {}
+        explicit NormalizedVector<ThisSpace, Implementation>(const double x, const double y, const double z) noexcept(false) : VectorBase<ThisSpace, Implementation>(x, y, z), NormalizedVectorBase<ThisSpace, Implementation>(x, y, z) {}
+        NormalizedVector(const std::initializer_list<double> l) noexcept(false) : VectorBase<ThisSpace, Implementation>(l), NormalizedVectorBase<ThisSpace, Implementation>(l) {}
 
         using _base::operator*=;
         NormalizedVector<ThisSpace, Implementation> operator*=(const NormalizedVectorBase<ThisSpace, Implementation>& rhs) noexcept {
