@@ -32,9 +32,6 @@
     <ClCompile Include="CollectionTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="TestVector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Point2Tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>

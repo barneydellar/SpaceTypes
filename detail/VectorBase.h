@@ -83,11 +83,11 @@ namespace Space {
         }
 
         [[nodiscard]] NormalizedVector<ThisSpace, Implementation> Norm() const {
-            return NormalizedVector<ThisSpace, Implementation>(_base::m_impl);
+            return NormalizedVector<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y(), VectorBaseInThisSpace::Z());
         }
 
         [[nodiscard]] Vector2<ThisSpace, Implementation> RemoveZ() const {
-            return Vector2<ThisSpace, Implementation>(_base::m_impl);
+            return Vector2<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y());
         }
 
         //-------------------------------------------------------------------------------------

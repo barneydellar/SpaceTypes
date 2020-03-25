@@ -87,7 +87,7 @@ namespace Space {
         }
 
         [[nodiscard]] NormalizedVector2<ThisSpace, Implementation> Norm() const {
-            return NormalizedVector2<ThisSpace, Implementation>(VectorBaseInThisSpace::m_impl);
+            return NormalizedVector2<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y());
         }
 
         //-------------------------------------------------------------------------------------
