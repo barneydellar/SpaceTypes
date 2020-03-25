@@ -10,20 +10,10 @@ namespace Space {
 
     public:
 
-        NormalizedVectorBase() noexcept(false) { VectorBaseInThisSpace::m_impl = { 1, 0, 0 }; }
-        explicit NormalizedVectorBase(const Implementation& e) noexcept(false): VectorBaseInThisSpace(e)
-        {
-            Normalize();
-        }
-        explicit NormalizedVectorBase(const double x, const double y, const double z) noexcept(false) { VectorBaseInThisSpace::m_impl = { x, y, z }; Normalize(); }
-        NormalizedVectorBase(const std::initializer_list<double> l) noexcept(false) {
-            if (l.size() != 3)
-            {
-                throw std::invalid_argument("You can only initialise with three elements");
-            }
-            VectorBaseInThisSpace::m_impl = l;
-            Normalize();
-        }
+        NormalizedVectorBase() noexcept(false) : VectorBaseInThisSpace() { *VectorBaseInThisSpace::begin() = 1; }
+        explicit NormalizedVectorBase(const Implementation& e) noexcept(false): VectorBaseInThisSpace(e) {Normalize();}
+        explicit NormalizedVectorBase(const double x, const double y, const double z) noexcept(false) : VectorBaseInThisSpace(x, y, z) { Normalize(); }
+        NormalizedVectorBase(const std::initializer_list<double> l) noexcept(false) : VectorBaseInThisSpace(l) {Normalize();}
 
         [[nodiscard]] operator Vector<ThisSpace, Implementation>() const noexcept {
             return Vector<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y(), VectorBaseInThisSpace::Z());

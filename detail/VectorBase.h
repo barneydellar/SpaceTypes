@@ -29,6 +29,7 @@ namespace Space {
             return std::equal(_base::cbegin(), _base::cend(), other.cbegin(), _base::Equality);
         }
 
+        // TODO Ambiguous
         [[nodiscard]] bool operator!= (const VectorBaseInThisSpace& other) const noexcept {
             return !(operator==(other));
         }
