@@ -18,7 +18,7 @@ namespace Space {
             *iter++ = y;
             *iter = z;
         }
-        Base(const std::initializer_list<double> l)
+        Base(const std::initializer_list<double>& l)
         {
             if (l.size() != 3)
             {

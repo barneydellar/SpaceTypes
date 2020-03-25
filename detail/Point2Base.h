@@ -21,7 +21,7 @@ namespace Space {
             *iter++ = y;
             *iter = 0;
         }
-        Point2Base(const std::initializer_list<double> l)
+        Point2Base(const std::initializer_list<double>& l)
         {
             if (l.size() != 2)
             {

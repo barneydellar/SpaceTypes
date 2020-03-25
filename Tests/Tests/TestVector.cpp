@@ -2,7 +2,7 @@
 #include "TestVector.h"
 
 
-TestVector::TestVector(const std::initializer_list<double> l)
+TestVector::TestVector(const std::initializer_list<double>& l)
 {
     auto iter = l.begin();
     m_values[0] = *iter++;

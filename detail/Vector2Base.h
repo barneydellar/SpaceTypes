@@ -13,7 +13,7 @@ namespace Space {
         Vector2Base() noexcept : VectorBaseInThisSpace() {}
         explicit Vector2Base(const Implementation& v) noexcept : VectorBaseInThisSpace(v) {*std::prev(VectorBaseInThisSpace::end()) = 0;}
         explicit Vector2Base(const double x, const double y) noexcept : VectorBaseInThisSpace(x, y, 0) {}
-        Vector2Base(const std::initializer_list<double> l)
+        Vector2Base(const std::initializer_list<double>& l)
         {
             if (l.size() != 2)
             {

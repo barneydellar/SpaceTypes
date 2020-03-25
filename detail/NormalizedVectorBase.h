@@ -13,7 +13,7 @@ namespace Space {
         NormalizedVectorBase() noexcept(false) : VectorBaseInThisSpace() { *VectorBaseInThisSpace::begin() = 1; }
         explicit NormalizedVectorBase(const Implementation& e) noexcept(false): VectorBaseInThisSpace(e) {Normalize();}
         explicit NormalizedVectorBase(const double x, const double y, const double z) noexcept(false) : VectorBaseInThisSpace(x, y, z) { Normalize(); }
-        NormalizedVectorBase(const std::initializer_list<double> l) noexcept(false) : VectorBaseInThisSpace(l) {Normalize();}
+        NormalizedVectorBase(const std::initializer_list<double>& l) noexcept(false) : VectorBaseInThisSpace(l) {Normalize();}
 
         [[nodiscard]] operator Vector<ThisSpace, Implementation>() const noexcept {
             return Vector<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y(), VectorBaseInThisSpace::Z());
