@@ -13,9 +13,11 @@ TEST_CASE("PointsAndVectorsFromTheSameSpaceCannotBeComparedUsingEquality") {
     // auto dummy = p == v;
     // But we can check the return type,
     // to make sure we get an invalid type:
-    using converted_type = decltype(p == v);
+    using converted_type_A = decltype(p == v);
+    using converted_type_B = decltype(v == p);
     using required_type = StaticAssert::invalid_point_vector_equality;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_A, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_B, required_type>));
 }
 TEST_CASE("Point2s And Vectors From The Same Space Cannot Be Compared Using Equality") {
     const View::Vector v;
