@@ -8,27 +8,27 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Space", "Space", "{4C7E07BA-0C85-44BD-B44B-369976086376}"
 	ProjectSection(SolutionItems) = preProject
 		..\NormalizedVector.h = ..\NormalizedVector.h
-		..\NormalizedVector2.h = ..\NormalizedVector2.h
+		..\NormalizedXYVector.h = ..\NormalizedXYVector.h
 		..\Point.h = ..\Point.h
 		..\Point2.h = ..\Point2.h
 		..\README.md = ..\README.md
 		..\Space.h = ..\Space.h
 		..\StaticAsserts.h = ..\StaticAsserts.h
 		..\Vector.h = ..\Vector.h
-		..\Vector2.h = ..\Vector2.h
+		..\XYVector.h = ..\XYVector.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{0563218E-2469-4A74-97DF-4941ACA3E60C}"
 	ProjectSection(SolutionItems) = preProject
 		..\detail\Base.h = ..\detail\Base.h
-		..\detail\NormalizedVector2Base.h = ..\detail\NormalizedVector2Base.h
 		..\detail\NormalizedVectorBase.h = ..\detail\NormalizedVectorBase.h
+		..\detail\NormalizedXYVectorBase.h = ..\detail\NormalizedXYVectorBase.h
 		..\detail\Point2Base.h = ..\detail\Point2Base.h
 		..\detail\PointBase.h = ..\detail\PointBase.h
 		..\detail\SpaceImpl.h = ..\detail\SpaceImpl.h
 		..\detail\StaticAsserts.h = ..\detail\StaticAsserts.h
-		..\detail\Vector2Base.h = ..\detail\Vector2Base.h
 		..\detail\VectorBase.h = ..\detail\VectorBase.h
+		..\detail\XYVectorBase.h = ..\detail\XYVectorBase.h
 	EndProjectSection
 EndProject
 Global

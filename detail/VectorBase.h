@@ -85,8 +85,8 @@ namespace Space {
             return NormalizedVector<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y(), VectorBaseInThisSpace::Z());
         }
 
-        [[nodiscard]] Vector2<ThisSpace, Implementation> RemoveZ() const {
-            return Vector2<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y());
+        [[nodiscard]] XYVector<ThisSpace, Implementation> RemoveZ() const {
+            return XYVector<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y());
         }
 
         //-------------------------------------------------------------------------------------

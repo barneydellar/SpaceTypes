@@ -29,8 +29,8 @@ namespace Space {
             return NormalizedVector<ThisSpace, Implementation>(VectorBaseInThisSpace::Cross(other).Norm());
         }
 
-        [[nodiscard]] NormalizedVector2<ThisSpace, Implementation> RemoveZ() const {
-            return NormalizedVector2<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y());
+        [[nodiscard]] NormalizedXYVector<ThisSpace, Implementation> RemoveZ() const {
+            return NormalizedXYVector<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y());
         }
 
         using VectorBaseInThisSpace::operator-;

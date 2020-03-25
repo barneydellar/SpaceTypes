@@ -3,17 +3,17 @@
 namespace Space {
 
     template <typename ThisSpace, typename Implementation>
-    class Vector2Base : public virtual VectorBase<ThisSpace, Implementation>
+    class XYVectorBase : public virtual VectorBase<ThisSpace, Implementation>
     {
-        using Vector2BaseInThisSpace = Vector2Base<ThisSpace, Implementation>;
+        using XYVectorBaseInThisSpace = XYVectorBase<ThisSpace, Implementation>;
         using VectorBaseInThisSpace = VectorBase<ThisSpace, Implementation>;
 
     public:
 
-        Vector2Base() noexcept : VectorBaseInThisSpace() {}
-        explicit Vector2Base(const Implementation& v) noexcept : VectorBaseInThisSpace(v) {*std::prev(VectorBaseInThisSpace::end()) = 0;}
-        explicit Vector2Base(const double x, const double y) noexcept : VectorBaseInThisSpace(x, y, 0) {}
-        Vector2Base(const std::initializer_list<double>& l)
+        XYVectorBase() noexcept : VectorBaseInThisSpace() {}
+        explicit XYVectorBase(const Implementation& v) noexcept : VectorBaseInThisSpace(v) {*std::prev(VectorBaseInThisSpace::end()) = 0;}
+        explicit XYVectorBase(const double x, const double y) noexcept : VectorBaseInThisSpace(x, y, 0) {}
+        XYVectorBase(const std::initializer_list<double>& l)
         {
             if (l.size() != 2)
             {
@@ -55,7 +55,7 @@ namespace Space {
             return VectorBaseInThisSpace::operator[](I);
         }
 
-        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator*(Vector2<ThisSpace, Implementation> lhs, const double& d) noexcept {
+        [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator*(XYVector<ThisSpace, Implementation> lhs, const double& d) noexcept {
             lhs *= d;
             return lhs;
         }
@@ -63,17 +63,17 @@ namespace Space {
         using VectorBaseInThisSpace::operator*=;
 
         using VectorBaseInThisSpace::operator*;
-        [[nodiscard]] Vector<ThisSpace, Implementation> operator*(const Vector2BaseInThisSpace& rhs) const noexcept {
+        [[nodiscard]] Vector<ThisSpace, Implementation> operator*(const XYVectorBaseInThisSpace& rhs) const noexcept {
             return this->Cross(rhs);
         }
 
         using VectorBaseInThisSpace::Cross;
-        [[nodiscard]] Vector<ThisSpace, Implementation> Cross(const Vector2BaseInThisSpace& other) const noexcept {
+        [[nodiscard]] Vector<ThisSpace, Implementation> Cross(const XYVectorBaseInThisSpace& other) const noexcept {
             return Vector<ThisSpace, Implementation>(VectorBaseInThisSpace::Cross(other));
         }
 
         using VectorBaseInThisSpace::operator-;
-        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator-(Vector2<ThisSpace, Implementation> lhs, const Vector2BaseInThisSpace& rhs) noexcept {
+        [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator-(XYVector<ThisSpace, Implementation> lhs, const XYVectorBaseInThisSpace& rhs) noexcept {
             lhs -= rhs;
             return lhs;
         }
@@ -81,13 +81,13 @@ namespace Space {
         using VectorBaseInThisSpace::operator+=;
         using VectorBaseInThisSpace::operator-=;
 
-        [[nodiscard]] friend Vector2<ThisSpace, Implementation> operator+(Vector2<ThisSpace, Implementation> lhs, const Vector2BaseInThisSpace& rhs) noexcept {
+        [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator+(XYVector<ThisSpace, Implementation> lhs, const XYVectorBaseInThisSpace& rhs) noexcept {
             lhs += rhs;
             return lhs;
         }
 
-        [[nodiscard]] NormalizedVector2<ThisSpace, Implementation> Norm() const {
-            return NormalizedVector2<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y());
+        [[nodiscard]] NormalizedXYVector<ThisSpace, Implementation> Norm() const {
+            return NormalizedXYVector<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y());
         }
 
         //-------------------------------------------------------------------------------------
@@ -97,8 +97,8 @@ namespace Space {
         typename std::enable_if<I != 0 && I != 1, StaticAssert::invalid_at_access>::type at() const {
             return StaticAssert::invalid_at_access{};
         }
-        StaticAssert::invalid_vector2_in_place_cross operator*=(const Vector2BaseInThisSpace& other) noexcept {
-            return StaticAssert::invalid_vector2_in_place_cross{};
+        StaticAssert::invalid_XYVector_in_place_cross operator*=(const XYVectorBaseInThisSpace& other) noexcept {
+            return StaticAssert::invalid_XYVector_in_place_cross{};
         }
 
         StaticAssert::invalid_vector_to_vector_addition operator+=(const VectorBase<ThisSpace, Implementation>&) noexcept {

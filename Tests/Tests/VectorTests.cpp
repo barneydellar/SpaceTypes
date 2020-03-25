@@ -384,15 +384,15 @@ TEST_CASE("ZeroSizeVectorsCannotBeNormalized") {
 TEST_CASE("Vectors Can Have their z-value removed") {
     const Image::Vector v(2, 3, 4);
     const auto v_norm = v.RemoveZ();
-    CHECK(v_norm == Image::Vector2(2, 3));
+    CHECK(v_norm == Image::XYVector(2, 3));
 }
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Vectors Can Have their z-value removed to produce a vector2") {
+TEST_CASE("Vectors Can Have their z-value removed to produce a XYVector") {
     const Image::Vector v;
     using converted_type = decltype(v.RemoveZ());
-    using required_type = decltype(Image::Vector2{});
+    using required_type = decltype(Image::XYVector{});
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 

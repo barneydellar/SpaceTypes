@@ -9,7 +9,7 @@ namespace Space {
     class Vector;
 
     template <typename ThisSpace, typename Implementation>
-    class Vector2;
+    class XYVector;
 
     template <typename ThisSpace, typename Implementation>
     class Point;
@@ -21,14 +21,14 @@ namespace Space {
     class NormalizedVector;
 
     template <typename ThisSpace, typename Implementation>
-    class NormalizedVector2;
+    class NormalizedXYVector;
 
 
     template <typename ThisSpace, typename Implementation>
     class VectorBase;
 
     template <typename ThisSpace, typename Implementation>
-    class Vector2Base;
+    class XYVectorBase;
 
     template <typename ThisSpace, typename Implementation>
     class PointBase;
@@ -40,7 +40,7 @@ namespace Space {
     class NormalizedVectorBase;
 
     template <typename ThisSpace, typename Implementation>
-    class NormalizedVector2Base;
+    class NormalizedXYVectorBase;
 }
 
 #include "detail/StaticAsserts.h"
@@ -49,9 +49,9 @@ namespace Space {
 #include "Point.h"
 #include "Point2.h"
 #include "Vector.h"
-#include "Vector2.h"
+#include "XYVector.h"
 #include "NormalizedVector.h"
-#include "NormalizedVector2.h"
+#include "NormalizedXYVector.h"
 
 namespace Space {
     template <typename ThisSpace, typename Implementation, typename Units>
@@ -59,9 +59,9 @@ namespace Space {
         using Point = Point<ThisSpace, Implementation>;
         using Point2 = Point2<ThisSpace, Implementation>;
         using Vector = Vector<ThisSpace, Implementation>;
-        using Vector2 = Vector2<ThisSpace, Implementation>;
+        using XYVector = XYVector<ThisSpace, Implementation>;
         using NormalizedVector = NormalizedVector<ThisSpace, Implementation>;
-        using NormalizedVector2 = NormalizedVector2<ThisSpace, Implementation>;
+        using NormalizedXYVector = NormalizedXYVector<ThisSpace, Implementation>;
         using Unit = Units;
     };
 }

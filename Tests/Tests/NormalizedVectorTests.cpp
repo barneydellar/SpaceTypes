@@ -725,13 +725,13 @@ TEST_CASE("NormalizedVectorsDoNotSupportNonConstEnd") {
 TEST_CASE("Normalized Vectors Can Have their z-value removed") {
     const Image::NormalizedVector v(1, 0, 0);
     const auto v_norm = v.RemoveZ();
-    CHECK(v_norm == Image::NormalizedVector2(1, 0));
+    CHECK(v_norm == Image::NormalizedXYVector(1, 0));
 }
 
-TEST_CASE("Normalized Vectors Can Have their z-value removed to produce a Normalized vector2") {
+TEST_CASE("Normalized Vectors Can Have their z-value removed to produce a Normalized XYVector") {
     const Image::NormalizedVector v;
     using converted_type = decltype(v.RemoveZ());
-    using required_type = decltype(Image::NormalizedVector2{});
+    using required_type = decltype(Image::NormalizedXYVector{});
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 

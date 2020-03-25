@@ -237,7 +237,7 @@ TEST_CASE("Points Can Have their z-value removed") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Points Can Have their z-value removed to produce a vector2") {
+TEST_CASE("Points Can Have their z-value removed to produce a XYVector") {
     const Image::Point v;
     using converted_type = decltype(v.RemoveZ());
     using required_type = decltype(Image::Point2{});

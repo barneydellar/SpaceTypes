@@ -11,7 +11,7 @@ namespace Space {
     public:
 
         using _base::operator+=;
-        Point2<ThisSpace, Implementation> operator+=(const Vector2<ThisSpace, Implementation>& rhs) noexcept {
+        Point2<ThisSpace, Implementation> operator+=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
             _base::Add(rhs);
             return *this;
         }
@@ -20,7 +20,7 @@ namespace Space {
 
 
         using _base::operator-=;
-        Point2<ThisSpace, Implementation> operator-=(const Vector2<ThisSpace, Implementation>& rhs) noexcept {
+        Point2<ThisSpace, Implementation> operator-=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
             _base::Sub(rhs);
             return *this;
         }

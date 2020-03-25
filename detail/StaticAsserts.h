@@ -90,11 +90,11 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_vector2_in_place_cross final : public invalid_base
+    struct invalid_XYVector_in_place_cross final : public invalid_base
     {
         template<typename T = void>
-        invalid_vector2_in_place_cross() {
-            static_assert(false, "You can't cross a vector2 in place.");
+        invalid_XYVector_in_place_cross() {
+            static_assert(false, "You can't cross a XYVector in place.");
         }
     };
 

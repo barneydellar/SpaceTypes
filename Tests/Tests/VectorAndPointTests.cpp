@@ -153,16 +153,16 @@ TEST_CASE("VectorCanBeAddedToPointInTheSameSpaceInPlace") {
     p += v;
     CHECK(p == Volume::Point(1, 0, 1));
 }
-TEST_CASE("Vector2 Can Be Added To Point2 In The Same Space In Place") {
+TEST_CASE("XYVector Can Be Added To Point2 In The Same Space In Place") {
     Volume::Point2 p(0, 1);
-    const Volume::Vector2 v(1, 0);
+    const Volume::XYVector v(1, 0);
     p += v;
     CHECK(p == Volume::Point2(1, 1));
 }
 
-TEST_CASE("Normalised Vector2 Can Be Added To Point In The Same Space In Place") {
+TEST_CASE("Normalised XYVector Can Be Added To Point In The Same Space In Place") {
     Volume::Point p(0, 0, 1);
-    const Volume::NormalizedVector2 v(1, 0);
+    const Volume::NormalizedXYVector v(1, 0);
     p += v;
     CHECK(p == Volume::Point(1, 0, 1));
 }
@@ -195,9 +195,9 @@ TEST_CASE("VectorCannotBeAddedToPointInDifferentSpaceInPlace") {
     using required_type = StaticAssert::invalid_space;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
-TEST_CASE("Vector2 Cannot Be Added To Point2 In Different Space In Place") {
+TEST_CASE("XYVector Cannot Be Added To Point2 In Different Space In Place") {
     View::Point2 p;
-    const Volume::Vector2 v;
+    const Volume::XYVector v;
 
     // We should not be able to compile:
     // auto dummy = p += v;
@@ -233,50 +233,50 @@ TEST_CASE("Vector Can Be Subtracted From Point2 In The Same Space to produce a 3
 }
 
 
-TEST_CASE("Vector2 Can Be Subtracted From Point In The Same Space") {
+TEST_CASE("XYVector Can Be Subtracted From Point In The Same Space") {
     const Volume::Point p(0, 0, 1);
-    const Volume::Vector2 v(1, 0);
+    const Volume::XYVector v(1, 0);
     const auto p_new = p - v;
     CHECK(p_new == Volume::Point(-1, 0, 1));
 }
-TEST_CASE("Vector2 Can Be Subtracted From Point2 In The Same Space") {
+TEST_CASE("XYVector Can Be Subtracted From Point2 In The Same Space") {
     const Volume::Point2 p(3, 0);
-    const Volume::Vector2 v(1, 0);
+    const Volume::XYVector v(1, 0);
     const auto p_new = p - v;
     CHECK(p_new == Volume::Point2(2, 0));
 }
-TEST_CASE("Vector2 Can Be Subtracted From Point2 In The Same Space to produce a 2D Point") {
+TEST_CASE("XYVector Can Be Subtracted From Point2 In The Same Space to produce a 2D Point") {
     const Volume::Point2 p;
-    const Volume::Vector2 v;
+    const Volume::XYVector v;
 
     using converted_type = decltype(p - v);
     using required_type = decltype(Volume::Point2{});
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
-TEST_CASE("Normalised Vector2 Can Be Subtracted From Point In The Same Space") {
+TEST_CASE("Normalised XYVector Can Be Subtracted From Point In The Same Space") {
     const Volume::Point p(3, 0, 0);
-    const Volume::NormalizedVector2 v(1, 0);
+    const Volume::NormalizedXYVector v(1, 0);
     const auto p_new = p - v;
     CHECK(p_new == Volume::Point(2, 0, 0));
 }
-TEST_CASE("Normalised Vector2 Can Be Subtracted From Point In The Same Space to produce a 3D Point") {
+TEST_CASE("Normalised XYVector Can Be Subtracted From Point In The Same Space to produce a 3D Point") {
     const Volume::Point p;
-    const Volume::NormalizedVector2 v;
+    const Volume::NormalizedXYVector v;
 
     using converted_type = decltype(p - v);
     using required_type = decltype(Volume::Point{});
 }
 
-TEST_CASE("Normalised Vector2 Can Be Subtracted From Point2 In The Same Space") {
+TEST_CASE("Normalised XYVector Can Be Subtracted From Point2 In The Same Space") {
     const Volume::Point2 p(3, 0);
-    const Volume::NormalizedVector2 v(1, 0);
+    const Volume::NormalizedXYVector v(1, 0);
     const auto p_new = p - v;
     CHECK(p_new == Volume::Point2(2, 0));
 }
-TEST_CASE("Normalised Vector2 Can Be Subtracted From Point2 In The Same Space to produce a 2D Point") {
+TEST_CASE("Normalised XYVector Can Be Subtracted From Point2 In The Same Space to produce a 2D Point") {
     const Volume::Point2 p;
-    const Volume::NormalizedVector2 v;
+    const Volume::NormalizedXYVector v;
 
     using converted_type = decltype(p - v);
     using required_type = decltype(Volume::Point2{});
@@ -318,9 +318,9 @@ TEST_CASE("VectorCanBeSubtractedFromPointInTheSameSpaceInPlace") {
     p -= v;
     CHECK(p == Volume::Point(-1, 0, 1));
 }
-TEST_CASE("Vector2 Can Be Subtracted From Point In The Same Space In Place") {
+TEST_CASE("XYVector Can Be Subtracted From Point In The Same Space In Place") {
     Volume::Point2 p(0, 1);
-    const Volume::Vector2 v(1, 0);
+    const Volume::XYVector v(1, 0);
     p -= v;
     CHECK(p == Volume::Point2(-1, 1));
 }
@@ -349,9 +349,9 @@ TEST_CASE("VectorCannotBeSubtractedFromPointInDifferentSpaceInPlace") {
     using required_type = StaticAssert::invalid_space;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
-TEST_CASE("Vector2 Cannot Be Subtracted From Point In Different Space In Place") {
+TEST_CASE("XYVector Cannot Be Subtracted From Point In Different Space In Place") {
     View::Point2 p;
-    const Volume::Vector2 v;
+    const Volume::XYVector v;
 
     // We should not be able to compile:
     // auto dummy = p -= v;

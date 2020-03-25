@@ -189,14 +189,14 @@ TEST_CASE("Point2s From The Same Space Can Be Subtracted From") {
     const View::Point2 p1(2, 3);
     const View::Point2 p2(1, 1);
     const auto v = p1 - p2;
-    CHECK(v == View::Vector2(1, 2));
+    CHECK(v == View::XYVector(1, 2));
 }
 
 TEST_CASE("Point2s From The Same Space Can Be Subtracted From to give a 2D Vector") {
     const View::Point2 p1;
     const View::Point2 p2;
     using converted_type = decltype(p1 - p2);
-    using required_type = decltype(View::Vector2{});
+    using required_type = decltype(View::XYVector{});
     CHECK(
         static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
