@@ -1,6 +1,6 @@
 # SpaceTypes
 
-A C++ library for 3D points and vectors that are strongly typed on their coordinate space.
+This is a C++ library for 3D points and vectors that are strongly typed on their coordinate space.
 
 This library has only been tested using Visual Studio 2017 with C++17. The tests use Catch2.
 
@@ -13,11 +13,11 @@ The library is licenced under the MIT licence (<https://opensource.org/licenses/
 
 ## Summary
 
-This namespace provides three templated types: Point, Vector and NormalizedVector. Each point or vector lives in a Space. It is possible to convert points and vectors from space to another.
+This namespace provides several templated types: Point, Vector, NormalizedVector, XYPoint, XYVector and NormalizedXYVector. Each point or vector lives in a Space. It is possible to convert points and vectors from space to another.
 Importantly, points and vectors can *only* interact with points and vectors from the same space.
 Attempting to, say, add a vector from one space to a vector from another will result in a compilation error.
 
-The library requires an existing implementation, which you will need to provide as a template argument. 
+The library requires an existing implementation, which you will need to provide as a template argument. This implementation must be default contructiblem and must have three doubles for x, y, and z as its first fields.
 The library also requires a Transform Manager which is able to convert the instances of the existing implementation from one Space to another.
 
 The existing implementation of the 3D location or direction must implement the following API
@@ -26,11 +26,21 @@ The existing implementation of the 3D location or direction must implement the f
 class ExistingImplementation
 {
 public:
-    explicit ExistingImplementation(double, double, double) noexcept;
+    ExistingImplementation();
+    double x;
+    double y;
+    double z;
+};
+```
 
-    [[nodiscard]] double X() const noexcept;
-    [[nodiscard]] double Y() const noexcept;
-    [[nodiscard]] double Z() const noexcept;
+Or equally:
+
+```cpp
+class ExistingImplementation
+{
+public:
+    ExistingImplementation();
+    std::array<double, 3> m_values{};
 };
 ```
 
