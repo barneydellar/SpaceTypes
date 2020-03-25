@@ -1,6 +1,6 @@
 #pragma once
 
-/// This header provides the ThisSpace Point, Vector and NormalizedVector clasees.
+/// This header provides the ThisSpace Point, Vector and NormalizedVector classes.
 /// Please see Readme.md for more details.
 
 namespace Space {
@@ -15,7 +15,7 @@ namespace Space {
     class Point;
 
     template <typename ThisSpace, typename Implementation>
-    class Point2;
+    class XYPoint;
 
     template <typename ThisSpace, typename Implementation>
     class NormalizedVector;
@@ -34,7 +34,7 @@ namespace Space {
     class PointBase;
 
     template <typename ThisSpace, typename Implementation>
-    class Point2Base;
+    class XYPointBase;
 
     template <typename ThisSpace, typename Implementation>
     class NormalizedVectorBase;
@@ -47,7 +47,7 @@ namespace Space {
 #include "detail/SpaceImpl.h"
 #include "detail/Base.h"
 #include "Point.h"
-#include "Point2.h"
+#include "XYPoint.h"
 #include "Vector.h"
 #include "XYVector.h"
 #include "NormalizedVector.h"
@@ -57,7 +57,7 @@ namespace Space {
     template <typename ThisSpace, typename Implementation, typename Units>
     struct SpaceBase {
         using Point = Point<ThisSpace, Implementation>;
-        using Point2 = Point2<ThisSpace, Implementation>;
+        using XYPoint = XYPoint<ThisSpace, Implementation>;
         using Vector = Vector<ThisSpace, Implementation>;
         using XYVector = XYVector<ThisSpace, Implementation>;
         using NormalizedVector = NormalizedVector<ThisSpace, Implementation>;

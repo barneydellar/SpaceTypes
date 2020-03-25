@@ -57,7 +57,7 @@ TEST_CASE("XYVectors Can Be Constructed From A Normalized XYVector") {
 
 TEST_CASE("XYVectorsCanBeAssignedFromAXYVector") {
     const View::XYVector v1(0, 1);
-    const View::XYVector v2 = v1;
+    const auto v2 = v1;
 
     CHECK(v2.X() == 0);
     CHECK(v2.Y() == 1);

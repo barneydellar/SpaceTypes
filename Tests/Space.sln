@@ -10,11 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Space", "Space", "{4C7E07BA
 		..\NormalizedVector.h = ..\NormalizedVector.h
 		..\NormalizedXYVector.h = ..\NormalizedXYVector.h
 		..\Point.h = ..\Point.h
-		..\Point2.h = ..\Point2.h
 		..\README.md = ..\README.md
 		..\Space.h = ..\Space.h
 		..\StaticAsserts.h = ..\StaticAsserts.h
 		..\Vector.h = ..\Vector.h
+		..\XYPoint.h = ..\XYPoint.h
 		..\XYVector.h = ..\XYVector.h
 	EndProjectSection
 EndProject
@@ -23,11 +23,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{056321
 		..\detail\Base.h = ..\detail\Base.h
 		..\detail\NormalizedVectorBase.h = ..\detail\NormalizedVectorBase.h
 		..\detail\NormalizedXYVectorBase.h = ..\detail\NormalizedXYVectorBase.h
-		..\detail\Point2Base.h = ..\detail\Point2Base.h
 		..\detail\PointBase.h = ..\detail\PointBase.h
 		..\detail\SpaceImpl.h = ..\detail\SpaceImpl.h
 		..\detail\StaticAsserts.h = ..\detail\StaticAsserts.h
 		..\detail\VectorBase.h = ..\detail\VectorBase.h
+		..\detail\XYPointBase.h = ..\detail\XYPointBase.h
 		..\detail\XYVectorBase.h = ..\detail\XYVectorBase.h
 	EndProjectSection
 EndProject

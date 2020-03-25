@@ -38,7 +38,7 @@ TEST_CASE("Strongly typed collections can be used in templated functions: View S
         {2, 2, 2}
     };
 
-    const View::Point first = ReturnFirst<View>(v);
+    const auto first = ReturnFirst<View>(v);
 
     CHECK(first == v.front());
 }
@@ -51,7 +51,7 @@ TEST_CASE("Strongly typed collections can be used in templated functions: Patien
         Patient::Point{2, 2, 2}
     };
 
-    const Patient::Point first = ReturnFirst<Patient>(v);
+    const auto first = ReturnFirst<Patient>(v);
 
     CHECK(first == v.front());
 }

@@ -20,9 +20,6 @@
     <ClCompile Include="NormalizedVectorTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="PointTests.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
     <ClCompile Include="VectorAndPointTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
@@ -32,13 +29,13 @@
     <ClCompile Include="CollectionTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="Point2Tests.cpp">
+    <ClCompile Include="NormalizedXYVectorTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="Vector2Tests.cpp">
+    <ClCompile Include="XYPointTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="NormalizedVector2Tests.cpp">
+    <ClCompile Include="XYVectorTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
   </ItemGroup>

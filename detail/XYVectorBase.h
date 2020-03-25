@@ -97,7 +97,7 @@ namespace Space {
         typename std::enable_if<I != 0 && I != 1, StaticAssert::invalid_at_access>::type at() const {
             return StaticAssert::invalid_at_access{};
         }
-        StaticAssert::invalid_XYVector_in_place_cross operator*=(const XYVectorBaseInThisSpace& other) noexcept {
+        StaticAssert::invalid_XYVector_in_place_cross operator*=(const XYVectorBaseInThisSpace&) noexcept {
             return StaticAssert::invalid_XYVector_in_place_cross{};
         }
 

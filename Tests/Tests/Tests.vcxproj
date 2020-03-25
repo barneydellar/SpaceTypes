@@ -170,19 +170,18 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="NormalizedVector2Tests.cpp" />
     <ClCompile Include="NormalizedVectorTests.cpp" />
+    <ClCompile Include="NormalizedXYVectorTests.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Point2Tests.cpp" />
-    <ClCompile Include="PointTests.cpp" />
-    <ClCompile Include="Vector2Tests.cpp" />
     <ClCompile Include="VectorAndPointTests.cpp" />
     <ClCompile Include="VectorTests.cpp" />
+    <ClCompile Include="XYPointTests.cpp" />
+    <ClCompile Include="XYVectorTests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

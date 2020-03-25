@@ -10,7 +10,7 @@ public:
         TestVector
     ) const noexcept {
         using namespace Space;
-        if (From::id == Space::SpaceIDs::View) {
+        if (From::id == SpaceIDs::View) {
             TestVector t;
             t.m_values[0] = -5;
             t.m_values[1] = -6;
@@ -31,7 +31,7 @@ public:
         TestVector
     ) const noexcept {
         using namespace Space;
-        if (From::id == Space::SpaceIDs::View) {
+        if (From::id == SpaceIDs::View) {
             TestVector t;
             t.m_values[0] = 15;
             t.m_values[1] = 16;

@@ -68,7 +68,7 @@ TEST_CASE("VectorsCanBeConstructedFromANormalizedVector") {
 
 TEST_CASE("VectorsCanBeAssignedFromAVector") {
     const View::Vector v1(0, 0, 1);
-    const View::Vector v2 = v1;
+    const auto v2 = v1;
 
     CHECK(v2.X() == 0);
     CHECK(v2.Y() == 0);

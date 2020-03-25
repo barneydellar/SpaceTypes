@@ -42,8 +42,8 @@ namespace Space {
             return lhs;
         }
 
-        [[nodiscard]] Point2<ThisSpace, Implementation> RemoveZ() const {
-            return Point2<ThisSpace, Implementation>(_base::X(), _base::Y());
+        [[nodiscard]] XYPoint<ThisSpace, Implementation> RemoveZ() const {
+            return XYPoint<ThisSpace, Implementation>(_base::X(), _base::Y());
         }
 
         using _base::operator==;

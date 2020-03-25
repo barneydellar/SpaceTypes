@@ -232,7 +232,7 @@ TEST_CASE("PointsSupportNonConstBeginAndEnd") {
 TEST_CASE("Points Can Have their z-value removed") {
     const Image::Point v(2, 3, 4);
     const auto v_norm = v.RemoveZ();
-    CHECK(v_norm == Image::Point2(2, 3));
+    CHECK(v_norm == Image::XYPoint(2, 3));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -240,7 +240,7 @@ TEST_CASE("Points Can Have their z-value removed") {
 TEST_CASE("Points Can Have their z-value removed to produce a XYVector") {
     const Image::Point v;
     using converted_type = decltype(v.RemoveZ());
-    using required_type = decltype(Image::Point2{});
+    using required_type = decltype(Image::XYPoint{});
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
