@@ -651,6 +651,18 @@ TEST_CASE("VectorsCanBeConvertedFromOneSpaceToAnotherProducingAVector") {
 
 //-------------------------------------------------------------------------------------------------
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("Vectors Cannot Be Converted To The Same Space") {
+    const TransformManager tm;
+    const View::Vector v;
+    using converted_type = decltype(v.ConvertTo<View>(tm));
+    using required_type = StaticAssert::invalid_conversion;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+#endif
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("VectorsCanBeStreamed") {
     const View::Vector v(1.2, 2.3, 3.4);
     std::stringstream stream;

@@ -22,7 +22,7 @@ namespace Space {
         }
 
         template <typename OtherSpace, typename TransformManager>
-        [[nodiscard]] Point<OtherSpace, Implementation> ConvertTo(const TransformManager& transform_manager) const {
+        [[nodiscard]] std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, Point<OtherSpace, Implementation>> ConvertTo(const TransformManager& transform_manager) const {
             return Point<OtherSpace, Implementation>(transform_manager.template Transform<ThisSpace, OtherSpace>(static_cast<Implementation>(*this)));
         }
 
@@ -46,16 +46,18 @@ namespace Space {
             return XYPoint<ThisSpace, Implementation>(_base::X(), _base::Y());
         }
 
+        //------------------------------------------------------------------------------------
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+
         using _base::operator==;
         using _base::operator!=;
         using _base::operator+;
         using _base::operator+=;
         using _base::operator-;
         using _base::operator-=;
+        using _base::ConvertTo;
 
-        //------------------------------------------------------------------------------------
-
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 
         StaticAssert::invalid_point_vector_equality operator== (const VectorBase<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};

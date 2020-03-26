@@ -33,23 +33,38 @@ namespace Space {
             return NormalizedXYVector<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y());
         }
 
-        using VectorBaseInThisSpace::operator-;
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(NormalizedVector<ThisSpace, Implementation> lhs, const VectorBaseInThisSpace& rhs) noexcept {
             lhs.Sub(rhs);
             return lhs;
         }
 
-        using VectorBaseInThisSpace::operator+;
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(NormalizedVector<ThisSpace, Implementation> lhs, const VectorBaseInThisSpace& rhs) noexcept {
             lhs.Add(rhs);
             return lhs;
         }
 
-        using VectorBaseInThisSpace::operator-=;
-        using VectorBaseInThisSpace::operator*=;
+        StaticAssert::normalized_vectors_do_not_support_element_modification SetX(double) const noexcept { return StaticAssert::normalized_vectors_do_not_support_element_modification{}; }
+        StaticAssert::normalized_vectors_do_not_support_element_modification SetY(double) const noexcept { return StaticAssert::normalized_vectors_do_not_support_element_modification{}; }
+        StaticAssert::normalized_vectors_do_not_support_element_modification SetZ(double) const noexcept { return StaticAssert::normalized_vectors_do_not_support_element_modification{}; }
+
+        StaticAssert::normalized_vectors_do_not_support_norm Norm() const noexcept {
+            return StaticAssert::normalized_vectors_do_not_support_norm();
+        }
+
+        StaticAssert::normalized_vectors_do_not_support_non_const_iteration begin() const noexcept {
+            return StaticAssert::normalized_vectors_do_not_support_non_const_iteration{};
+        }
+        StaticAssert::normalized_vectors_do_not_support_non_const_iteration end() const noexcept {
+            return StaticAssert::normalized_vectors_do_not_support_non_const_iteration{};
+        }
 
         //-------------------------------------------------------------------------------------
 #ifndef IGNORE_SPACE_STATIC_ASSERT
+        using VectorBaseInThisSpace::operator-;
+        using VectorBaseInThisSpace::operator+;
+        using VectorBaseInThisSpace::operator-=;
+        using VectorBaseInThisSpace::operator*=;
+
         StaticAssert::invalid_normalized_vector_scale operator*=(const double&) const noexcept {
             return StaticAssert::invalid_normalized_vector_scale{};
         }
@@ -66,20 +81,6 @@ namespace Space {
             return StaticAssert::invalid_normalized_vector_subtraction{};
         }
 
-        StaticAssert::normalized_vectors_do_not_support_non_const_iteration begin() const noexcept {
-            return StaticAssert::normalized_vectors_do_not_support_non_const_iteration{};
-        }
-        StaticAssert::normalized_vectors_do_not_support_non_const_iteration end() const noexcept {
-            return StaticAssert::normalized_vectors_do_not_support_non_const_iteration{};
-        }
-
-        StaticAssert::normalized_vectors_do_not_support_norm Norm() const noexcept{
-            return StaticAssert::normalized_vectors_do_not_support_norm();
-        }
-
-        StaticAssert::normalized_vectors_do_not_support_element_modification SetX(double) const noexcept { return StaticAssert::normalized_vectors_do_not_support_element_modification{}; }
-        StaticAssert::normalized_vectors_do_not_support_element_modification SetY(double) const noexcept { return StaticAssert::normalized_vectors_do_not_support_element_modification{}; }
-        StaticAssert::normalized_vectors_do_not_support_element_modification SetZ(double) const noexcept { return StaticAssert::normalized_vectors_do_not_support_element_modification{}; }
 #endif
 
     protected:

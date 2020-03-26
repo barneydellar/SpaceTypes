@@ -884,7 +884,6 @@ TEST_CASE("Normalized XYVectors Support Const Begin And End") {
 }
 
 //-------------------------------------------------------------------------------------------------
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("Normalized XYVectors Do Not Support Norm") {
     Image::NormalizedXYVector nv;
 
@@ -922,7 +921,6 @@ TEST_CASE("Normalized XYVectors Do Not Support Non Const End") {
     using required_type = StaticAssert::normalized_vectors_do_not_support_non_const_iteration;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
-#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -974,13 +972,25 @@ TEST_CASE("Normalized XYVectors Can Be Converted From One Space To Another Ignor
 TEST_CASE("NormalizedVectorsCanBeConvertedFromOneSpaceToAnotherProducing A Vector") {
 
     const TransformManager tm;
-    const View::NormalizedVector v_view(1, 0, 0);
+    const View::NormalizedXYVector v_view(1, 0);
     using converted_type = decltype(v_view.ConvertTo<Patient>(tm));
     using required_type = decltype(Patient::Vector{});
     CHECK(
         static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
+
+//-------------------------------------------------------------------------------------------------
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("Normalized XY Vectors Cannot Be Converted To The Same Space") {
+    const TransformManager tm;
+    const View::NormalizedXYVector v;
+    using converted_type = decltype(v.ConvertTo<View>(tm));
+    using required_type = StaticAssert::invalid_conversion;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+#endif
 
 //-------------------------------------------------------------------------------------------------
 

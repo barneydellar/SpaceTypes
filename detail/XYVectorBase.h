@@ -58,8 +58,6 @@ namespace Space {
             return lhs;
         }
 
-        using VectorBaseInThisSpace::operator*=;
-
         using VectorBaseInThisSpace::operator*;
         [[nodiscard]] Vector<ThisSpace, Implementation> operator*(const XYVectorBaseInThisSpace& rhs) const noexcept {
             return this->Cross(rhs);
@@ -70,14 +68,10 @@ namespace Space {
             return Vector<ThisSpace, Implementation>(VectorBaseInThisSpace::Cross(other));
         }
 
-        using VectorBaseInThisSpace::operator-;
         [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator-(XYVector<ThisSpace, Implementation> lhs, const XYVectorBaseInThisSpace& rhs) noexcept {
             lhs -= rhs;
             return lhs;
         }
-
-        using VectorBaseInThisSpace::operator+=;
-        using VectorBaseInThisSpace::operator-=;
 
         [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator+(XYVector<ThisSpace, Implementation> lhs, const XYVectorBaseInThisSpace& rhs) noexcept {
             lhs += rhs;
@@ -88,8 +82,15 @@ namespace Space {
             return NormalizedXYVector<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y());
         }
 
+        [[nodiscard]] StaticAssert::z_not_supported Z() const noexcept { return StaticAssert::z_not_supported{}; }
+        StaticAssert::z_not_supported SetZ(double) const noexcept { return StaticAssert::z_not_supported{}; }
+
         //-------------------------------------------------------------------------------------
 #ifndef IGNORE_SPACE_STATIC_ASSERT
+        using VectorBaseInThisSpace::operator*=;
+        using VectorBaseInThisSpace::operator-;
+        using VectorBaseInThisSpace::operator+=;
+        using VectorBaseInThisSpace::operator-=;
 
         template <int I>
         typename std::enable_if<I != 0 && I != 1, StaticAssert::invalid_at_access>::type at() const {
@@ -103,8 +104,6 @@ namespace Space {
             return StaticAssert::invalid_vector_to_vector_addition{};
         }
 
-        [[nodiscard]] StaticAssert::z_not_supported Z() const noexcept { return StaticAssert::z_not_supported{}; }
-        StaticAssert::z_not_supported SetZ(double) const noexcept { return StaticAssert::z_not_supported{}; }
 #endif
     };
 }

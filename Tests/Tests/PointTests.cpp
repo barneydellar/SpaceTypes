@@ -168,7 +168,7 @@ TEST_CASE("PointsFromDifferfentSpacesCannotBeSubtracted") {
 #endif
 
 //-------------------------------------------------------------------------------------------------
-
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("Points cannot be added") {
     const View::Point p1;
     const View::Point p2;
@@ -176,6 +176,7 @@ TEST_CASE("Points cannot be added") {
     using required_type = StaticAssert::invalid_point_to_point_addition;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
+#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -344,6 +345,18 @@ TEST_CASE("PointsCanBeConvertedFromOneSpaceToAnotherProducingAPoint") {
         static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
+
+//-------------------------------------------------------------------------------------------------
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("Points Cannot Be Converted To The Same Space") {
+    const TransformManager tm;
+    const View::Point p;
+    using converted_type = decltype(p.ConvertTo<View>(tm));
+    using required_type = StaticAssert::invalid_conversion;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+#endif
 
 //-------------------------------------------------------------------------------------------------
 

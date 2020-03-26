@@ -14,19 +14,16 @@ namespace Space {
         explicit XYVector<ThisSpace, Implementation>(const double x, const double y) noexcept(false) : VectorBase<ThisSpace, Implementation>(x, y, 0), XYVectorBase<ThisSpace, Implementation>(x, y) {}
         XYVector(const std::initializer_list<double>& l) noexcept(false) : XYVectorBase<ThisSpace, Implementation>(l) {}
 
-        using _base::operator-=;
         XYVector<ThisSpace, Implementation> operator-=(const XYVectorBase<ThisSpace, Implementation>& rhs) noexcept {
             _base::Sub(rhs);
             return *this;
         }
 
-        using _base::operator+=;
         XYVector<ThisSpace, Implementation> operator+=(const XYVectorBase<ThisSpace, Implementation>& rhs) noexcept {
             _base::Add(rhs);
             return *this;
         }
 
-        using _base::operator*=;
         XYVector<ThisSpace, Implementation> operator*=(const double& d) noexcept {
             _base::Scale(d);
             return *this;
@@ -40,6 +37,11 @@ namespace Space {
             os << space << "::XYVector (" << item.X() << ", " << item.Y() << ")";
             return os;
         }
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+        using _base::operator+=;
+        using _base::operator-=;
+        using _base::operator*=;
+#endif
     };
 
 }

@@ -10,19 +10,16 @@ namespace Space {
         using _base::_base;
     public:
 
-        using _base::operator-=;
         Vector<ThisSpace, Implementation> operator-=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
             _base::Sub(rhs);
             return *this;
         }
 
-        using _base::operator+=;
         Vector<ThisSpace, Implementation> operator+=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
             _base::Add(rhs);
             return *this;
         }
 
-        using _base::operator*=;
         Vector<ThisSpace, Implementation> operator*=(const double& d) noexcept {
             _base::Scale(d);
             return *this;
@@ -41,5 +38,11 @@ namespace Space {
             os << space << "::Vector (" << item.X() << ", " << item.Y() << ", " << item.Z() << ")";
             return os;
         }
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+        using _base::operator-=;
+        using _base::operator+=;
+        using _base::operator*=;
+#endif
+
     };
 }

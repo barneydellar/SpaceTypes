@@ -21,7 +21,7 @@ namespace Space {
         }
 
         template <typename OtherSpace, typename TransformManager>
-        [[nodiscard]] Vector<OtherSpace, Implementation> ConvertTo(const TransformManager& transform_manager) const noexcept {
+        [[nodiscard]] std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, Vector<OtherSpace, Implementation>> ConvertTo(const TransformManager& transform_manager) const noexcept {
             return Vector < OtherSpace, Implementation>(transform_manager.template Transform33<ThisSpace, OtherSpace>(static_cast<Implementation>(*this)));
         }
 
@@ -102,6 +102,7 @@ namespace Space {
         using _base::operator*=;
         using _base::Cross;
         using _base::Dot;
+        using _base::ConvertTo;
 
         StaticAssert::invalid_point_vector_equality operator== (const PointBase<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
@@ -115,6 +116,7 @@ namespace Space {
         StaticAssert::invalid_point_from_vector_subtraction operator-(const PointBase<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_from_vector_subtraction{};
         }
+
 #endif
     };
 }

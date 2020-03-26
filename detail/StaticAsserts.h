@@ -18,6 +18,14 @@ namespace Space::StaticAssert {
         }
     };
 
+    struct invalid_conversion final : invalid_base
+    {
+        template<typename T = void>
+        invalid_conversion() {
+            static_assert(false, "You can't convert to the same same space.");
+        }
+    };
+
     struct invalid_point_vector_equality final : invalid_base
     {
         template<typename T = void>

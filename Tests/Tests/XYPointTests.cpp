@@ -262,7 +262,6 @@ TEST_CASE("XYPointsFromDifferfentSpacesCannotBeSubtracted") {
         static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
-#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -286,6 +285,7 @@ TEST_CASE("XYPoints and Points cannot be added") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type_B, required_type>));
 }
 
+#endif
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYPointsCanBeCopied") {
@@ -439,6 +439,18 @@ TEST_CASE("XYPointsCanBeConvertedFromOneSpaceToAnotherProducingA3DPoint") {
         static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
+
+//-------------------------------------------------------------------------------------------------
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("XY Points Cannot Be Converted To The Same Space") {
+    const TransformManager tm;
+    const View::XYPoint p;
+    using converted_type = decltype(p.ConvertTo<View>(tm));
+    using required_type = StaticAssert::invalid_conversion;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+#endif
 
 //-------------------------------------------------------------------------------------------------
 

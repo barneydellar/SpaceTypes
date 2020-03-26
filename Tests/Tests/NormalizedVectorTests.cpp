@@ -694,7 +694,7 @@ TEST_CASE("NormalizedVectorsSupportConstBeginAndEnd") {
 }
 
 //-------------------------------------------------------------------------------------------------
-#ifndef IGNORE_SPACE_STATIC_ASSERT
+
 TEST_CASE("NormalizedVectorsDoNotSupportNorm") {
     Image::NormalizedVector nv;
 
@@ -706,7 +706,6 @@ TEST_CASE("NormalizedVectorsDoNotSupportNorm") {
     using required_type = StaticAssert::normalized_vectors_do_not_support_norm;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
-
 TEST_CASE("NormalizedVectorsDoNotSupportNonConstBegin") {
     Image::NormalizedVector nv(2, 3, 4);
 
@@ -718,7 +717,6 @@ TEST_CASE("NormalizedVectorsDoNotSupportNonConstBegin") {
     using required_type = StaticAssert::normalized_vectors_do_not_support_non_const_iteration;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
-
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("NormalizedVectorsDoNotSupportNonConstEnd") {
@@ -732,7 +730,6 @@ TEST_CASE("NormalizedVectorsDoNotSupportNonConstEnd") {
     using required_type = StaticAssert::normalized_vectors_do_not_support_non_const_iteration;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
-#endif
 
 //-------------------------------------------------------------------------------------------------
 
@@ -818,6 +815,18 @@ TEST_CASE("NormalizedVectorsCanBeConvertedFromOneSpaceToAnotherProducingAVector"
         static_cast<bool>(std::is_same_v<converted_type, required_type>)
     );
 }
+
+//-------------------------------------------------------------------------------------------------
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("Normalized Vectors Cannot Be Converted To The Same Space") {
+    const TransformManager tm;
+    const View::NormalizedVector v;
+    using converted_type = decltype(v.ConvertTo<View>(tm));
+    using required_type = StaticAssert::invalid_conversion;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+#endif
 
 //-------------------------------------------------------------------------------------------------
 

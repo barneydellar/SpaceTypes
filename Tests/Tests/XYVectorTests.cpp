@@ -718,6 +718,18 @@ TEST_CASE("XYVectors Can Be Converted From One Space To Another Producing A Vect
 
 //-------------------------------------------------------------------------------------------------
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("XYVectors Cannot Be Converted To The Same Space") {
+    const TransformManager tm;
+    const View::XYVector v;
+    using converted_type = decltype(v.ConvertTo<View>(tm));
+    using required_type = StaticAssert::invalid_conversion;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+#endif
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("XYVectorsCanBeStreamed") {
     const View::XYVector v(1.2, 2.3);
     std::stringstream stream;

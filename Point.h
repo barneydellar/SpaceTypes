@@ -10,7 +10,6 @@ namespace Space {
         using _base::_base;
     public:
 
-        using _base::operator+=;
         Point<ThisSpace, Implementation> operator+=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
             _base::Add(rhs);
             return *this;
@@ -18,7 +17,6 @@ namespace Space {
 
         //---------------------------------------------------------------------
 
-        using _base::operator-=;
         Point<ThisSpace, Implementation> operator-=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
             _base::Sub(rhs);
             return *this;
@@ -34,6 +32,13 @@ namespace Space {
             os << space << "::Point (" << item.X() << ", " << item.Y() << ", " << item.Z() << ")";
             return os;
         }
+
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+        using _base::operator+=;
+        using _base::operator-=;
+#endif
+
     };
 
 }

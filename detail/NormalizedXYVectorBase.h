@@ -29,14 +29,11 @@ namespace Space {
         }
 
         using NormalizedVectorBaseInThisSpace::operator*;
-        using NormalizedVectorBaseInThisSpace::operator*=;
         [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator*(NormalizedXYVector<ThisSpace, Implementation> lhs, const double& d) noexcept {
             lhs.Scale(d);
             return lhs;
         }
 
-        using NormalizedVectorBaseInThisSpace::operator-=;
-        using NormalizedVectorBaseInThisSpace::operator-;
         [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator-(NormalizedXYVector<ThisSpace, Implementation> lhs, const XYVectorBaseInThisSpace& rhs) noexcept {
             lhs.Sub(rhs);
             return lhs;
@@ -46,8 +43,6 @@ namespace Space {
             return lhs;
         }
 
-        using NormalizedVectorBaseInThisSpace::operator+=;
-        using NormalizedVectorBaseInThisSpace::operator+;
         [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator+(NormalizedXYVector<ThisSpace, Implementation> lhs, const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
             lhs.Add(rhs);
             return lhs;
@@ -69,10 +64,18 @@ namespace Space {
         using NormalizedVectorBaseInThisSpace::end;
         using NormalizedVectorBaseInThisSpace::Norm;
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
         StaticAssert::normalized_vectors_do_not_support_element_modification SetX(double) const noexcept { return StaticAssert::normalized_vectors_do_not_support_element_modification{}; }
         StaticAssert::normalized_vectors_do_not_support_element_modification SetY(double) const noexcept { return StaticAssert::normalized_vectors_do_not_support_element_modification{}; }
         StaticAssert::normalized_vectors_do_not_support_element_modification SetZ(double) const noexcept { return StaticAssert::normalized_vectors_do_not_support_element_modification{}; }
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+
+        using NormalizedVectorBaseInThisSpace::operator*=;
+        using NormalizedVectorBaseInThisSpace::operator-=;
+        using NormalizedVectorBaseInThisSpace::operator-;
+        using NormalizedVectorBaseInThisSpace::operator+=;
+        using NormalizedVectorBaseInThisSpace::operator+;
+
 #endif
     };
 }
