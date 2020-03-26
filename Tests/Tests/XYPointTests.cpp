@@ -418,6 +418,15 @@ TEST_CASE("XYPointsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("XYPoints Do Not Support removing Z") {
+    Image::XYPoint p;
+    using converted_type = decltype(p.ToXY());
+    using required_type = StaticAssert::xy_do_not_support_removing_z;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("XYPointsCanBeConvertedFromOneSpaceToAnotherUsingTranslation") {
 
     const TransformManager tm;

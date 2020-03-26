@@ -138,14 +138,6 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct normalized_vectors_do_not_support_non_const_iteration final : invalid_base
-    {
-        template<typename T = void>
-        normalized_vectors_do_not_support_non_const_iteration() {
-            static_assert(false, "Normalized vectors do not support non const iteration.");
-        }
-    };
-
     struct normalized_vectors_do_not_support_norm final : invalid_base
     {
         template<typename T = void>
@@ -167,6 +159,14 @@ namespace Space::StaticAssert {
         template<typename T = void>
         z_not_supported() {
             static_assert(false, "2D vectors and points do not support z-access.");
+        }
+    };
+
+    struct xy_do_not_support_removing_z final : invalid_base
+    {
+        template<typename T = void>
+        xy_do_not_support_removing_z() {
+            static_assert(false, "xy vectors or points cannot have their Z removed.");
         }
     };
 

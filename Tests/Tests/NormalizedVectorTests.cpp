@@ -711,11 +711,6 @@ TEST_CASE("NormalizedVectorsDoNotSupportNonConstBegin") {
 
     // We should not be able to compile:
     // auto dummy = nv.begin();
-    // But we can check the return type,
-    // to make sure we get an invalid type:
-    using converted_type = decltype(nv.begin());
-    using required_type = StaticAssert::normalized_vectors_do_not_support_non_const_iteration;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -724,24 +719,19 @@ TEST_CASE("NormalizedVectorsDoNotSupportNonConstEnd") {
 
     // We should not be able to compile:
     // auto dummy = nv.end();
-    // But we can check the return type,
-    // to make sure we get an invalid type:
-    using converted_type = decltype(nv.end());
-    using required_type = StaticAssert::normalized_vectors_do_not_support_non_const_iteration;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("Normalized Vectors Can Have their z-value removed") {
     const Image::NormalizedVector v(1, 0, 0);
-    const auto v_norm = v.RemoveZ();
+    const auto v_norm = v.ToXY();
     CHECK(v_norm == Image::NormalizedXYVector(1, 0));
 }
 
 TEST_CASE("Normalized Vectors Can Have their z-value removed to produce a Normalized XYVector") {
     const Image::NormalizedVector v;
-    using converted_type = decltype(v.RemoveZ());
+    using converted_type = decltype(v.ToXY());
     using required_type = decltype(Image::NormalizedXYVector{});
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }

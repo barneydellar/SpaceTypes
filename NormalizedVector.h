@@ -20,6 +20,10 @@ namespace Space {
             return *this;
         }
 
+        [[nodiscard]] NormalizedXYVector<ThisSpace, Implementation> ToXY() const {
+            return NormalizedXYVector<ThisSpace, Implementation>(_base::X(), _base::Y());
+        }
+
         friend std::ostream& operator << (
             std::ostream& os,
             const NormalizedVector<ThisSpace, Implementation>& item

@@ -10,6 +10,9 @@ namespace Space {
         using _base::_base;
     public:
 
+        [[nodiscard]] double* begin() noexcept { return _base::begin(); }
+        [[nodiscard]] double* end() noexcept { return _base::end(); }
+
         Vector<ThisSpace, Implementation> operator-=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
             _base::Sub(rhs);
             return *this;
@@ -28,6 +31,10 @@ namespace Space {
         Vector<ThisSpace, Implementation> operator*=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
             *this = this->Cross(rhs);
             return *this;
+        }
+
+        [[nodiscard]] XYVector<ThisSpace, Implementation> ToXY() const {
+            return XYVector<ThisSpace, Implementation>(_base::X(), _base::Y());
         }
 
         friend std::ostream& operator << (

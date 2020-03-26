@@ -10,20 +10,18 @@ namespace Space {
         using _base::_base;
     public:
 
+        [[nodiscard]] double* begin() noexcept { return _base::begin(); }
+        [[nodiscard]] double* end() noexcept {return reinterpret_cast<double*>(std::prev(_base::end()));}
+
         XYPoint<ThisSpace, Implementation> operator+=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
             _base::Add(rhs);
             return *this;
         }
 
-        //---------------------------------------------------------------------
-
-
         XYPoint<ThisSpace, Implementation> operator-=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
             _base::Sub(rhs);
             return *this;
         }
-
-        //---------------------------------------------------------------------
 
         friend std::ostream& operator << (
             std::ostream& os,

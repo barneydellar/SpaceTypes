@@ -29,10 +29,6 @@ namespace Space {
             return NormalizedVector<ThisSpace, Implementation>(VectorBaseInThisSpace::Cross(other).Norm());
         }
 
-        [[nodiscard]] NormalizedXYVector<ThisSpace, Implementation> RemoveZ() const {
-            return NormalizedXYVector<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y());
-        }
-
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(NormalizedVector<ThisSpace, Implementation> lhs, const VectorBaseInThisSpace& rhs) noexcept {
             lhs.Sub(rhs);
             return lhs;
@@ -49,13 +45,6 @@ namespace Space {
 
         StaticAssert::normalized_vectors_do_not_support_norm Norm() const noexcept {
             return StaticAssert::normalized_vectors_do_not_support_norm();
-        }
-
-        StaticAssert::normalized_vectors_do_not_support_non_const_iteration begin() const noexcept {
-            return StaticAssert::normalized_vectors_do_not_support_non_const_iteration{};
-        }
-        StaticAssert::normalized_vectors_do_not_support_non_const_iteration end() const noexcept {
-            return StaticAssert::normalized_vectors_do_not_support_non_const_iteration{};
         }
 
         //-------------------------------------------------------------------------------------

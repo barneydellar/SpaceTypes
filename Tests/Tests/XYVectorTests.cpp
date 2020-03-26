@@ -373,6 +373,13 @@ TEST_CASE("XYVector Can Be Normalized") {
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("XYVectors Do Not Support removing Z") {
+    Image::XYVector v;
+    // v.ToXY();
+}
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("XYVectors Can Be Normalized to produce a Normalized XYVector") {
     const Image::XYVector v;
     using converted_type = decltype(v.Norm());

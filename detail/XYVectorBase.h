@@ -43,11 +43,6 @@ namespace Space {
             return reinterpret_cast<const double*>(std::prev(VectorBaseInThisSpace::cend()));
         }
 
-        [[nodiscard]] double* end() noexcept
-        {
-            return reinterpret_cast<double*>(std::prev(VectorBaseInThisSpace::end()));
-        }
-
         template <int I>
         [[nodiscard]] typename std::enable_if<I == 0 || I == 1, double>::type at() const {
             return VectorBaseInThisSpace::operator[](I);

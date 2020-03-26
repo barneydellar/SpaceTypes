@@ -55,13 +55,6 @@ namespace Space {
             return operator[](I);
         }
 
-        [[nodiscard]] double* begin() noexcept {
-            return reinterpret_cast<double*>(&m_impl);
-        }
-        [[nodiscard]] double* end() noexcept {
-            return reinterpret_cast<double*>(&m_impl) + 3;
-        }
-
         [[nodiscard]] const double* cbegin() const noexcept {
             return reinterpret_cast<const double*>(&m_impl);
         }
@@ -164,5 +157,13 @@ namespace Space {
         }
 
         Implementation m_impl;
+
+        [[nodiscard]] double* begin() noexcept {
+            return reinterpret_cast<double*>(&m_impl);
+        }
+        [[nodiscard]] double* end() noexcept {
+            return reinterpret_cast<double*>(&m_impl) + 3;
+        }
+
     };
 }

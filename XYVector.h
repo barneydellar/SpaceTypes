@@ -14,6 +14,9 @@ namespace Space {
         explicit XYVector<ThisSpace, Implementation>(const double x, const double y) noexcept(false) : VectorBase<ThisSpace, Implementation>(x, y, 0), XYVectorBase<ThisSpace, Implementation>(x, y) {}
         XYVector(const std::initializer_list<double>& l) noexcept(false) : XYVectorBase<ThisSpace, Implementation>(l) {}
 
+        [[nodiscard]] double* begin() noexcept { return _base::begin(); }
+        [[nodiscard]] double* end() noexcept {return reinterpret_cast<double*>(std::prev(_base::end()));}
+
         XYVector<ThisSpace, Implementation> operator-=(const XYVectorBase<ThisSpace, Implementation>& rhs) noexcept {
             _base::Sub(rhs);
             return *this;

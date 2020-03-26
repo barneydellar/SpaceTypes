@@ -42,10 +42,6 @@ namespace Space {
             return lhs;
         }
 
-        [[nodiscard]] XYPoint<ThisSpace, Implementation> RemoveZ() const {
-            return XYPoint<ThisSpace, Implementation>(_base::X(), _base::Y());
-        }
-
         //------------------------------------------------------------------------------------
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
