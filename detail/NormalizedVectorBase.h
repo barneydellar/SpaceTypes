@@ -39,14 +39,6 @@ namespace Space {
             return lhs;
         }
 
-        StaticAssert::normalized_vectors_do_not_support_element_modification SetX(double) const noexcept { return StaticAssert::normalized_vectors_do_not_support_element_modification{}; }
-        StaticAssert::normalized_vectors_do_not_support_element_modification SetY(double) const noexcept { return StaticAssert::normalized_vectors_do_not_support_element_modification{}; }
-        StaticAssert::normalized_vectors_do_not_support_element_modification SetZ(double) const noexcept { return StaticAssert::normalized_vectors_do_not_support_element_modification{}; }
-
-        StaticAssert::normalized_vectors_do_not_support_norm Norm() const noexcept {
-            return StaticAssert::normalized_vectors_do_not_support_norm();
-        }
-
         //-------------------------------------------------------------------------------------
 #ifndef IGNORE_SPACE_STATIC_ASSERT
         using VectorBaseInThisSpace::operator-;

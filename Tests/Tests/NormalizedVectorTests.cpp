@@ -672,13 +672,10 @@ TEST_CASE("NormalizedVectorsSupportElementAccessByName") {
 TEST_CASE("Normalized Vectors Do Not Support Modifcation By Name") {
     Image::NormalizedVector v2;
 
-    using converted_type_X = decltype(v2.SetX(5));
-    using converted_type_Y = decltype(v2.SetY(5));
-    using converted_type_Z = decltype(v2.SetZ(5));
-    using required_type = StaticAssert::normalized_vectors_do_not_support_element_modification;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type_X, required_type>));
-    CHECK(static_cast<bool>(std::is_same_v<converted_type_Y, required_type>));
-    CHECK(static_cast<bool>(std::is_same_v<converted_type_Z, required_type>));
+    // Should not compile:
+    //v2.SetX(5);
+    //v2.SetY(5);
+    //v2.SetZ(5);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -699,12 +696,7 @@ TEST_CASE("NormalizedVectorsDoNotSupportNorm") {
     Image::NormalizedVector nv;
 
     // We should not be able to compile:
-    // auto dummy = nv.begin();
-    // But we can check the return type,
-    // to make sure we get an invalid type:
-    using converted_type = decltype(nv.Norm());
-    using required_type = StaticAssert::normalized_vectors_do_not_support_norm;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+    // auto dummy = nv.Norm();
 }
 TEST_CASE("NormalizedVectorsDoNotSupportNonConstBegin") {
     Image::NormalizedVector nv(2, 3, 4);

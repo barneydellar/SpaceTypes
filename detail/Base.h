@@ -37,11 +37,7 @@ namespace Space {
 
         [[nodiscard]] double X() const noexcept { return *(cbegin() + 0); }
         [[nodiscard]] double Y() const noexcept { return *(cbegin() + 1); }
-        [[nodiscard]] double Z() const noexcept { return *(cbegin() + 2); }
 
-        void SetX(const double d) noexcept { *(begin() + 0) = d; }
-        void SetY(const double d) noexcept { *(begin() + 1) = d; }
-        void SetZ(const double d) noexcept { *(begin() + 2) = d; }
 
         [[nodiscard]] double operator[] (const unsigned int i) const {
             if (i > 2) {
@@ -164,6 +160,8 @@ namespace Space {
         [[nodiscard]] double* end() noexcept {
             return reinterpret_cast<double*>(&m_impl) + 3;
         }
+
+        [[nodiscard]] double Z() const noexcept { return *(cbegin() + 2); }
 
     };
 }

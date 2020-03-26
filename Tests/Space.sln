@@ -12,7 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Space", "Space", "{4C7E07BA
 		..\Point.h = ..\Point.h
 		..\README.md = ..\README.md
 		..\Space.h = ..\Space.h
-		..\StaticAsserts.h = ..\StaticAsserts.h
 		..\Vector.h = ..\Vector.h
 		..\XYPoint.h = ..\XYPoint.h
 		..\XYVector.h = ..\XYVector.h

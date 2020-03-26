@@ -13,6 +13,11 @@ namespace Space {
         [[nodiscard]] double* begin() noexcept { return _base::begin(); }
         [[nodiscard]] double* end() noexcept { return _base::end(); }
 
+        [[nodiscard]] double Z() const noexcept { return *(_base::cbegin() + 2); }
+        void SetX(const double d) noexcept { *(begin() + 0) = d; }
+        void SetY(const double d) noexcept { *(begin() + 1) = d; }
+        void SetZ(const double d) noexcept { *(begin() + 2) = d; }
+
         Vector<ThisSpace, Implementation> operator-=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
             _base::Sub(rhs);
             return *this;
@@ -35,6 +40,10 @@ namespace Space {
 
         [[nodiscard]] XYVector<ThisSpace, Implementation> ToXY() const {
             return XYVector<ThisSpace, Implementation>(_base::X(), _base::Y());
+        }
+
+        [[nodiscard]] NormalizedVector<ThisSpace, Implementation> Norm() const {
+            return NormalizedVector<ThisSpace, Implementation>(_base::X(), _base::Y(), _base::Z());
         }
 
         friend std::ostream& operator << (

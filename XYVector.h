@@ -17,6 +17,9 @@ namespace Space {
         [[nodiscard]] double* begin() noexcept { return _base::begin(); }
         [[nodiscard]] double* end() noexcept {return reinterpret_cast<double*>(std::prev(_base::end()));}
 
+        void SetX(const double d) noexcept { *(begin() + 0) = d; }
+        void SetY(const double d) noexcept { *(begin() + 1) = d; }
+
         XYVector<ThisSpace, Implementation> operator-=(const XYVectorBase<ThisSpace, Implementation>& rhs) noexcept {
             _base::Sub(rhs);
             return *this;
@@ -30,6 +33,10 @@ namespace Space {
         XYVector<ThisSpace, Implementation> operator*=(const double& d) noexcept {
             _base::Scale(d);
             return *this;
+        }
+
+        [[nodiscard]] NormalizedXYVector<ThisSpace, Implementation> Norm() const {
+            return NormalizedXYVector<ThisSpace, Implementation>(_base::X(), _base::Y());
         }
 
         friend std::ostream& operator << (

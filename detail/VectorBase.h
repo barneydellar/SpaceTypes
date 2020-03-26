@@ -81,10 +81,6 @@ namespace Space {
             );
         }
 
-        [[nodiscard]] NormalizedVector<ThisSpace, Implementation> Norm() const {
-            return NormalizedVector<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y(), VectorBaseInThisSpace::Z());
-        }
-
         //-------------------------------------------------------------------------------------
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 

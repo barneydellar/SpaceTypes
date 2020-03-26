@@ -15,7 +15,6 @@ namespace Space {
         explicit NormalizedXYVector<ThisSpace, Implementation>(const double x, const double y) noexcept(false) : VectorBase<ThisSpace, Implementation>(x, y, 0), NormalizedXYVectorBase<ThisSpace, Implementation>(x, y) {}
         NormalizedXYVector(const std::initializer_list<double>& l) noexcept(false) : NormalizedXYVectorBase<ThisSpace, Implementation>(l) {}
 
-
         friend std::ostream& operator << (
             std::ostream& os,
             const NormalizedXYVector<ThisSpace, Implementation>& item

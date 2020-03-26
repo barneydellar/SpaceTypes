@@ -62,12 +62,6 @@ namespace Space {
         }
 
         using NormalizedVectorBaseInThisSpace::end;
-        using NormalizedVectorBaseInThisSpace::Norm;
-
-        StaticAssert::normalized_vectors_do_not_support_element_modification SetX(double) const noexcept { return StaticAssert::normalized_vectors_do_not_support_element_modification{}; }
-        StaticAssert::normalized_vectors_do_not_support_element_modification SetY(double) const noexcept { return StaticAssert::normalized_vectors_do_not_support_element_modification{}; }
-        StaticAssert::normalized_vectors_do_not_support_element_modification SetZ(double) const noexcept { return StaticAssert::normalized_vectors_do_not_support_element_modification{}; }
-
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 

@@ -13,6 +13,9 @@ namespace Space {
         [[nodiscard]] double* begin() noexcept { return _base::begin(); }
         [[nodiscard]] double* end() noexcept {return reinterpret_cast<double*>(std::prev(_base::end()));}
 
+        void SetX(const double d) noexcept { *(begin() + 0) = d; }
+        void SetY(const double d) noexcept { *(begin() + 1) = d; }
+        
         XYPoint<ThisSpace, Implementation> operator+=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
             _base::Add(rhs);
             return *this;

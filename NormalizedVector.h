@@ -20,6 +20,7 @@ namespace Space {
             return *this;
         }
 
+        [[nodiscard]] double Z() const noexcept { return *(_base::cbegin() + 2); }
         [[nodiscard]] NormalizedXYVector<ThisSpace, Implementation> ToXY() const {
             return NormalizedXYVector<ThisSpace, Implementation>(_base::X(), _base::Y());
         }

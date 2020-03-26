@@ -595,9 +595,8 @@ TEST_CASE("XYVectors Support Element Access By Name") {
 TEST_CASE("XYVectors Do Not Support Z Access By Name") {
     const Image::XYVector v2;
 
-    using converted_type = decltype(v2.Z());
-    using required_type = StaticAssert::z_not_supported;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+    // Should not compile:
+    // v2.SetZ(5);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -615,9 +614,8 @@ TEST_CASE("XYVectors Can Be Modifed By Name") {
 TEST_CASE("XYVectors Do Not Support Z Modifcation By Name") {
     Image::XYVector v2;
 
-    using converted_type = decltype(v2.SetZ(5));
-    using required_type = StaticAssert::z_not_supported;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+    // Should not compile:
+    // v2.SetZ(5);
 }
 
 //-------------------------------------------------------------------------------------------------

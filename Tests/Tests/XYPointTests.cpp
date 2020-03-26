@@ -325,9 +325,8 @@ TEST_CASE("XYPoints Can Be Modifed By Name") {
 TEST_CASE("XYPoints Do Not Support Z Modifcation By Name") {
     Image::XYPoint v2;
 
-    using converted_type = decltype(v2.SetZ(5));
-    using required_type = StaticAssert::z_not_supported;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+    // Should not compile:
+    // v2.SetZ(5);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -420,9 +419,9 @@ TEST_CASE("XYPointsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
 
 TEST_CASE("XYPoints Do Not Support removing Z") {
     Image::XYPoint p;
-    using converted_type = decltype(p.ToXY());
-    using required_type = StaticAssert::xy_do_not_support_removing_z;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+
+    // Should not compile:
+    // p.ToXY();
 }
 
 //-------------------------------------------------------------------------------------------------

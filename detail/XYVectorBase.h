@@ -73,13 +73,6 @@ namespace Space {
             return lhs;
         }
 
-        [[nodiscard]] NormalizedXYVector<ThisSpace, Implementation> Norm() const {
-            return NormalizedXYVector<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y());
-        }
-
-        [[nodiscard]] StaticAssert::z_not_supported Z() const noexcept { return StaticAssert::z_not_supported{}; }
-        StaticAssert::z_not_supported SetZ(double) const noexcept { return StaticAssert::z_not_supported{}; }
-
         //-------------------------------------------------------------------------------------
 #ifndef IGNORE_SPACE_STATIC_ASSERT
         using VectorBaseInThisSpace::operator*=;
