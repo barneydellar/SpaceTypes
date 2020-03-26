@@ -38,6 +38,9 @@
     <ClCompile Include="XYVectorTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="PointTests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

@@ -146,6 +146,14 @@ namespace Space::StaticAssert {
         }
     };
 
+    struct normalized_vectors_do_not_support_element_modification final : invalid_base
+    {
+        template<typename T = void>
+        normalized_vectors_do_not_support_element_modification() {
+            static_assert(false, "Normalized vectors cannot have their elements modified independently.");
+        }
+    };
+
     struct z_not_supported final : invalid_base
     {
         template<typename T = void>

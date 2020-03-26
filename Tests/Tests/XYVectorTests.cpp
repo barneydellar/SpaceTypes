@@ -595,6 +595,26 @@ TEST_CASE("XYVectors Do Not Support Z Access By Name") {
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("XYVectors Can Be Modifed By Name") {
+    Image::XYVector v(2, 3);
+    v.SetX(10);
+    v.SetY(20);
+    CHECK(v.X() == 10);
+    CHECK(v.Y() == 20);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("XYVectors Do Not Support Z Modifcation By Name") {
+    Image::XYVector v2;
+
+    using converted_type = decltype(v2.SetZ(5));
+    using required_type = StaticAssert::z_not_supported;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("XYVectorsSupportConstBeginAndEnd") {
     const Image::XYVector v(2, 3);
     std::vector<double> values;

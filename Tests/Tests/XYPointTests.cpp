@@ -312,6 +312,26 @@ TEST_CASE("XYPointsSupportElementAccessByName") {
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("XYPoints Can Be Modifed By Name") {
+    Image::XYPoint v(2, 3);
+    v.SetX(10);
+    v.SetY(20);
+    CHECK(v.X() == 10);
+    CHECK(v.Y() == 20);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("XYPoints Do Not Support Z Modifcation By Name") {
+    Image::XYPoint v2;
+
+    using converted_type = decltype(v2.SetZ(5));
+    using required_type = StaticAssert::z_not_supported;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("XYPointsSupportConstBeginAndEnd") {
     const View::XYPoint p(2, 3);
     std::vector<double> values;

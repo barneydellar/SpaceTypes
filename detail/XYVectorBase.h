@@ -30,8 +30,6 @@ namespace Space {
             return Vector<ThisSpace, Implementation>(VectorBaseInThisSpace::X(), VectorBaseInThisSpace::Y(), VectorBaseInThisSpace::Z());
         }
 
-        [[nodiscard]] StaticAssert::z_not_supported Z() const noexcept { return StaticAssert::z_not_supported{}; }
-
         double operator[](const unsigned int i) const
         {
             if (i > 1) {
@@ -105,6 +103,8 @@ namespace Space {
             return StaticAssert::invalid_vector_to_vector_addition{};
         }
 
+        [[nodiscard]] StaticAssert::z_not_supported Z() const noexcept { return StaticAssert::z_not_supported{}; }
+        StaticAssert::z_not_supported SetZ(double) const noexcept { return StaticAssert::z_not_supported{}; }
 #endif
     };
 }

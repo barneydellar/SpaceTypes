@@ -860,6 +860,20 @@ TEST_CASE("Normalized XYVectors Do Not Support Z Access By Name") {
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("Normalized XYVectors Do Not Support Modifcation By Name") {
+    Image::NormalizedXYVector v2;
+
+    using converted_type_X = decltype(v2.SetX(5));
+    using converted_type_Y = decltype(v2.SetY(5));
+    using converted_type_Z = decltype(v2.SetZ(5));
+    using required_type = StaticAssert::normalized_vectors_do_not_support_element_modification;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_X, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_Y, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_Z, required_type>));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("Normalized XYVectors Support Const Begin And End") {
     const Image::NormalizedXYVector v(1, 0);
     std::vector<double> values;

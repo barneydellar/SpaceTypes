@@ -204,6 +204,18 @@ TEST_CASE("PointsSupportElementAccessByName") {
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("Points Can Be Modifed By Name") {
+    Image::Point v(2, 3, 4);
+    v.SetX(10);
+    v.SetY(20);
+    v.SetZ(30);
+    CHECK(v.X() == 10);
+    CHECK(v.Y() == 20);
+    CHECK(v.Z() == 30);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("PointsSupportConstBeginAndEnd") {
     const View::Point p(2, 3, 4);
     std::vector<double> values;
