@@ -412,6 +412,20 @@ TEST_CASE("XYVectors ignore Z when constructed from implementation") {
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("XYVectors have their z removed with implementation") {
+    TestVector impl_in;
+    impl_in.m_values[0] = 3;
+    impl_in.m_values[1] = 2;
+    impl_in.m_values[2] = 1;
+    const Patient::XYVector v(impl_in);
+    auto impl = static_cast<TestVector>(v);
+    CHECK(impl.m_values[0] == 3);
+    CHECK(impl.m_values[1] == 2);
+    CHECK(impl.m_values[2] == 0);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("XYVectors Can Be Cast To The Implementation") {
     const Patient::XYVector v(1, 0);
     auto impl = static_cast<TestVector>(v);

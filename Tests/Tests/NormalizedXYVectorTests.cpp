@@ -58,6 +58,20 @@ TEST_CASE("Normalized XYVectors Can Be Constructed And Normalized From Implement
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("XYVectors have their z removed and are nomalised with implementation") {
+    TestVector impl_in;
+    impl_in.m_values[0] = 3;
+    impl_in.m_values[1] = 3;
+    impl_in.m_values[2] = 3;
+    const Patient::NormalizedXYVector v(impl_in);
+    auto impl = static_cast<TestVector>(v);
+    CHECK(impl.m_values[0] == Approx(1/std::sqrt(2)));
+    CHECK(impl.m_values[1] == Approx(1/std::sqrt(2)));
+    CHECK(impl.m_values[2] == 0);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("Normalized XYVectors Can Be Constructed And Normalized From Two Doubles") {
     const Patient::NormalizedXYVector v(2, 0);
     CHECK(v.X() == 1);

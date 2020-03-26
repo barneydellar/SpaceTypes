@@ -74,6 +74,20 @@ TEST_CASE("XYPoints Can Be Cast To The Implementation") {
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("XYPoints have their z removed with implementation") {
+    TestVector impl_in;
+    impl_in.m_values[0] = 3;
+    impl_in.m_values[1] = 2;
+    impl_in.m_values[2] = 1;
+    const Patient::XYPoint p(impl_in);
+    auto impl = static_cast<TestVector>(p);
+    CHECK(impl.m_values[0] == 3);
+    CHECK(impl.m_values[1] == 2);
+    CHECK(impl.m_values[2] == 0);
+}
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("XYPoints cannot be implicitly cast to the implementation") {
     const Patient::XYPoint p;
 
