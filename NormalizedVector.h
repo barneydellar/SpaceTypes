@@ -15,6 +15,7 @@ namespace Space {
         explicit NormalizedVector<ThisSpace, Implementation>(const double x, const double y, const double z) noexcept(false) : VectorBase<ThisSpace, Implementation>(x, y, z), NormalizedVectorBase<ThisSpace, Implementation>(x, y, z) {}
         NormalizedVector(const std::initializer_list<double>& l) noexcept(false) : VectorBase<ThisSpace, Implementation>(l), NormalizedVectorBase<ThisSpace, Implementation>(l) {}
 
+
         NormalizedVector<ThisSpace, Implementation> operator*=(const NormalizedVectorBase<ThisSpace, Implementation>& rhs) noexcept {
             *this = this->Cross(rhs);
             return *this;
