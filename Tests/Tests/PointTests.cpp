@@ -150,6 +150,18 @@ TEST_CASE("PointsFromTheSameSpaceCanBeSubtractedFromGiveAVector") {
     const auto v = p1 - p2;
     CHECK(v == View::Vector(1, 2, 3));
 }
+TEST_CASE("Points And XY Points From The Same Space Can Be Subtracted") {
+    const View::Point p1(2, 3, 4);
+    const View::XYPoint p2(1, 1);
+    const auto v = p1 - p2;
+    CHECK(v == View::Vector(1, 2, 4));
+}
+TEST_CASE("XY Points And Points From The Same Space Can Be Subtracted") {
+    const View::XYPoint p1(2, 3);
+    const View::Point p2(1, 1, 1);
+    const auto v = p1 - p2;
+    CHECK(v == View::Vector(1, 2, -1));
+}
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("PointsFromDifferfentSpacesCannotBeSubtracted") {
     const View::Point p1(2, 3, 4);

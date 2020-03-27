@@ -32,30 +32,30 @@ namespace Space {
         }
 
 
+        [[nodiscard]] operator Point<ThisSpace, Implementation>() const noexcept {
+            return Point<ThisSpace, Implementation>(_base::X(), _base::Y(), _base::Z());
+        }
+
+        [[nodiscard]] double* begin() noexcept { return _base::begin(); }
+        [[nodiscard]] double* end() noexcept { return reinterpret_cast<double*>(std::prev(_base::end())); }
+        [[nodiscard]] const double* cend() const noexcept { return reinterpret_cast<const double*>(std::prev(_base::cend())); }
+
+        void SetX(const double d) noexcept { *(begin() + 0) = d; }
+        void SetY(const double d) noexcept { *(begin() + 1) = d; }
+
         [[nodiscard]] bool operator== (const Point<ThisSpace, Implementation>& other) const noexcept {
             return std::equal(_base::cbegin(), _base::cend(), other.cbegin(), _base::Equality);
         }
-        [[nodiscard]] bool operator== (const XYPoint<ThisSpace, Implementation> & other) const noexcept {
+        [[nodiscard]] bool operator== (const XYPoint<ThisSpace, Implementation>& other) const noexcept {
             return std::equal(_base::cbegin(), _base::cend(), other.cbegin(), _base::Equality);
         }
 
         [[nodiscard]] bool operator!= (const Point<ThisSpace, Implementation>& other) const noexcept {
             return !(operator==(other));
         }
+
         [[nodiscard]] bool operator!= (const XYPoint<ThisSpace, Implementation>& other) const noexcept {
             return !(operator==(other));
-        }
-
-        [[nodiscard]] double* begin() noexcept { return _base::begin(); }
-        [[nodiscard]] double* end() noexcept {return reinterpret_cast<double*>(std::prev(_base::end()));}
-        [[nodiscard]] const double* cend() const noexcept {return reinterpret_cast<const double*>(std::prev(_base::cend()));}
-
-        void SetX(const double d) noexcept { *(begin() + 0) = d; }
-        void SetY(const double d) noexcept { *(begin() + 1) = d; }
-
-
-        [[nodiscard]] operator Point<ThisSpace, Implementation>() const noexcept {
-            return Point<ThisSpace, Implementation>(_base::X(), _base::Y(), _base::Z());
         }
 
         double operator[](const unsigned int i) const
@@ -75,36 +75,35 @@ namespace Space {
             _base::Sub(rhs);
             return *this;
         }
-
-        [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const XYPoint<ThisSpace, Implementation>& rhs) {
-            lhs.Sub(rhs);
-            XYVector<ThisSpace, Implementation> v(lhs.X(), lhs.Y());
-            return v;
-        }
-
         [[nodiscard]] friend XYPoint<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const XYVectorBase<ThisSpace, Implementation>& rhs) noexcept {
             lhs.Sub(rhs);
             return lhs;
         }
-
         [[nodiscard]] friend Point<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
             lhs.Sub(rhs);
             Point<ThisSpace, Implementation> point3(lhs.X(), lhs.Y(), 0);
             return point3;
         }
-
+        [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const XYPoint<ThisSpace, Implementation>& rhs) {
+            lhs.Sub(rhs);
+            XYVector<ThisSpace, Implementation> v(lhs.X(), lhs.Y());
+            return v;
+        }
+        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const Point<ThisSpace, Implementation>& rhs) {
+            lhs.Sub(rhs);
+            Vector<ThisSpace, Implementation> v(lhs.X(), lhs.Y(), lhs.Z());
+            return v;
+        }
 
         XYPoint<ThisSpace, Implementation> operator+=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
             _base::Add(rhs);
             return *this;
         }
-
         [[nodiscard]] friend Point<ThisSpace, Implementation> operator+(XYPoint<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
             Point<ThisSpace, Implementation> point3(lhs.X(), lhs.Y(), 0);
             point3 += rhs;
             return point3;
         }
-
         [[nodiscard]] friend XYPoint<ThisSpace, Implementation> operator+(XYPoint<ThisSpace, Implementation> lhs, const XYVectorBase<ThisSpace, Implementation>& rhs) noexcept {
             lhs += rhs;
             return lhs;
@@ -150,6 +149,10 @@ namespace Space {
         }
 
         friend StaticAssert::invalid_point_to_point_addition operator+(XYPoint<ThisSpace, Implementation>, const Point<ThisSpace, Implementation>&) {
+            return StaticAssert::invalid_point_to_point_addition{};
+        }
+
+        friend StaticAssert::invalid_point_to_point_addition operator+(XYPoint<ThisSpace, Implementation>, const XYPoint<ThisSpace, Implementation>&) {
             return StaticAssert::invalid_point_to_point_addition{};
         }
 

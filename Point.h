@@ -13,15 +13,15 @@ namespace Space {
         [[nodiscard]] double* end() noexcept {return _base::end();}
 
         [[nodiscard]] double Z() const noexcept { return *(_base::cbegin() + 2); }
+
         void SetX(const double d) noexcept { *(begin() + 0) = d; }
         void SetY(const double d) noexcept { *(begin() + 1) = d; }
         void SetZ(const double d) noexcept { *(begin() + 2) = d; }
 
-        Point<ThisSpace, Implementation> operator+=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(rhs);
-            return *this;
-        }
 
+        [[nodiscard]] XYPoint<ThisSpace, Implementation> ToXY() const {
+            return XYPoint<ThisSpace, Implementation>(_base::X(), _base::Y());
+        }
 
         [[nodiscard]] bool operator== (const Point<ThisSpace, Implementation>& other) const noexcept {
             return std::equal(_base::cbegin(), _base::cend(), other.cbegin(), _base::Equality);
@@ -38,39 +38,38 @@ namespace Space {
             return !(operator==(other));
         }
 
-        template <typename OtherSpace, typename TransformManager>
-        [[nodiscard]] std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, Point<OtherSpace, Implementation>> ConvertTo(const TransformManager& transform_manager) const {
-            return Point<OtherSpace, Implementation>(transform_manager.template Transform<ThisSpace, OtherSpace>(static_cast<Implementation>(*this)));
+        Point<ThisSpace, Implementation> operator-=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
+            _base::Sub(rhs);
+            return *this;
         }
-
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(Point<ThisSpace, Implementation> lhs, const Point<ThisSpace, Implementation>& rhs) {
             lhs.Sub(rhs);
             Vector<ThisSpace, Implementation> v(lhs.X(), lhs.Y(), lhs.Z());
             return v;
         }
-
-        [[nodiscard]] friend Point<ThisSpace, Implementation> operator+(Point<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
-            lhs += rhs;
-            return lhs;
+        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(Point<ThisSpace, Implementation> lhs, const XYPoint<ThisSpace, Implementation>& rhs) {
+            lhs.Sub(rhs);
+            Vector<ThisSpace, Implementation> v(lhs.X(), lhs.Y(), lhs.Z());
+            return v;
         }
-
         [[nodiscard]] friend Point<ThisSpace, Implementation> operator-(Point<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
             lhs -= rhs;
             return lhs;
         }
 
-        //---------------------------------------------------------------------
-
-        Point<ThisSpace, Implementation> operator-=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Sub(rhs);
+        Point<ThisSpace, Implementation> operator+=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
+            _base::Add(rhs);
             return *this;
         }
-
-        [[nodiscard]] XYPoint<ThisSpace, Implementation> ToXY() const {
-            return XYPoint<ThisSpace, Implementation>(_base::X(), _base::Y());
+        [[nodiscard]] friend Point<ThisSpace, Implementation> operator+(Point<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
+            lhs += rhs;
+            return lhs;
         }
 
-        //---------------------------------------------------------------------
+        template <typename OtherSpace, typename TransformManager>
+        [[nodiscard]] std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, Point<OtherSpace, Implementation>> ConvertTo(const TransformManager& transform_manager) const {
+            return Point<OtherSpace, Implementation>(transform_manager.template Transform<ThisSpace, OtherSpace>(static_cast<Implementation>(*this)));
+        }
 
         friend std::ostream& operator << (
             std::ostream& os,
@@ -80,7 +79,6 @@ namespace Space {
             os << space << "::Point (" << item.X() << ", " << item.Y() << ", " << item.Z() << ")";
             return os;
         }
-
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 
@@ -100,6 +98,10 @@ namespace Space {
         }
 
         friend StaticAssert::invalid_point_to_point_addition operator+(Point<ThisSpace, Implementation>, const Point<ThisSpace, Implementation>&) {
+            return StaticAssert::invalid_point_to_point_addition{};;
+        }
+
+        friend StaticAssert::invalid_point_to_point_addition operator+(Point<ThisSpace, Implementation>, const XYPoint<ThisSpace, Implementation>&) {
             return StaticAssert::invalid_point_to_point_addition{};;
         }
 #endif
