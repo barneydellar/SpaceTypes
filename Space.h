@@ -39,8 +39,6 @@ namespace Space {
     template <typename ThisSpace, typename Implementation>
     class NormalizedVectorBase;
 
-    template <typename ThisSpace, typename Implementation>
-    class NormalizedXYVectorBase;
 }
 
 #include "detail/StaticAsserts.h"

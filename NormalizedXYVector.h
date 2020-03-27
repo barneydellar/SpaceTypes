@@ -1,32 +1,31 @@
 #pragma once
-#include "detail/NormalizedXYVectorBase.h"
 
 namespace Space {
 
     template <typename ThisSpace, typename Implementation>
-    class NormalizedXYVector final : public NormalizedXYVectorBase<ThisSpace, Implementation>
+    class NormalizedXYVector final : public XYVectorBase<ThisSpace, Implementation>, public NormalizedVectorBase<ThisSpace, Implementation>
     {
-        using _base = NormalizedXYVectorBase<ThisSpace, Implementation>;
+        using XYVectorBaseInThisSpace = XYVectorBase<ThisSpace, Implementation>;
         using NormalizedVectorBaseInThisSpace = NormalizedVectorBase<ThisSpace, Implementation>;
 
     public:
 
-        NormalizedXYVector() noexcept(false) : VectorBase<ThisSpace, Implementation>(), NormalizedXYVectorBase<ThisSpace, Implementation>() {}
-        explicit NormalizedXYVector(const Implementation& e) noexcept(false) : VectorBase<ThisSpace, Implementation>(e), NormalizedXYVectorBase<ThisSpace, Implementation>(e) {}
-        explicit NormalizedXYVector<ThisSpace, Implementation>(const double x, const double y) noexcept(false) : VectorBase<ThisSpace, Implementation>(x, y, 0), NormalizedXYVectorBase<ThisSpace, Implementation>(x, y) {}
-        NormalizedXYVector(const std::initializer_list<double>& l) noexcept(false) : NormalizedXYVectorBase<ThisSpace, Implementation>(l) {}
+        NormalizedXYVector() noexcept(false) : VectorBase<ThisSpace, Implementation>(), XYVectorBaseInThisSpace(), NormalizedVectorBaseInThisSpace() { }
+        explicit NormalizedXYVector(const Implementation& e) noexcept(false) : VectorBase<ThisSpace, Implementation>(e), XYVectorBaseInThisSpace(e), NormalizedVectorBaseInThisSpace(e) { }
+        explicit NormalizedXYVector(const double x, const double y) noexcept(false) : VectorBase<ThisSpace, Implementation>(x, y, 0), XYVectorBaseInThisSpace(x, y), NormalizedVectorBaseInThisSpace(x, y, 0) {}
+        NormalizedXYVector(const std::initializer_list<double> l) noexcept(false) : XYVectorBaseInThisSpace(l), NormalizedVectorBaseInThisSpace(l) { }
 
         using NormalizedVectorBaseInThisSpace::end;
         [[nodiscard]] operator Vector<ThisSpace, Implementation>() const noexcept {
-            return Vector<ThisSpace, Implementation>(_base::X(), _base::Y(), 0);
+            return Vector<ThisSpace, Implementation>(NormalizedVectorBaseInThisSpace::X(), NormalizedVectorBaseInThisSpace::Y(), 0);
         }
 
         [[nodiscard]] operator XYVector<ThisSpace, Implementation>() const noexcept {
-            return XYVector<ThisSpace, Implementation>(_base::X(), _base::Y());
+            return XYVector<ThisSpace, Implementation>(NormalizedVectorBaseInThisSpace::X(), NormalizedVectorBaseInThisSpace::Y());
         }
 
         [[nodiscard]] operator NormalizedVector<ThisSpace, Implementation>() const noexcept {
-            return NormalizedVector<ThisSpace, Implementation>(_base::X(), _base::Y(), 0);
+            return NormalizedVector<ThisSpace, Implementation>(NormalizedVectorBaseInThisSpace::X(), NormalizedVectorBaseInThisSpace::Y(), 0);
         }
 
         using NormalizedVectorBaseInThisSpace::operator*;

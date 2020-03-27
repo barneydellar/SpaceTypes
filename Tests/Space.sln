@@ -21,7 +21,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{056321
 	ProjectSection(SolutionItems) = preProject
 		..\detail\Base.h = ..\detail\Base.h
 		..\detail\NormalizedVectorBase.h = ..\detail\NormalizedVectorBase.h
-		..\detail\NormalizedXYVectorBase.h = ..\detail\NormalizedXYVectorBase.h
 		..\detail\PointBase.h = ..\detail\PointBase.h
 		..\detail\SpaceImpl.h = ..\detail\SpaceImpl.h
 		..\detail\StaticAsserts.h = ..\detail\StaticAsserts.h
