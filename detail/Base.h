@@ -38,9 +38,6 @@ namespace Space {
             return m_impl;
         }
 
-        [[nodiscard]] double X() const noexcept { return *(cbegin() + 0); }
-        [[nodiscard]] double Y() const noexcept { return *(cbegin() + 1); }
-
 
         [[nodiscard]] double operator[] (const unsigned int i) const {
             if (i > 2) {
@@ -164,9 +161,9 @@ namespace Space {
 
         static std::tuple<double, double, double> Cross_internal(const Base<ThisSpace, Implementation>& A, const Base<ThisSpace, Implementation>& B) noexcept {
 
-            const double x = A.Y() * B.Z() - A.Z() * B.Y();
-            const double y = A.Z() * B.X() - A.X() * B.Z();
-            const double z = A.X() * B.Y() - A.Y() * B.X();
+            const double x = A.Y_internal() * B.Z_internal() - A.Z_internal() * B.Y_internal();
+            const double y = A.Z_internal() * B.X_internal() - A.X_internal() * B.Z_internal();
+            const double z = A.X_internal() * B.Y_internal() - A.Y_internal() * B.X_internal();
             return { x, y, z };
         }
 
@@ -195,7 +192,10 @@ namespace Space {
             return reinterpret_cast<double*>(&m_impl) + 3;
         }
 
-        [[nodiscard]] double Z() const noexcept { return *(cbegin() + 2); }
+
+        [[nodiscard]] double X_internal() const noexcept { return *(cbegin() + 0); }
+        [[nodiscard]] double Y_internal() const noexcept { return *(cbegin() + 1); }
+        [[nodiscard]] double Z_internal() const noexcept { return *(cbegin() + 2); }
 
     private:
         Implementation m_impl;

@@ -10,10 +10,13 @@ namespace Space {
 
     public:
 
+        [[nodiscard]] double X() const noexcept { return _base::X_internal(); }
+        [[nodiscard]] double Y() const noexcept { return _base::Y_internal(); }
+        [[nodiscard]] double Z() const noexcept { return _base::Z_internal(); }
+
         [[nodiscard]] double* begin() noexcept { return _base::begin(); }
         [[nodiscard]] double* end() noexcept { return _base::end(); }
 
-        [[nodiscard]] double Z() const noexcept { return *(_base::cbegin() + 2); }
         void SetX(const double d) noexcept { *(begin() + 0) = d; }
         void SetY(const double d) noexcept { *(begin() + 1) = d; }
         void SetZ(const double d) noexcept { *(begin() + 2) = d; }
@@ -178,11 +181,11 @@ namespace Space {
 
 
         [[nodiscard]] XYVector<ThisSpace, Implementation> ToXY() const {
-            return XYVector<ThisSpace, Implementation>(_base::X(), _base::Y());
+            return XYVector<ThisSpace, Implementation>(X(), Y());
         }
 
         [[nodiscard]] NormalizedVector<ThisSpace, Implementation> Norm() const {
-            return NormalizedVector<ThisSpace, Implementation>(_base::X(), _base::Y(), _base::Z());
+            return NormalizedVector<ThisSpace, Implementation>(X(), Y(), Z());
         }
 
         template <typename OtherSpace, typename TransformManager>

@@ -31,9 +31,12 @@ namespace Space {
             );
         }
 
+        [[nodiscard]] double X() const noexcept { return _base::X_internal(); }
+        [[nodiscard]] double Y() const noexcept { return _base::Y_internal(); }
+
 
         [[nodiscard]] operator Point<ThisSpace, Implementation>() const noexcept {
-            return Point<ThisSpace, Implementation>(_base::X(), _base::Y(), _base::Z());
+            return Point<ThisSpace, Implementation>(X(), Y(), _base::Z_internal());
         }
 
         [[nodiscard]] double* begin() noexcept { return _base::begin(); }
@@ -106,7 +109,7 @@ namespace Space {
         }
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const Point<ThisSpace, Implementation>& rhs) {
             lhs.Sub(rhs);
-            Vector<ThisSpace, Implementation> v(lhs.X(), lhs.Y(), lhs.Z());
+            Vector<ThisSpace, Implementation> v(lhs.X_internal(), lhs.Y_internal(), lhs.Z_internal());
             return v;
         }
 

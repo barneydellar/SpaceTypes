@@ -34,6 +34,9 @@ namespace Space {
             );
         }
 
+        [[nodiscard]] double X() const noexcept { return _base::X_internal(); }
+        [[nodiscard]] double Y() const noexcept { return _base::Y_internal(); }
+
         [[nodiscard]] double* begin() noexcept { return _base::begin(); }
         [[nodiscard]] double* end() noexcept { return reinterpret_cast<double*>(std::prev(_base::end())); }
         [[nodiscard]] const double* cend() const noexcept { return reinterpret_cast<const double*>(std::prev(_base::cend())); }
@@ -179,7 +182,7 @@ namespace Space {
         [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(other); }
 
         [[nodiscard]] NormalizedXYVector<ThisSpace, Implementation> Norm() const {
-            return NormalizedXYVector<ThisSpace, Implementation>(_base::X(), _base::Y());
+            return NormalizedXYVector<ThisSpace, Implementation>(X(), Y());
         }
 
         template <typename OtherSpace, typename TransformManager>

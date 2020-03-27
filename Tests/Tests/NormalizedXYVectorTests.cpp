@@ -535,6 +535,15 @@ TEST_CASE("Normalized XYVectors Can Be Subtracted") {
     const auto added = v_norm_1 - v_norm_2;
     CHECK(added == Image::XYVector(1, -1));
 }
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Normalized Vectors Can Be Subtracted from Normalized XY Vectors") {
+    const Image::NormalizedXYVector v_norm_1(1, 0);
+    const Image::NormalizedVector v_norm_2(0, 0, 1);
+
+    const auto added = v_norm_1 - v_norm_2;
+    CHECK(added == Image::Vector(1, 0, -1));
+}
 
 //-------------------------------------------------------------------------------------------------
 

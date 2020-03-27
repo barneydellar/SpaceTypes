@@ -15,6 +15,8 @@ namespace Space {
         explicit NormalizedVector(const double x, const double y, const double z) noexcept(false) : _base(x, y, z) { Normalize(); }
         NormalizedVector(const std::initializer_list<double>& l) noexcept(false) : _base(l) { Normalize(); }
 
+        [[nodiscard]] double X() const noexcept { return *(_base::cbegin() + 0); }
+        [[nodiscard]] double Y() const noexcept { return *(_base::cbegin() + 1); }
         [[nodiscard]] double Z() const noexcept { return *(_base::cbegin() + 2); }
         void SetX(const double d) noexcept { *(_base::begin() + 0) = d; }
         void SetY(const double d) noexcept { *(_base::begin() + 1) = d; }
@@ -134,7 +136,7 @@ namespace Space {
 
 
         [[nodiscard]] NormalizedXYVector<ThisSpace, Implementation> ToXY() const {
-            return NormalizedXYVector<ThisSpace, Implementation>(_base::X(), _base::Y());
+            return NormalizedXYVector<ThisSpace, Implementation>(X(), Y());
         }
 
         template <typename OtherSpace, typename TransformManager>

@@ -36,6 +36,9 @@ namespace Space {
             Normalize();
         }
 
+        [[nodiscard]] double X() const noexcept { return _base::X_internal(); }
+        [[nodiscard]] double Y() const noexcept { return _base::Y_internal(); }
+
         [[nodiscard]] const double* cend() const noexcept {return reinterpret_cast<const double*>(std::prev(_base::cend()));}
 
         double operator[](const unsigned int i) const {
@@ -87,7 +90,7 @@ namespace Space {
         }
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(NormalizedXYVector<ThisSpace, Implementation> lhs, const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
             lhs.Sub(rhs);
-            return Vector<ThisSpace, Implementation>(lhs.X(), lhs.Y(), lhs.Z());
+            return Vector<ThisSpace, Implementation>(lhs.X_internal(), lhs.Y_internal(), lhs.Z_internal());
         }
         [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator-(NormalizedXYVector<ThisSpace, Implementation> lhs, const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
             lhs.Sub(rhs);
@@ -100,11 +103,11 @@ namespace Space {
 
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(NormalizedXYVector<ThisSpace, Implementation> lhs, const Vector<ThisSpace, Implementation>& rhs) noexcept {
             lhs.Add(rhs);
-            return Vector<ThisSpace, Implementation>(lhs.X(), lhs.Y(), lhs.Z());
+            return Vector<ThisSpace, Implementation>(lhs.X_internal(), lhs.Y_internal(), lhs.Z_internal());
         }
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(NormalizedXYVector<ThisSpace, Implementation> lhs, const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
             lhs.Add(rhs);
-            return Vector<ThisSpace, Implementation>(lhs.X(), lhs.Y(), lhs.Z());
+            return Vector<ThisSpace, Implementation>(lhs.X_internal(), lhs.Y_internal(), lhs.Z_internal());
         }
         [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator+(NormalizedXYVector<ThisSpace, Implementation> lhs, const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
             lhs.Add(rhs);

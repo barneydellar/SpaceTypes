@@ -9,10 +9,13 @@ namespace Space {
         using _base::_base;
     public:
 
+        [[nodiscard]] double X() const noexcept { return _base::X_internal(); }
+        [[nodiscard]] double Y() const noexcept { return _base::Y_internal(); }
+        [[nodiscard]] double Z() const noexcept { return _base::Z_internal(); }
+
         [[nodiscard]] double* begin() noexcept {return _base::begin();}
         [[nodiscard]] double* end() noexcept {return _base::end();}
 
-        [[nodiscard]] double Z() const noexcept { return *(_base::cbegin() + 2); }
 
         void SetX(const double d) noexcept { *(begin() + 0) = d; }
         void SetY(const double d) noexcept { *(begin() + 1) = d; }
@@ -20,7 +23,7 @@ namespace Space {
 
 
         [[nodiscard]] XYPoint<ThisSpace, Implementation> ToXY() const {
-            return XYPoint<ThisSpace, Implementation>(_base::X(), _base::Y());
+            return XYPoint<ThisSpace, Implementation>(X(), Y());
         }
 
         [[nodiscard]] bool operator== (const Point<ThisSpace, Implementation>& other) const noexcept {
