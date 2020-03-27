@@ -1,12 +1,11 @@
 #pragma once
-#include "detail/PointBase.h"
 
 namespace Space {
 
     template <typename ThisSpace, typename Implementation>
-    class Point final : public PointBase<ThisSpace, Implementation>
+    class Point final : public Base<ThisSpace, Implementation>
     {
-        using _base = PointBase<ThisSpace, Implementation>;
+        using _base = Base<ThisSpace, Implementation>;
         using _base::_base;
     public:
 
@@ -21,6 +20,43 @@ namespace Space {
         Point<ThisSpace, Implementation> operator+=(const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
             _base::Add(rhs);
             return *this;
+        }
+
+
+        [[nodiscard]] bool operator== (const Point<ThisSpace, Implementation>& other) const noexcept {
+            return std::equal(_base::cbegin(), _base::cend(), other.cbegin(), _base::Equality);
+        }
+        [[nodiscard]] bool operator== (const XYPoint<ThisSpace, Implementation>& other) const noexcept {
+            return std::equal(_base::cbegin(), _base::cend(), other.cbegin(), _base::Equality);
+        }
+
+        [[nodiscard]] bool operator!= (const Point<ThisSpace, Implementation>& other) const noexcept {
+            return !(operator==(other));
+        }
+
+        [[nodiscard]] bool operator!= (const XYPoint<ThisSpace, Implementation>& other) const noexcept {
+            return !(operator==(other));
+        }
+
+        template <typename OtherSpace, typename TransformManager>
+        [[nodiscard]] std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, Point<OtherSpace, Implementation>> ConvertTo(const TransformManager& transform_manager) const {
+            return Point<OtherSpace, Implementation>(transform_manager.template Transform<ThisSpace, OtherSpace>(static_cast<Implementation>(*this)));
+        }
+
+        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(Point<ThisSpace, Implementation> lhs, const Point<ThisSpace, Implementation>& rhs) {
+            lhs.Sub(rhs);
+            Vector<ThisSpace, Implementation> v(lhs.X(), lhs.Y(), lhs.Z());
+            return v;
+        }
+
+        [[nodiscard]] friend Point<ThisSpace, Implementation> operator+(Point<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
+            lhs += rhs;
+            return lhs;
+        }
+
+        [[nodiscard]] friend Point<ThisSpace, Implementation> operator-(Point<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
+            lhs -= rhs;
+            return lhs;
         }
 
         //---------------------------------------------------------------------
@@ -47,8 +83,25 @@ namespace Space {
 
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
+
+        using _base::operator==;
+        using _base::operator!=;
         using _base::operator+=;
+        using _base::operator-;
         using _base::operator-=;
+        using _base::ConvertTo;
+
+
+        StaticAssert::invalid_point_vector_equality operator== (const VectorBase<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_point_vector_equality{};
+        }
+        StaticAssert::invalid_point_vector_equality operator!= (const VectorBase<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_point_vector_equality{};
+        }
+
+        friend StaticAssert::invalid_point_to_point_addition operator+(Point<ThisSpace, Implementation>, const Point<ThisSpace, Implementation>&) {
+            return StaticAssert::invalid_point_to_point_addition{};;
+        }
 #endif
 
     };

@@ -3,9 +3,9 @@
 namespace Space {
 
     template <typename ThisSpace, typename Implementation>
-    class XYPoint final : public PointBase<ThisSpace, Implementation>
+    class XYPoint final : public Base<ThisSpace, Implementation>
     {
-        using _base = PointBase<ThisSpace, Implementation>;
+        using _base = Base<ThisSpace, Implementation>;
 
     public:
 
@@ -29,6 +29,21 @@ namespace Space {
                 std::cend(l),
                 _base::begin()
             );
+        }
+
+
+        [[nodiscard]] bool operator== (const Point<ThisSpace, Implementation>& other) const noexcept {
+            return std::equal(_base::cbegin(), _base::cend(), other.cbegin(), _base::Equality);
+        }
+        [[nodiscard]] bool operator== (const XYPoint<ThisSpace, Implementation> & other) const noexcept {
+            return std::equal(_base::cbegin(), _base::cend(), other.cbegin(), _base::Equality);
+        }
+
+        [[nodiscard]] bool operator!= (const Point<ThisSpace, Implementation>& other) const noexcept {
+            return !(operator==(other));
+        }
+        [[nodiscard]] bool operator!= (const XYPoint<ThisSpace, Implementation>& other) const noexcept {
+            return !(operator==(other));
         }
 
         [[nodiscard]] double* begin() noexcept { return _base::begin(); }
@@ -95,6 +110,11 @@ namespace Space {
             return lhs;
         }
 
+        template <typename OtherSpace, typename TransformManager>
+        [[nodiscard]] std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, Point<OtherSpace, Implementation>> ConvertTo(const TransformManager& transform_manager) const {
+            return Point<OtherSpace, Implementation>(transform_manager.template Transform<ThisSpace, OtherSpace>(static_cast<Implementation>(*this)));
+        }
+
         friend std::ostream& operator << (
             std::ostream& os,
             const XYPoint<ThisSpace, Implementation>& item
@@ -103,9 +123,14 @@ namespace Space {
             os << space << "::XYPoint (" << item.X() << ", " << item.Y() << ")";
             return os;
         }
+
 #ifndef IGNORE_SPACE_STATIC_ASSERT
+
+        using _base::operator==;
+        using _base::operator!=;
         using _base::operator+=;
         using _base::operator-=;
+        using _base::ConvertTo;
 
         template <int I>
         typename std::enable_if<I != 0 && I != 1, StaticAssert::invalid_at_access>::type at() const {
@@ -119,6 +144,15 @@ namespace Space {
         StaticAssert::invalid_vector3_from_xy_point_subtraction operator-=(const VectorBase<ThisSpace, Implementation>&) noexcept {
             return StaticAssert::invalid_vector3_from_xy_point_subtraction{};
         }
+
+        StaticAssert::invalid_point_vector_equality operator== (const VectorBase<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_point_vector_equality{};
+        }
+
+        friend StaticAssert::invalid_point_to_point_addition operator+(XYPoint<ThisSpace, Implementation>, const Point<ThisSpace, Implementation>&) {
+            return StaticAssert::invalid_point_to_point_addition{};
+        }
+
 #endif
     };
 }

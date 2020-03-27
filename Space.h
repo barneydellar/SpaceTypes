@@ -31,12 +31,6 @@ namespace Space {
     class XYVectorBase;
 
     template <typename ThisSpace, typename Implementation>
-    class PointBase;
-
-    template <typename ThisSpace, typename Implementation>
-    class XYPointBase;
-
-    template <typename ThisSpace, typename Implementation>
     class NormalizedVectorBase;
 
 }

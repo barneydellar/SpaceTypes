@@ -96,16 +96,29 @@ namespace Space {
         using _base::Dot;
         using _base::ConvertTo;
 
-        StaticAssert::invalid_point_vector_equality operator== (const PointBase<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_vector_equality operator== (const Point<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
-        StaticAssert::invalid_point_vector_equality operator!= (const PointBase<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_vector_equality operator!= (const Point<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
-        StaticAssert::invalid_point_to_vector_addition operator+(const PointBase<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_to_vector_addition operator+(const Point<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_to_vector_addition{};
         }
-        StaticAssert::invalid_point_from_vector_subtraction operator-(const PointBase<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_from_vector_subtraction operator-(const Point<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_point_from_vector_subtraction{};
+        }
+
+        StaticAssert::invalid_point_vector_equality operator== (const XYPoint<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_point_vector_equality{};
+        }
+        StaticAssert::invalid_point_vector_equality operator!= (const XYPoint<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_point_vector_equality{};
+        }
+        StaticAssert::invalid_point_to_vector_addition operator+(const XYPoint<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_point_to_vector_addition{};
+        }
+        StaticAssert::invalid_point_from_vector_subtraction operator-(const XYPoint<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_from_vector_subtraction{};
         }
 
