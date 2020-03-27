@@ -10,6 +10,7 @@ namespace Space {
         using _base = Base<ThisSpace, Implementation>;
         using _base::_base;
 
+        friend class Vector<ThisSpace, Implementation>;
     public:
 
         [[nodiscard]] bool operator== (const VectorBaseInThisSpace& other) const noexcept {
@@ -25,9 +26,9 @@ namespace Space {
             return Vector < OtherSpace, Implementation>(transform_manager.template Transform33<ThisSpace, OtherSpace>(static_cast<Implementation>(*this)));
         }
 
-        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator*(Vector<ThisSpace, Implementation> lhs, const double& d) noexcept {
-            lhs *= d;
-            return lhs;
+        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator*(VectorBase<ThisSpace, Implementation> lhs, const double& d) noexcept {
+            lhs.Scale(d);
+            return Vector<ThisSpace, Implementation>(lhs.X(), lhs.Y(), lhs.Z());
         }
 
         [[nodiscard]] Vector<ThisSpace, Implementation> operator*(const VectorBaseInThisSpace& rhs) const noexcept {
@@ -43,14 +44,13 @@ namespace Space {
             };
         }
 
-        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(Vector<ThisSpace, Implementation> lhs, const VectorBaseInThisSpace& rhs) noexcept {
-            lhs.Sub(rhs);
-            return lhs;
-        }
+        [[nodiscard]] Vector<ThisSpace, Implementation> Cross(const Vector<ThisSpace, Implementation>& other) const noexcept {
 
-        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(Vector<ThisSpace, Implementation> lhs, const VectorBaseInThisSpace& rhs) noexcept {
-            lhs.Add(rhs);
-            return lhs;
+            return Vector<ThisSpace, Implementation>{
+                _base::Y() * other.Z() - _base::Z() * other.Y(),
+                _base::Z() * other.X() - _base::X() * other.Z(),
+                _base::X() * other.Y() - _base::Y() * other.X()
+            };
         }
 
         [[nodiscard]] typename ThisSpace::Unit Mag() const noexcept {
@@ -69,17 +69,7 @@ namespace Space {
             );
         }
 
-        [[nodiscard]] double Dot(const VectorBaseInThisSpace& other) const noexcept {
-
-            return std::transform_reduce(
-                _base::cbegin(),
-                _base::cend(),
-                other.cbegin(),
-                0.0,
-                [](auto accumulation, auto v) { return accumulation + v; },
-                [](auto v1, auto v2) { return v1 * v2; }
-            );
-        }
+        [[nodiscard]] double Dot(const VectorBaseInThisSpace& other) const noexcept {return _base::Dot(other);}
 
         //-------------------------------------------------------------------------------------
 #ifndef IGNORE_SPACE_STATIC_ASSERT

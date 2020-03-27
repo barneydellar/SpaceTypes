@@ -6,6 +6,9 @@ namespace Space {
     class Base
     {
     public:
+        friend class VectorBase<ThisSpace, Implementation>;
+        friend class Vector<ThisSpace, Implementation>;
+
         Base() noexcept
         {
             std::fill(begin(), end(), 0);
@@ -144,6 +147,42 @@ namespace Space {
                 cend(),
                 begin(),
                 [d](auto v) { return v * d; }
+            );
+        }
+
+        [[nodiscard]] double Dot(const Base<ThisSpace, Implementation>& other) const noexcept {
+
+            return std::transform_reduce(
+                cbegin(),
+                cend(),
+                other.cbegin(),
+                0.0,
+                [](auto accumulation, auto v) { return accumulation + v; },
+                [](auto v1, auto v2) { return v1 * v2; }
+            );
+        }
+/*
+        void Cross(const Base<ThisSpace, Implementation>& other) noexcept {
+
+            const double x = Y() * other.Z() - Z() * other.Y();
+            const double y = Z() * other.X() - X() * other.Z();
+            const double z = X() * other.Y() - Y() * other.X();
+            auto iter = begin();
+            *iter++ = x;
+            *iter++ = y;
+            *iter = z;
+        }*/
+
+
+        [[nodiscard]] double Mag_internal() const noexcept {
+
+            return std::sqrt(
+                std::accumulate(
+                    cbegin(),
+                    cend(),
+                    0.0,
+                    [](const auto accumulation, const auto v) { return accumulation + v * v; }
+                )
             );
         }
 

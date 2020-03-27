@@ -1,5 +1,7 @@
 #pragma once
 
+#include "detail/VectorBase.h"
+
 namespace Space {
 
     template <typename ThisSpace, typename Implementation>
@@ -9,6 +11,7 @@ namespace Space {
         using VectorBaseInThisSpace = VectorBase<ThisSpace, Implementation>;
 
     public:
+
 
         NormalizedVectorBase() noexcept(false) : VectorBaseInThisSpace() { *VectorBaseInThisSpace::begin() = 1; }
         explicit NormalizedVectorBase(const Implementation& e) noexcept(false): VectorBaseInThisSpace(e) {Normalize();}
@@ -26,6 +29,9 @@ namespace Space {
 
         using VectorBaseInThisSpace::Cross;
         [[nodiscard]] NormalizedVector<ThisSpace, Implementation> Cross(const NormalizedVectorBaseInThisSpace& other) const noexcept {
+            return NormalizedVector<ThisSpace, Implementation>(VectorBaseInThisSpace::Cross(other).Norm());
+        }
+        [[nodiscard]] NormalizedVector<ThisSpace, Implementation> Cross(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept {
             return NormalizedVector<ThisSpace, Implementation>(VectorBaseInThisSpace::Cross(other).Norm());
         }
 

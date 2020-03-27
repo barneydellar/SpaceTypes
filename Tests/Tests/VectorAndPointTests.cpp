@@ -63,8 +63,8 @@ TEST_CASE("PointsAndVectorsFromTheSameSpaceCannotBeComparedUsingInequality") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("VectorsAndPointsFromTheSameSpaceCannotBeComparedUsingInequality") {
-    const View::Vector v;
     const View::Point p;
+    const View::Vector v;
 
     // We should not be able to compile:
     // auto dummy = v != p;

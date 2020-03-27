@@ -91,6 +91,9 @@ namespace Space {
         StaticAssert::invalid_vector_to_vector_addition operator+=(const VectorBase<ThisSpace, Implementation>&) noexcept {
             return StaticAssert::invalid_vector_to_vector_addition{};
         }
+        StaticAssert::invalid_vector_to_vector_addition operator+=(const Vector<ThisSpace, Implementation>&) noexcept {
+            return StaticAssert::invalid_vector_to_vector_addition{};
+        }
 
 #endif
     };

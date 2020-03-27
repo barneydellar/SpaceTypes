@@ -75,15 +75,30 @@ namespace Space {
             _base::Sub(rhs);
             return *this;
         }
-        [[nodiscard]] friend XYPoint<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const XYVectorBase<ThisSpace, Implementation>& rhs) noexcept {
-            lhs.Sub(rhs);
-            return lhs;
+        XYPoint<ThisSpace, Implementation> operator-=(const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
+            _base::Sub(rhs);
+            return *this;
         }
-        [[nodiscard]] friend Point<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
+
+        [[nodiscard]] friend Point<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const Vector<ThisSpace, Implementation>& rhs) noexcept {
             lhs.Sub(rhs);
             Point<ThisSpace, Implementation> point3(lhs.X(), lhs.Y(), 0);
             return point3;
         }
+        [[nodiscard]] friend Point<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
+            lhs.Sub(rhs);
+            Point<ThisSpace, Implementation> point3(lhs.X(), lhs.Y(), 0);
+            return point3;
+        }
+        [[nodiscard]] friend XYPoint<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
+            lhs.Sub(rhs);
+            return lhs;
+        }
+        [[nodiscard]] friend XYPoint<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const XYVector<ThisSpace, Implementation>& rhs) noexcept {
+            lhs.Sub(rhs);
+            return lhs;
+        }
+
         [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const XYPoint<ThisSpace, Implementation>& rhs) {
             lhs.Sub(rhs);
             XYVector<ThisSpace, Implementation> v(lhs.X(), lhs.Y());
@@ -99,10 +114,24 @@ namespace Space {
             _base::Add(rhs);
             return *this;
         }
-        [[nodiscard]] friend Point<ThisSpace, Implementation> operator+(XYPoint<ThisSpace, Implementation> lhs, const VectorBase<ThisSpace, Implementation>& rhs) noexcept {
+        XYPoint<ThisSpace, Implementation> operator+=(const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
+            _base::Add(rhs);
+            return *this;
+        }
+
+        [[nodiscard]] friend Point<ThisSpace, Implementation> operator+(XYPoint<ThisSpace, Implementation> lhs, const Vector<ThisSpace, Implementation>& rhs) noexcept {
             Point<ThisSpace, Implementation> point3(lhs.X(), lhs.Y(), 0);
             point3 += rhs;
             return point3;
+        }
+        [[nodiscard]] friend Point<ThisSpace, Implementation> operator+(XYPoint<ThisSpace, Implementation> lhs, const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
+            Point<ThisSpace, Implementation> point3(lhs.X(), lhs.Y(), 0);
+            point3 += rhs;
+            return point3;
+        }
+        [[nodiscard]] friend XYPoint<ThisSpace, Implementation> operator+(XYPoint<ThisSpace, Implementation> lhs, const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
+            lhs += rhs;
+            return lhs;
         }
         [[nodiscard]] friend XYPoint<ThisSpace, Implementation> operator+(XYPoint<ThisSpace, Implementation> lhs, const XYVectorBase<ThisSpace, Implementation>& rhs) noexcept {
             lhs += rhs;
@@ -136,15 +165,30 @@ namespace Space {
             return StaticAssert::invalid_at_access{};
         }
 
-        StaticAssert::invalid_vector3_to_xy_point_addition operator+=(const VectorBase<ThisSpace, Implementation>&) noexcept {
+        StaticAssert::invalid_vector3_to_xy_point_addition operator+=(const Vector<ThisSpace, Implementation>&) noexcept {
+            return StaticAssert::invalid_vector3_to_xy_point_addition{};
+        }
+        StaticAssert::invalid_vector3_to_xy_point_addition operator+=(const NormalizedVector<ThisSpace, Implementation>&) noexcept {
             return StaticAssert::invalid_vector3_to_xy_point_addition{};
         }
 
-        StaticAssert::invalid_vector3_from_xy_point_subtraction operator-=(const VectorBase<ThisSpace, Implementation>&) noexcept {
+        StaticAssert::invalid_vector3_from_xy_point_subtraction operator-=(const Vector<ThisSpace, Implementation>&) noexcept {
+            return StaticAssert::invalid_vector3_from_xy_point_subtraction{};
+        }
+        StaticAssert::invalid_vector3_from_xy_point_subtraction operator-=(const NormalizedVector<ThisSpace, Implementation>&) noexcept {
             return StaticAssert::invalid_vector3_from_xy_point_subtraction{};
         }
 
-        StaticAssert::invalid_point_vector_equality operator== (const VectorBase<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_vector_equality operator== (const Vector<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_point_vector_equality{};
+        }
+        StaticAssert::invalid_point_vector_equality operator== (const NormalizedVector<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_point_vector_equality{};
+        }
+        StaticAssert::invalid_point_vector_equality operator== (const NormalizedXYVector<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_point_vector_equality{};
+        }
+        StaticAssert::invalid_point_vector_equality operator== (const XYVector<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
 
