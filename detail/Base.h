@@ -39,17 +39,7 @@ namespace Space {
         }
 
 
-        [[nodiscard]] double operator[] (const unsigned int i) const {
-            if (i > 2) {
-                throw std::invalid_argument("Index is out of range");
-            }
-            return *(cbegin() + i);
-        }
 
-        template <int I>
-        [[nodiscard]] typename std::enable_if<I == 0 || I == 1 || I == 2, double>::type at() const {
-            return operator[](I);
-        }
 
         [[nodiscard]] const double* cbegin() const noexcept {
             return reinterpret_cast<const double*>(&m_impl);

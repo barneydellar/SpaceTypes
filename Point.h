@@ -21,6 +21,17 @@ namespace Space {
         void SetY(const double d) noexcept { *(begin() + 1) = d; }
         void SetZ(const double d) noexcept { *(begin() + 2) = d; }
 
+        [[nodiscard]] double operator[] (const unsigned int i) const {
+            if (i > 2) {
+                throw std::invalid_argument("Index is out of range");
+            }
+            return *(_base::cbegin() + i);
+        }
+
+        template <int I>
+        [[nodiscard]] typename std::enable_if<I == 0 || I == 1 || I == 2, double>::type at() const {
+            return operator[](I);
+        }
 
         [[nodiscard]] XYPoint<ThisSpace, Implementation> ToXY() const {
             return XYPoint<ThisSpace, Implementation>(X(), Y());
@@ -142,6 +153,7 @@ namespace Space {
         using _base::operator-;
         using _base::operator-=;
         using _base::ConvertTo;
+        using _base::at;
 
 
         StaticAssert::invalid_point_vector_equality operator== (const Vector<ThisSpace, Implementation>&) const noexcept {

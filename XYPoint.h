@@ -66,12 +66,12 @@ namespace Space {
             if (i > 1) {
                 throw std::invalid_argument("Index is out of range");
             }
-            return _base::operator[](i);
+            return *(_base::cbegin() + i);
         }
 
         template <int I>
         [[nodiscard]] typename std::enable_if<I == 0 || I == 1, double>::type at() const {
-            return _base::operator[](I);
+            return operator[](I);
         }
 
         XYPoint<ThisSpace, Implementation> operator-=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
