@@ -20,11 +20,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{0563218E-2469-4A74-97DF-4941ACA3E60C}"
 	ProjectSection(SolutionItems) = preProject
 		..\detail\Base.h = ..\detail\Base.h
-		..\detail\NormalizedVectorBase.h = ..\detail\NormalizedVectorBase.h
 		..\detail\SpaceImpl.h = ..\detail\SpaceImpl.h
 		..\detail\StaticAsserts.h = ..\detail\StaticAsserts.h
-		..\detail\VectorBase.h = ..\detail\VectorBase.h
-		..\detail\XYVectorBase.h = ..\detail\XYVectorBase.h
 	EndProjectSection
 EndProject
 Global

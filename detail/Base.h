@@ -161,17 +161,14 @@ namespace Space {
                 [](auto v1, auto v2) { return v1 * v2; }
             );
         }
-/*
-        void Cross(const Base<ThisSpace, Implementation>& other) noexcept {
 
-            const double x = Y() * other.Z() - Z() * other.Y();
-            const double y = Z() * other.X() - X() * other.Z();
-            const double z = X() * other.Y() - Y() * other.X();
-            auto iter = begin();
-            *iter++ = x;
-            *iter++ = y;
-            *iter = z;
-        }*/
+        static std::tuple<double, double, double> Cross_internal(const Base<ThisSpace, Implementation>& A, const Base<ThisSpace, Implementation>& B) noexcept {
+
+            const double x = A.Y() * B.Z() - A.Z() * B.Y();
+            const double y = A.Z() * B.X() - A.X() * B.Z();
+            const double z = A.X() * B.Y() - A.Y() * B.X();
+            return { x, y, z };
+        }
 
 
         [[nodiscard]] double Mag_internal() const noexcept {

@@ -134,32 +134,20 @@ namespace Space {
         }
 
         [[nodiscard]] Vector<ThisSpace, Implementation> Cross(const Vector<ThisSpace, Implementation>& other) const noexcept {
-            return Vector<ThisSpace, Implementation>{
-                _base::Y() * other.Z() - _base::Z() * other.Y(),
-                _base::Z() * other.X() - _base::X() * other.Z(),
-                _base::X() * other.Y() - _base::Y() * other.X()
-            };
+            const auto[x, y, z] = _base::Cross_internal(*this, other);
+            return Vector<ThisSpace, Implementation>(x, y, z);
         }
         [[nodiscard]] NormalizedVector<ThisSpace, Implementation> Cross(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept {
-            return NormalizedVector<ThisSpace, Implementation>{
-                _base::Y() * other.Z() - _base::Z() * other.Y(),
-                _base::Z() * other.X() - _base::X() * other.Z(),
-                _base::X() * other.Y() - _base::Y() * other.X()
-            };
+            const auto[x, y, z] = _base::Cross_internal(*this, other);
+            return NormalizedVector<ThisSpace, Implementation>(x, y, z);
         }
         [[nodiscard]] NormalizedVector<ThisSpace, Implementation> Cross(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept {
-            return NormalizedVector<ThisSpace, Implementation>{
-                _base::Y() * other.Z() - _base::Z() * other.Y(),
-                _base::Z() * other.X() - _base::X() * other.Z(),
-                _base::X() * other.Y() - _base::Y() * other.X()
-            };
+            const auto[x, y, z] = _base::Cross_internal(*this, other);
+            return NormalizedVector<ThisSpace, Implementation>(x, y, z);
         }
         [[nodiscard]] Vector<ThisSpace, Implementation> Cross(const XYVector<ThisSpace, Implementation>& other) const noexcept {
-            return Vector<ThisSpace, Implementation>{
-                _base::Y() * other.Z() - _base::Z() * other.Y(),
-                _base::Z() * other.X() - _base::X() * other.Z(),
-                _base::X() * other.Y() - _base::Y() * other.X()
-            };
+            const auto[x, y, z] = _base::Cross_internal(*this, other);
+            return Vector<ThisSpace, Implementation>(x, y, z);
         }
 
         [[nodiscard]] double Dot(const Vector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(other); }
