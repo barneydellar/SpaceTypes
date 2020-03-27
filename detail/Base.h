@@ -152,8 +152,6 @@ namespace Space {
             return std::abs(x - y) < 1e-6;
         }
 
-        Implementation m_impl;
-
         [[nodiscard]] double* begin() noexcept {
             return reinterpret_cast<double*>(&m_impl);
         }
@@ -163,5 +161,7 @@ namespace Space {
 
         [[nodiscard]] double Z() const noexcept { return *(cbegin() + 2); }
 
+    private:
+        Implementation m_impl;
     };
 }

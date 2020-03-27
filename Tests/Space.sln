@@ -26,7 +26,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{056321
 		..\detail\SpaceImpl.h = ..\detail\SpaceImpl.h
 		..\detail\StaticAsserts.h = ..\detail\StaticAsserts.h
 		..\detail\VectorBase.h = ..\detail\VectorBase.h
-		..\detail\XYPointBase.h = ..\detail\XYPointBase.h
 		..\detail\XYVectorBase.h = ..\detail\XYVectorBase.h
 	EndProjectSection
 EndProject

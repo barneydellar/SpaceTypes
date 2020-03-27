@@ -27,9 +27,11 @@ class ExistingImplementation
 {
 public:
     ExistingImplementation();
+private:
     double x;
     double y;
     double z;
+    OtherThings ...
 };
 ```
 
@@ -41,6 +43,7 @@ class ExistingImplementation
 public:
     ExistingImplementation();
     std::array<double, 3> m_values{};
+    OtherThings ...
 };
 ```
 
@@ -195,6 +198,22 @@ Vectors can be scaled in place
 ```cpp
 MySpace::Vector v(4, 5, 6);
 const auto v *= 2; // v = (8, 10, 12)
+```
+
+## XY Vectors and Points
+
+You can get the normal form of a vector
+
+```cpp
+const MySpace::Vector v1(5, 0, 0);
+const auto v2 = v1.Norm(); // MySpace::NormalizedVector(1, 0, 0)
+```
+
+In addition, you can construct a normalized vector as you would a normal vector, but the result will
+always be normalized:
+
+```cpp
+const MySpace::NormalizedVector v(5, 0, 0); // v = (1, 0, 0)
 ```
 
 ## Normalisation
