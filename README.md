@@ -213,7 +213,7 @@ const MySpace::XYVector v(5, 0);
 
 ```cpp
 const MySpace::Vector v_3d(1, 2, 3);
-const auto v_xy = v_3d.ToXY(); // MySpace::XYVector
+const auto v_xy = v_3d.ToXY(); // MySpace::XYVector(1, 2)
 ```
 
 ## Normalisation
