@@ -97,15 +97,15 @@ const MySpace::Vector v(1, 2, 3);
 const MySpace::NormalizedVector nv(1, 0, 0);
 ```
 
-A point or vector can be created from two doubles. The z-value will be set to zero.
+A 2-dimensional point or vector can be created from two doubles. The z-value will be set to zero.
 
 ```cpp
-const YourSpace::Point p(1, 2);
-const MySpace::Vector v(1, 2);
-const MySpace::NormalizedVector v(1, 0);
+const YourSpace::XYPoint p(1, 2);
+const MySpace::XYVector v(1, 2);
+const MySpace::NormalizedXYVector v(1, 0);
 ```
 
-Note that a NormalizedVector will always have unit length, even if you create with non-unit values
+Note that a NormalizedVector and a NormalisedXYVector will always have unit length, even if you create with non-unit values
 
 ```cpp
 const YourSpace::NormalizedVector v(5, 0, 0); // v = {1, 0, 0}
@@ -440,7 +440,7 @@ A key feature of this library is that it is a compile-time error to make points 
 
 ```
 You can't add vectors to points in other spaces.
-```
+```tt
 
 These checks can be disabled by defining the following Macro:
 
