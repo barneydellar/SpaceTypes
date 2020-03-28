@@ -109,9 +109,11 @@ Note that a NormalizedVector and a NormalisedXYVector will always have unit leng
 
 ```cpp
 const YourSpace::NormalizedVector v(5, 0, 0); // v = {1, 0, 0}
+const YourSpace::NormalizedXYVector v(5, 0); // v = {1, 0}
+
 ```
 
-It is a runtime error to create a NormalizedVector with zero values.
+It is a runtime error to create a Normalized Vector with zero values.
 
 Points or vector can also be created for use in collections:
 
@@ -202,18 +204,16 @@ const auto v *= 2; // v = (8, 10, 12)
 
 ## XY Vectors and Points
 
-You can get the normal form of a vector
+If the space supports an XY plane, you can create XY vectors, point and normalized vectors.?
+You can also convert a 3D point or vector to a 2D one by calling ToXY(). This simply removes the Z part of the vector or point. 
 
 ```cpp
-const MySpace::Vector v1(5, 0, 0);
-const auto v2 = v1.Norm(); // MySpace::NormalizedVector(1, 0, 0)
+const MySpace::XYVector v(5, 0);
 ```
 
-In addition, you can construct a normalized vector as you would a normal vector, but the result will
-always be normalized:
-
 ```cpp
-const MySpace::NormalizedVector v(5, 0, 0); // v = (1, 0, 0)
+const MySpace::Vector v_3d(1, 2, 3);
+const auto v_xy = v_3d.ToXY(); // MySpace::XYVector
 ```
 
 ## Normalisation
