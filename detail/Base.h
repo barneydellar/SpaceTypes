@@ -6,37 +6,8 @@ namespace Space {
     class Base
     {
     public:
-        friend class VectorBase<ThisSpace, Implementation>;
-        friend class Vector<ThisSpace, Implementation>;
 
-        Base() noexcept
-        {
-            std::fill(begin(), end(), 0);
-        }
-        explicit Base(const Implementation& v) noexcept : m_impl(v) {}
-        explicit Base(const double x, const double y, const double z) noexcept
-        {
-            auto iter = begin();
-            *iter++ = x;
-            *iter++ = y;
-            *iter = z;
-        }
-        Base(const std::initializer_list<double>& l)
-        {
-            if (l.size() != 3)
-            {
-                throw std::invalid_argument("You can only initialise with three elements");
-            }
-            std::copy(
-                std::cbegin(l),
-                std::cend(l),
-                begin()
-            );
-        }
-
-        [[nodiscard]] explicit operator Implementation() const noexcept {
-            return m_impl;
-        }
+        Base() noexcept = default;
 
         //------------------------------------------------------------------------------------
 
@@ -183,7 +154,6 @@ namespace Space {
         [[nodiscard]] double Y_internal() const noexcept { return *(cbegin() + 1); }
         [[nodiscard]] double Z_internal() const noexcept { return *(cbegin() + 2); }
 
-    private:
         Implementation m_impl;
     };
 }

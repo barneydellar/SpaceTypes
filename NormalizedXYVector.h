@@ -9,9 +9,18 @@ namespace Space {
 
     public:
 
-        NormalizedXYVector() noexcept : _base() { *_base::begin() = 1; }
-        explicit NormalizedXYVector(const Implementation& v) noexcept(false) : _base(v) {
-            *(std::prev(_base::end())) = 0;
+        NormalizedXYVector() noexcept {
+            auto iter = _base::begin();
+            *iter++ = 1;
+            *iter++ = 0;
+            *iter = 0;
+        }
+        explicit NormalizedXYVector(const Implementation& v) noexcept(false) {
+            auto iter = _base::begin();
+            auto in = reinterpret_cast<const double*>(&v);
+            *iter++ = *in++;
+            *iter++ = *in++;
+            *iter = 0;
             Normalize();
         }
         explicit NormalizedXYVector(const double x, const double y) noexcept(false)
@@ -34,6 +43,10 @@ namespace Space {
                 _base::begin()
             );
             Normalize();
+        }
+
+        [[nodiscard]] explicit operator Implementation() const noexcept {
+            return _base::m_impl;
         }
 
         [[nodiscard]] double X() const noexcept { return _base::X_internal(); }

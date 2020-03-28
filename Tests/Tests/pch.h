@@ -3,12 +3,13 @@
 
 //#define IGNORE_SPACE_STATIC_ASSERT
 
-#pragma warning(push, 1)
+#pragma warning(push, 0)
 #include "catch.hpp"
-#pragma warning(pop)
 #include <array>
 #include <iostream>
 #include <sstream>
 #include <numeric>
+#pragma warning(pop)
+
 
 #endif //PCH_H

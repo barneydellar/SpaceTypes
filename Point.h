@@ -9,6 +9,39 @@ namespace Space {
         using _base::_base;
     public:
 
+        Point() noexcept{std::fill(begin(), end(), 0);}
+        explicit Point(const Implementation& v) noexcept
+        {
+            std::copy(
+                reinterpret_cast<const double*>(&v),
+                reinterpret_cast<const double*>(&v) + 3,
+                begin()
+            );
+        }
+        explicit Point(const double x, const double y, const double z) noexcept
+        {
+            auto iter = begin();
+            *iter++ = x;
+            *iter++ = y;
+            *iter = z;
+        }
+        Point(const std::initializer_list<double>& l)
+        {
+            if (l.size() != 3)
+            {
+                throw std::invalid_argument("You can only initialise with three elements");
+            }
+            std::copy(
+                std::cbegin(l),
+                std::cend(l),
+                begin()
+            );
+        }
+
+        [[nodiscard]] explicit operator Implementation() const noexcept {
+            return _base::m_impl;
+        }
+
         [[nodiscard]] double X() const noexcept { return _base::X_internal(); }
         [[nodiscard]] double Y() const noexcept { return _base::Y_internal(); }
         [[nodiscard]] double Z() const noexcept { return _base::Z_internal(); }

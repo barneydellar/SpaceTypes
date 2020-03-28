@@ -10,9 +10,15 @@ namespace Space {
     public:
 
 
-        XYVector() noexcept : _base() { }
-        explicit XYVector(const Implementation& v) noexcept : _base(v) {
-            *(std::prev(_base::end())) = 0;
+        XYVector() noexcept {
+            std::fill(begin(), end(), 0);
+        }
+        explicit XYVector(const Implementation& v) noexcept {
+            auto iter = _base::begin();
+            auto in = reinterpret_cast<const double*>(&v);
+            *iter++ = *in++;
+            *iter++ = *in++;
+            *iter = 0;
         }
         explicit XYVector(const double x, const double y) noexcept
         {
@@ -32,6 +38,10 @@ namespace Space {
                 std::cend(l),
                 _base::begin()
             );
+        }
+
+        [[nodiscard]] explicit operator Implementation() const noexcept {
+            return _base::m_impl;
         }
 
         [[nodiscard]] double X() const noexcept { return _base::X_internal(); }

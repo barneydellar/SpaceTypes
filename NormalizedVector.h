@@ -9,11 +9,46 @@ namespace Space {
 
     public:
 
+        NormalizedVector() {
+            auto iter = _base::begin();
+            *iter++ = 1;
+            *iter++ = 0;
+            *iter = 0;
+        }
+        explicit NormalizedVector(const Implementation& v) noexcept(false)
+        {
+            std::copy(
+                reinterpret_cast<const double*>(&v),
+                reinterpret_cast<const double*>(&v) + 3,
+                _base::begin()
+            );
+            Normalize();
+        }
+        explicit NormalizedVector(const double x, const double y, const double z) noexcept(false)
+        {
+            auto iter = _base::begin();
+            *iter++ = x;
+            *iter++ = y;
+            *iter = z;
+            Normalize();
+        }
+        NormalizedVector(const std::initializer_list<double>& l) noexcept(false)
+        {
+            if (l.size() != 3)
+            {
+                throw std::invalid_argument("You can only initialise with two elements");
+            }
+            std::copy(
+                std::cbegin(l),
+                std::cend(l),
+                _base::begin()
+            );
+            Normalize();
+        }
 
-        NormalizedVector() noexcept(false) : _base() { *_base::begin() = 1; }
-        explicit NormalizedVector(const Implementation& e) noexcept(false) : _base(e) { Normalize(); }
-        explicit NormalizedVector(const double x, const double y, const double z) noexcept(false) : _base(x, y, z) { Normalize(); }
-        NormalizedVector(const std::initializer_list<double>& l) noexcept(false) : _base(l) { Normalize(); }
+        [[nodiscard]] explicit operator Implementation() const noexcept {
+            return _base::m_impl;
+        }
 
         [[nodiscard]] double X() const noexcept { return *(_base::cbegin() + 0); }
         [[nodiscard]] double Y() const noexcept { return *(_base::cbegin() + 1); }
