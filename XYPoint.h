@@ -202,7 +202,11 @@ namespace Space {
         friend StaticAssert::invalid_point_to_point_addition operator+(XYPoint<ThisSpace, Implementation>, const XYPoint<ThisSpace, Implementation>&) {
             return StaticAssert::invalid_point_to_point_addition{};
         }
-
 #endif
+        // Hide functions from intellisense
+        void Dot() = delete;
+        void Cross() = delete;
+        void operator*() = delete;
+        void operator*=(double) = delete;
     };
 }
