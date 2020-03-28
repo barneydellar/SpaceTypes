@@ -47,10 +47,10 @@ TEST_CASE("XYVectorsCanBeConstructedFromTwoDoubles") {
 
 TEST_CASE("XYVectors Can Be Constructed From A Normalized XYVector") {
     const View::NormalizedXYVector nv(0, 1);
-    //const View::XYVector v(nv);
+    const View::XYVector v(nv);
 
-    //CHECK(v.X() == 0);
-    //CHECK(v.Y() == 1);
+    CHECK(v.X() == 0);
+    CHECK(v.Y() == 1);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -67,10 +67,10 @@ TEST_CASE("XYVectorsCanBeAssignedFromAXYVector") {
 
 TEST_CASE("XYVectorsCanBeAssignedFromANormalizedXYVector") {
     const View::NormalizedXYVector nv(0, 1);
- /*   const View::XYVector v = nv;
+    const View::XYVector v = nv;
 
     CHECK(v.X() == 0);
-    CHECK(v.Y() == 1);*/
+    CHECK(v.Y() == 1);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -461,7 +461,7 @@ TEST_CASE("XYVectors Can Be Passed By Value To Vector") {
         CHECK(v.Z() == 0);
     };
 
-    //lambda(nv);
+    lambda(nv);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -477,7 +477,7 @@ TEST_CASE("XYVectors Can Be Passed By Const Ref To Vector") {
         CHECK(v.Z() == 0);
     };
 
-    //lambda(nv);
+    lambda(nv);
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -127,7 +127,7 @@ TEST_CASE("NormalizedVectorCanBePassedByValueToVector") {
 
     };
 
-//    lambda(nv);
+    lambda(nv);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -142,7 +142,7 @@ TEST_CASE("NormalizedVectorCanBePassedByConstRefToVector") {
         CHECK(v.Z() == 1);
     };
 
-    //lambda(nv);
+    lambda(nv);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -347,7 +347,6 @@ TEST_CASE("NormalizedVectorsCannotBeInlineAdded") {
 }
 #endif
 
-
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("NormalizedVectorsCanBeSubtracted") {
@@ -503,10 +502,10 @@ TEST_CASE("NormalizedVectorsAndVectorsFromTheSameSpaceCanBeDotted") {
 
 TEST_CASE("NormalizedVectorsCanBeAssignedToAVector") {
     const Image::NormalizedVector v_norm(1, 0, 0);
-    //const Image::Vector v = v_norm;
-    //CHECK(v.X() == 1);
-    //CHECK(v.Y() == 0);
-    //CHECK(v.Z() == 0);
+    const Image::Vector v = v_norm;
+    CHECK(v.X() == 1);
+    CHECK(v.Y() == 0);
+    CHECK(v.Z() == 0);
 }
 
 //-------------------------------------------------------------------------------------------------

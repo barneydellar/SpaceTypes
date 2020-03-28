@@ -50,6 +50,10 @@ namespace Space {
             return _base::m_impl;
         }
 
+        [[nodiscard]] operator Vector<ThisSpace, Implementation>() const noexcept {
+            return Vector<ThisSpace, Implementation>(X(), Y(), Z());
+        }
+
         [[nodiscard]] double X() const noexcept { return *(_base::cbegin() + 0); }
         [[nodiscard]] double Y() const noexcept { return *(_base::cbegin() + 1); }
         [[nodiscard]] double Z() const noexcept { return *(_base::cbegin() + 2); }

@@ -44,6 +44,10 @@ namespace Space {
             return _base::m_impl;
         }
 
+        [[nodiscard]] operator Vector<ThisSpace, Implementation>() const noexcept {
+            return Vector<ThisSpace, Implementation>(X(), Y(), 0);
+        }
+
         [[nodiscard]] double X() const noexcept { return _base::X_internal(); }
         [[nodiscard]] double Y() const noexcept { return _base::Y_internal(); }
 

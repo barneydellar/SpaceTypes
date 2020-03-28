@@ -46,15 +46,14 @@ namespace Space {
         [[nodiscard]] double Y() const noexcept { return _base::Y_internal(); }
         [[nodiscard]] double Z() const noexcept { return _base::Z_internal(); }
 
+        void SetX(const double d) noexcept { *(begin() + 0) = d; }
+        void SetY(const double d) noexcept { *(begin() + 1) = d; }
+        void SetZ(const double d) noexcept { *(begin() + 2) = d; }
 
         [[nodiscard]] double* begin() noexcept { return _base::begin(); }
         [[nodiscard]] double* end() noexcept { return _base::end(); }
         [[nodiscard]] const double* cbegin() const noexcept { return _base::cbegin(); }
         [[nodiscard]] const double* cend() const noexcept { return _base::cend(); }
-
-        void SetX(const double d) noexcept { *(begin() + 0) = d; }
-        void SetY(const double d) noexcept { *(begin() + 1) = d; }
-        void SetZ(const double d) noexcept { *(begin() + 2) = d; }
 
         [[nodiscard]] double operator[] (const unsigned int i) const {
             if (i > 2) {

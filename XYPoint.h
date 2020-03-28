@@ -50,7 +50,7 @@ namespace Space {
         void SetY(const double d) noexcept { *(begin() + 1) = d; }
 
         [[nodiscard]] operator Point<ThisSpace, Implementation>() const noexcept {
-            return Point<ThisSpace, Implementation>(X(), Y(), _base::Z_internal());
+            return Point<ThisSpace, Implementation>(X(), Y(), 0);
         }
 
         [[nodiscard]] double* begin() noexcept { return _base::begin(); }
