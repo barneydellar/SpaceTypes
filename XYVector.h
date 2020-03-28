@@ -37,8 +37,12 @@ namespace Space {
         [[nodiscard]] double X() const noexcept { return _base::X_internal(); }
         [[nodiscard]] double Y() const noexcept { return _base::Y_internal(); }
 
+        void SetX(const double d) noexcept { *(begin() + 0) = d; }
+        void SetY(const double d) noexcept { *(begin() + 1) = d; }
+
         [[nodiscard]] double* begin() noexcept { return _base::begin(); }
         [[nodiscard]] double* end() noexcept { return reinterpret_cast<double*>(std::prev(_base::end())); }
+        [[nodiscard]] const double* cbegin() const noexcept { return _base::cbegin(); }
         [[nodiscard]] const double* cend() const noexcept { return reinterpret_cast<const double*>(std::prev(_base::cend())); }
 
         double operator[](const unsigned int i) const {
@@ -52,9 +56,6 @@ namespace Space {
         [[nodiscard]] typename std::enable_if<I == 0 || I == 1, double>::type at() const {
             return operator[](I);
         }
-
-        void SetX(const double d) noexcept { *(begin() + 0) = d; }
-        void SetY(const double d) noexcept { *(begin() + 1) = d; }
 
         using _base::operator==;
         [[nodiscard]] bool operator== (const Vector<ThisSpace, Implementation>& other) const noexcept {

@@ -34,6 +34,8 @@ namespace Space {
         [[nodiscard]] double X() const noexcept { return _base::X_internal(); }
         [[nodiscard]] double Y() const noexcept { return _base::Y_internal(); }
 
+        void SetX(const double d) noexcept { *(begin() + 0) = d; }
+        void SetY(const double d) noexcept { *(begin() + 1) = d; }
 
         [[nodiscard]] operator Point<ThisSpace, Implementation>() const noexcept {
             return Point<ThisSpace, Implementation>(X(), Y(), _base::Z_internal());
@@ -41,10 +43,8 @@ namespace Space {
 
         [[nodiscard]] double* begin() noexcept { return _base::begin(); }
         [[nodiscard]] double* end() noexcept { return reinterpret_cast<double*>(std::prev(_base::end())); }
+        [[nodiscard]] const double* cbegin() const noexcept { return _base::cbegin(); }
         [[nodiscard]] const double* cend() const noexcept { return reinterpret_cast<const double*>(std::prev(_base::cend())); }
-
-        void SetX(const double d) noexcept { *(begin() + 0) = d; }
-        void SetY(const double d) noexcept { *(begin() + 1) = d; }
 
         [[nodiscard]] bool operator== (const Point<ThisSpace, Implementation>& other) const noexcept {
             return std::equal(_base::cbegin(), _base::cend(), other.cbegin(), _base::Equality);

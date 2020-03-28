@@ -23,6 +23,9 @@ namespace Space {
         void SetY(const double d) noexcept { *(_base::begin() + 1) = d; }
         void SetZ(const double d) noexcept { *(_base::begin() + 2) = d; }
 
+        [[nodiscard]] const double* cbegin() const noexcept { return _base::cbegin(); }
+        [[nodiscard]] const double* cend() const noexcept { return _base::cend(); }
+
         [[nodiscard]] double operator[] (const unsigned int i) const {
             if (i > 2) {
                 throw std::invalid_argument("Index is out of range");

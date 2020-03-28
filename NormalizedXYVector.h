@@ -39,7 +39,8 @@ namespace Space {
         [[nodiscard]] double X() const noexcept { return _base::X_internal(); }
         [[nodiscard]] double Y() const noexcept { return _base::Y_internal(); }
 
-        [[nodiscard]] const double* cend() const noexcept {return reinterpret_cast<const double*>(std::prev(_base::cend()));}
+        [[nodiscard]] const double* cbegin() const noexcept { return _base::cbegin(); }
+        [[nodiscard]] const double* cend() const noexcept { return reinterpret_cast<const double*>(std::prev(_base::cend())); }
 
         double operator[](const unsigned int i) const {
             if (i > 1) {
