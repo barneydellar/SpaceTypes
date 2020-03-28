@@ -204,7 +204,7 @@ const auto v *= 2; // v = (8, 10, 12)
 
 ## XY Vectors and Points
 
-If the space supports an XY plane, you can create XY vectors, point and normalized vectors.?
+If the space supports an XY plane, you can create XY vectors, points and normalized vectors.
 You can also convert a 3D point or vector to a 2D one by calling ToXY(). This simply removes the Z part of the vector or point. 
 
 ```cpp
