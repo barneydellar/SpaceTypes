@@ -87,29 +87,29 @@ namespace Space {
         }
 
         Point<ThisSpace, Implementation> operator-=(const Vector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Sub(rhs);
+            _base::Sub(*this, rhs);
             return *this;
         }
         Point<ThisSpace, Implementation> operator-=(const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Sub(rhs);
+            _base::Sub(*this, rhs);
             return *this;
         }
         Point<ThisSpace, Implementation> operator-=(const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Sub(rhs);
+            _base::Sub(*this, rhs);
             return *this;
         }
         Point<ThisSpace, Implementation> operator-=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Sub(rhs);
+            _base::Sub(*this, rhs);
             return *this;
         }
 
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(Point<ThisSpace, Implementation> lhs, const Point<ThisSpace, Implementation>& rhs) {
-            lhs.Sub(rhs);
+            _base::Sub(lhs, rhs);
             Vector<ThisSpace, Implementation> v(lhs.X(), lhs.Y(), lhs.Z());
             return v;
         }
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(Point<ThisSpace, Implementation> lhs, const XYPoint<ThisSpace, Implementation>& rhs) {
-            lhs.Sub(rhs);
+            _base::Sub(lhs, rhs);
             Vector<ThisSpace, Implementation> v(lhs.X(), lhs.Y(), lhs.Z());
             return v;
         }

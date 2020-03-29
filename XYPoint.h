@@ -87,40 +87,40 @@ namespace Space {
         }
 
         XYPoint<ThisSpace, Implementation> operator-=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Sub(rhs);
+            _base::Sub(*this, rhs);
             return *this;
         }
         XYPoint<ThisSpace, Implementation> operator-=(const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Sub(rhs);
+            _base::Sub(*this, rhs);
             return *this;
         }
 
         [[nodiscard]] friend Point<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const Vector<ThisSpace, Implementation>& rhs) noexcept {
-            lhs.Sub(rhs);
+            _base::Sub(lhs, rhs);
             Point<ThisSpace, Implementation> point3(lhs.X(), lhs.Y(), 0);
             return point3;
         }
         [[nodiscard]] friend Point<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
-            lhs.Sub(rhs);
+            _base::Sub(lhs, rhs);
             Point<ThisSpace, Implementation> point3(lhs.X(), lhs.Y(), 0);
             return point3;
         }
         [[nodiscard]] friend XYPoint<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
-            lhs.Sub(rhs);
+            _base::Sub(lhs, rhs);
             return lhs;
         }
         [[nodiscard]] friend XYPoint<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const XYVector<ThisSpace, Implementation>& rhs) noexcept {
-            lhs.Sub(rhs);
+            _base::Sub(lhs, rhs);
             return lhs;
         }
 
         [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const XYPoint<ThisSpace, Implementation>& rhs) {
-            lhs.Sub(rhs);
+            _base::Sub(lhs, rhs);
             XYVector<ThisSpace, Implementation> v(lhs.X(), lhs.Y());
             return v;
         }
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const Point<ThisSpace, Implementation>& rhs) {
-            lhs.Sub(rhs);
+            _base::Sub(lhs, rhs);
             Vector<ThisSpace, Implementation> v(lhs.X_internal(), lhs.Y_internal(), lhs.Z_internal());
             return v;
         }

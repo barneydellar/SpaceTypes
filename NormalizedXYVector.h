@@ -111,19 +111,19 @@ namespace Space {
         }
 
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(NormalizedXYVector<ThisSpace, Implementation> lhs, const Vector<ThisSpace, Implementation>& rhs) noexcept {
-            lhs.Sub(rhs);
+            _base::Sub(lhs, rhs);
             return Vector<ThisSpace, Implementation>(lhs.X(), lhs.Y(), lhs.Z());
         }
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(NormalizedXYVector<ThisSpace, Implementation> lhs, const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
-            lhs.Sub(rhs);
+            _base::Sub(lhs, rhs);
             return Vector<ThisSpace, Implementation>(lhs.X_internal(), lhs.Y_internal(), lhs.Z_internal());
         }
         [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator-(NormalizedXYVector<ThisSpace, Implementation> lhs, const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
-            lhs.Sub(rhs);
+            _base::Sub(lhs, rhs);
             return XYVector<ThisSpace, Implementation>(lhs.X(), lhs.Y());
         }
         [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator-(NormalizedXYVector<ThisSpace, Implementation> lhs, const XYVector<ThisSpace, Implementation>& rhs) noexcept {
-            lhs.Sub(rhs);
+            _base::Sub(lhs, rhs);
             return XYVector<ThisSpace, Implementation>(lhs.X(), lhs.Y());
         }
 

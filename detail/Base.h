@@ -71,13 +71,13 @@ namespace Space {
             );
         }
 
-        void Sub(const Base<ThisSpace, Implementation>& other)
+        static void Sub(Base<ThisSpace, Implementation>& self, const Base<ThisSpace, Implementation>& other)
         {
             std::transform(
-                cbegin(),
-                cend(),
+                self.cbegin(),
+                self.cend(),
                 other.cbegin(),
-                begin(),
+                self.begin(),
                 std::minus<>()
             );
         }

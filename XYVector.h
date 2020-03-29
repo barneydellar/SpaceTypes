@@ -100,28 +100,28 @@ namespace Space {
         }
 
         XYVector<ThisSpace, Implementation> operator-=(const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Sub(rhs);
+            _base::Sub(*this, rhs);
             return *this;
         }
         XYVector<ThisSpace, Implementation> operator-=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Sub(rhs);
+            _base::Sub(*this, rhs);
             return *this;
         }
 
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(XYVector<ThisSpace, Implementation> lhs, const Vector<ThisSpace, Implementation>& rhs) noexcept {
-            lhs.Sub(rhs);
+            _base::Sub(lhs, rhs);
             return lhs;
         }
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(XYVector<ThisSpace, Implementation> lhs, const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
-            lhs.Sub(rhs);
+            _base::Sub(lhs, rhs);
             return lhs;
         }
         [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator-(XYVector<ThisSpace, Implementation> lhs, const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
-            lhs.Sub(rhs);
+            _base::Sub(lhs, rhs);
             return lhs;
         }
         [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator-(XYVector<ThisSpace, Implementation> lhs, const XYVector<ThisSpace, Implementation>& rhs) noexcept {
-            lhs.Sub(rhs);
+            _base::Sub(lhs, rhs);
             return lhs;
         }
 
