@@ -88,7 +88,6 @@ namespace Space {
         void SetX(const double d) noexcept { *(_base::begin(m_impl) + 0) = d; }
         void SetY(const double d) noexcept { *(_base::begin(m_impl) + 1) = d; }
 
-        using _base::operator==;
         [[nodiscard]] bool operator== (const Vector<ThisSpace, Implementation>& other) const noexcept {
             return std::equal(cbegin(), cend(), _base::cbegin(other.m_impl), _base::Equality);
         }
@@ -102,7 +101,6 @@ namespace Space {
             return std::equal(cbegin(), cend(), _base::cbegin(other.m_impl), _base::Equality);
         }
 
-        using _base::operator!=;
         [[nodiscard]] bool operator!= (const Vector<ThisSpace, Implementation>& other) const noexcept {
             return !(operator==(other));
         }
@@ -214,6 +212,8 @@ namespace Space {
             return os;
         }
 #ifndef IGNORE_SPACE_STATIC_ASSERT
+        using _base::operator==;
+        using _base::operator!=;
         using _base::operator-=;
         using _base::operator-;
         using _base::operator+=;
