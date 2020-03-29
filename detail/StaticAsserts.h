@@ -138,4 +138,12 @@ namespace Space::StaticAssert {
         }
     };
 
+    struct XYVector_not_supported final : invalid_base
+    {
+        template<typename T = void>
+        XYVector_not_supported() {
+            static_assert(false, "This space does not support 2D vectors or points.");
+        }
+    };
+
 }

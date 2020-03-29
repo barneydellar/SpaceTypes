@@ -382,8 +382,8 @@ TEST_CASE("ZeroSizeVectorsCannotBeNormalized") {
 
 TEST_CASE("Vectors Can Have their z-value removed") {
     const View::Vector v(2, 3, 4);
-    const auto v_norm = v.ToXY();
-    CHECK(v_norm == View::XYVector(2, 3));
+    const auto v2 = v.ToXY();
+    CHECK(v2 == View::XYVector(2, 3));
 }
 
 //-------------------------------------------------------------------------------------------------

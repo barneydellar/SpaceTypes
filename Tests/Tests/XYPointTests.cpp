@@ -5,6 +5,12 @@ using namespace Space;
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("XYPoints cannot be constructed from spaces that do not support XY") {
+    using converted_type = decltype(Volume::XYPoint{});
+    using required_type = StaticAssert::XYVector_not_supported;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+
 TEST_CASE("XYPoints can be constructed") {
     View::XYPoint p;
 }

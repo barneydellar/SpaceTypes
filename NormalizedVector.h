@@ -204,9 +204,12 @@ namespace Space {
         [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
         [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
 
-        [[nodiscard]] NormalizedXYVector<ThisSpace, Implementation> ToXY() const {
+        template <typename U = std::enable_if_t<static_cast<bool>(ThisSpace::hasXY), ThisSpace>>
+        [[nodiscard]] NormalizedXYVector<U, Implementation> ToXY() const {
             return NormalizedXYVector<ThisSpace, Implementation>(X(), Y());
         }
+        template <typename U = std::enable_if_t<!static_cast<bool>(ThisSpace::hasXY), void>>
+        [[nodiscard]] StaticAssert::XYVector_not_supported ToXY() const = delete;
 
         template <typename OtherSpace, typename TransformManager>
         [[nodiscard]] std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, Vector<OtherSpace, Implementation>> ConvertTo(const TransformManager& transform_manager) const noexcept {

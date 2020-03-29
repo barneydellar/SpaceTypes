@@ -5,6 +5,19 @@ using namespace Space;
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("NormalizedXYVectors cannot be constructed from spaces that do not support XY") {
+    using converted_type = decltype(Volume::NormalizedXYVector{});
+    using required_type = StaticAssert::XYVector_not_supported;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("NormalizedXYVectora cannot be constructed from spaces that do not support XY") {
+    Volume::Vector v;
+
+}
+
 TEST_CASE("Normalized XYVectors can be constructed") {
     View::NormalizedXYVector v;
 }
@@ -319,7 +332,7 @@ TEST_CASE("Normalized XYVectors And Vectors From Different Spaces Cannot Be Comp
 }
 TEST_CASE("Normalized XYVectors And XYVectors From Different Spaces Cannot Be Compared Using Equal") {
     const View::NormalizedXYVector v1;
-    const Patient::XYVector v2;
+    const Image::XYVector v2;
 
     // We should not be able to compile:
     // auto dummy = v1 == v2;

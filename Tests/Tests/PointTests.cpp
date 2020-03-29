@@ -255,9 +255,9 @@ TEST_CASE("PointsSupportNonConstBeginAndEnd") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("Points Can Have their z-value removed") {
-    const View::Point v(2, 3, 4);
-    const auto v_norm = v.ToXY();
-    CHECK(v_norm == View::XYPoint(2, 3));
+    const View::Point p(2, 3, 4);
+    const auto p2 = p.ToXY();
+    CHECK(p2 == View::XYPoint(2, 3));
 }
 
 //-------------------------------------------------------------------------------------------------

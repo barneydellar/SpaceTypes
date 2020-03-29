@@ -75,9 +75,12 @@ namespace Space {
             return operator[](I);
         }
 
-        [[nodiscard]] XYPoint<ThisSpace, Implementation> ToXY() const {
+        template <typename U = std::enable_if_t<static_cast<bool>(ThisSpace::hasXY), ThisSpace>>
+        [[nodiscard]] XYPoint<U, Implementation> ToXY() const {
             return XYPoint<ThisSpace, Implementation>(X(), Y());
         }
+        template <typename U = std::enable_if_t<!static_cast<bool>(ThisSpace::hasXY), void>>
+        [[nodiscard]] StaticAssert::XYVector_not_supported ToXY() const = delete;
 
         [[nodiscard]] bool operator== (const Point<ThisSpace, Implementation>& other) const noexcept {
             return std::equal(cbegin(), cend(), detail::cbegin(other.m_impl), detail::Equality);

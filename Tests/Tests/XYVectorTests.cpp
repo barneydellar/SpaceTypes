@@ -5,6 +5,12 @@ using namespace Space;
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("XYVectors cannot be constructed from spaces that do not support XY") {
+    using converted_type = decltype(Volume::XYVector{});
+    using required_type = StaticAssert::XYVector_not_supported;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+
 TEST_CASE("XYVectors can be constructed") {
     View::XYVector v;
 }
@@ -38,7 +44,7 @@ TEST_CASE("XYVectors throw when using initalizer lists that are too large") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectorsCanBeConstructedFromTwoDoubles") {
-    const Patient::XYVector v(4, 5);
+    const View::XYVector v(4, 5);
     CHECK(v.X() == 4);
     CHECK(v.Y() == 5);
 }
@@ -82,8 +88,8 @@ TEST_CASE("XYVectorsFromTheSameSpaceCanBeComparedUsingEqual_same") {
 }
 
 TEST_CASE("XYVectorsFromTheSameSpaceCanBeComparedUsingEqual_different") {
-    const Patient::XYVector v1(1, 0);
-    const Patient::XYVector v2(2, 0);
+    const View::XYVector v1(1, 0);
+    const View::XYVector v2(2, 0);
     CHECK(!(v1 == v2));
 }
 
@@ -113,8 +119,8 @@ TEST_CASE("XYVectorsFromTheSameSpaceCanBeComparedUsingInequality_same") {
 }
 
 TEST_CASE("XYVectorsFromTheSameSpaceCanBeComparedUsingInequality_different") {
-    const Patient::XYVector v1(1, 0);
-    const Patient::XYVector v2(2, 0);
+    const View::XYVector v1(1, 0);
+    const View::XYVector v2(2, 0);
     CHECK(v1 != v2);
 }
 
@@ -401,7 +407,7 @@ TEST_CASE("XYVectors can be constructed from implementation") {
     impl.m_values[0] = 3;
     impl.m_values[1] = 4;
     impl.m_values[2] = 5;
-    const Patient::XYVector v(impl);
+    const View::XYVector v(impl);
     CHECK(v.X() == 3);
     CHECK(v.Y() == 4);
 }
@@ -413,7 +419,7 @@ TEST_CASE("XYVectors ignore Z when constructed from implementation") {
     impl.m_values[0] = 3;
     impl.m_values[1] = 4;
     impl.m_values[2] = 5;
-    const Patient::XYVector v(impl);
+    const View::XYVector v(impl);
     CHECK(v.Mag_double() == 5);
 }
 
@@ -424,7 +430,7 @@ TEST_CASE("XYVectors have their z removed with implementation") {
     impl_in.m_values[0] = 3;
     impl_in.m_values[1] = 2;
     impl_in.m_values[2] = 1;
-    const Patient::XYVector v(impl_in);
+    const View::XYVector v(impl_in);
     auto impl = static_cast<TestVector>(v);
     CHECK(impl.m_values[0] == 3);
     CHECK(impl.m_values[1] == 2);
@@ -434,14 +440,14 @@ TEST_CASE("XYVectors have their z removed with implementation") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectors Can Be Cast To The Implementation") {
-    const Patient::XYVector v(1, 0);
+    const View::XYVector v(1, 0);
     auto impl = static_cast<TestVector>(v);
 }
 
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectors cannot be implicitly cast to the implementation") {
-    const Patient::XYVector v(1, 0);
+    const View::XYVector v(1, 0);
 
     // We should not be able to compile:
     // TestXYVector impl = v;
@@ -451,10 +457,10 @@ TEST_CASE("XYVectors cannot be implicitly cast to the implementation") {
 
 TEST_CASE("XYVectors Can Be Passed By Value To Vector") {
 
-    const Patient::XYVector nv{1, 2};
+    const View::XYVector nv{1, 2};
 
     const auto lambda = [](
-        const Patient::Vector v
+        const View::Vector v
     ) {
         CHECK(v.X() == 1);
         CHECK(v.Y() == 2);
@@ -467,10 +473,10 @@ TEST_CASE("XYVectors Can Be Passed By Value To Vector") {
 
 TEST_CASE("XYVectors Can Be Passed By Const Ref To Vector") {
 
-    const Patient::XYVector nv(0, 4);
+    const View::XYVector nv(0, 4);
 
     const auto lambda = [](
-        const Patient::Vector& v
+        const View::Vector& v
     ) {
         CHECK(v.X() == 0);
         CHECK(v.Y() == 4);

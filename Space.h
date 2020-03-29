@@ -37,15 +37,26 @@ namespace Space {
 #include "XYVector.h"
 
 namespace Space {
-    template <typename ThisSpace, typename Implementation, typename Units>
+
+    enum class XY
+    {
+        IsUsed = true,
+        IsNotUsed = false
+    };
+
+    template <typename ThisSpace, typename Implementation, XY b, typename Units>
     struct SpaceBase {
-        using Point = Point<ThisSpace, Implementation>;
-        using XYPoint = XYPoint<ThisSpace, Implementation>;
-        using Vector = Vector<ThisSpace, Implementation>;
-        using XYVector = XYVector<ThisSpace, Implementation>;
-        using NormalizedVector = NormalizedVector<ThisSpace, Implementation>;
-        using NormalizedXYVector = NormalizedXYVector<ThisSpace, Implementation>;
         using Unit = Units;
+
+        static constexpr XY hasXY = b;
+
+        using Point = Point<ThisSpace, Implementation>;
+        using Vector = Vector<ThisSpace, Implementation>;
+        using NormalizedVector = NormalizedVector<ThisSpace, Implementation>;
+
+        using XYPoint = std::conditional_t<static_cast<bool>(b), XYPoint<ThisSpace, Implementation>, StaticAssert::XYVector_not_supported>;
+        using XYVector = std::conditional_t<static_cast<bool>(b), XYVector<ThisSpace, Implementation>, StaticAssert::XYVector_not_supported>;
+        using NormalizedXYVector = std::conditional_t<static_cast<bool>(b), NormalizedXYVector<ThisSpace, Implementation>, StaticAssert::XYVector_not_supported>;
     };
 }
 
