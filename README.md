@@ -13,7 +13,7 @@ The library is licenced under the MIT licence (<https://opensource.org/licenses/
 
 ## Summary
 
-This namespace provides several templated types: Point, Vector, NormalizedVector, XYPoint, XYVector and NormalizedXYVector. Each point or vector lives in a Space. It is possible to convert points and vectors from space to another.
+This namespace provides several templated types: Point, Vector and NormalizedVector. Optionally, XYPoint, XYVector and NormalizedXYVector are also available. Each point or vector lives in a Space. It is possible to convert points and vectors from space to another.
 Importantly, points and vectors can *only* interact with points and vectors from the same space.
 Attempting to, say, add a vector from one space to a vector from another will result in a compilation error.
 
@@ -67,11 +67,14 @@ enum class SpaceIDs
 Then a Space can be defined as follows:
 
 ```cpp
-struct MySpace final : SpaceBase<MySpace, ExistingImplementation, NewSpaceUnits> {
+struct MySpace final : SpaceBase<MySpace, ExistingImplementation, XY::IsUsed, NewSpaceUnits> {
     static inline SpaceIDs id = NewSpaceId;
 };
 template <> const std::string SpaceTypeNameMap<MySpace>::name = "MySpace";
 ```
+
+The XY parameter must be either XY::IsUsed or XY::IsNotUsed. It controls whether XY-only points and vectors are supported in this space.
+They can be very useful for spaces such a Screen space, where you want to track coordinates on a screen, and then convert them to a different space.
 
 The entry in the SpaceTypeNameMap will be used to serialize a point, vector or normalized vector.
 
@@ -205,7 +208,7 @@ const auto v *= 2; // v = (8, 10, 12)
 ## XY Vectors and Points
 
 If the space supports an XY plane, you can create XY vectors, points and normalized vectors.
-You can also convert a 3D point or vector to a 2D one by calling ToXY(). This simply removes the Z part of the vector or point. 
+You can also convert a 3D point or vector to a 2D one by calling ToXY(). This simply removes the Z part of the vector or point.
 
 ```cpp
 const MySpace::XYVector v(5, 0);
