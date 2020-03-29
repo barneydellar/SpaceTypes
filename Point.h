@@ -201,6 +201,7 @@ namespace Space {
         using _base::operator!=;
         using _base::operator+=;
         using _base::operator-;
+        using _base::operator+;
         using _base::operator-=;
         using _base::ConvertTo;
 
