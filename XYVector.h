@@ -114,22 +114,22 @@ namespace Space {
         }
 
         [[nodiscard]] Vector<ThisSpace, Implementation> operator-(const Vector<ThisSpace, Implementation>& rhs) const noexcept {
-            Vector<ThisSpace, Implementation>v(static_cast<Implementation>(*this));
+            Vector<ThisSpace, Implementation> v(static_cast<Implementation>(*this));
             detail::Sub(v.m_impl, rhs.m_impl);
             return v;
         }
         [[nodiscard]] Vector<ThisSpace, Implementation> operator-(const NormalizedVector<ThisSpace, Implementation>& rhs) const noexcept {
-            Vector<ThisSpace, Implementation>v(static_cast<Implementation>(*this));
+            Vector<ThisSpace, Implementation> v(static_cast<Implementation>(*this));
             detail::Sub(v.m_impl, rhs.m_impl);
             return v;
         }
         [[nodiscard]] XYVector<ThisSpace, Implementation> operator-(const NormalizedXYVector<ThisSpace, Implementation>& rhs) const noexcept {
-            XYVector<ThisSpace, Implementation>v(static_cast<Implementation>(*this));
+            XYVector<ThisSpace, Implementation> v(static_cast<Implementation>(*this));
             detail::Sub(v.m_impl, rhs.m_impl);
             return v;
         }
         [[nodiscard]] XYVector<ThisSpace, Implementation> operator-(const XYVector<ThisSpace, Implementation>& rhs) const noexcept {
-            XYVector<ThisSpace, Implementation>v(static_cast<Implementation>(*this));
+            XYVector<ThisSpace, Implementation> v(static_cast<Implementation>(*this));
             detail::Sub(v.m_impl, rhs.m_impl);
             return v;
         }
@@ -144,18 +144,18 @@ namespace Space {
         }
 
         [[nodiscard]] Vector<ThisSpace, Implementation> operator+(const Vector<ThisSpace, Implementation>& rhs) const noexcept {
-            Vector<ThisSpace, Implementation>v(static_cast<Implementation>(*this));
+            Vector<ThisSpace, Implementation> v(static_cast<Implementation>(*this));
             detail::Add(v.m_impl, rhs.m_impl);
             return v;
         }
         [[nodiscard]] Vector<ThisSpace, Implementation> operator+(const NormalizedVector<ThisSpace, Implementation>& rhs) const noexcept {
-            Vector<ThisSpace, Implementation>v(static_cast<Implementation>(*this));
+            Vector<ThisSpace, Implementation> v(static_cast<Implementation>(*this));
             detail::Add(v.m_impl, rhs.m_impl);
             return v;
         }
         [[nodiscard]] XYVector<ThisSpace, Implementation> operator+(const NormalizedXYVector<ThisSpace, Implementation>& rhs) const noexcept {
-            // TODO >v(
-            XYVector<ThisSpace, Implementation>v(static_cast<Implementation>(*this));
+            // TODO > v(
+            XYVector<ThisSpace, Implementation> v(static_cast<Implementation>(*this));
             detail::Add(v.m_impl, rhs.m_impl);
             return v;
         }
