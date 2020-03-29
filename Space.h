@@ -28,6 +28,7 @@ namespace Space {
 #include "detail/StaticAsserts.h"
 #include "detail/SpaceImpl.h"
 #include "detail/Base.h"
+#include "detail/Helpers.h"
 #include "NormalizedVector.h"
 #include "NormalizedXYVector.h"
 #include "Point.h"

@@ -11,5 +11,4 @@
 #include <numeric>
 #pragma warning(pop)
 
-
 #endif //PCH_H
