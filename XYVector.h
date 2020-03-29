@@ -126,11 +126,11 @@ namespace Space {
         }
 
         XYVector<ThisSpace, Implementation> operator+=(const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(*this, rhs);;
+            _base::Add(*this, rhs);
             return *this;
         }
         XYVector<ThisSpace, Implementation> operator+=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(*this, rhs);;
+            _base::Add(*this, rhs);
             return *this;
         }
 
@@ -152,7 +152,7 @@ namespace Space {
         }
 
         XYVector<ThisSpace, Implementation> operator*=(const double& d) noexcept {
-            _base::Scale(d);
+            _base::Scale(*this, d);
             return *this;
         }
 
@@ -191,10 +191,10 @@ namespace Space {
             return Vector<ThisSpace, Implementation>(x, y, z);
         }
 
-        [[nodiscard]] double Dot(const Vector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(other); }
-        [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(other); }
-        [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(other); }
-        [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(other); }
+        [[nodiscard]] double Dot(const Vector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(*this, other); }
+        [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(*this, other); }
+        [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(*this, other); }
+        [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(*this, other); }
 
         [[nodiscard]] NormalizedXYVector<ThisSpace, Implementation> Norm() const {
             return NormalizedXYVector<ThisSpace, Implementation>(X(), Y());

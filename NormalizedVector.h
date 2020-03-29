@@ -140,10 +140,9 @@ namespace Space {
         }
 
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator*(NormalizedVector<ThisSpace, Implementation> lhs, const double& d) noexcept {
-            lhs.Scale(d);
+            _base::Scale(lhs, d);
             return Vector<ThisSpace, Implementation>(lhs.X(), lhs.Y(), lhs.Z());
         }
-
 
         NormalizedVector<ThisSpace, Implementation> operator*=(const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
             *this = this->Cross(rhs);
@@ -184,10 +183,10 @@ namespace Space {
             return Vector<ThisSpace, Implementation>(x, y, z);
         }
 
-        [[nodiscard]] double Dot(const Vector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(other); }
-        [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(other); }
-        [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(other); }
-        [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(other); }
+        [[nodiscard]] double Dot(const Vector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(*this, other); }
+        [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(*this, other); }
+        [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(*this, other); }
+        [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(*this, other); }
 
 
         [[nodiscard]] NormalizedXYVector<ThisSpace, Implementation> ToXY() const {

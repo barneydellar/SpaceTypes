@@ -220,11 +220,11 @@ namespace Space {
         }
 
         friend StaticAssert::invalid_point_to_point_addition operator+(Point<ThisSpace, Implementation>, const Point<ThisSpace, Implementation>&) {
-            return StaticAssert::invalid_point_to_point_addition{};;
+            return StaticAssert::invalid_point_to_point_addition{};
         }
 
         friend StaticAssert::invalid_point_to_point_addition operator+(Point<ThisSpace, Implementation>, const XYPoint<ThisSpace, Implementation>&) {
-            return StaticAssert::invalid_point_to_point_addition{};;
+            return StaticAssert::invalid_point_to_point_addition{};
         }
 #endif
         // Hide functions from intellisense

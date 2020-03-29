@@ -82,21 +82,21 @@ namespace Space {
             );
         }
 
-        void Scale(const double& d)
+        static void Scale(Base<ThisSpace, Implementation>& self, const double& d)
         {
             std::transform(
-                cbegin(),
-                cend(),
-                begin(),
+                self.cbegin(),
+                self.cend(),
+                self.begin(),
                 [d](auto v) { return v * d; }
             );
         }
 
-        [[nodiscard]] double Dot(const Base<ThisSpace, Implementation>& other) const noexcept {
-
+        static double Dot(const Base<ThisSpace, Implementation>& self, const Base<ThisSpace, Implementation>& other) noexcept
+        {
             return std::transform_reduce(
-                cbegin(),
-                cend(),
+                self.cbegin(),
+                self.cend(),
                 other.cbegin(),
                 0.0,
                 [](auto accumulation, auto v) { return accumulation + v; },
