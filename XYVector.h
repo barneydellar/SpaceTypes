@@ -154,7 +154,6 @@ namespace Space {
             return v;
         }
         [[nodiscard]] XYVector<ThisSpace, Implementation> operator+(const NormalizedXYVector<ThisSpace, Implementation>& rhs) const noexcept {
-            // TODO > v(
             XYVector<ThisSpace, Implementation> v(static_cast<Implementation>(*this));
             detail::Add(v.m_impl, rhs.m_impl);
             return v;

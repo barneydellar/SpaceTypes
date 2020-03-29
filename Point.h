@@ -123,22 +123,22 @@ namespace Space {
         }
 
         [[nodiscard]] Point<ThisSpace, Implementation> operator-(const Vector<ThisSpace, Implementation>& rhs) const noexcept {
-            Point<ThisSpace, Implementation>v(X(), Y(), Z());
+            Point<ThisSpace, Implementation> v(X(), Y(), Z());
             detail::Sub(v.m_impl, rhs.m_impl);
             return v;
         }
         [[nodiscard]] Point<ThisSpace, Implementation> operator-(const NormalizedVector<ThisSpace, Implementation>& rhs) const noexcept {
-            Point<ThisSpace, Implementation>v(X(), Y(), Z());
+            Point<ThisSpace, Implementation> v(X(), Y(), Z());
             detail::Sub(v.m_impl, rhs.m_impl);
             return v;
         }
         [[nodiscard]] Point<ThisSpace, Implementation> operator-(const NormalizedXYVector<ThisSpace, Implementation>& rhs) const noexcept {
-            Point<ThisSpace, Implementation>v(X(), Y(), Z());
+            Point<ThisSpace, Implementation> v(X(), Y(), Z());
             detail::Sub(v.m_impl, rhs.m_impl);
             return v;
         }
         [[nodiscard]] Point<ThisSpace, Implementation> operator-(const XYVector<ThisSpace, Implementation>& rhs) const noexcept {
-            Point<ThisSpace, Implementation>v(X(), Y(), Z());
+            Point<ThisSpace, Implementation> v(X(), Y(), Z());
             detail::Sub(v.m_impl, rhs.m_impl);
             return v;
         }

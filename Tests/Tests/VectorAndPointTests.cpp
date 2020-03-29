@@ -97,6 +97,12 @@ TEST_CASE("Vector Can Be Added ToXYPoint In The Same Space To Produce A Point 3"
     using required_type = decltype(Volume::Point{});
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
+TEST_CASE("XY Vector Can Be Added To XYPoint In The Same Space") {
+    const Volume::XYPoint p(0, 1);
+    const Volume::XYVector v(1, 0);
+    const auto p_new = p + v;
+    CHECK(p_new == Volume::XYPoint(1, 1));
+}
 
 TEST_CASE("Normalised Vector Can Be Added To Point In The Same Space") {
     const Volume::Point p(0, 0, 1);
