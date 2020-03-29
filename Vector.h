@@ -130,36 +130,36 @@ namespace Space {
         }
 
         Vector<ThisSpace, Implementation> operator+=(const Vector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(rhs);
+            _base::Add(*this, rhs);
             return *this;
         }
         Vector<ThisSpace, Implementation> operator+=(const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(rhs);
+            _base::Add(*this, rhs);
             return *this;
         }
         Vector<ThisSpace, Implementation> operator+=(const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(rhs);
+            _base::Add(*this, rhs);
             return *this;
         }
         Vector<ThisSpace, Implementation> operator+=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(rhs);
+            _base::Add(*this, rhs);
             return *this;
         }
 
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(Vector<ThisSpace, Implementation> lhs, const Vector<ThisSpace, Implementation>& rhs) noexcept {
-            lhs.Add(rhs);
+            _base::Add(lhs, rhs);
             return lhs;
         }
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(Vector<ThisSpace, Implementation> lhs, const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
-            lhs.Add(rhs);
+            _base::Add(lhs, rhs);
             return lhs;
         }
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(Vector<ThisSpace, Implementation> lhs, const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
-            lhs.Add(rhs);
+            _base::Add(lhs, rhs);
             return lhs;
         }
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(Vector<ThisSpace, Implementation> lhs, const XYVector<ThisSpace, Implementation>& rhs) noexcept {
-            lhs.Add(rhs);
+            _base::Add(lhs, rhs);
             return lhs;
         }
 
@@ -273,8 +273,11 @@ namespace Space {
         using _base::ConvertTo;
         using _base::Dot;
         using _base::Cross;
-        using _base::at;
 
+        template <int I>
+        typename std::enable_if<I != 0 && I != 1 && I != 2, StaticAssert::invalid_at_access>::type at() const {
+            return StaticAssert::invalid_at_access{};
+        }
 
         StaticAssert::invalid_point_vector_equality operator== (const Point<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};

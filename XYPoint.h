@@ -126,11 +126,11 @@ namespace Space {
         }
 
         XYPoint<ThisSpace, Implementation> operator+=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(rhs);
+            _base::Add(*this, rhs);
             return *this;
         }
         XYPoint<ThisSpace, Implementation> operator+=(const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(rhs);
+            _base::Add(*this, rhs);
             return *this;
         }
 

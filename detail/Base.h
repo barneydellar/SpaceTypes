@@ -7,15 +7,9 @@ namespace Space {
     {
     public:
 
-        Base() noexcept = default;
-
         //------------------------------------------------------------------------------------
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-        template <int I>
-        typename std::enable_if<I != 0 && I != 1 && I != 2, StaticAssert::invalid_at_access>::type at() const {
-            return StaticAssert::invalid_at_access{};
-        }
         template <typename OtherSpace>
         std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_space> operator== (const Base<OtherSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_space{};
@@ -66,13 +60,13 @@ namespace Space {
 
     protected:
 
-        void Add(const Base<ThisSpace, Implementation>& other)
+        static void Add(Base<ThisSpace, Implementation>& self, const Base<ThisSpace, Implementation>& other)
         {
             std::transform(
-                cbegin(),
-                cend(),
+                self.cbegin(),
+                self.cend(),
                 other.cbegin(),
-                begin(),
+                self.begin(),
                 std::plus<>()
             );
         }
@@ -148,7 +142,6 @@ namespace Space {
         [[nodiscard]] const double* cend() const noexcept {
             return reinterpret_cast<const double*>(&m_impl) + 3;
         }
-
 
         [[nodiscard]] double X_internal() const noexcept { return *(cbegin() + 0); }
         [[nodiscard]] double Y_internal() const noexcept { return *(cbegin() + 1); }

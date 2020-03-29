@@ -132,19 +132,19 @@ namespace Space {
         }
 
         Point<ThisSpace, Implementation> operator+=(const Vector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(rhs);
+            _base::Add(*this, rhs);
             return *this;
         }
         Point<ThisSpace, Implementation> operator+=(const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(rhs);
+            _base::Add(*this, rhs);
             return *this;
         }
         Point<ThisSpace, Implementation> operator+=(const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(rhs);
+            _base::Add(*this, rhs);
             return *this;
         }
         Point<ThisSpace, Implementation> operator+=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(rhs);
+            _base::Add(*this, rhs);
             return *this;
         }
 
@@ -187,8 +187,11 @@ namespace Space {
         using _base::operator-;
         using _base::operator-=;
         using _base::ConvertTo;
-        using _base::at;
 
+        template <int I>
+        typename std::enable_if<I != 0 && I != 1 && I != 2, StaticAssert::invalid_at_access>::type at() const {
+            return StaticAssert::invalid_at_access{};
+        }
 
         StaticAssert::invalid_point_vector_equality operator== (const Vector<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
