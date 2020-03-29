@@ -58,75 +58,77 @@ namespace Space {
 
 #endif
 
+        Implementation m_impl;
+
     protected:
 
-        static void Add(Base<ThisSpace, Implementation>& self, const Base<ThisSpace, Implementation>& other)
+        static void Add(Implementation& self, const Implementation& other)
         {
             std::transform(
-                self.cbegin(),
-                self.cend(),
-                other.cbegin(),
-                self.begin(),
+                cbegin(self),
+                cend(self),
+                cbegin(other),
+                begin(self),
                 std::plus<>()
             );
         }
 
-        static void Sub(Base<ThisSpace, Implementation>& self, const Base<ThisSpace, Implementation>& other)
+        static void Sub(Implementation& self, const Implementation& other)
         {
             std::transform(
-                self.cbegin(),
-                self.cend(),
-                other.cbegin(),
-                self.begin(),
+                cbegin(self),
+                cend(self),
+                cbegin(other),
+                begin(self),
                 std::minus<>()
             );
         }
 
-        static void Scale(Base<ThisSpace, Implementation>& self, const double& d)
+        static void Scale(Implementation& self, const double& d)
         {
             std::transform(
-                self.cbegin(),
-                self.cend(),
-                self.begin(),
+                cbegin(self),
+                cend(self),
+                begin(self),
                 [d](auto v) { return v * d; }
             );
         }
 
-        static double Dot(const Base<ThisSpace, Implementation>& self, const Base<ThisSpace, Implementation>& other) noexcept
+        static double Dot(const Implementation& A, const Implementation& B) noexcept
         {
             return std::transform_reduce(
-                self.cbegin(),
-                self.cend(),
-                other.cbegin(),
+                cbegin(A),
+                cend(A),
+                cbegin(B),
                 0.0,
                 [](auto accumulation, auto v) { return accumulation + v; },
                 [](auto v1, auto v2) { return v1 * v2; }
             );
         }
 
-        static std::tuple<double, double, double> Cross_internal(const Base<ThisSpace, Implementation>& A, const Base<ThisSpace, Implementation>& B) noexcept {
+        static std::tuple<double, double, double> Cross_internal(const Implementation& A, const Implementation& B) noexcept {
 
-            const double AX = *(A.cbegin() + 0);
-            const double AY = *(A.cbegin() + 1);
-            const double AZ = *(A.cbegin() + 2);
+            const double ax = *(cbegin(A) + 0);
+            const double ay = *(cbegin(A) + 1);
+            const double az = *(cbegin(A) + 2);
 
-            const double BX = *(B.cbegin() + 0);
-            const double BY = *(B.cbegin() + 1);
-            const double BZ = *(B.cbegin() + 2);
+            const double bx = *(cbegin(B) + 0);
+            const double by = *(cbegin(B) + 1);
+            const double bz = *(cbegin(B) + 2);
 
-            const double x = AY * BZ - AZ * BY;
-            const double y = AZ * BX - AX * BZ;
-            const double z = AX * BY - AY * BX;
+            const double x = ay * bz - az * by;
+            const double y = az * bx - ax * bz;
+            const double z = ax * by - ay * bx;
 
             return { x, y, z };
         }
 
-        static [[nodiscard]] double Mag_internal(const Base<ThisSpace, Implementation>& i) noexcept {
+        static [[nodiscard]] double Mag_internal(const Implementation& i) noexcept {
 
             return std::sqrt(
                 std::accumulate(
-                    i.cbegin(),
-                    i.cend(),
+                    cbegin(i),
+                    cend(i),
                     0.0,
                     [](const auto accumulation, const auto v) { return accumulation + v * v; }
                 )
@@ -136,6 +138,19 @@ namespace Space {
         [[nodiscard]] static bool Equality(const double& x, const double& y)
         {
             return std::abs(x - y) < 1e-6;
+        }
+
+        [[nodiscard]] static double* begin(Implementation& i) noexcept {
+            return reinterpret_cast<double*>(&i);
+        }
+        [[nodiscard]] static double* end(Implementation& i) noexcept {
+            return reinterpret_cast<double*>(&i) + 3;
+        }
+        [[nodiscard]] static const double* cbegin(const Implementation& i) noexcept {
+            return reinterpret_cast<const double*>(&i);
+        }
+        [[nodiscard]] static const double* cend(const Implementation& i) noexcept {
+            return reinterpret_cast<const double*>(&i) + 3;
         }
 
         [[nodiscard]] double* begin() noexcept {
@@ -152,6 +167,5 @@ namespace Space {
         }
 
 
-        Implementation m_impl;
     };
 }
