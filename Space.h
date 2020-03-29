@@ -6,44 +6,34 @@
 namespace Space {
 
     template <typename ThisSpace, typename Implementation>
-    class Vector;
-
-    template <typename ThisSpace, typename Implementation>
-    class XYVector;
-
-    template <typename ThisSpace, typename Implementation>
-    class Point;
-
-    template <typename ThisSpace, typename Implementation>
-    class XYPoint;
-
-    template <typename ThisSpace, typename Implementation>
     class NormalizedVector;
 
     template <typename ThisSpace, typename Implementation>
     class NormalizedXYVector;
 
+    template <typename ThisSpace, typename Implementation>
+    class Point;
 
     template <typename ThisSpace, typename Implementation>
-    class VectorBase;
+    class Vector;
 
     template <typename ThisSpace, typename Implementation>
-    class XYVectorBase;
+    class XYPoint;
 
     template <typename ThisSpace, typename Implementation>
-    class NormalizedVectorBase;
+    class XYVector;
 
 }
 
 #include "detail/StaticAsserts.h"
 #include "detail/SpaceImpl.h"
 #include "detail/Base.h"
-#include "Point.h"
-#include "XYPoint.h"
-#include "Vector.h"
-#include "XYVector.h"
 #include "NormalizedVector.h"
 #include "NormalizedXYVector.h"
+#include "Point.h"
+#include "Vector.h"
+#include "XYPoint.h"
+#include "XYVector.h"
 
 namespace Space {
     template <typename ThisSpace, typename Implementation, typename Units>

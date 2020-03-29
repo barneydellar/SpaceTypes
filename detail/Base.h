@@ -58,8 +58,6 @@ namespace Space {
 
 #endif
 
-        Implementation m_impl;
-
     protected:
 
         static void Add(Implementation& self, const Implementation& other)
@@ -151,19 +149,6 @@ namespace Space {
         }
         [[nodiscard]] static const double* cend(const Implementation& i) noexcept {
             return reinterpret_cast<const double*>(&i) + 3;
-        }
-
-        [[nodiscard]] double* begin() noexcept {
-            return reinterpret_cast<double*>(&m_impl);
-        }
-        [[nodiscard]] double* end() noexcept {
-            return reinterpret_cast<double*>(&m_impl) + 3;
-        }
-        [[nodiscard]] const double* cbegin() const noexcept {
-            return reinterpret_cast<const double*>(&m_impl);
-        }
-        [[nodiscard]] const double* cend() const noexcept {
-            return reinterpret_cast<const double*>(&m_impl) + 3;
         }
 
 

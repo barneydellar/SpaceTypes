@@ -7,14 +7,21 @@ namespace Space {
     {
         using _base = Base<ThisSpace, Implementation>;
 
+        friend class NormalizedVector<ThisSpace, Implementation>;
+        friend class NormalizedXYVector<ThisSpace, Implementation>;
+        friend class Point<ThisSpace, Implementation>;
+        friend class Vector<ThisSpace, Implementation>;
+        friend class XYPoint<ThisSpace, Implementation>;
+        friend class XYVector<ThisSpace, Implementation>;
+
     public:
 
         Vector() noexcept { std::fill(begin(), end(), 0); }
         explicit Vector(const Implementation& v) noexcept
         {
             std::copy(
-                reinterpret_cast<const double*>(&v),
-                reinterpret_cast<const double*>(&v) + 3,
+                _base::cbegin(v),
+                _base::cend(v),
                 begin()
             );
         }
@@ -39,7 +46,7 @@ namespace Space {
         }
 
         [[nodiscard]] explicit operator Implementation() const noexcept {
-            return _base::m_impl;
+            return m_impl;
         }
 
         [[nodiscard]] double X() const noexcept { return *(cbegin() + 0); }
@@ -50,16 +57,16 @@ namespace Space {
         void SetY(const double d) noexcept { *(begin() + 1) = d; }
         void SetZ(const double d) noexcept { *(begin() + 2) = d; }
 
-        [[nodiscard]] double* begin() noexcept { return _base::begin(); }
-        [[nodiscard]] double* end() noexcept { return _base::end(); }
-        [[nodiscard]] const double* cbegin() const noexcept { return _base::cbegin(); }
-        [[nodiscard]] const double* cend() const noexcept { return _base::cend(); }
+        [[nodiscard]] double* begin() noexcept { return reinterpret_cast<double*>(&m_impl); }
+        [[nodiscard]] double* end() noexcept { return reinterpret_cast<double*>(&m_impl) + 3; }
+        [[nodiscard]] const double* cbegin() const noexcept { return reinterpret_cast<const double*>(&m_impl); }
+        [[nodiscard]] const double* cend() const noexcept { return reinterpret_cast<const double*>(&m_impl) + 3; }
 
         [[nodiscard]] double operator[] (const unsigned int i) const {
             if (i > 2) {
                 throw std::invalid_argument("Index is out of range");
             }
-            return *(_base::cbegin() + i);
+            return *(cbegin() + i);
         }
 
         template <int I>
@@ -69,16 +76,16 @@ namespace Space {
 
         using _base::operator==;
         [[nodiscard]] bool operator== (const Vector<ThisSpace, Implementation>& other) const noexcept {
-            return std::equal(_base::cbegin(), _base::cend(), other.cbegin(), _base::Equality);
+            return std::equal(cbegin(), cend(), _base::cbegin(other.m_impl), _base::Equality);
         }
         [[nodiscard]] bool operator== (const NormalizedVector<ThisSpace, Implementation>& other) const noexcept {
-            return std::equal(_base::cbegin(), _base::cend(), other.cbegin(), _base::Equality);
+            return std::equal(cbegin(), cend(), _base::cbegin(other.m_impl), _base::Equality);
         }
         [[nodiscard]] bool operator== (const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept {
-            return std::equal(_base::cbegin(), _base::cend(), other.cbegin(), _base::Equality);
+            return std::equal(cbegin(), cend(), _base::cbegin(other.m_impl), _base::Equality);
         }
         [[nodiscard]] bool operator== (const XYVector<ThisSpace, Implementation>& other) const noexcept {
-            return std::equal(_base::cbegin(), _base::cend(), other.cbegin(), _base::Equality);
+            return std::equal(cbegin(), cend(), _base::cbegin(other.m_impl), _base::Equality);
         }
 
         using _base::operator!=;
@@ -96,75 +103,83 @@ namespace Space {
         }
 
         Vector<ThisSpace, Implementation> operator-=(const Vector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Sub(_base::m_impl, rhs.m_impl);
+            _base::Sub(m_impl, rhs.m_impl);
             return *this;
         }
         Vector<ThisSpace, Implementation> operator-=(const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Sub(_base::m_impl, rhs.m_impl);
+            _base::Sub(m_impl, rhs.m_impl);
             return *this;
         }
         Vector<ThisSpace, Implementation> operator-=(const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Sub(_base::m_impl, rhs.m_impl);
+            _base::Sub(m_impl, rhs.m_impl);
             return *this;
         }
         Vector<ThisSpace, Implementation> operator-=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Sub(_base::m_impl, rhs.m_impl);
+            _base::Sub(m_impl, rhs.m_impl);
             return *this;
         }
 
-        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(Vector<ThisSpace, Implementation> lhs, const Vector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Sub(lhs.m_impl, rhs.m_impl);
-            return lhs;
+        [[nodiscard]] Vector<ThisSpace, Implementation> operator-(const Vector<ThisSpace, Implementation>& rhs) const noexcept {
+            Vector<ThisSpace, Implementation>v(X(), Y(), Z());
+            _base::Sub(v.m_impl, rhs.m_impl);
+            return v;
         }
-        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(Vector<ThisSpace, Implementation> lhs, const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Sub(lhs.m_impl, rhs.m_impl);
-            return lhs;
+        [[nodiscard]] Vector<ThisSpace, Implementation> operator-(const NormalizedVector<ThisSpace, Implementation>& rhs) const noexcept {
+            Vector<ThisSpace, Implementation>v(X(), Y(), Z());
+            _base::Sub(v.m_impl, rhs.m_impl);
+            return v;
         }
-        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(Vector<ThisSpace, Implementation> lhs, const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Sub(lhs.m_impl, rhs.m_impl);
-            return lhs;
+        [[nodiscard]] Vector<ThisSpace, Implementation> operator-(const NormalizedXYVector<ThisSpace, Implementation>& rhs) const noexcept {
+            Vector<ThisSpace, Implementation>v(X(), Y(), Z());
+            _base::Sub(v.m_impl, rhs.m_impl);
+            return v;
         }
-        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(Vector<ThisSpace, Implementation> lhs, const XYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Sub(lhs.m_impl, rhs.m_impl);
-            return lhs;
+        [[nodiscard]] Vector<ThisSpace, Implementation> operator-(const XYVector<ThisSpace, Implementation>& rhs) const noexcept {
+            Vector<ThisSpace, Implementation>v(X(), Y(), Z());
+            _base::Sub(v.m_impl, rhs.m_impl);
+            return v;
         }
 
         Vector<ThisSpace, Implementation> operator+=(const Vector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(_base::m_impl, rhs.m_impl);
+            _base::Add(m_impl, rhs.m_impl);
             return *this;
         }
         Vector<ThisSpace, Implementation> operator+=(const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(_base::m_impl, rhs.m_impl);
+            _base::Add(m_impl, rhs.m_impl);
             return *this;
         }
         Vector<ThisSpace, Implementation> operator+=(const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(_base::m_impl, rhs.m_impl);
+            _base::Add(m_impl, rhs.m_impl);
             return *this;
         }
         Vector<ThisSpace, Implementation> operator+=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(_base::m_impl, rhs.m_impl);
+            _base::Add(m_impl, rhs.m_impl);
             return *this;
         }
 
-        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(Vector<ThisSpace, Implementation> lhs, const Vector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(lhs.m_impl, rhs.m_impl);
-            return lhs;
+        [[nodiscard]] Vector<ThisSpace, Implementation> operator+(const Vector<ThisSpace, Implementation>& rhs) const noexcept {
+            Vector<ThisSpace, Implementation>v(X(), Y(), Z());
+            _base::Add(v.m_impl, rhs.m_impl);
+            return v;
         }
-        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(Vector<ThisSpace, Implementation> lhs, const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(lhs.m_impl, rhs.m_impl);
-            return lhs;
+        [[nodiscard]] Vector<ThisSpace, Implementation> operator+(const NormalizedVector<ThisSpace, Implementation>& rhs) const noexcept {
+            Vector<ThisSpace, Implementation>v(X(), Y(), Z());
+            _base::Add(v.m_impl, rhs.m_impl);
+            return v;
         }
-        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(Vector<ThisSpace, Implementation> lhs, const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(lhs.m_impl, rhs.m_impl);
-            return lhs;
+        [[nodiscard]] Vector<ThisSpace, Implementation> operator+(const NormalizedXYVector<ThisSpace, Implementation>& rhs) const noexcept {
+            Vector<ThisSpace, Implementation>v(X(), Y(), Z());
+            _base::Add(v.m_impl, rhs.m_impl);
+            return v;
         }
-        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(Vector<ThisSpace, Implementation> lhs, const XYVector<ThisSpace, Implementation>& rhs) noexcept {
-            _base::Add(lhs.m_impl, rhs.m_impl);
-            return lhs;
+        [[nodiscard]] Vector<ThisSpace, Implementation> operator+(const XYVector<ThisSpace, Implementation>& rhs) const noexcept {
+            Vector<ThisSpace, Implementation>v(X(), Y(), Z());
+            _base::Add(v.m_impl, rhs.m_impl);
+            return v;
         }
 
         Vector<ThisSpace, Implementation> operator*=(const double& d) noexcept {
-            _base::Scale(_base::m_impl, d);
+            _base::Scale(m_impl, d);
             return *this;
         }
 
@@ -185,9 +200,10 @@ namespace Space {
             return *this;
         }
 
-        [[nodiscard]] friend Vector<ThisSpace, Implementation> operator*(Vector<ThisSpace, Implementation> lhs, const double& d) noexcept {
-            lhs *= d;
-            return lhs;
+        [[nodiscard]] Vector<ThisSpace, Implementation> operator*(const double& d) const noexcept {
+            Vector<ThisSpace, Implementation>v(X(), Y(), Z());
+            _base::Scale(v.m_impl, d);
+            return v;
         }
 
         [[nodiscard]] Vector<ThisSpace, Implementation> operator*(const Vector<ThisSpace, Implementation>& rhs) const noexcept {
@@ -204,26 +220,26 @@ namespace Space {
         }
 
         [[nodiscard]] Vector<ThisSpace, Implementation> Cross(const Vector<ThisSpace, Implementation>& other) const noexcept {
-            const auto[x, y, z] = _base::Cross_internal(_base::m_impl, other.m_impl);
+            const auto[x, y, z] = _base::Cross_internal(m_impl, other.m_impl);
             return Vector<ThisSpace, Implementation>(x, y, z);
         }
         [[nodiscard]] Vector<ThisSpace, Implementation> Cross(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept {
-            const auto[x, y, z] = _base::Cross_internal(_base::m_impl, other.m_impl);
+            const auto[x, y, z] = _base::Cross_internal(m_impl, other.m_impl);
             return Vector<ThisSpace, Implementation>(x, y, z);
         }
         [[nodiscard]] Vector<ThisSpace, Implementation> Cross(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept {
-            const auto[x, y, z] = _base::Cross_internal(_base::m_impl, other.m_impl);
+            const auto[x, y, z] = _base::Cross_internal(m_impl, other.m_impl);
             return Vector<ThisSpace, Implementation>(x, y, z);
         }
         [[nodiscard]] Vector<ThisSpace, Implementation> Cross(const XYVector<ThisSpace, Implementation>& other) const noexcept {
-            const auto[x, y, z] = _base::Cross_internal(_base::m_impl, other.m_impl);
+            const auto[x, y, z] = _base::Cross_internal(m_impl, other.m_impl);
             return Vector<ThisSpace, Implementation>(x, y, z);
         }
 
-        [[nodiscard]] double Dot(const Vector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(_base::m_impl, other.m_impl);; }
-        [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(_base::m_impl, other.m_impl);; }
-        [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(_base::m_impl, other.m_impl);; }
-        [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(_base::m_impl, other.m_impl);; }
+        [[nodiscard]] double Dot(const Vector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(m_impl, other.m_impl);; }
+        [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(m_impl, other.m_impl);; }
+        [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(m_impl, other.m_impl);; }
+        [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept { return _base::Dot(m_impl, other.m_impl);; }
 
 
         [[nodiscard]] XYVector<ThisSpace, Implementation> ToXY() const {
@@ -243,17 +259,7 @@ namespace Space {
             return ThisSpace::Unit{ Mag_double() };
         }
 
-        [[nodiscard]] double Mag_double() const noexcept {
-
-            return std::sqrt(
-                std::accumulate(
-                    _base::cbegin(),
-                    _base::cend(),
-                    0.0,
-                    [](const auto accumulation, const auto v) { return accumulation + v * v; }
-                )
-            );
-        }
+        [[nodiscard]] double Mag_double() const noexcept {return _base::Mag_internal(m_impl);}
 
         friend std::ostream& operator << (
             std::ostream& os,
@@ -300,6 +306,11 @@ namespace Space {
             return StaticAssert::invalid_point_to_vector_addition{};
         }
 #endif
+    protected:
+        const Implementation& GetImpl() const {
+            return m_impl;
+        };
+        Implementation m_impl;
 
     };
 }
