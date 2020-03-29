@@ -57,7 +57,7 @@ TEST_CASE("XYPoints can be constructed from implementation") {
     impl.m_values[0] = 3;
     impl.m_values[1] = 2;
     impl.m_values[2] = 1;
-    const Patient::XYPoint p(impl);
+    const View::XYPoint p(impl);
     CHECK(p.X() == 3);
     CHECK(p.Y() == 2);
 }
@@ -65,7 +65,7 @@ TEST_CASE("XYPoints can be constructed from implementation") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYPoints Can Be Cast To The Implementation") {
-    const Patient::XYPoint p(3, 2);
+    const View::XYPoint p(3, 2);
     auto impl = static_cast<TestVector>(p);
     CHECK(impl.m_values[0] == 3);
     CHECK(impl.m_values[1] == 2);
@@ -79,7 +79,7 @@ TEST_CASE("XYPoints have their z removed with implementation") {
     impl_in.m_values[0] = 3;
     impl_in.m_values[1] = 2;
     impl_in.m_values[2] = 1;
-    const Patient::XYPoint p(impl_in);
+    const View::XYPoint p(impl_in);
     auto impl = static_cast<TestVector>(p);
     CHECK(impl.m_values[0] == 3);
     CHECK(impl.m_values[1] == 2);
@@ -89,7 +89,7 @@ TEST_CASE("XYPoints have their z removed with implementation") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYPoints cannot be implicitly cast to the implementation") {
-    const Patient::XYPoint p;
+    const View::XYPoint p;
 
     // This does not compile:
     //TestVector impl = p;
@@ -99,10 +99,10 @@ TEST_CASE("XYPoints cannot be implicitly cast to the implementation") {
 
 TEST_CASE("XYPoints Can Be Passed By Value To Point") {
 
-    const Patient::XYPoint nv{ 1, 2 };
+    const View::XYPoint nv{ 1, 2 };
 
     const auto lambda = [](
-        const Patient::Point v
+        const View::Point v
     ) {
         CHECK(v.X() == 1);
         CHECK(v.Y() == 2);
@@ -115,10 +115,10 @@ TEST_CASE("XYPoints Can Be Passed By Value To Point") {
 
 TEST_CASE("XYPoints Can Be Passed By Const Ref To Point") {
 
-    const Patient::XYPoint nv(0, 4);
+    const View::XYPoint nv(0, 4);
 
     const auto lambda = [](
-        const Patient::Point& v
+        const View::Point& v
     ) {
         CHECK(v.X() == 0);
         CHECK(v.Y() == 4);
@@ -136,14 +136,14 @@ TEST_CASE("XYPointsFromTheSameSpaceCanBeComparedUsingEqual_same") {
 }
 
 TEST_CASE("XYPointsFromTheSameSpaceCanBeComparedUsingEqual_different") {
-    const Patient::XYPoint p1(1, 0);
-    const Patient::XYPoint p2(2, 0);
+    const View::XYPoint p1(1, 0);
+    const View::XYPoint p2(2, 0);
     CHECK(!(p1 == p2));
 }
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYPointsFromDifferentSpacesCannotBeComparedUsingEqual") {
-    const View::XYPoint p1;
-    const Patient::XYPoint p2;
+    const Image::XYPoint p1;
+    const View::XYPoint p2;
 
     // We should not be able to compile:
     // auto dummy = p1 == p2;
@@ -167,8 +167,8 @@ TEST_CASE("XYPointsFromTheSameSpaceCanBeComparedUsingInequality_same") {
 }
 
 TEST_CASE("XYPointsFromTheSameSpaceCanBeComparedUsingInequality_different") {
-    const Patient::XYPoint p1(1, 0);
-    const Patient::XYPoint p2(2, 0);
+    const View::XYPoint p1(1, 0);
+    const View::XYPoint p2(2, 0);
     CHECK(p1 != p2);
 }
 
@@ -176,8 +176,8 @@ TEST_CASE("XYPointsFromTheSameSpaceCanBeComparedUsingInequality_different") {
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYPointsFromDifferentSpacesCannotBeComparedUsingInequality") {
-    const View::XYPoint p1;
-    const Patient::XYPoint p2;
+    const Image::XYPoint p1;
+    const View::XYPoint p2;
 
     // We should not be able to compile:
     // auto dummy = p1 != p2;
@@ -249,8 +249,8 @@ TEST_CASE("Points Can Be Subtracted From XYPoints in the same space to give a 3D
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYPointsFromDifferfentSpacesCannotBeSubtracted") {
-    const View::XYPoint p1;
-    const Patient::XYPoint p2;
+    const Image::XYPoint p1;
+    const View::XYPoint p2;
 
     // We should not be able to compile this:
     // auto dummy = p1 - p2;
@@ -313,7 +313,7 @@ TEST_CASE("XYPointsSupportElementAccessByName") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYPoints Can Be Modifed By Name") {
-    Image::XYPoint v(2, 3);
+    View::XYPoint v(2, 3);
     v.SetX(10);
     v.SetY(20);
     CHECK(v.X() == 10);
@@ -323,7 +323,7 @@ TEST_CASE("XYPoints Can Be Modifed By Name") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYPoints Do Not Support Z Modifcation By Name") {
-    Image::XYPoint v2;
+    View::XYPoint v2;
 
     // Should not compile:
     // v2.SetZ(5);
@@ -418,7 +418,7 @@ TEST_CASE("XYPointsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYPoints Do Not Support removing Z") {
-    Image::XYPoint p;
+    View::XYPoint p;
 
     // Should not compile:
     // p.ToXY();
@@ -463,10 +463,10 @@ TEST_CASE("XY Points Cannot Be Converted To The Same Space") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYPointsCanBeStreamed") {
-    const Image::XYPoint p(2, 3);
+    const View::XYPoint p(2, 3);
     std::stringstream stream;
     stream << p;
-    CHECK(stream.str() == std::string("Image::XYPoint (2, 3)"));
+    CHECK(stream.str() == std::string("View::XYPoint (2, 3)"));
 }
 
 //-------------------------------------------------------------------------------------------------

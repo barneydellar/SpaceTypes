@@ -90,7 +90,7 @@ TEST_CASE("XYVectorsFromTheSameSpaceCanBeComparedUsingEqual_different") {
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYVectorsFromDifferentSpacesCannotBeComparedUsingEqual") {
     const View::XYVector v1(1, 0);
-    const Patient::XYVector v2(1, 0);
+    const Image::XYVector v2(1, 0);
 
     // We should not be able to compile:
     // auto dummy = v1 == v2;
@@ -121,7 +121,7 @@ TEST_CASE("XYVectorsFromTheSameSpaceCanBeComparedUsingInequality_different") {
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYVectorsFromDifferentSpacesCannotBeComparedUsingInequality") {
     const View::XYVector v1(1, 0);
-    const Patient::XYVector v2(1, 0);
+    const Image::XYVector v2(1, 0);
 
     // We should not be able to compile:
     // auto dummy = v1 != v2;
@@ -136,16 +136,16 @@ TEST_CASE("XYVectorsFromDifferentSpacesCannotBeComparedUsingInequality") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectorsInTheSameSpaceCanBeAddedTogether") {
-    const Image::XYVector v1(1, 2);
-    const Image::XYVector v2(3, 2);
+    const View::XYVector v1(1, 2);
+    const View::XYVector v2(3, 2);
     const auto v_new = v1 + v2;
-    CHECK(v_new == Image::XYVector(4, 4));
+    CHECK(v_new == View::XYVector(4, 4));
 }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYVectorsInDifferentSpacesCannotBeAddedTogether") {
-    const View::XYVector v1;
-    const Image::XYVector v2;
+    const Image::XYVector v1;
+    const View::XYVector v2;
 
     // We should not be able to compile:
     // auto dummy = v1 + v2;
@@ -160,10 +160,10 @@ TEST_CASE("XYVectorsInDifferentSpacesCannotBeAddedTogether") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectors And Normalized XYVectors In The Same Space Can Be Added Together") {
-    const Image::XYVector v1(1, 2);
-    const Image::NormalizedXYVector v2(1, 0);
+    const View::XYVector v1(1, 2);
+    const View::NormalizedXYVector v2(1, 0);
     const auto v_new = v1 + v2;
-    CHECK(v_new == Image::XYVector(2, 2));
+    CHECK(v_new == View::XYVector(2, 2));
 }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
@@ -184,10 +184,10 @@ TEST_CASE("XYVectors And Normalized XYVectors In Different Spaces Cannot Be Adde
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectorsInTheSameSpaceCanBeAddedInPlace") {
-    Image::XYVector v1(1, 2);
-    const Image::XYVector v2(3, 2);
+    View::XYVector v1(1, 2);
+    const View::XYVector v2(3, 2);
     v1 += v2;
-    CHECK(v1 == Image::XYVector(4, 4));
+    CHECK(v1 == View::XYVector(4, 4));
 }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
@@ -208,10 +208,10 @@ TEST_CASE("XYVectorsInDifferentSpacesCannotBeAddedInPlace") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectors And Normalized XYVectors In The Same Space Can Be Added In Place") {
-    Image::XYVector v1(1, 2);
-    const Image::NormalizedXYVector v2(1, 0);
+    View::XYVector v1(1, 2);
+    const View::NormalizedXYVector v2(1, 0);
     v1 += v2;
-    CHECK(v1 == Image::XYVector(2, 2));
+    CHECK(v1 == View::XYVector(2, 2));
 }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
@@ -245,10 +245,10 @@ TEST_CASE("XYVectors And Normalized XYVectors In Different Spaces Cannot Be Adde
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectorsInTheSameSpaceCanBeSubtracted") {
-    const Image::XYVector v1(3, 2);
-    const Image::XYVector v2(1, 2);
+    const View::XYVector v1(3, 2);
+    const View::XYVector v2(1, 2);
     const auto v_new = v1 - v2;
-    CHECK(v_new == Image::XYVector(2, 0));
+    CHECK(v_new == View::XYVector(2, 0));
 }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
@@ -269,10 +269,10 @@ TEST_CASE("XYVectors And Normalized XYVectors In Different Spaces Cannot Be Subt
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectorsInTheSameSpaceCanBeSubtractedInPlace") {
-    Image::XYVector v1(1, 2);
-    const Image::XYVector v2(3, 2);
+    View::XYVector v1(1, 2);
+    const View::XYVector v2(3, 2);
     v1 -= v2;
-    CHECK(v1 == Image::XYVector(-2, 0));
+    CHECK(v1 == View::XYVector(-2, 0));
 }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
@@ -293,10 +293,10 @@ TEST_CASE("XYVectorsInDifferentSpacesCannotBeSubtractedInPlace") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectors And Normalized XYVectors In TheS ame Space Can Be Subtracted In Place") {
-    Image::XYVector v1(1, 2);
-    const Image::NormalizedXYVector v2(1, 0);
+    View::XYVector v1(1, 2);
+    const View::NormalizedXYVector v2(1, 0);
     v1 -= v2;
-    CHECK(v1 == Image::XYVector(0, 2));
+    CHECK(v1 == View::XYVector(0, 2));
 }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
@@ -333,7 +333,7 @@ TEST_CASE("XYVectorsCanBeScaled") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectorsSupportMag") {
-    const Image::XYVector v(3, 4);
+    const View::XYVector v(3, 4);
     // 5 = sqrt(3*3 + 4*4)
     CHECK(v.Mag().get() == 5);
 }
@@ -357,7 +357,7 @@ TEST_CASE("XYVector Mag Is Strongly Typed: Pixels") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectorsSupportMag_double") {
-    const Image::XYVector v(3, 4);
+    const View::XYVector v(3, 4);
     // 5 = sqrt(3*3 + 4*4)
     CHECK(v.Mag_double() == 5);
 }
@@ -365,32 +365,32 @@ TEST_CASE("XYVectorsSupportMag_double") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVector Can Be Normalized") {
-    const Image::XYVector v(3, 4);
+    const View::XYVector v(3, 4);
     const auto v_norm = v.Norm();
     // Mag of v = sqrt(3*3 + 4*4) = 5
-    CHECK(v_norm == Image::XYVector(3.0 / 5, 4.0 / 5));
+    CHECK(v_norm == View::XYVector(3.0 / 5, 4.0 / 5));
 }
 
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectors Do Not Support removing Z") {
-    Image::XYVector v;
+    View::XYVector v;
     // v.ToXY();
 }
 
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectors Can Be Normalized to produce a Normalized XYVector") {
-    const Image::XYVector v;
+    const View::XYVector v;
     using converted_type = decltype(v.Norm());
-    using required_type = decltype(Image::NormalizedXYVector{});
+    using required_type = decltype(View::NormalizedXYVector{});
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("ZeroSizeXYVectorsCannotBeNormalized") {
-    const Image::XYVector v(0, 0);
+    const View::XYVector v(0, 0);
     CHECK_THROWS_AS(v.Norm(), std::invalid_argument);
 }
 
@@ -585,7 +585,7 @@ TEST_CASE("XYVectors From Different Spaces Cannot Be Crossed Using Star Equal Op
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectors Support Element Access By Name") {
-    const Image::XYVector v(2, 3);
+    const View::XYVector v(2, 3);
     CHECK(v.X() == 2);
     CHECK(v.Y() == 3);
 }
@@ -593,7 +593,7 @@ TEST_CASE("XYVectors Support Element Access By Name") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectors Do Not Support Z Access By Name") {
-    const Image::XYVector v2;
+    const View::XYVector v2;
 
     // Should not compile:
     // v2.SetZ(5);
@@ -602,7 +602,7 @@ TEST_CASE("XYVectors Do Not Support Z Access By Name") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectors Can Be Modifed By Name") {
-    Image::XYVector v(2, 3);
+    View::XYVector v(2, 3);
     v.SetX(10);
     v.SetY(20);
     CHECK(v.X() == 10);
@@ -612,7 +612,7 @@ TEST_CASE("XYVectors Can Be Modifed By Name") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectors Do Not Support Z Modifcation By Name") {
-    Image::XYVector v2;
+    View::XYVector v2;
 
     // Should not compile:
     // v2.SetZ(5);
@@ -621,7 +621,7 @@ TEST_CASE("XYVectors Do Not Support Z Modifcation By Name") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectorsSupportConstBeginAndEnd") {
-    const Image::XYVector v(2, 3);
+    const View::XYVector v(2, 3);
     std::vector<double> values;
     std::copy(v.cbegin(), v.cend(), std::back_inserter(values));
     CHECK(values.size() == 2);
@@ -632,7 +632,7 @@ TEST_CASE("XYVectorsSupportConstBeginAndEnd") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectorsSupportNonConstBeginAndEnd") {
-    Image::XYVector v(2, 3);
+    View::XYVector v(2, 3);
     std::vector<double> values;
     std::copy(v.begin(), v.end(), std::back_inserter(values));
     CHECK(values.size() == 2);
@@ -643,39 +643,39 @@ TEST_CASE("XYVectorsSupportNonConstBeginAndEnd") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectorsCanBeTransformedWithTheSTL") {
-    Image::XYVector v(2, 3);
+    View::XYVector v(2, 3);
     std::transform(
         v.cbegin(),
         v.cend(),
         v.begin(),
         [](const double d) {return d * 2; }
     );
-    CHECK(v == Image::XYVector(4, 6));
+    CHECK(v == View::XYVector(4, 6));
 }
 
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectorsSupportElementAccessByRandomAccess") {
-    const Image::XYVector v(2, 3);
+    const View::XYVector v(2, 3);
     CHECK(v[0] == 2);
     CHECK(v[1] == 3);
 }
 
 TEST_CASE("XYVectorsThrowIfRandomAccessIsTooHigh") {
-    const Image::XYVector v(2, 3);
+    const View::XYVector v(2, 3);
     CHECK_THROWS_AS(v[2], std::invalid_argument);
 }
 
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("XYVectorsSupportElementAccessByAt") {
-    const Image::XYVector v(2, 3);
+    const View::XYVector v(2, 3);
     CHECK(v.at<0>() == 2);
     CHECK(v.at<1>() == 3);
 }
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYVectorsSupportElementAccessByAtDoesNotCompileIfTooLow") {
-    const Image::XYVector v(2, 3);
+    const View::XYVector v(2, 3);
 
     // We should not be able to compile:
     // auto dummy = v.at<-1>();
@@ -686,7 +686,7 @@ TEST_CASE("XYVectorsSupportElementAccessByAtDoesNotCompileIfTooLow") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 TEST_CASE("XYVectorsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
-    const Image::XYVector v(2, 3);
+    const View::XYVector v(2, 3);
 
     // We should not be able to compile:
     // auto dummy = v.at<3>();

@@ -381,17 +381,17 @@ TEST_CASE("ZeroSizeVectorsCannotBeNormalized") {
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("Vectors Can Have their z-value removed") {
-    const Image::Vector v(2, 3, 4);
+    const View::Vector v(2, 3, 4);
     const auto v_norm = v.ToXY();
-    CHECK(v_norm == Image::XYVector(2, 3));
+    CHECK(v_norm == View::XYVector(2, 3));
 }
 
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("Vectors Can Have their z-value removed to produce a XYVector") {
-    const Image::Vector v;
+    const View::Vector v;
     using converted_type = decltype(v.ToXY());
-    using required_type = decltype(Image::XYVector{});
+    using required_type = decltype(View::XYVector{});
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
