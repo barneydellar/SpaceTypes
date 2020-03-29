@@ -1,7 +1,6 @@
 #pragma once
 
-namespace Space::detail::helpers {
-
+namespace Space::detail {
 
     template <typename Implementation>
     [[nodiscard]] static double* begin(Implementation& i) noexcept {

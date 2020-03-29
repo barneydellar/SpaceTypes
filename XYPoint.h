@@ -22,7 +22,7 @@ namespace Space {
         }
         explicit XYPoint(const Implementation& v) noexcept {
             auto iter = begin();
-            auto in = detail::helpers::cbegin(v);
+            auto in = detail::cbegin(v);
             *iter++ = *in++;
             *iter++ = *in++;
             *iter = 0;
@@ -43,7 +43,7 @@ namespace Space {
             std::copy(
                 std::cbegin(l),
                 std::cend(l),
-                detail::helpers::begin(m_impl)
+                detail::begin(m_impl)
             );
         }
 
@@ -67,10 +67,10 @@ namespace Space {
         [[nodiscard]] const double* cend() const noexcept { return reinterpret_cast<const double*>(&m_impl) + 2; }
 
         [[nodiscard]] bool operator== (const Point<ThisSpace, Implementation>& other) const noexcept {
-            return std::equal(cbegin(), cend(), detail::helpers::cbegin(other.m_impl), detail::helpers::Equality);
+            return std::equal(cbegin(), cend(), detail::cbegin(other.m_impl), detail::Equality);
         }
         [[nodiscard]] bool operator== (const XYPoint<ThisSpace, Implementation>& other) const noexcept {
-            return std::equal(cbegin(), cend(), detail::helpers::cbegin(other.m_impl), detail::helpers::Equality);
+            return std::equal(cbegin(), cend(), detail::cbegin(other.m_impl), detail::Equality);
         }
 
         [[nodiscard]] bool operator!= (const Point<ThisSpace, Implementation>& other) const noexcept {
@@ -95,74 +95,74 @@ namespace Space {
         }
 
         XYPoint<ThisSpace, Implementation> operator-=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
-            detail::helpers::Sub(m_impl, rhs.m_impl);
+            detail::Sub(m_impl, rhs.m_impl);
             return *this;
         }
         XYPoint<ThisSpace, Implementation> operator-=(const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
-            detail::helpers::Sub(m_impl, rhs.m_impl);
+            detail::Sub(m_impl, rhs.m_impl);
             return *this;
         }
 
         [[nodiscard]] Point<ThisSpace, Implementation> operator-(const Vector<ThisSpace, Implementation>& rhs) const noexcept {
             Point<ThisSpace, Implementation>v(static_cast<Implementation>(*this));
-            detail::helpers::Sub(v.m_impl, rhs.m_impl);
+            detail::Sub(v.m_impl, rhs.m_impl);
             return v;
         }
         [[nodiscard]] Point<ThisSpace, Implementation> operator-(const NormalizedVector<ThisSpace, Implementation>& rhs) const noexcept {
             Point<ThisSpace, Implementation>v(static_cast<Implementation>(*this));
-            detail::helpers::Sub(v.m_impl, rhs.m_impl);
+            detail::Sub(v.m_impl, rhs.m_impl);
             return v;
         }
         [[nodiscard]] XYPoint<ThisSpace, Implementation> operator-(const NormalizedXYVector<ThisSpace, Implementation>& rhs) const noexcept {
             XYPoint<ThisSpace, Implementation>v(static_cast<Implementation>(*this));
-            detail::helpers::Sub(v.m_impl, rhs.m_impl);
+            detail::Sub(v.m_impl, rhs.m_impl);
             return v;
         }
         [[nodiscard]] XYPoint<ThisSpace, Implementation> operator-(const XYVector<ThisSpace, Implementation>& rhs) const noexcept {
             XYPoint<ThisSpace, Implementation>v(static_cast<Implementation>(*this));
-            detail::helpers::Sub(v.m_impl, rhs.m_impl);
+            detail::Sub(v.m_impl, rhs.m_impl);
             return v;
         }
 
         [[nodiscard]] XYVector<ThisSpace, Implementation> operator-(const XYPoint<ThisSpace, Implementation>& rhs) const noexcept {
             XYVector<ThisSpace, Implementation>v(static_cast<Implementation>(*this));
-            detail::helpers::Sub(v.m_impl, rhs.m_impl);
+            detail::Sub(v.m_impl, rhs.m_impl);
             return v;
         }
         [[nodiscard]] Vector<ThisSpace, Implementation> operator-(const Point<ThisSpace, Implementation>& rhs) const noexcept {
             Vector<ThisSpace, Implementation>v(static_cast<Implementation>(*this));
-            detail::helpers::Sub(v.m_impl, rhs.m_impl);
+            detail::Sub(v.m_impl, rhs.m_impl);
             return v;
         }
 
         XYPoint<ThisSpace, Implementation> operator+=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {
-            detail::helpers::Add(m_impl, rhs.m_impl);
+            detail::Add(m_impl, rhs.m_impl);
             return *this;
         }
         XYPoint<ThisSpace, Implementation> operator+=(const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
-            detail::helpers::Add(m_impl, rhs.m_impl);
+            detail::Add(m_impl, rhs.m_impl);
             return *this;
         }
 
         [[nodiscard]] Point<ThisSpace, Implementation> operator+(const Vector<ThisSpace, Implementation>& rhs) const noexcept {
             Point<ThisSpace, Implementation>v(static_cast<Implementation>(*this));
-            detail::helpers::Add(v.m_impl, rhs.m_impl);
+            detail::Add(v.m_impl, rhs.m_impl);
             return v;
         }
         [[nodiscard]] Point<ThisSpace, Implementation> operator+(const NormalizedVector<ThisSpace, Implementation>& rhs) const noexcept {
             Point<ThisSpace, Implementation>v(static_cast<Implementation>(*this));
-            detail::helpers::Add(v.m_impl, rhs.m_impl);
+            detail::Add(v.m_impl, rhs.m_impl);
             return v;
         }
         [[nodiscard]] XYPoint<ThisSpace, Implementation> operator+(const NormalizedXYVector<ThisSpace, Implementation>& rhs) const noexcept {
             XYPoint<ThisSpace, Implementation>v(static_cast<Implementation>(*this));
-            detail::helpers::Add(v.m_impl, rhs.m_impl);
+            detail::Add(v.m_impl, rhs.m_impl);
             return v;
         }
         [[nodiscard]] XYPoint<ThisSpace, Implementation> operator+(const XYVector<ThisSpace, Implementation>& rhs) const noexcept {
             // TODO Test! This isn;t used!
             XYPoint<ThisSpace, Implementation>v(static_cast<Implementation>(*this));
-            detail::helpers::Add(v.m_impl, rhs.m_impl);
+            detail::Add(v.m_impl, rhs.m_impl);
             return v;
         }
 
