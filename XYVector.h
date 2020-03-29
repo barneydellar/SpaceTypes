@@ -48,8 +48,8 @@ namespace Space {
             return Vector<ThisSpace, Implementation>(X(), Y(), 0);
         }
 
-        [[nodiscard]] double X() const noexcept { return _base::X_internal(); }
-        [[nodiscard]] double Y() const noexcept { return _base::Y_internal(); }
+        [[nodiscard]] double X() const noexcept { return *(cbegin() + 0); }
+        [[nodiscard]] double Y() const noexcept { return *(cbegin() + 1); }
 
         void SetX(const double d) noexcept { *(begin() + 0) = d; }
         void SetY(const double d) noexcept { *(begin() + 1) = d; }

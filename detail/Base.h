@@ -106,19 +106,27 @@ namespace Space {
 
         static std::tuple<double, double, double> Cross_internal(const Base<ThisSpace, Implementation>& A, const Base<ThisSpace, Implementation>& B) noexcept {
 
-            const double x = A.Y_internal() * B.Z_internal() - A.Z_internal() * B.Y_internal();
-            const double y = A.Z_internal() * B.X_internal() - A.X_internal() * B.Z_internal();
-            const double z = A.X_internal() * B.Y_internal() - A.Y_internal() * B.X_internal();
+            const double AX = *(A.cbegin() + 0);
+            const double AY = *(A.cbegin() + 1);
+            const double AZ = *(A.cbegin() + 2);
+
+            const double BX = *(B.cbegin() + 0);
+            const double BY = *(B.cbegin() + 1);
+            const double BZ = *(B.cbegin() + 2);
+
+            const double x = AY * BZ - AZ * BY;
+            const double y = AZ * BX - AX * BZ;
+            const double z = AX * BY - AY * BX;
+
             return { x, y, z };
         }
 
-
-        [[nodiscard]] double Mag_internal() const noexcept {
+        static [[nodiscard]] double Mag_internal(const Base<ThisSpace, Implementation>& i) noexcept {
 
             return std::sqrt(
                 std::accumulate(
-                    cbegin(),
-                    cend(),
+                    i.cbegin(),
+                    i.cend(),
                     0.0,
                     [](const auto accumulation, const auto v) { return accumulation + v * v; }
                 )
@@ -143,9 +151,6 @@ namespace Space {
             return reinterpret_cast<const double*>(&m_impl) + 3;
         }
 
-        [[nodiscard]] double X_internal() const noexcept { return *(cbegin() + 0); }
-        [[nodiscard]] double Y_internal() const noexcept { return *(cbegin() + 1); }
-        [[nodiscard]] double Z_internal() const noexcept { return *(cbegin() + 2); }
 
         Implementation m_impl;
     };

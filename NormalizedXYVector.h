@@ -61,8 +61,8 @@ namespace Space {
             return NormalizedVector<ThisSpace, Implementation>(X(), Y(), 0);
         }
 
-        [[nodiscard]] double X() const noexcept { return _base::X_internal(); }
-        [[nodiscard]] double Y() const noexcept { return _base::Y_internal(); }
+        [[nodiscard]] double X() const noexcept { return *(cbegin() + 0); }
+        [[nodiscard]] double Y() const noexcept { return *(cbegin() + 1); }
 
         [[nodiscard]] const double* cbegin() const noexcept { return _base::cbegin(); }
         [[nodiscard]] const double* cend() const noexcept { return reinterpret_cast<const double*>(std::prev(_base::cend())); }
@@ -116,7 +116,7 @@ namespace Space {
         }
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(NormalizedXYVector<ThisSpace, Implementation> lhs, const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
             _base::Sub(lhs, rhs);
-            return Vector<ThisSpace, Implementation>(lhs.X_internal(), lhs.Y_internal(), lhs.Z_internal());
+            return Vector<ThisSpace, Implementation>(static_cast<Implementation>(lhs));
         }
         [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator-(NormalizedXYVector<ThisSpace, Implementation> lhs, const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
             _base::Sub(lhs, rhs);
@@ -129,11 +129,11 @@ namespace Space {
 
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(NormalizedXYVector<ThisSpace, Implementation> lhs, const Vector<ThisSpace, Implementation>& rhs) noexcept {
             _base::Add(lhs, rhs);
-            return Vector<ThisSpace, Implementation>(lhs.X_internal(), lhs.Y_internal(), lhs.Z_internal());
+            return Vector<ThisSpace, Implementation>(static_cast<Implementation>(lhs));
         }
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator+(NormalizedXYVector<ThisSpace, Implementation> lhs, const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
             _base::Add(lhs, rhs);
-            return Vector<ThisSpace, Implementation>(lhs.X_internal(), lhs.Y_internal(), lhs.Z_internal());
+            return Vector<ThisSpace, Implementation>(static_cast<Implementation>(lhs));
         }
         [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator+(NormalizedXYVector<ThisSpace, Implementation> lhs, const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
             _base::Add(lhs, rhs);
@@ -283,7 +283,7 @@ namespace Space {
     private:
 
         void Normalize() {
-            const auto mag = _base::Mag_internal();
+            const auto mag = _base::Mag_internal(*this);
             if (std::abs(mag) < 1e-6) {
                 throw std::invalid_argument("Zero-sized normal vectors are not allowed");
             }

@@ -43,8 +43,8 @@ namespace Space {
             return _base::m_impl;
         }
 
-        [[nodiscard]] double X() const noexcept { return _base::X_internal(); }
-        [[nodiscard]] double Y() const noexcept { return _base::Y_internal(); }
+        [[nodiscard]] double X() const noexcept { return *(cbegin() + 0); }
+        [[nodiscard]] double Y() const noexcept { return *(cbegin() + 1); }
 
         void SetX(const double d) noexcept { *(begin() + 0) = d; }
         void SetY(const double d) noexcept { *(begin() + 1) = d; }
@@ -116,13 +116,11 @@ namespace Space {
 
         [[nodiscard]] friend XYVector<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const XYPoint<ThisSpace, Implementation>& rhs) {
             _base::Sub(lhs, rhs);
-            XYVector<ThisSpace, Implementation> v(lhs.X(), lhs.Y());
-            return v;
+            return XYVector<ThisSpace, Implementation>(static_cast<Implementation>(lhs));
         }
         [[nodiscard]] friend Vector<ThisSpace, Implementation> operator-(XYPoint<ThisSpace, Implementation> lhs, const Point<ThisSpace, Implementation>& rhs) {
             _base::Sub(lhs, rhs);
-            Vector<ThisSpace, Implementation> v(lhs.X_internal(), lhs.Y_internal(), lhs.Z_internal());
-            return v;
+            return Vector<ThisSpace, Implementation>(static_cast<Implementation>(lhs));
         }
 
         XYPoint<ThisSpace, Implementation> operator+=(const XYVector<ThisSpace, Implementation>& rhs) noexcept {

@@ -284,7 +284,7 @@ namespace Space {
     private:
 
         void Normalize() {
-            const auto mag = _base::Mag_internal();
+            const auto mag = _base::Mag_internal(*this);
             if (std::abs(mag) < 1e-6) {
                 throw std::invalid_argument("Zero-sized normal vectors are not allowed");
             }

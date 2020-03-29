@@ -42,9 +42,9 @@ namespace Space {
             return _base::m_impl;
         }
 
-        [[nodiscard]] double X() const noexcept { return _base::X_internal(); }
-        [[nodiscard]] double Y() const noexcept { return _base::Y_internal(); }
-        [[nodiscard]] double Z() const noexcept { return _base::Z_internal(); }
+        [[nodiscard]] double X() const noexcept { return *(cbegin() + 0); }
+        [[nodiscard]] double Y() const noexcept { return *(cbegin() + 1); }
+        [[nodiscard]] double Z() const noexcept { return *(cbegin() + 2); }
 
         void SetX(const double d) noexcept { *(begin() + 0) = d; }
         void SetY(const double d) noexcept { *(begin() + 1) = d; }
