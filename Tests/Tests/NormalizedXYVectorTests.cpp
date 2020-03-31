@@ -25,7 +25,7 @@ TEST_CASE("NormalizedXYVectors can be constructed from implementation") {
     CHECK(v.X() == 3 / 5.0);
     CHECK(v.Y() == 4 / 5.0);
 }
-TEST_CASE("NormalizedXYVectors Can Be Constructed From Three Doubles") {
+TEST_CASE("NormalizedXYVectors Can Be Constructed From Two Doubles") {
     const View::NormalizedXYVector v(3, 4);
     CHECK(v.X() == 3 / 5.0);
     CHECK(v.Y() == 4 / 5.0);
