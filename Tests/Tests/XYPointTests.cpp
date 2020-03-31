@@ -564,14 +564,14 @@ TEST_CASE("XYPoints cannot have points added") {
 TEST_CASE("XYPoints can be converted from one space to another ignoring translation") {
     const TransformManager tm;
     const View::Point p_view(1, 0, 0);
-    auto v_patient = p_view.ConvertTo<Patient>(tm);
-    CHECK(v_patient == Patient::Point(-5, -6, -7));
+    auto v_patient = p_view.ConvertTo<Data>(tm);
+    CHECK(v_patient == Data::Point(-5, -6, -7));
 }
 TEST_CASE("XYPoints can be converted from one space to another to produce a Point") {
     const TransformManager tm;
     const View::Point p_view;
-    using converted_type = decltype(p_view.ConvertTo<Patient>(tm));
-    using required_type = Patient::Point;
+    using converted_type = decltype(p_view.ConvertTo<Data>(tm));
+    using required_type = Data::Point;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #ifndef IGNORE_SPACE_STATIC_ASSERT

@@ -1,26 +1,23 @@
 # SpaceTypes
 
-This is a C++ library for 3D points and vectors that are strongly typed on their coordinate space.
-
-This library has only been tested using Visual Studio 2017 with C++17. The tests use Catch2.
+This is a C++ library for 3D points and vectors that are strongly typed on their coordinate space. It provides new types to wrap round an exsiting implementation, to ensures that vectors and points from different spaces cannot interact with each other. It is designed to catch these problems at compile-time, rather than at run time.
 
 This is a header-only library. Simply #include "Space.h".
 The library defines the namespace *Space*.
 
+This library has only been tested using Visual Studio 2017 with C++17. The tests use Catch2.
+
 ## Licence
 
-The library is licenced under the MIT licence (<https://opensource.org/licenses/MIT)>
+The library is licenced under the [Hippocratic License Version Number: 2.1.](LICENCE.md). See <https://firstdonoharm.dev> for more details.
 
 ## Summary
 
-This namespace provides several templated types: Point, Vector and NormalizedVector. Optionally, XYPoint, XYVector and NormalizedXYVector are also available. Each point or vector lives in a Space. It is possible to convert points and vectors from space to another.
-Importantly, points and vectors can *only* interact with points and vectors from the same space.
-Attempting to, say, add a vector from one space to a vector from another will result in a compilation error.
+This namespace provides several templated types: Point, Vector and NormalizedVector. Optionally, XYPoint, XYVector and NormalizedXYVector are also available for a given space. Each point or vector lives in a Space. It is possible to convert points and vectors from space to another, in a type-safe way. Importantly, points and vectors can *only* interact with points and vectors from the same space. Attempting to add a vector from one space to a vector from another will result in a compilation error.
 
-The library requires an existing implementation, which you will need to provide as a template argument. This implementation must be default contructiblem and must have three doubles for x, y, and z as its first fields.
-The library also requires a Transform Manager which is able to convert the instances of the existing implementation from one Space to another.
+The library requires an existing implementation, which you will need to provide as a template argument. This implementation must be default contructible, and must have three doubles for x, y, and z as its first fields. The library also requires a Transform Manager which is able to convert the instances of the existing implementation from one Space to another.
 
-The existing implementation of the 3D location or direction must implement the following API
+The existing implementation of the 3D location or direction must implement the following API:
 
 ```cpp
 class ExistingImplementation
@@ -53,9 +50,15 @@ Once we have such an implementation, we also need units for the space:
 using NewSpaceUnits = double;
 ```
 
+Alternatively, a strong type such as Jonathan Boccara's Named Type (https://github.com/joboccara/NamedType) can be used:
+
+```cpp
+using NewSpaceUnits = NamedType<double, struct NewSpaceUnitsTag>;
+```
+
 The units must be constructable from a double. They will be used to return the magnitude of a vector.
 
-Given a unique identifer for the space:
+Once we have these and a unique identifer for the space in an enum called SpaceIDs:
 
 ```cpp
 enum class SpaceIDs
@@ -64,7 +67,7 @@ enum class SpaceIDs
 };
 ```
 
-Then a Space can be defined as follows:
+then a Space can be defined as follows:
 
 ```cpp
 struct MySpace final : SpaceBase<MySpace, ExistingImplementation, XY::IsUsed, NewSpaceUnits> {
@@ -74,13 +77,11 @@ template <> const std::string SpaceTypeNameMap<MySpace>::name = "MySpace";
 ```
 
 The XY parameter must be either XY::IsUsed or XY::IsNotUsed. It controls whether XY-only points and vectors are supported in this space.
-They can be very useful for spaces such a Screen space, where you want to track coordinates on a screen, and then convert them to a different space.
+They can be very useful for spaces such a Screen or View space, where you want to track coordinates on an XY-screen, and then convert them from there to a different space.
 
-The entry in the SpaceTypeNameMap will be used to serialize a point, vector or normalized vector.
+The *name* entry in the SpaceTypeNameMap will be used to serialize a point, vector or normalized vector.
 
-The *name* is used if and when a point or vector is serialised.  
-
-Once this is done, then the space will have a Point, a Vector and a NormalizedVector defined for it.
+Once this is done, then the space will have a Point, a Vector and a NormalizedVector defined for it, and optionally an XYPoint, an XYVector and a NormalizedXYVector.
 
 ## Creation
 
@@ -145,7 +146,7 @@ const MySpace::Vector v2(4, 5, 6);
 v1 += v2; // v1 = (5, 7, 9)
 ```
 
-## Adding or subtracting vectors to points
+## Adding or subtracting vectors to or from points
 
 Vectors can be added to a point from the same space to produce a new point:
 
@@ -181,7 +182,7 @@ const auto p -= v; // p = (-3, -3, -3)
 
 ## Subtracting points
 
-Points from the same space can be subtracted to produce a vector:
+Points from the same space can be subtracted to produce the vector from one point to the other:
 
 ```cpp
 const MySpace::Point p1(4, 5, 6);
@@ -207,8 +208,7 @@ const auto v *= 2; // v = (8, 10, 12)
 
 ## XY Vectors and Points
 
-If the space supports an XY plane, you can create XY vectors, points and normalized vectors.
-You can also convert a 3D point or vector to a 2D one by calling ToXY(). This simply removes the Z part of the vector or point.
+If the space supports an XY plane, you can create XY vectors, points and normalized vectors. You can also convert a 3D point or vector to a 2D one by calling ToXY(). This simply removes the Z part of the vector or point.
 
 ```cpp
 const MySpace::XYVector v(5, 0);
@@ -228,11 +228,17 @@ const MySpace::Vector v1(5, 0, 0);
 const auto v2 = v1.Norm(); // MySpace::NormalizedVector(1, 0, 0)
 ```
 
-In addition, you can construct a normalized vector as you would a normal vector, but the result will
-always be normalized:
+In addition, you can construct a normalized vector as you would a normal vector, but the result will always be normalized:
 
 ```cpp
 const MySpace::NormalizedVector v(5, 0, 0); // v = (1, 0, 0)
+```
+
+XY vectors can also be normalized:
+
+```cpp
+const MySpace::XYVector v1(5, 0);
+const auto v2 = v1.Norm(); // MySpace::NormalizedXYVector(1, 0)
 ```
 
 ## Dot Product
@@ -292,7 +298,7 @@ const auto m = v1.Mag(); // m = 5 Millimetres
 
 ## Comparison
 
-Vectors from the same space can be compared using == or !=.
+Vectors from the same space can be compared using == or !=. This will test each value with a tolerance of 1e-6.
 
 ```cpp
 const MySpace::Vector v1(1, 0, 0);
@@ -312,10 +318,9 @@ const auto b_inequality = p1 != p2; // true
 
 ## Conversion between spaces
 
-Actual geometric transformations are outsourced to a transform manager. This needs to implement two method templates: Transform and Transform33.
-Both of these methods receive an ExistingImplementation, and must also return an ExistingImplementation.
+Actual geometric transformations are outsourced to a transform manager. This needs to implement two method templates: TransformPoint and TransformVector. Both of these methods receive an ExistingImplementation, and must also return an ExistingImplementation.
 
-Vectors from one space can be converted to another space. Under the hood, this makes a call to Transform33 on the TransformManager.
+Vectors from one space can be converted to another space. Under the hood, this makes a call to TransformVector on the TransformManager.
 
 ```cpp
 const TransformManager tm;
@@ -323,7 +328,7 @@ const MySpace::Vector v_new_space(1, 0, 0);
 const auto v_view = v_new_space.ConvertTo<YourSpace>(tm); // YourSpace::Vector(x, y, z)
 ```
 
-Points from one space can be converted to another space. Under the hood, this makes a call to Transform on the TransformManager.
+Points from one space can be converted to another space. Under the hood, this makes a call to TransformPoint on the TransformManager.
 
 ```cpp
 const TransformManager tm;
@@ -336,7 +341,7 @@ const auto p = p_view.ConvertTo<YourSpace>(tm); // YourSpace::Point(x, y, z)
 Suppose we have two spaces defined, with units in *double*. Each has a static value identifying the type.
 
 ```cpp
-enum class IDs
+enum class SpaceIDs
 {
     FirstSpace,
     SecondSpace
@@ -356,22 +361,22 @@ class TransformManager final
 {
 public:
     template <typename From, typename To>
-    ExistingImplementation Transform33(
+    ExistingImplementation TransformVector(
         ExistingImplementation
     ) const noexcept {
         using namespace Space;
         if (From::id == SpaceIDs::FirstSpace && To::id == SpaceIDs::SecondSpace) {
-            // Insert more useful logic here
+            // Insert actual conversion code here
         }
         // etc
     }
     template <typename From, typename To>
-    ExistingImplementation Transform(
+    ExistingImplementation TransformPoint(
         ExistingImplementation
     ) const noexcept {
         using namespace Space;
         if (From::id == SpaceIDs::FirstSpace && To::id == SpaceIDs::SecondSpace) {
-            // Insert more useful logic here
+            // Insert actual conversion code here
         }
         // etc
     }
@@ -384,15 +389,23 @@ There are several ways to access the underlying data:
 
 ### Random Access
 
-The data from a point or vector can be accessed using square brackets. The only valid indices
-are 0, 1, or 2. Any other value will cause a runtime throw.
+The data from a point or vector can be accessed using square brackets. The only valid indices are 0, 1, or 2. Any other value will cause a runtime throw.
 
 ```cpp
 const MySpace::Vector v(1, 2, 3);
 // v[0] == 1;
 ```
 
-#### Named Access</H4>
+#### Named Element Modification
+
+The data from a point or vector can be modified using the SetX(), SetY() or SetZ() functions.
+
+```cpp
+MySpace::Vector v(1, 2, 3);
+v.SetX((5); // v == {5, 2, 3};
+```
+
+#### Named Element Access
 
 The data from a point or vector can be accessed using the X(), Y() or Z() functions.
 
@@ -403,8 +416,7 @@ const MySpace::Vector v(1, 2, 3);
 
 ### At Access
 
-The data from a point or vector can be accessed using at(). The only valid indices are 0, 1 or 2.
-Any other value will cause a compilation error.
+The data from a point or vector can be accessed using at(). The only valid indices are 0, 1 or 2. Any other value will cause a compilation error.
 
 ```cpp
 const MySpace::Vector v(1, 2, 3);
@@ -427,6 +439,8 @@ std::transform(
 // p == MySpace::Point(4, 6, 8);
 ```
 
+Non-normalized vectors and points also support non-const access via begin() and end().
+
 ## Serialisation
 
 Points, Vectors and NormalisedVectors can be serialised:
@@ -439,11 +453,17 @@ std::cout << p;
 
 ## Compile-time errors
 
-A key feature of this library is that it is a compile-time error to make points or vectors from different spaces interact with eachother. The library also has human-readable errors, so if you try and add a vector from one space to a point from another space, for example, you get the following error:
+A key feature of this library is that it is a compile-time error to make points or vectors from different spaces interact with eachother. The library also has human-readable errors, so if you try and add a vector from one space to a point from another space, for example, you get the following compiler error:
 
 ```
-You can't add vectors to points in other spaces.
-```tt
+You can't do anything with vectors or points from different spaces.
+```
+
+Similarly, if you try and add two Points together, you get the following compiler error:
+
+```
+It is not valid to add points together.
+```
 
 These checks can be disabled by defining the following Macro:
 

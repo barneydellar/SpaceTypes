@@ -35,7 +35,7 @@ namespace Space {
     enum class SpaceIDs
     {
         Volume = 0,
-        Patient,
+        Data,
         Image,
         View
     };
@@ -45,10 +45,10 @@ namespace Space {
     };
     template <> const std::string SpaceTypeNameMap<Volume>::name = "Volume";
 
-    struct Patient final : SpaceBase<Patient, TestVector, XY::IsNotUsed, double> {
-        static inline SpaceIDs id = SpaceIDs::Patient;
+    struct Data final : SpaceBase<Data, TestVector, XY::IsNotUsed, double> {
+        static inline SpaceIDs id = SpaceIDs::Data;
     };
-    template <> const std::string SpaceTypeNameMap<Patient>::name = "Patient";
+    template <> const std::string SpaceTypeNameMap<Data>::name = "Data";
 
     struct Image final : SpaceBase<Image, TestVector, XY::IsUsed, Millimetres> {
         static inline SpaceIDs id = SpaceIDs::Image;

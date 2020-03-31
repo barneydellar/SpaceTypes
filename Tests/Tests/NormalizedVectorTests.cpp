@@ -22,13 +22,13 @@ TEST_CASE("NormalizedVectors can be constructed from implementation") {
     impl.m_values[0] = 3;
     impl.m_values[1] = 4;
     impl.m_values[2] = 0;
-    const Patient::NormalizedVector v(impl);
+    const Data::NormalizedVector v(impl);
     CHECK(v.X() == 3/5.0);
     CHECK(v.Y() == 4 / 5.0);
     CHECK(v.Z() == 0);
 }
 TEST_CASE("NormalizedVectors Can Be Constructed From Three Doubles") {
-    const Patient::NormalizedVector v(3, 4, 0);
+    const Data::NormalizedVector v(3, 4, 0);
     CHECK(v.X() == 3 / 5.0);
     CHECK(v.Y() == 4 / 5.0);
     CHECK(v.Z() == 0);
@@ -71,15 +71,15 @@ TEST_CASE("NormalizedVectors can be assigned from a normalized vector") {
 }
 
 TEST_CASE("NormalizedVectors can be explicitly cast to the implementation") {
-    const Patient::NormalizedVector v(1, 0, 0);
+    const Data::NormalizedVector v(1, 0, 0);
     auto impl = static_cast<TestVector>(v);
     CHECK(impl.m_values[0] == 1);
     CHECK(impl.m_values[1] == 0);
     CHECK(impl.m_values[2] == 0);
 }
 TEST_CASE("NormalizedVector can be implicitly cast to a Vector") {
-    const Patient::NormalizedVector v(1, 0, 0);
-    const Patient::Vector v2 = v;
+    const Data::NormalizedVector v(1, 0, 0);
+    const Data::Vector v2 = v;
     CHECK(v2[0] == 1);
     CHECK(v2[1] == 0);
     CHECK(v2[2] == 0);
@@ -723,14 +723,14 @@ TEST_CASE("NormalizedVectors from Spaces that do not support XY cannot have thei
 TEST_CASE("NormalizedVectors can be converted from one space to another ignoring translation") {
     const TransformManager tm;
     const View::NormalizedVector v_view(1, 0, 0);
-    auto v_patient = v_view.ConvertTo<Patient>(tm);
-    CHECK(v_patient == Patient::Vector(15, 16, 17));
+    auto v_patient = v_view.ConvertTo<Data>(tm);
+    CHECK(v_patient == Data::Vector(15, 16, 17));
 }
 TEST_CASE("NormalizedVectors can be converted from one space to another to produce a Vector") {
     const TransformManager tm;
     const View::NormalizedVector v_view;
-    using converted_type = decltype(v_view.ConvertTo<Patient>(tm));
-    using required_type = Patient::Vector;
+    using converted_type = decltype(v_view.ConvertTo<Data>(tm));
+    using required_type = Data::Vector;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #ifndef IGNORE_SPACE_STATIC_ASSERT

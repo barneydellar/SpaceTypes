@@ -778,14 +778,14 @@ TEST_CASE("Zero size XYVectors cannot be normalized") {
 TEST_CASE("XYVectors can be converted from one space to another ignoring translation") {
     const TransformManager tm;
     const View::XYVector v_view(1, 0);
-    auto v_patient = v_view.ConvertTo<Patient>(tm);
-    CHECK(v_patient == Patient::Vector(15, 16, 17));
+    auto v_patient = v_view.ConvertTo<Data>(tm);
+    CHECK(v_patient == Data::Vector(15, 16, 17));
 }
 TEST_CASE("XYVectors can be converted from one space to another to produce a Vector") {
     const TransformManager tm;
     const View::XYVector v_view;
-    using converted_type = decltype(v_view.ConvertTo<Patient>(tm));
-    using required_type = Patient::Vector;
+    using converted_type = decltype(v_view.ConvertTo<Data>(tm));
+    using required_type = Data::Vector;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #ifndef IGNORE_SPACE_STATIC_ASSERT

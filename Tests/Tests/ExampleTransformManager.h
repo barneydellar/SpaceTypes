@@ -6,7 +6,7 @@ class TransformManager final
 public:
 
     template <typename From, typename To>
-    [[nodiscard]] TestVector Transform(
+    [[nodiscard]] TestVector TransformPoint(
         TestVector
     ) const noexcept {
         using namespace Space;
@@ -27,7 +27,7 @@ public:
     }
 
     template <typename From, typename To>
-    [[nodiscard]] TestVector Transform33(
+    [[nodiscard]] TestVector TransformVector(
         TestVector
     ) const noexcept {
         using namespace Space;

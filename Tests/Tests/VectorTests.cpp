@@ -17,13 +17,13 @@ TEST_CASE("Vectors can be constructed from implementation") {
     impl.m_values[0] = 3;
     impl.m_values[1] = 2;
     impl.m_values[2] = 1;
-    const Patient::Vector v(impl);
+    const Data::Vector v(impl);
     CHECK(v.X() == 3);
     CHECK(v.Y() == 2);
     CHECK(v.Z() == 1);
 }
 TEST_CASE("Vectors Can Be Constructed From Three Doubles") {
-    const Patient::Vector v(4, 5, 6);
+    const Data::Vector v(4, 5, 6);
     CHECK(v.X() == 4);
     CHECK(v.Y() == 5);
     CHECK(v.Z() == 6);
@@ -66,7 +66,7 @@ TEST_CASE("Vectors can be assigned from a vector") {
 }
 
 TEST_CASE("Vectors can be explicitly cast to the implementation") {
-    const Patient::Vector v(1, 2, 3);
+    const Data::Vector v(1, 2, 3);
     auto impl = static_cast<TestVector>(v);
     CHECK(impl.m_values[0] == 1);
     CHECK(impl.m_values[1] == 2);
@@ -80,7 +80,7 @@ TEST_CASE("Vectors support element access by name") {
     CHECK(v.Z() == 4);
 }
 
-TEST_CASE("Vector elements can be modifed by name") {
+TEST_CASE("Vector elements can be modified by name") {
     Image::Vector v(2, 3, 4);
     v.SetX(10);
     v.SetY(20);
@@ -792,14 +792,14 @@ TEST_CASE("Zero size vectors cannot be normalized") {
 TEST_CASE("Vectors can be converted from one space to another ignoring translation") {
     const TransformManager tm;
     const View::Vector v_view(1, 0, 0);
-    auto v_patient = v_view.ConvertTo<Patient>(tm);
-    CHECK(v_patient == Patient::Vector(15, 16, 17));
+    auto v_patient = v_view.ConvertTo<Data>(tm);
+    CHECK(v_patient == Data::Vector(15, 16, 17));
 }
 TEST_CASE("Vectors can be converted from one space to another to produce a Vector") {
     const TransformManager tm;
     const View::Vector v_view;
-    using converted_type = decltype(v_view.ConvertTo<Patient>(tm));
-    using required_type = Patient::Vector;
+    using converted_type = decltype(v_view.ConvertTo<Data>(tm));
+    using required_type = Data::Vector;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #ifndef IGNORE_SPACE_STATIC_ASSERT

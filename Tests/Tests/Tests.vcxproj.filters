@@ -20,9 +20,6 @@
     <ClCompile Include="NormalizedVectorTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="VectorAndPointTests.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
     <ClCompile Include="VectorTests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>

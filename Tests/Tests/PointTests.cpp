@@ -17,13 +17,13 @@ TEST_CASE("Points can be constructed from implementation") {
     impl.m_values[0] = 3;
     impl.m_values[1] = 2;
     impl.m_values[2] = 1;
-    const Patient::Point p(impl);
+    const Data::Point p(impl);
     CHECK(p.X() == 3);
     CHECK(p.Y() == 2);
     CHECK(p.Z() == 1);
 }
 TEST_CASE("Points Can Be Constructed From Three Doubles") {
-    const Patient::Point p(4, 5, 6);
+    const Data::Point p(4, 5, 6);
     CHECK(p.X() == 4);
     CHECK(p.Y() == 5);
     CHECK(p.Z() == 6);
@@ -66,7 +66,7 @@ TEST_CASE("Points can be assigned from a point") {
 }
 
 TEST_CASE("Points can be explicitly cast to the implementation") {
-    const Patient::Point p(1, 2, 3);
+    const Data::Point p(1, 2, 3);
     auto impl = static_cast<TestVector>(p);
     CHECK(impl.m_values[0] == 1);
     CHECK(impl.m_values[1] == 2);
@@ -566,14 +566,14 @@ TEST_CASE("Points from Spaces that do not support XY cannot have their z-value r
 TEST_CASE("Points can be converted from one space to another ignoring translation") {
     const TransformManager tm;
     const View::Point p_view(1, 0, 0);
-    auto v_patient = p_view.ConvertTo<Patient>(tm);
-    CHECK(v_patient == Patient::Point(-5, -6, -7));
+    auto v_patient = p_view.ConvertTo<Data>(tm);
+    CHECK(v_patient == Data::Point(-5, -6, -7));
 }
 TEST_CASE("Points can be converted from one space to another to produce a Point") {
     const TransformManager tm;
     const View::Point p_view;
-    using converted_type = decltype(p_view.ConvertTo<Patient>(tm));
-    using required_type = Patient::Point;
+    using converted_type = decltype(p_view.ConvertTo<Data>(tm));
+    using required_type = Data::Point;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #ifndef IGNORE_SPACE_STATIC_ASSERT

@@ -45,13 +45,13 @@ TEST_CASE("Strongly typed collections can be used in templated functions: View S
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Strongly typed collections can be used in templated functions: Patient Space") {
-    const std::vector<Patient::Point> v{
-        Patient::Point{1, 1, 1},
-        Patient::Point{2, 2, 2}
+TEST_CASE("Strongly typed collections can be used in templated functions: Data Space") {
+    const std::vector<Data::Point> v{
+        Data::Point{1, 1, 1},
+        Data::Point{2, 2, 2}
     };
 
-    const auto first = ReturnFirst<Patient>(v);
+    const auto first = ReturnFirst<Data>(v);
 
     CHECK(first == v.front());
 }
