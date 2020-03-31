@@ -75,13 +75,6 @@ namespace Space {
             return operator[](I);
         }
 
-        template <typename U = std::enable_if_t<static_cast<bool>(ThisSpace::hasXY), ThisSpace>>
-        [[nodiscard]] XYPoint<U, Implementation> ToXY() const {
-            return XYPoint<ThisSpace, Implementation>(X(), Y());
-        }
-        template <typename U = std::enable_if_t<!static_cast<bool>(ThisSpace::hasXY), void>>
-        [[nodiscard]] StaticAssert::XYVector_not_supported ToXY() const = delete;
-
         [[nodiscard]] bool operator== (const Point<ThisSpace, Implementation>& other) const noexcept {
             return std::equal(cbegin(), cend(), detail::cbegin(other.m_impl), detail::Equality);
         }
@@ -188,6 +181,11 @@ namespace Space {
             return Point<OtherSpace, Implementation>(transform_manager.template Transform<ThisSpace, OtherSpace>(static_cast<Implementation>(*this)));
         }
 
+        template <typename U = std::enable_if_t<static_cast<bool>(ThisSpace::hasXY), ThisSpace>>
+        [[nodiscard]] XYPoint<U, Implementation> ToXY() const {
+            return XYPoint<ThisSpace, Implementation>(X(), Y());
+        }
+
         friend std::ostream& operator << (
             std::ostream& os,
             const Point<ThisSpace, Implementation>& item
@@ -238,11 +236,30 @@ namespace Space {
             return StaticAssert::invalid_point_vector_equality{};
         }
 
+        StaticAssert::invalid_point_to_point_addition operator+=(const Point<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_point_to_point_addition{};
+        }
+        StaticAssert::invalid_point_to_point_addition operator+=(const XYPoint<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_point_to_point_addition{};
+        }
+
         StaticAssert::invalid_point_to_point_addition operator+(const Point<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_to_point_addition{};
         }
         StaticAssert::invalid_point_to_point_addition operator+(const XYPoint<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_to_point_addition{};
+        }
+
+        StaticAssert::invalid_point_from_vector_subtraction operator-=(const Point<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_point_from_vector_subtraction{};
+        }
+        StaticAssert::invalid_point_from_vector_subtraction operator-=(const XYPoint<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_point_from_vector_subtraction{};
+        }
+
+        template <typename U = std::enable_if_t<!static_cast<bool>(ThisSpace::hasXY), void>>
+        [[nodiscard]] StaticAssert::XYVector_not_supported ToXY() const noexcept {
+            return StaticAssert::XYVector_not_supported{};
         }
 #endif
         // Hide functions from intellisense

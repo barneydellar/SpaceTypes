@@ -248,7 +248,6 @@ namespace Space {
             return StaticAssert::invalid_point_to_vector_addition{};
         }
 
-
         StaticAssert::invalid_normalized_vector_scale operator*=(const double&) const noexcept {
             return StaticAssert::invalid_normalized_vector_scale{};
         }

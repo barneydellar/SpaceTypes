@@ -569,7 +569,7 @@ TEST_CASE("Points can be converted from one space to another ignoring translatio
     auto v_patient = p_view.ConvertTo<Patient>(tm);
     CHECK(v_patient == Patient::Point(-5, -6, -7));
 }
-TEST_CASE("Points can be converted from one space to another to produce a Vector") {
+TEST_CASE("Points can be converted from one space to another to produce a Point") {
     const TransformManager tm;
     const View::Point p_view;
     using converted_type = decltype(p_view.ConvertTo<Patient>(tm));

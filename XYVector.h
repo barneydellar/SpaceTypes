@@ -273,14 +273,14 @@ namespace Space {
             return StaticAssert::invalid_point_to_vector_addition{};
         }
 
-        StaticAssert::invalid_normalized_vector_in_place_cross operator*=(const Vector<ThisSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_normalized_vector_in_place_cross{};
+        StaticAssert::invalid_XYVector_in_place_cross operator*=(const Vector<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_XYVector_in_place_cross{};
         }
-        StaticAssert::invalid_normalized_vector_in_place_cross operator*=(const NormalizedVector<ThisSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_normalized_vector_in_place_cross{};
+        StaticAssert::invalid_XYVector_in_place_cross operator*=(const NormalizedVector<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_XYVector_in_place_cross{};
         }
-        StaticAssert::invalid_normalized_vector_in_place_cross operator*=(const NormalizedXYVector<ThisSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_normalized_vector_in_place_cross{};
+        StaticAssert::invalid_XYVector_in_place_cross operator*=(const NormalizedXYVector<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_XYVector_in_place_cross{};
         }
         StaticAssert::invalid_XYVector_in_place_cross operator*=(const XYVector<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_XYVector_in_place_cross{};
@@ -293,11 +293,11 @@ namespace Space {
             return StaticAssert::invalid_vector_to_vector_addition{};
         }
 
-        StaticAssert::invalid_normalized_vector_subtraction operator-=(const Vector<ThisSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_normalized_vector_subtraction{};
+        StaticAssert::invalid_vector_from_vector_subtraction operator-=(const Vector<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_vector_from_vector_subtraction{};
         }
-        StaticAssert::invalid_normalized_vector_subtraction operator-=(const NormalizedVector<ThisSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_normalized_vector_subtraction{};
+        StaticAssert::invalid_vector_from_vector_subtraction operator-=(const NormalizedVector<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_vector_from_vector_subtraction{};
         }
 #endif
     private:

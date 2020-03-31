@@ -50,6 +50,14 @@ namespace Space::StaticAssert {
         }
     };
 
+    struct invalid_point_from_point_subtraction final : invalid_base
+    {
+        template<typename T = void>
+        invalid_point_from_point_subtraction() {
+            static_assert(false, "You can't subtract a point from a point in place.");
+        }
+    };
+
     struct invalid_point_from_vector_subtraction final : invalid_base
     {
         template<typename T = void>
@@ -70,7 +78,7 @@ namespace Space::StaticAssert {
     {
         template<typename T = void>
         invalid_vector3_from_xy_point_subtraction() {
-            static_assert(false, "You can't subtract a 3D vector from a 2D points in-place.");
+            static_assert(false, "You can't subtract a 3D vector from a 2D point in-place.");
         }
     };
 
@@ -79,6 +87,14 @@ namespace Space::StaticAssert {
         template<typename T = void>
         invalid_vector_to_vector_addition() {
             static_assert(false, "You can't add vectors to 2D vectors in place.");
+        }
+    };
+
+    struct invalid_vector_from_vector_subtraction final : invalid_base
+    {
+        template<typename T = void>
+        invalid_vector_from_vector_subtraction() {
+            static_assert(false, "You can't subtract a 3D vector from a 2D vector in-place.");
         }
     };
 
