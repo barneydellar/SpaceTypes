@@ -3,26 +3,43 @@
 
 using namespace Space;
 
-//-------------------------------------------------------------------------------------------------
+#include "pch.h"
+#include "SpaceHelpers.h"
 
-TEST_CASE("Normalized Vectors can be constructed") {
+using namespace Space;
+
+TEST_CASE("NormalizedVectors can be constructed") {
     View::NormalizedVector v;
 }
-
-TEST_CASE("Normalized Vectors default to the i vector") {
+TEST_CASE("NormalizedVectors default to the i vector") {
     View::NormalizedVector v;
     CHECK(v[0] == 1);
     CHECK(v[1] == 0);
     CHECK(v[2] == 0);
 }
-TEST_CASE("Normalized Vectors can be created using initalizer lists of three numbers") {
-    View::NormalizedVector v{10, 0, 0 };
-    CHECK(v[0] == 1);
-    CHECK(v[1] == 0);
-    CHECK(v[2] == 0);
+TEST_CASE("NormalizedVectors can be constructed from implementation") {
+    TestVector impl;
+    impl.m_values[0] = 3;
+    impl.m_values[1] = 4;
+    impl.m_values[2] = 0;
+    const Patient::NormalizedVector v(impl);
+    CHECK(v.X() == 3/5.0);
+    CHECK(v.Y() == 4 / 5.0);
+    CHECK(v.Z() == 0);
 }
-
-TEST_CASE("Normalized Vectors throw when using initalizer lists that are too small") {
+TEST_CASE("NormalizedVectors Can Be Constructed From Three Doubles") {
+    const Patient::NormalizedVector v(3, 4, 0);
+    CHECK(v.X() == 3 / 5.0);
+    CHECK(v.Y() == 4 / 5.0);
+    CHECK(v.Z() == 0);
+}
+TEST_CASE("NormalizedVectors can be created using initalizer lists of three numbers") {
+    View::NormalizedVector v{ 3, 4, 0 };
+    CHECK(v.X() == 3 / 5.0);
+    CHECK(v.Y() == 4 / 5.0);
+    CHECK(v.Z() == 0);
+}
+TEST_CASE("NormalizedVectors throw when using initalizer lists that are too small") {
     try
     {
         View::NormalizedVector v{ 1, 2 };
@@ -33,7 +50,7 @@ TEST_CASE("Normalized Vectors throw when using initalizer lists that are too sma
     }
     REQUIRE(false);
 }
-TEST_CASE("Normalized Vectors throw when using initalizer lists that are too large") {
+TEST_CASE("NormalizedVectors throw when using initalizer lists that are too large") {
     try
     {
         View::NormalizedVector v{ 1, 2, 3, 4 };
@@ -45,794 +62,37 @@ TEST_CASE("Normalized Vectors throw when using initalizer lists that are too lar
     REQUIRE(false);
 }
 
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsCanBeConstructedAndNormalizedFromImplementation") {
-    TestVector impl;
-    impl.m_values[0] = 3;
-    impl.m_values[1] = 0;
-    impl.m_values[2] = 0;
-    const Patient::NormalizedVector v(impl);
+TEST_CASE("NormalizedVectors can be assigned from a normalized vector") {
+    const View::NormalizedVector v2(1, 0, 0);
+    const View::NormalizedVector v = v2;
+    CHECK(v.X() == 1);
+    CHECK(v.Y() == 0);
+    CHECK(v.Z() == 0);
+}
+TEST_CASE("NormalizedVectors can be assigned from a normalized XYvector") {
+    const View::NormalizedXYVector v2(1, 0);
+    const View::NormalizedVector v = v2;
     CHECK(v.X() == 1);
     CHECK(v.Y() == 0);
     CHECK(v.Z() == 0);
 }
 
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("Normalized Vectors are normalised when constructed from an implementation") {
-    TestVector impl_in;
-    impl_in.m_values[0] = 3;
-    impl_in.m_values[1] = 0;
-    impl_in.m_values[2] = 4;
-    const Patient::NormalizedVector v(impl_in);
+TEST_CASE("NormalizedVectors can be cast to the implementation") {
+    const Patient::NormalizedVector v(1, 0, 0);
     auto impl = static_cast<TestVector>(v);
-    CHECK(impl.m_values[0] == 3 / 5.0);
+    CHECK(impl.m_values[0] == 1);
     CHECK(impl.m_values[1] == 0);
-    CHECK(impl.m_values[2] == 4 / 5.0);
+    CHECK(impl.m_values[2] == 0);
 }
 
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsCanBeConstructedAndNormalizedFromThreeDoubles") {
-    const Patient::NormalizedVector v(2, 0, 0);
-    CHECK(v.X() == 1);
-    CHECK(v.Y() == 0);
-    CHECK(v.Z() == 0);
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsStartOffNormalized") {
-    const Patient::NormalizedVector v(3, 4, 0);
-    CHECK(v.X() == 3/5.0);
-    CHECK(v.Y() == 4/5.0);
-    CHECK(v.Z() == 0);
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("ZeroSizedNormalizedVectorsCannotBeCreated") {
-    CHECK_THROWS_AS(Patient::NormalizedVector(0, 0, 0), std::invalid_argument);
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("Normalized Vectors can be cast to the implementation") {
-    const Patient::NormalizedVector v(1, 0, 0);
-    auto impl = static_cast<TestVector>(v);
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("Normalized Vectors cannot be implicitly cast to the implementation") {
-    const Patient::NormalizedVector v(1, 0, 0);
-
-    // This should not compile
-    //TestVector impl = v;
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorCanBePassedByValueToVector") {
-
-    const Patient::NormalizedVector nv(0, 0, 1);
-
-    const auto lambda = [](
-        const Patient::Vector v
-    ) {
-        CHECK(v.X() == 0);
-        CHECK(v.Y() == 0);
-        CHECK(v.Z() == 1);
-
-    };
-
-    lambda(nv);
-}
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorCanBePassedByConstRefToVector") {
-    const Patient::NormalizedVector nv(0, 0, 1);
-
-    const auto lambda = [](
-        const Patient::Vector& v
-    ) {
-        CHECK(v.X() == 0);
-        CHECK(v.Y() == 0);
-        CHECK(v.Z() == 1);
-    };
-
-    lambda(nv);
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsFromTheSameSpaceCanBeComparedUsingEqual_same") {
-    const View::NormalizedVector v1(1, 0, 0);
-    const View::NormalizedVector v2(1, 0, 0);
-    CHECK(v1 == v2);
-}
-
-TEST_CASE("NormalizedVectorsFromTheSameSpaceCanBeComparedUsingEqual_different") {
-    const Patient::NormalizedVector v1(1, 0, 0);
-    const Patient::NormalizedVector v2(0, 1, 0);
-    CHECK(!(v1 == v2));
-}
-
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeComparedUsingEqual") {
-    const View::NormalizedVector v1(1, 0, 0);
-    const Patient::NormalizedVector v2(1, 0, 0);
-
-    // We should not be able to compile:
-    // auto dummy = v1 == v2;
-    // But we can check the return type,
-    // to make sure we get an invalid type:
-    using converted_type = decltype(v1 == v2);
-    using required_type = StaticAssert::invalid_space;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
-}
-#endif
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsFromTheSameSpaceCanBeComparedUsingInequality_same") {
-    const View::NormalizedVector v1(1, 0, 0);
-    const View::NormalizedVector v2(1, 0, 0);
-    CHECK(!(v1 != v2));
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("Normalized Vectors and Vectors From The Same Space Can Be Compared Using Inequality") {
-    const View::NormalizedVector v1(1, 0, 0);
-    const View::Vector v2(1, 0, 0);
-    CHECK(!(v1 != v2));
-}
-
-TEST_CASE("Normalized Vectors and Normalized XY Vectors From The Same Space Can Be Compared Using Inequality") {
-    const View::NormalizedVector v1(1, 0, 0);
-    const View::NormalizedXYVector v2(1, 0);
-    CHECK(!(v1 != v2));
-}
-
-TEST_CASE("Normalized Vectors and XY Vectors From The Same Space Can Be Compared Using Inequality") {
-    const View::NormalizedVector v1(1, 0, 0);
-    const View::NormalizedXYVector v2(1, 0);
-    CHECK(!(v1 != v2));
-}
-
-TEST_CASE("NormalizedVectorsFromTheSameSpaceCanBeComparedUsingInequality_different") {
-    const Patient::NormalizedVector v1(1, 0, 0);
-    const Patient::NormalizedVector v2(0, 1, 0);
-    CHECK(v1 != v2);
-}
-
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeComparedUsingInequality") {
-    const View::NormalizedVector v1(1, 0, 0);
-    const Patient::NormalizedVector v2(1, 0, 0);
-
-    // We should not be able to compile:
-    // auto dummy = v1 != v2;
-    // But we can check the return type,
-    // to make sure we get an invalid type:
-    using converted_type = decltype(v1 != v2);
-    using required_type = StaticAssert::invalid_space;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
-}
-#endif
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsCanBeMultiplied") {
-    const View::NormalizedVector v_norm(1, 0, 0);
-    const auto scaled_v = v_norm * 2;
-    CHECK(scaled_v == View::Vector(2, 0, 0));
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsCanBeScaledToProduceAVector") {
-    const Image::NormalizedVector v_norm(1, 0, 0);
-
-    using converted_type = decltype(v_norm * 2);
-    using required_type = decltype(Image::Vector{});
-
-    CHECK(
-        static_cast<bool>(std::is_same_v<converted_type, required_type>)
-    );
-}
-
-//-------------------------------------------------------------------------------------------------
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("NormalizedVectorsCannotBeInlineScaled") {
-    const Image::NormalizedVector v_norm(1, 0, 0);
-
-    // We should not be able to compile:
-    // v_norm *= 2.0;
-    // But we can check the return type,
-    // to make sure we get an invalid type:
-    using converted_type = decltype(v_norm *= 2.0);
-    using required_type = StaticAssert::invalid_normalized_vector_scale;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
-}
-#endif
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsCanBeAdded") {
-    const Image::NormalizedVector v_norm_1(1, 0, 0);
-    const Image::NormalizedVector v_norm_2(0, 1, 0);
-
-    const auto added = v_norm_1 + v_norm_2;
-    CHECK(added == Image::Vector(1, 1, 0));
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsCanBeAddedToProduceAVector") {
-    const Image::NormalizedVector v_norm_1(1, 0, 0);
-    const Image::NormalizedVector v_norm_2(0, 1, 0);
-
-    using converted_type = decltype(v_norm_1 + v_norm_2);
-    using required_type = decltype(Image::Vector{});
-
-    CHECK(
-        static_cast<bool>(std::is_same_v<converted_type, required_type>)
-    );
-}
-
-//-------------------------------------------------------------------------------------------------
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeAdded") {
-    const Image::NormalizedVector v_norm_1(1, 0, 0);
-    const Patient::NormalizedVector v_norm_2(0, 1, 0);
-
-    // We should not be able to compile:
-    // auto dummy = v_norm_1 + v_norm_2;
-    // But we can check the return type,
-    // to make sure we get an invalid type:
-    using converted_type = decltype(v_norm_1 + v_norm_2);
-    using required_type = StaticAssert::invalid_space;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
-}
-#endif
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsAndVectorsCanBeAdded") {
-    const Image::NormalizedVector v_norm_1(1, 0, 0);
-    const Image::Vector v_2(0, 1, 0);
-
-    const auto added = v_norm_1 + v_2;
-    CHECK(added == Image::Vector(1, 1, 0));
-}
-TEST_CASE("Normalized Vectors And NormalizedVector Can Be Added") {
-    const Image::NormalizedVector v_norm_1(1, 0, 0);
-    const Image::NormalizedVector v_2(0, 1, 0);
-
-    const auto added = v_norm_1 + v_2;
-    CHECK(added == Image::Vector(1, 1, 0));
-}
-TEST_CASE("Normalized Vectors And NormalizedXYVector Can Be Added") {
-    const Image::NormalizedVector v_norm_1(1, 0, 0);
-    const Image::NormalizedXYVector v_2(0, 1);
-
-    const auto added = v_norm_1 + v_2;
-    CHECK(added == Image::Vector(1, 1, 0));
-}
-TEST_CASE("Normalized Vectors And XYVector Can Be Added") {
-    const Image::NormalizedVector v_norm_1(1, 0, 0);
-    const Image::XYVector v_2(0, 1);
-
-    const auto added = v_norm_1 + v_2;
-    CHECK(added == Image::Vector(1, 1, 0));
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsAndVectorsCanBeAddedToProduceAVector") {
-    const Image::NormalizedVector v_norm_1(1, 0, 0);
-    const Image::Vector v_2(0, 1, 0);
-
-    using converted_type = decltype(v_norm_1 + v_2);
-    using required_type = decltype(Image::Vector{});
-
-    CHECK(
-        static_cast<bool>(std::is_same_v<converted_type, required_type>)
-    );
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("VectorsAndNormalizedVectorsCanBeAddedToProduceAVector") {
-    const Image::Vector v_1(1, 0, 0);
-    const Image::NormalizedVector v_norm_2(0, 1, 0);
-
-    using converted_type = decltype(v_1 + v_norm_2);
-    using required_type = decltype(Image::Vector{});
-
-    CHECK(
-        static_cast<bool>(std::is_same_v<converted_type, required_type>)
-    );
-}
-
-//-------------------------------------------------------------------------------------------------
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("VectorsAndNormalizedVectorsFromDifferentSpacesCannotBeAdded") {
-    const Image::Vector v_norm_1(1, 0, 0);
-    const Patient::NormalizedVector v_norm_2(0, 1, 0);
-
-    // We should not be able to compile:
-    // auto dummy = v_norm_1 + v_norm_2;
-    // But we can check the return type,
-    // to make sure we get an invalid type:
-    using converted_type = decltype(v_norm_1 + v_norm_2);
-    using required_type = StaticAssert::invalid_space;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
-}
-#endif
-
-//-------------------------------------------------------------------------------------------------
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("NormalizedVectorsCannotBeInlineAdded") {
-    const Image::NormalizedVector v_norm_1(1, 0, 0);
-    const Image::NormalizedVector v_norm_2(0, 1, 0);
-
-    // We should not be able to compile:
-    // v_norm_1 += v_norm_2;
-    // But we can check the return type,
-    // to make sure we get an invalid type:
-    using converted_type = decltype(v_norm_1 += v_norm_2);
-    using required_type = StaticAssert::invalid_normalized_vector_addition;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
-}
-#endif
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsCanBeSubtracted") {
-    const Image::NormalizedVector v_norm_1(1, 0, 0);
-    const Image::NormalizedVector v_norm_2(0, 1, 0);
-
-    const auto added = v_norm_1 - v_norm_2;
-    CHECK(added == Image::Vector(1, -1, 0));
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsCanBeSubtractedFromProduceAVector") {
-    const Image::NormalizedVector v_norm_1(1, 0, 0);
-    const Image::NormalizedVector v_norm_2(0, 1, 0);
-
-    using converted_type = decltype(v_norm_1 - v_norm_2);
-    using required_type = decltype(Image::Vector{});
-
-    CHECK(
-        static_cast<bool>(std::is_same_v<converted_type, required_type>)
-    );
-}
-
-//-------------------------------------------------------------------------------------------------
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeSubtracted") {
-    const Image::NormalizedVector v_norm_1(1, 0, 0);
-    const Patient::NormalizedVector v_norm_2(0, 1, 0);
-
-    // We should not be able to compile:
-    // auto dummy = v_norm_1 - v_norm_2;
-    // But we can check the return type,
-    // to make sure we get an invalid type:
-    using converted_type = decltype(v_norm_1 - v_norm_2);
-    using required_type = StaticAssert::invalid_space;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
-}
-#endif
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsAndVectorsCanBeSubtracted") {
-    const Image::NormalizedVector v_norm_1(1, 0, 0);
-    const Image::Vector v_2(0, 1, 0);
-
-    const auto added = v_norm_1 - v_2;
-    CHECK(added == Image::Vector(1, -1, 0));
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("Normalized Vectors And Normalized XY Vectors Can Be Subtracted") {
-    const Image::NormalizedVector v_norm_1(1, 0, 0);
-    const Image::NormalizedXYVector v_2(0, 1);
-
-    const auto added = v_norm_1 - v_2;
-    CHECK(added == Image::Vector(1, -1, 0));
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("Normalized Vectors And XY Vectors Can Be Subtracted") {
-    const Image::NormalizedVector v_norm_1(1, 0, 0);
-    const Image::XYVector v_2(0, 1);
-
-    const auto added = v_norm_1 - v_2;
-    CHECK(added == Image::Vector(1, -1, 0));
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsAndVectorsCanBeSubtractedFromProduceAVector") {
-    const Image::NormalizedVector v_norm_1(1, 0, 0);
-    const Image::Vector v_2(0, 1, 0);
-
-    using converted_type = decltype(v_norm_1 - v_2);
-    using required_type = decltype(Image::Vector{});
-
-    CHECK(
-        static_cast<bool>(std::is_same_v<converted_type, required_type>)
-    );
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("VectorsAndNormalizedVectorsCanBeSubtractedFromProduceAVector") {
-    const Image::Vector v_1(1, 0, 0);
-    const Image::NormalizedVector v_norm_2(0, 1, 0);
-
-    using converted_type = decltype(v_1 - v_norm_2);
-    using required_type = decltype(Image::Vector{});
-
-    CHECK(
-        static_cast<bool>(std::is_same_v<converted_type, required_type>)
-    );
-}
-
-//-------------------------------------------------------------------------------------------------
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("VectorsAndNormalizedVectorsFromDifferentSpacesCannotBeSubtracted") {
-    const Image::Vector v_norm_1(1, 0, 0);
-    const Patient::NormalizedVector v_norm_2(0, 1, 0);
-
-    // We should not be able to compile:
-    // auto dummy = v_norm_1 - v_norm_2;
-    // But we can check the return type,
-    // to make sure we get an invalid type:
-    using converted_type = decltype(v_norm_1 - v_norm_2);
-    using required_type = StaticAssert::invalid_space;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
-}
-#endif
-
-//-------------------------------------------------------------------------------------------------
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("NormalizedVectorsCannotBeInlineSubtracted") {
-    const Image::NormalizedVector v_norm_1(1, 0, 0);
-    const Image::NormalizedVector v_norm_2(0, 1, 0);
-
-    // We should not be able to compile:
-    // v_norm_1 -= v_norm_2;
-    // But we can check the return type,
-    // to make sure we get an invalid type:
-    using converted_type = decltype(v_norm_1 -= v_norm_2);
-    using required_type = StaticAssert::invalid_normalized_vector_subtraction;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
-}
-#endif
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsFromTheSameSpaceCanBeDotted") {
-    const View::NormalizedVector v1(1, 0, 0);
-    const View::NormalizedVector v2(1, 0, 0);
-    const auto dot = v1.Dot(v2);
-    CHECK(dot == 1);
-}
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeDotted") {
-    const View::NormalizedVector v1(1, 0, 0);
-    const Image::NormalizedVector v2(1, 0, 0);
-
-    // We should not be able to compile:
-    // auto dummy = v1.Dot(v2);
-    // But we can check the return type,
-    // to make sure we get an invalid type:
-    using converted_type = decltype(v1.Dot(v2));
-    using required_type = StaticAssert::invalid_space;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
-}
-#endif
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("VectorsAndNormalizedVectorsFromTheSameSpaceCanBeDotted") {
-    const View::Vector v1(1, 0, 0);
-    const View::NormalizedVector v2(1, 0, 0);
-    const auto dot = v1.Dot(v2);
-    CHECK(dot == 1);
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsAndVectorsFromTheSameSpaceCanBeDotted") {
-    const View::NormalizedVector v1(1, 0, 0);
-    const View::Vector v2(1, 0, 0);
-    const auto dot = v1.Dot(v2);
-    CHECK(dot == 1);
-}
-TEST_CASE("NormalizedVectors And NormalizedXYVector From The Same Space Can Be Dotted") {
-    const View::NormalizedVector v1(1, 0, 0);
-    const View::NormalizedXYVector v2(1, 0);
-    const auto dot = v1.Dot(v2);
-    CHECK(dot == 1);
-}
-TEST_CASE("NormalizedVectors And XYVector From The Same Space Can Be Dotted") {
-    const View::NormalizedVector v1(1, 0, 0);
-    const View::XYVector v2(1, 0);
-    const auto dot = v1.Dot(v2);
-    CHECK(dot == 1);
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsCanBeAssignedToAVector") {
-    const Image::NormalizedVector v_norm(1, 0, 0);
-    const Image::Vector v = v_norm;
-    CHECK(v.X() == 1);
-    CHECK(v.Y() == 0);
-    CHECK(v.Z() == 0);
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsCanBeCrossed") {
-    const Image::NormalizedVector v_norm_x(1, 0, 0);
-    const Image::NormalizedVector v_norm_y(0, 1, 0);
-
-    const auto result = v_norm_x.Cross(v_norm_y);
-
-    CHECK(result == Image::NormalizedVector(0, 0, 1));
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsCanBeCrossedToGiveANewNormalizedVector") {
-    const Image::NormalizedVector v_norm_x(1, 0, 0);
-    const Image::NormalizedVector v_norm_y(0, 1, 0);
-
-    using converted_type = decltype(v_norm_x.Cross(v_norm_y));
-    using required_type = decltype(Image::NormalizedVector{});
-    CHECK(
-        static_cast<bool>(std::is_same_v<converted_type, required_type>)
-    );
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsCanBeCrossedUsingStar") {
-    const Image::NormalizedVector v_norm_x(1, 0, 0);
-    const Image::NormalizedVector v_norm_y(0, 1, 0);
-
-    const auto result = v_norm_x * v_norm_y;
-
-    CHECK(result == Image::NormalizedVector(0, 0, 1));
-}
-TEST_CASE("NormalizedVectorsCanBeCrossedUsingStarToGiveANewNormalizedVector") {
-    const Image::NormalizedVector v_norm_x(1, 0, 0);
-    const Image::NormalizedVector v_norm_y(0, 1, 0);
-
-    using converted_type = decltype(v_norm_x * v_norm_y);
-    using required_type = decltype(Image::NormalizedVector{});
-    CHECK(
-        static_cast<bool>(std::is_same_v<converted_type, required_type>)
-    );
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsAndVectorsCanBeCrossed") {
-    const Image::NormalizedVector v_norm_x(1, 0, 0);
-    const Image::Vector v_y(0, 1, 0);
-
-    const auto result = v_norm_x.Cross(v_y);
-
-    CHECK(result == Image::NormalizedVector(0, 0, 1));
-}
-TEST_CASE("NormalizedVectorsAndVectorsCanBeCrossedToGiveANewVector") {
-    const Image::NormalizedVector v_norm_x(1, 0, 0);
-    const Image::Vector v_y(0, 1, 0);
-
-    using converted_type = decltype(v_norm_x.Cross(v_y));
-    using required_type = decltype(Image::Vector{});
-    CHECK(
-        static_cast<bool>(std::is_same_v<converted_type, required_type>)
-    );
-}
-
-TEST_CASE("NormalizedVectors And NormalizedXYVector Can Be Crossed") {
-    const Image::NormalizedVector v_norm_x(1, 0, 0);
-    const Image::NormalizedXYVector v_y(0, 1);
-
-    const auto result = v_norm_x.Cross(v_y);
-
-    CHECK(result == Image::NormalizedVector(0, 0, 1));
-}
-TEST_CASE("Normalized Vectors And NormalizedXYVector Can Be Crossed To Give A New NormalizedVector") {
-    const Image::NormalizedVector v_norm_x(1, 0, 0);
-    const Image::NormalizedXYVector v_y(0, 1);
-
-    using converted_type = decltype(v_norm_x.Cross(v_y));
-    using required_type = decltype(Image::NormalizedVector{});
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
-}
-
-TEST_CASE("NormalizedVectors And XYVector Can Be Crossed") {
-    const Image::NormalizedVector v_norm_x(1, 0, 0);
-    const Image::XYVector v_y(0, 1);
-
-    const auto result = v_norm_x.Cross(v_y);
-
-    CHECK(result == Image::NormalizedVector(0, 0, 1));
-}
-TEST_CASE("Normalized Vectors And XYVector Can Be Crossed To Give A New Vector") {
-    const Image::NormalizedVector v_norm_x(1, 0, 0);
-    const Image::XYVector v_y(0, 1);
-
-    using converted_type = decltype(v_norm_x.Cross(v_y));
-    using required_type = decltype(Image:: Vector{});
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsAndVectorsCanBeCrossedUsingStar") {
-    const Image::NormalizedVector v_norm_x(1, 0, 0);
-    const Image::Vector v_y(0, 1, 0);
-
-    const auto result = v_norm_x * v_y;
-
-    CHECK(result == Image::Vector(0, 0, 1));
-}
-TEST_CASE("NormalizedVectorsAndVectorsCanBeCrossedUsingStarToGiveANewVector") {
-    const Image::NormalizedVector v_norm_x(1, 0, 0);
-    const Image::Vector v_y(0, 1, 0);
-
-    using converted_type = decltype(v_norm_x * v_y);
-    using required_type = decltype(Image::Vector{});
-    CHECK(
-        static_cast<bool>(std::is_same_v<converted_type, required_type>)
-    );
-}
-
-TEST_CASE("Normalized Vectors And NormalizedXYVector Can Be Crossed Using Star") {
-    const Image::NormalizedVector v_norm_x(1, 0, 0);
-    const Image::NormalizedXYVector v_y(0, 1);
-
-    const auto result = v_norm_x * v_y;
-
-    CHECK(result == Image::NormalizedVector(0, 0, 1));
-}
-TEST_CASE("Normalized Vectors And NormalizedXYVector Can Be Crossed Using Star To Give A New NormalizedVector") {
-    const Image::NormalizedVector v_norm_x(1, 0, 0);
-    const Image::NormalizedXYVector v_y(0, 1);
-
-    using converted_type = decltype(v_norm_x * v_y);
-    using required_type = decltype(Image::NormalizedVector{});
-    CHECK(
-        static_cast<bool>(std::is_same_v<converted_type, required_type>)
-    );
-}
-
-TEST_CASE("Normalized Vectors And XYVector Can Be Crossed Using Star") {
-    const Image::NormalizedVector v_norm_x(1, 0, 0);
-    const Image::XYVector v_y(0, 1);
-
-    const auto result = v_norm_x * v_y;
-
-    CHECK(result == Image::Vector(0, 0, 1));
-}
-TEST_CASE("Normalized Vectors And XYVector Can Be Crossed Using Star To Give A New Vector") {
-    const Image::NormalizedVector v_norm_x(1, 0, 0);
-    const Image::XYVector v_y(0, 1);
-
-    using converted_type = decltype(v_norm_x * v_y);
-    using required_type = decltype(Image::Vector{});
-    CHECK(
-        static_cast<bool>(std::is_same_v<converted_type, required_type>)
-    );
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("VectorsAndNormalizedVectorsCanBeCrossed") {
-    const Image::Vector v_x(1, 0, 0);
-    const Image::NormalizedVector v_norm_y(0, 1, 0);
-
-    const auto result = v_x.Cross(v_norm_y);
-
-    CHECK(result == Image::NormalizedVector(0, 0, 1));
-}
-TEST_CASE("VectorsAndNormalizedVectorsCanBeCrossedToGiveANewVector") {
-    const Image::Vector v_x(1, 0, 0);
-    const Image::NormalizedVector v_norm_y(0, 1, 0);
-
-    using converted_type = decltype(v_x.Cross(v_norm_y));
-    using required_type = decltype(Image::Vector{});
-    CHECK(
-        static_cast<bool>(std::is_same_v<converted_type, required_type>)
-    );
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("VectorsAndNormalizedVectorsCanBeCrossedUsingStar") {
-    const Image::Vector v_x(1, 0, 0);
-    const Image::NormalizedVector v_norm_y(0, 1, 0);
-
-    const auto result = v_x.Cross(v_norm_y);
-
-    CHECK(result == Image::NormalizedVector(0, 0, 1));
-}
-TEST_CASE("VectorsAndNormalizedVectorsCanBeCrossedUsingStarToGiveANewVector") {
-    const Image::Vector v_x(1, 0, 0);
-    const Image::NormalizedVector v_norm_y(0, 1, 0);
-
-    using converted_type = decltype(v_x * v_norm_y);
-    using required_type = decltype(Image::Vector{});
-    CHECK(
-        static_cast<bool>(std::is_same_v<converted_type, required_type>)
-    );
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalisedVectorsFromTheSameSpaceCanBeCrossedUsingStarEqualOperator") {
-    View::NormalizedVector v1(1, 0, 0);
-    const View::NormalizedVector v2(0, 1, 0);
-    v1 *= v2;
-    CHECK(v1 == View::NormalizedVector(0, 0, 1));
-}
-
-TEST_CASE("Normalised Vectors and NormalizedXYVector From The Same Space Can Be Crossed Using Star Equal Operator") {
-    View::NormalizedVector v1(1, 0, 0);
-    const View::NormalizedXYVector v2(0, 1);
-    v1 *= v2;
-    CHECK(v1 == View::NormalizedVector(0, 0, 1));
-}
-
-//-------------------------------------------------------------------------------------------------
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("NormalisedVectors And Vectors From The Same Space Cannot Be Crossed Using Star Equal Operator") {
-    View::NormalizedVector v1;
-    const View::Vector v2;
-    using converted_type = decltype(v1 *= v2);
-    using required_type = StaticAssert::invalid_normalized_vector_in_place_cross;
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
-}
-#endif
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsSupportElementAccessByName") {
+TEST_CASE("NormalizedVectors support element access by name") {
     const Image::NormalizedVector v(1, 0, 0);
     CHECK(v.X() == 1);
     CHECK(v.Y() == 0);
     CHECK(v.Z() == 0);
 }
 
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("Normalized Vectors Do Not Support Modifcation By Name") {
-    Image::NormalizedVector v2;
-
-    // Should not compile:
-    //v2.SetX(5);
-    //v2.SetY(5);
-    //v2.SetZ(5);
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsSupportConstBeginAndEnd") {
+TEST_CASE("NormalizedVectors support const begin and end") {
     const Image::NormalizedVector v(1, 0, 0);
     std::vector<double> values;
     std::copy(v.cbegin(), v.cend(), std::back_inserter(values));
@@ -842,118 +102,583 @@ TEST_CASE("NormalizedVectorsSupportConstBeginAndEnd") {
     CHECK(values[2] == 0);
 }
 
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsDoNotSupportNorm") {
-    Image::NormalizedVector nv;
-
-    // We should not be able to compile:
-    // auto dummy = nv.Norm();
-}
-TEST_CASE("NormalizedVectorsDoNotSupportNonConstBegin") {
-    Image::NormalizedVector nv(2, 3, 4);
-
-    // We should not be able to compile:
-    // auto dummy = nv.begin();
-}
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsDoNotSupportNonConstEnd") {
-    Image::NormalizedVector nv;
-
-    // We should not be able to compile:
-    // auto dummy = nv.end();
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("Normalized Vectors Can Have their z-value removed") {
-    const View::NormalizedVector v(1, 0, 0);
-    const auto v_norm = v.ToXY();
-    CHECK(v_norm == View::NormalizedXYVector(1, 0));
-}
-
-TEST_CASE("Normalized Vectors Can Have their z-value removed to produce a Normalized XYVector") {
-    const View::NormalizedVector v;
-    using converted_type = decltype(v.ToXY());
-    using required_type = decltype(View::NormalizedXYVector{});
-    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
-}
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsSupportElementAccessByRandomAccess") {
-    const Image::NormalizedVector v(0, 1, 0);
-    CHECK(v[0] == 0);
-    CHECK(v[1] == 1);
+TEST_CASE("NormalizedVectors support element access by random access") {
+    const Image::NormalizedVector v(1, 0, 0);
+    CHECK(v[0] == 1);
+    CHECK(v[1] == 0);
     CHECK(v[2] == 0);
 }
-
-TEST_CASE("NormalizedVectorsThrowIfRandomAccessIsTooHigh") {
-    const Image::NormalizedVector v(1, 0, 0);
+TEST_CASE("NormalizedVectors throw if random access is too high") {
+    const Image::NormalizedVector v;
     CHECK_THROWS_AS(v[3], std::invalid_argument);
 }
 
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsSupportElementAccessByAt") {
+TEST_CASE("NormalizedVectors support element access by at") {
     const Image::NormalizedVector v(1, 0, 0);
     CHECK(v.at<0>() == 1);
     CHECK(v.at<1>() == 0);
     CHECK(v.at<2>() == 0);
 }
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("NormalizedVectorsSupportElementAccessByAtDoesNotCompileIfTooLow") {
-    const Image::NormalizedVector v(1, 0, 0);
-
-    // We should not be able to compile:
-    // auto dummy = v.at<-1>();
-    // But we can check the return type,
-    // to make sure we get an invalid type:
+TEST_CASE("NormalizedVectors at does not compile if too low") {
+    const Image::NormalizedVector v;
     using converted_type = decltype(v.at<-1>());
     using required_type = StaticAssert::invalid_at_access;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
-TEST_CASE("NormalizedVectorsSupportElementAccessByAtDoesNotCompileIfTooHigh") {
-    const Image::NormalizedVector v(1, 0, 0);
-
-    // We should not be able to compile:
-    // auto dummy = v.at<3>();
-    // But we can check the return type,
-    // to make sure we get an invalid type:
+TEST_CASE("NormalizedVectors at does not compile if too high") {
+    const Image::NormalizedVector v;
     using converted_type = decltype(v.at<3>());
     using required_type = StaticAssert::invalid_at_access;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
 
-//-------------------------------------------------------------------------------------------------
+TEST_CASE("NormalizedVector and Vector can be compared using equal: same") {
+    const View::NormalizedVector v(1, 0, 0);
+    const View::Vector v2(1, 0, 0);
+    CHECK(v == v2);
+}
+TEST_CASE("NormalizedVector and NormalizedVector can be compared using equal: same") {
+    const View::NormalizedVector v(1, 0, 0);
+    const View::NormalizedVector v2(1, 0, 0);
+    CHECK(v == v2);
+}
+TEST_CASE("NormalizedVector and NormalizedXYVector can be compared using equal: same") {
+    const View::NormalizedVector v(1, 0, 0);
+    const View::NormalizedXYVector v2(1, 0);
+    CHECK(v == v2);
+}
+TEST_CASE("NormalizedVector and XYVector can be compared using equal: same") {
+    const View::NormalizedVector v(1, 0, 0);
+    const View::XYVector v2(1, 0);
+    CHECK(v == v2);
+}
 
-TEST_CASE("NormalizedVectorsCanBeConvertedFromOneSpaceToAnotherIgnoringTranslation") {
+TEST_CASE("NormalizedVector and Vector can be compared using equal: different") {
+    const View::NormalizedVector v(1, 0, 1);
+    const View::Vector v2(1, 0, 0);
+    CHECK(!(v == v2));
+}
+TEST_CASE("NormalizedVector and NormalizedVector can be compared using equal: different") {
+    const View::NormalizedVector v(1, 0, 1);
+    const View::NormalizedVector v2(1, 0, 0);
+    CHECK(!(v == v2));
+}
+TEST_CASE("NormalizedVector and NormalizedXYVector can be compared using equal: different") {
+    const View::NormalizedVector v(1, 0, 1);
+    const View::NormalizedXYVector v2(1, 0);
+    CHECK(!(v == v2));
+}
+TEST_CASE("NormalizedVector and XYVector can be compared using equal: different") {
+    const View::NormalizedVector v(1, 0, 1);
+    const View::XYVector v2(1, 0);
+    CHECK(!(v == v2));
+}
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVectors from different spaces cannot be compared using equal") {
+    const View::NormalizedVector v;
+    const Image::Vector v_v;
+    const Image::NormalizedVector v_n;
+    const Image::NormalizedXYVector v_n_xy;
+    const Image::XYVector v_xy;
+
+    using converted_type_1 = decltype(v == v_v);
+    using converted_type_2 = decltype(v == v_n);
+    using converted_type_3 = decltype(v == v_n_xy);
+    using converted_type_4 = decltype(v == v_xy);
+    using required_type = StaticAssert::invalid_space;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
+}
+#endif
+
+TEST_CASE("NormalizedVector and Vector can be compared using inequality: same") {
+    const View::NormalizedVector v(1, 0, 0);
+    const View::Vector v2(1, 0, 0);
+    CHECK(!(v != v2));
+}
+TEST_CASE("NormalizedVector and NormalizedVector can be compared using inequality: same") {
+    const View::NormalizedVector v(1, 0, 0);
+    const View::NormalizedVector v2(1, 0, 0);
+    CHECK(!(v != v2));
+}
+TEST_CASE("NormalizedVector and NormalizedXYVector can be compared using inequality: same") {
+    const View::NormalizedVector v(1, 0, 0);
+    const View::NormalizedXYVector v2(1, 0);
+    CHECK(!(v != v2));
+}
+TEST_CASE("NormalizedVector and XYVector can be compared using inequality: same") {
+    const View::NormalizedVector v(1, 0, 0);
+    const View::XYVector v2(1, 0);
+    CHECK(!(v != v2));
+}
+
+TEST_CASE("NormalizedVector and Vector can be compared using inequality: different") {
+    const View::NormalizedVector v(1, 0, 1);
+    const View::Vector v2(1, 0, 0);
+    CHECK(v != v2);
+}
+TEST_CASE("NormalizedVector and NormalizedVector can be compared using inequality: different") {
+    const View::NormalizedVector v(1, 0, 1);
+    const View::NormalizedVector v2(1, 0, 0);
+    CHECK(v != v2);
+}
+TEST_CASE("NormalizedVector and NormalizedXYVector can be compared using inequality: different") {
+    const View::NormalizedVector v(1, 0, 1);
+    const View::NormalizedXYVector v2(1, 0);
+    CHECK(v != v2);
+}
+TEST_CASE("NormalizedVector and XYVector can be compared using inequality: different") {
+    const View::NormalizedVector v(1, 0, 1);
+    const View::XYVector v2(1, 0);
+    CHECK(v != v2);
+}
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVectors from different spaces cannot be compared using inequality") {
+    const View::NormalizedVector v;
+    const Image::Vector v_v;
+    const Image::NormalizedVector v_n;
+    const Image::NormalizedXYVector v_n_xy;
+    const Image::XYVector v_xy;
+
+    using converted_type_1 = decltype(v != v_v);
+    using converted_type_2 = decltype(v != v_n);
+    using converted_type_3 = decltype(v != v_n_xy);
+    using converted_type_4 = decltype(v != v_xy);
+    using required_type = StaticAssert::invalid_space;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
+}
+#endif
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVectors can have other vectors subtracted in place") {
+    View::NormalizedVector v;
+    const View::Vector v_v;
+    const View::NormalizedVector v_n;
+    const View::NormalizedXYVector v_n_xy;
+    const View::XYVector v_xy;
+
+    using converted_type_1 = decltype(v -= v_v);
+    using converted_type_2 = decltype(v -= v_n);
+    using converted_type_3 = decltype(v -= v_n_xy);
+    using converted_type_4 = decltype(v -= v_xy);
+    using required_type = StaticAssert::invalid_normalized_vector_subtraction;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
+}
+#endif
+
+TEST_CASE("NormalizedVectors can have Vectors subtracted") {
+    const Image::NormalizedVector v(0, 1, 0);
+    const Image::Vector v2(1, 0, 0);
+    auto v3 = v - v2;
+    CHECK(v3 == Image::Vector(-1, 1, 0));
+}
+TEST_CASE("NormalizedVectors can have NormalizedVector subtracted") {
+    const Image::NormalizedVector v(0, 1, 0);
+    const Image::NormalizedVector v2(1, 0, 0);
+    auto v3 = v - v2;
+    CHECK(v3 == Image::Vector(-1, 1, 0));
+}
+TEST_CASE("NormalizedVectors can have NormalizedXYVector subtracted") {
+    const Image::NormalizedVector v(0, 1, 0);
+    const Image::NormalizedXYVector v2(1, 0);
+    auto v3 = v - v2;
+    CHECK(v3 == Image::Vector(-1, 1, 0));
+}
+TEST_CASE("NormalizedVectors can have XYVector subtracted") {
+    const Image::NormalizedVector v(0, 1, 0);
+    const Image::XYVector v2(1, 0);
+    auto v3 = v - v2;
+    CHECK(v3 == Image::Vector(-1, 1, 0));
+}
+TEST_CASE("NormalizedVectors can have other vectors subtracted to produce a Vector") {
+    View::NormalizedVector v;
+    const View::Vector v_v;
+    const View::NormalizedVector v_n;
+    const View::NormalizedXYVector v_n_xy;
+    const View::XYVector v_xy;
+
+    using converted_type_1 = decltype(v - v_v);
+    using converted_type_2 = decltype(v - v_n);
+    using converted_type_3 = decltype(v - v_n_xy);
+    using converted_type_4 = decltype(v - v_xy);
+    using required_type = View::Vector;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
+}
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVectors in different spaces cannot be subtracted") {
+    View::NormalizedVector v;
+    const Image::Vector v_v;
+    const Image::NormalizedVector v_n;
+    const Image::NormalizedXYVector v_n_xy;
+    const Image::XYVector v_xy;
+
+    using converted_type_1 = decltype(v - v_v);
+    using converted_type_2 = decltype(v - v_n);
+    using converted_type_3 = decltype(v - v_n_xy);
+    using converted_type_4 = decltype(v - v_xy);
+    using required_type = StaticAssert::invalid_space;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
+}
+#endif
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVectors can have other vectors added in place") {
+    View::NormalizedVector v;
+    const View::Vector v_v;
+    const View::NormalizedVector v_n;
+    const View::NormalizedXYVector v_n_xy;
+    const View::XYVector v_xy;
+
+    using converted_type_1 = decltype(v += v_v);
+    using converted_type_2 = decltype(v += v_n);
+    using converted_type_3 = decltype(v += v_n_xy);
+    using converted_type_4 = decltype(v += v_xy);
+    using required_type = StaticAssert::invalid_normalized_vector_addition;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
+}
+#endif
+
+TEST_CASE("NormalizedVectors can have Vectors added") {
+    const Image::NormalizedVector v(0, 1, 0);
+    const Image::Vector v2(1, 0, 0);
+    auto v3 = v + v2;
+    CHECK(v3 == Image::Vector(1, 1, 0));
+}
+TEST_CASE("NormalizedVectors can have NormalizedVector added") {
+    const Image::NormalizedVector v(0, 1, 0);
+    const Image::NormalizedVector v2(1, 0, 0);
+    auto v3 = v + v2;
+    CHECK(v3 == Image::Vector(1, 1, 0));
+}
+TEST_CASE("NormalizedVectors can have NormalizedXYVector added") {
+    const Image::NormalizedVector v(0, 1, 0);
+    const Image::NormalizedXYVector v2(1, 0);
+    auto v3 = v + v2;
+    CHECK(v3 == Image::Vector(1, 1, 0));
+}
+TEST_CASE("NormalizedVectors can have XYVector added") {
+    const Image::NormalizedVector v(0, 1, 0);
+    const Image::XYVector v2(1, 0);
+    auto v3 = v + v2;
+    CHECK(v3 == Image::Vector(1, 1, 0));
+}
+TEST_CASE("NormalizedVectors can have other vectors added to produce another Vector") {
+    View::NormalizedVector v;
+    const View::Vector v_v;
+    const View::NormalizedVector v_n;
+    const View::NormalizedXYVector v_n_xy;
+    const View::XYVector v_xy;
+
+    using converted_type_1 = decltype(v + v_v);
+    using converted_type_2 = decltype(v + v_n);
+    using converted_type_3 = decltype(v + v_n_xy);
+    using converted_type_4 = decltype(v + v_xy);
+    using required_type = View::Vector;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
+}
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVectors in different spaces cannot be added") {
+    View::NormalizedVector v;
+    const Image::Vector v_v;
+    const Image::NormalizedVector v_n;
+    const Image::NormalizedXYVector v_n_xy;
+    const Image::XYVector v_xy;
+
+    using converted_type_1 = decltype(v + v_v);
+    using converted_type_2 = decltype(v + v_n);
+    using converted_type_3 = decltype(v + v_n_xy);
+    using converted_type_4 = decltype(v + v_xy);
+    using required_type = StaticAssert::invalid_space;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
+}
+#endif
+
+TEST_CASE("NormalizedVectors can have NormalizedVectors crossed in place") {
+    Image::NormalizedVector v(0, 1, 0);
+    const Image::NormalizedVector v2(1, 0, 0);
+    v *= v2;
+    CHECK(v == Image::Vector(0, 0, -1));
+}
+TEST_CASE("NormalizedVectors can have NormalizedXYVectors crossed in place") {
+    Image::NormalizedVector v(0, 1, 0);
+    const Image::NormalizedXYVector v2(1, 0);
+    v *= v2;
+    CHECK(v == Image::Vector(0, 0, -1));
+}
+TEST_CASE("NormalizedVectors cannot be crossed in place with non-normalized vectors") {
+    View::NormalizedVector v;
+    const View::Vector v_v;
+    const View::XYVector v_xy;
+
+    using converted_type_1 = decltype(v *= v_v);
+    using converted_type_4 = decltype(v *= v_xy);
+    using required_type = StaticAssert::invalid_normalized_vector_in_place_cross;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
+}
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVectors in different spaces cannot be crossed in place") {
+    View::NormalizedVector v;
+    const Image::Vector v_v;
+    const Image::NormalizedVector v_n;
+    const Image::NormalizedXYVector v_n_xy;
+    const Image::XYVector v_xy;
+
+    using converted_type_1 = decltype(v *= v_v);
+    using converted_type_2 = decltype(v *= v_n);
+    using converted_type_3 = decltype(v *= v_n_xy);
+    using converted_type_4 = decltype(v *= v_xy);
+    using required_type = StaticAssert::invalid_space;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
+}
+#endif
+
+TEST_CASE("NormalizedVectors can have Vectors crossed using star") {
+    const Image::NormalizedVector v(0, 1, 0);
+    const Image::Vector v2(1, 0, 0);
+    auto v3 = v * v2;
+    CHECK(v3 == Image::Vector(0, 0, -1));
+}
+TEST_CASE("NormalizedVectors can have NormalizedVector crossed using star") {
+    const Image::NormalizedVector v(0, 1, 0);
+    const Image::NormalizedVector v2(1, 0, 0);
+    auto v3 = v * v2;
+    CHECK(v3 == Image::Vector(0, 0, -1));
+}
+TEST_CASE("NormalizedVectors can have NormalizedXYVector crossed using star") {
+    const Image::NormalizedVector v(0, 1, 0);
+    const Image::NormalizedXYVector v2(1, 0);
+    auto v3 = v * v2;
+    CHECK(v3 == Image::Vector(0, 0, -1));
+}
+TEST_CASE("NormalizedVectors can have XYVector crossed using star") {
+    const Image::NormalizedVector v(0, 1, 0);
+    const Image::XYVector v2(1, 0);
+    auto v3 = v * v2;
+    CHECK(v3 == Image::Vector(0, 0, -1));
+}
+TEST_CASE("NormalizedVectors can have other normalized vectors crossed using star to produce another NormalizedVector") {
+    View::NormalizedVector v;
+    const View::NormalizedVector v_n;
+    const View::NormalizedXYVector v_n_xy;
+
+    using converted_type_2 = decltype(v * v_n);
+    using converted_type_3 = decltype(v * v_n_xy);
+    using required_type = View::NormalizedVector;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
+}
+TEST_CASE("NormalizedVectors can have other vectors crossed using star to produce another Vector") {
+    View::NormalizedVector v;
+    const View::Vector v_v;
+    const View::XYVector v_xy;
+
+    using converted_type_1 = decltype(v * v_v);
+    using converted_type_4 = decltype(v * v_xy);
+    using required_type = View::Vector;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
+}
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVectors in different spaces cannot be crossed using star") {
+    View::NormalizedVector v;
+    const Image::Vector v_v;
+    const Image::NormalizedVector v_n;
+    const Image::NormalizedXYVector v_n_xy;
+    const Image::XYVector v_xy;
+
+    using converted_type_1 = decltype(v * v_v);
+    using converted_type_2 = decltype(v * v_n);
+    using converted_type_3 = decltype(v * v_n_xy);
+    using converted_type_4 = decltype(v * v_xy);
+    using required_type = StaticAssert::invalid_space;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
+}
+#endif
+
+TEST_CASE("NormalizedVectors can have Vectors crossed") {
+    const Image::NormalizedVector v(0, 1, 0);
+    const Image::Vector v2(1, 0, 0);
+    auto v3 = v.Cross(v2);
+    CHECK(v3 == Image::Vector(0, 0, -1));
+}
+TEST_CASE("NormalizedVectors can have NormalizedVector crossed") {
+    const Image::NormalizedVector v(0, 1, 0);
+    const Image::NormalizedVector v2(1, 0, 0);
+    auto v3 = v.Cross(v2);
+    CHECK(v3 == Image::Vector(0, 0, -1));
+}
+TEST_CASE("NormalizedVectors can have NormalizedXYVector crossed") {
+    const Image::NormalizedVector v(0, 1, 0);
+    const Image::NormalizedXYVector v2(1, 0);
+    auto v3 = v.Cross(v2);
+    CHECK(v3 == Image::Vector(0, 0, -1));
+}
+TEST_CASE("NormalizedVectors can have XYVector crossed") {
+    const Image::NormalizedVector v(0, 1, 0);
+    const Image::XYVector v2(1, 0);
+    auto v3 = v.Cross(v2);
+    CHECK(v3 == Image::Vector(0, 0, -1));
+}
+TEST_CASE("NormalizedVectors can have other NormalizedVectors crossed to produce another NormalizedVector") {
+    View::NormalizedVector v;
+    const View::NormalizedVector v_n;
+    const View::NormalizedXYVector v_n_xy;
+
+    using converted_type_2 = decltype(v.Cross(v_n));
+    using converted_type_3 = decltype(v.Cross(v_n_xy));
+    using required_type = View::NormalizedVector;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
+}
+TEST_CASE("NormalizedVectors can have other vectors crossed to produce another Vector") {
+    View::NormalizedVector v;
+    const View::Vector v_v;
+    const View::XYVector v_xy;
+
+    using converted_type_1 = decltype(v.Cross(v_v));
+    using converted_type_4 = decltype(v.Cross(v_xy));
+    using required_type = View::Vector;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
+}
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVectors in different spaces cannot be crossed") {
+    View::NormalizedVector v;
+    const Image::Vector v_v;
+    const Image::NormalizedVector v_n;
+    const Image::NormalizedXYVector v_n_xy;
+    const Image::XYVector v_xy;
+
+    using converted_type_1 = decltype(v.Cross(v_v));
+    using converted_type_2 = decltype(v.Cross(v_n));
+    using converted_type_3 = decltype(v.Cross(v_n_xy));
+    using converted_type_4 = decltype(v.Cross(v_xy));
+    using required_type = StaticAssert::invalid_space;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
+}
+#endif
+
+TEST_CASE("NormalizedVectors and Vectors can be dotted") {
+    const View::NormalizedVector v(1, 0, 0);
+    const View::Vector v2(2, 0, 0);
+    const auto dot = v.Dot(v2);
+    CHECK(dot == 2);
+}
+TEST_CASE("NormalizedVectors and NormalizedVector can be dotted") {
+    const View::NormalizedVector v(1, 0, 0);
+    const View::NormalizedVector v2(1, 0, 0);
+    const auto dot = v.Dot(v2);
+    CHECK(dot == 1);
+}
+TEST_CASE("NormalizedVectors and NormalizedXYVector can be dotted") {
+    const View::NormalizedVector v(1, 0, 0);
+    const View::NormalizedXYVector v2(1, 0);
+    const auto dot = v.Dot(v2);
+    CHECK(dot == 1);
+}
+TEST_CASE("NormalizedVectors and XYVector can be dotted") {
+    const View::NormalizedVector v(1, 0, 0);
+    const View::XYVector v2(2, 0);
+    const auto dot = v.Dot(v2);
+    CHECK(dot == 2);
+}
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVectors from different spaces cannot be dotted") {
+    View::NormalizedVector v;
+    const Image::Vector v_v;
+    const Image::NormalizedVector v_n;
+    const Image::NormalizedXYVector v_n_xy;
+    const Image::XYVector v_xy;
+
+    using converted_type_1 = decltype(v.Dot(v_v));
+    using converted_type_2 = decltype(v.Dot(v_n));
+    using converted_type_3 = decltype(v.Dot(v_n_xy));
+    using converted_type_4 = decltype(v.Dot(v_xy));
+    using required_type = StaticAssert::invalid_space;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
+}
+
+#endif
+
+TEST_CASE("NormalizedVectors can have their z-value removed") {
+    const View::NormalizedVector v(1, 0, 0);
+    const auto v2 = v.ToXY();
+    CHECK(v2 == View::NormalizedXYVector(1, 0));
+}
+TEST_CASE("NormalizedVectors can have their z-value removed to produce a NormalizedXYVector") {
+    const View::NormalizedVector v;
+    using converted_type = decltype(v.ToXY());
+    using required_type = View::NormalizedXYVector;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+TEST_CASE("NormalizedVectors from Spaces that do not support XY cannot have their z-value removed") {
+    const Volume::NormalizedVector v;
+    using converted_type = decltype(v.ToXY());
+    using required_type = StaticAssert::XYVector_not_supported;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+
+TEST_CASE("NormalizedVectors can be converted from one space to another ignoring translation") {
     const TransformManager tm;
-    const View::NormalizedVector v_view(1, 0, 0);
+    const View::Vector v_view(1, 0, 0);
     auto v_patient = v_view.ConvertTo<Patient>(tm);
     CHECK(v_patient == Patient::Vector(15, 16, 17));
 }
-
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorsCanBeConvertedFromOneSpaceToAnotherProducingAVector") {
-
+TEST_CASE("NormalizedVectors can be converted from one space to another to produce a Vector") {
     const TransformManager tm;
-    const View::NormalizedVector v_view(1, 0, 0);
+    const View::Vector v_view;
     using converted_type = decltype(v_view.ConvertTo<Patient>(tm));
-    using required_type = decltype(Patient::Vector{});
-    CHECK(
-        static_cast<bool>(std::is_same_v<converted_type, required_type>)
-    );
+    using required_type = Patient::Vector;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
-
-//-------------------------------------------------------------------------------------------------
-
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("Normalized Vectors Cannot Be Converted To The Same Space") {
+TEST_CASE("NormalizedVectors cannot be converted to the same space") {
     const TransformManager tm;
     const View::NormalizedVector v;
     using converted_type = decltype(v.ConvertTo<View>(tm));
@@ -962,13 +687,10 @@ TEST_CASE("Normalized Vectors Cannot Be Converted To The Same Space") {
 }
 #endif
 
-//-------------------------------------------------------------------------------------------------
-
-TEST_CASE("NormalizedVectorCanBeStreamed") {
+TEST_CASE("NormalizedVectors can be streamed") {
     const View::NormalizedVector v(1, 0, 0);
     std::stringstream stream;
     stream << v;
     CHECK(stream.str() == std::string("View::NormalizedVector (1, 0, 0)"));
 }
 
-//-------------------------------------------------------------------------------------------------
