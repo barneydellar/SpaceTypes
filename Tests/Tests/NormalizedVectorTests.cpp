@@ -196,6 +196,20 @@ TEST_CASE("NormalizedVectors from different spaces cannot be compared using equa
 }
 #endif
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVector and Points cannot be compared using equal") {
+    const View::NormalizedVector v;
+    const View::Point p;
+    const View::Point p_xy;
+
+    using converted_type_1 = decltype(v == p);
+    using converted_type_2 = decltype(v == p_xy);
+    using required_type = StaticAssert::invalid_point_vector_equality;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
+}
+#endif
+
 TEST_CASE("NormalizedVector and Vector can be compared using inequality: same") {
     const View::NormalizedVector v(1, 0, 0);
     const View::Vector v2(1, 0, 0);
@@ -259,7 +273,21 @@ TEST_CASE("NormalizedVectors from different spaces cannot be compared using ineq
 #endif
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("NormalizedVectors can have other vectors subtracted in place") {
+TEST_CASE("NormalizedVector and Points cannot be compared using inequality") {
+    const View::NormalizedVector v;
+    const View::Point p;
+    const View::Point p_xy;
+
+    using converted_type_1 = decltype(v != p);
+    using converted_type_2 = decltype(v != p_xy);
+    using required_type = StaticAssert::invalid_point_vector_equality;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
+}
+#endif
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVectors cannot have other vectors subtracted in place") {
     View::NormalizedVector v;
     const View::Vector v_v;
     const View::NormalizedVector v_n;
@@ -341,7 +369,21 @@ TEST_CASE("NormalizedVectors in different spaces cannot be subtracted") {
 #endif
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("NormalizedVectors can have other vectors added in place") {
+TEST_CASE("NormalizedVectors cannot have points subtracted") {
+    const View::NormalizedVector v;
+    const View::Point p;
+    const View::Point p_xy;
+
+    using converted_type_1 = decltype(v - p);
+    using converted_type_2 = decltype(v - p_xy);
+    using required_type = StaticAssert::invalid_point_from_vector_subtraction;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
+}
+#endif
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVectors cannot have other vectors added in place") {
     View::NormalizedVector v;
     const View::Vector v_v;
     const View::NormalizedVector v_n;
@@ -419,6 +461,20 @@ TEST_CASE("NormalizedVectors in different spaces cannot be added") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
+}
+#endif
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVectors cannot have points added") {
+    const View::NormalizedVector v;
+    const View::Point p;
+    const View::Point p_xy;
+
+    using converted_type_1 = decltype(v + p);
+    using converted_type_2 = decltype(v + p_xy);
+    using required_type = StaticAssert::invalid_point_to_vector_addition;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
 }
 #endif
 
