@@ -65,12 +65,35 @@ TEST_CASE("NormalizedXYVectors can be assigned from a normalized XYvector") {
     CHECK(v.Y() == 0);
 }
 
-TEST_CASE("NormalizedXYVectors can be cast to the implementation") {
-    const View::NormalizedXYVector v(1, 0);
+TEST_CASE("NormalizedXYVectors can be explicitly cast to the implementation") {
+    const Image::NormalizedXYVector v(1, 0);
     auto impl = static_cast<TestVector>(v);
     CHECK(impl.m_values[0] == 1);
     CHECK(impl.m_values[1] == 0);
     CHECK(impl.m_values[2] == 0);
+}
+
+TEST_CASE("NormalizedXYVector can be implicitly cast to a NormalizedVector") {
+    const Image::NormalizedXYVector v(1, 0);
+    const Image::NormalizedVector v2 = v;
+    CHECK(v2[0] == 1);
+    CHECK(v2[1] == 0);
+    CHECK(v2[2] == 0);
+}
+
+TEST_CASE("NormalizedXYVector can be implicitly cast to an XYVector") {
+    const Image::NormalizedXYVector v(1, 0);
+    const Image::XYVector v2 = v;
+    CHECK(v2[0] == 1);
+    CHECK(v2[1] == 0);
+}
+
+TEST_CASE("NormalizedXYVector can be implicitly cast to a Vector") {
+    const Image::NormalizedXYVector v(1, 0);
+    const Image::Vector v2 = v;
+    CHECK(v2[0] == 1);
+    CHECK(v2[1] == 0);
+    CHECK(v2[2] == 0);
 }
 
 TEST_CASE("NormalizedXYVectors support element access by name") {
@@ -271,7 +294,7 @@ TEST_CASE("NormalizedXYVectors and Points cannot be compared using inequality") 
 #endif
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("NormalizedXYVectors can have other vectors subtracted in place") {
+TEST_CASE("NormalizedXYVectors cannot have other vectors subtracted in place") {
     View::NormalizedXYVector v;
     const View::Vector v_v;
     const View::NormalizedVector v_n;
@@ -306,13 +329,13 @@ TEST_CASE("NormalizedXYVectors can have NormalizedXYVector subtracted") {
     const Image::NormalizedXYVector v(0, 1);
     const Image::NormalizedXYVector v2(1, 0);
     auto v3 = v - v2;
-    CHECK(v3 == Image::Vector(-1, 1, 0));
+    CHECK(v3 == Image::XYVector(-1, 1));
 }
 TEST_CASE("NormalizedXYVectors can have XYVector subtracted") {
     const Image::NormalizedXYVector v(0, 1);
     const Image::XYVector v2(1, 0);
     auto v3 = v - v2;
-    CHECK(v3 == Image::Vector(-1, 1, 0));
+    CHECK(v3 == Image::XYVector(-1, 1));
 }
 TEST_CASE("NormalizedXYVectors can have other XYVectors subtracted to produce a XYVector") {
     View::NormalizedXYVector v;
@@ -407,13 +430,13 @@ TEST_CASE("NormalizedXYVectors can have NormalizedXYVector added") {
     const Image::NormalizedXYVector v(0, 1);
     const Image::NormalizedXYVector v2(1, 0);
     auto v3 = v + v2;
-    CHECK(v3 == Image::Vector(1, 1, 0));
+    CHECK(v3 == Image::XYVector(1, 1));
 }
 TEST_CASE("NormalizedXYVectors can have XYVector added") {
     const Image::NormalizedXYVector v(0, 1);
     const Image::XYVector v2(1, 0);
     auto v3 = v + v2;
-    CHECK(v3 == Image::Vector(1, 1, 0));
+    CHECK(v3 == Image::XYVector(1, 1));
 }
 TEST_CASE("NormalizedXYVectors can have other XYvectors added to produce another XYVector") {
     View::NormalizedXYVector v;
@@ -692,13 +715,13 @@ TEST_CASE("NormalizedXYVectors from different spaces cannot be dotted") {
 
 TEST_CASE("NormalizedXYVectors can be converted from one space to another ignoring translation") {
     const TransformManager tm;
-    const View::Vector v_view(1, 0, 0);
+    const View::NormalizedXYVector v_view(1, 0);
     auto v_patient = v_view.ConvertTo<Patient>(tm);
     CHECK(v_patient == Patient::Vector(15, 16, 17));
 }
 TEST_CASE("NormalizedXYVectors can be converted from one space to another to produce a Vector") {
     const TransformManager tm;
-    const View::Vector v_view;
+    const View::NormalizedXYVector v_view;
     using converted_type = decltype(v_view.ConvertTo<Patient>(tm));
     using required_type = Patient::Vector;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));

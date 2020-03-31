@@ -69,20 +69,20 @@ TEST_CASE("NormalizedVectors can be assigned from a normalized vector") {
     CHECK(v.Y() == 0);
     CHECK(v.Z() == 0);
 }
-TEST_CASE("NormalizedVectors can be assigned from a normalized XYvector") {
-    const View::NormalizedXYVector v2(1, 0);
-    const View::NormalizedVector v = v2;
-    CHECK(v.X() == 1);
-    CHECK(v.Y() == 0);
-    CHECK(v.Z() == 0);
-}
 
-TEST_CASE("NormalizedVectors can be cast to the implementation") {
+TEST_CASE("NormalizedVectors can be explicitly cast to the implementation") {
     const Patient::NormalizedVector v(1, 0, 0);
     auto impl = static_cast<TestVector>(v);
     CHECK(impl.m_values[0] == 1);
     CHECK(impl.m_values[1] == 0);
     CHECK(impl.m_values[2] == 0);
+}
+TEST_CASE("NormalizedVector can be implicitly cast to a Vector") {
+    const Patient::NormalizedVector v(1, 0, 0);
+    const Patient::Vector v2 = v;
+    CHECK(v2[0] == 1);
+    CHECK(v2[1] == 0);
+    CHECK(v2[2] == 0);
 }
 
 TEST_CASE("NormalizedVectors support element access by name") {
@@ -722,13 +722,13 @@ TEST_CASE("NormalizedVectors from Spaces that do not support XY cannot have thei
 
 TEST_CASE("NormalizedVectors can be converted from one space to another ignoring translation") {
     const TransformManager tm;
-    const View::Vector v_view(1, 0, 0);
+    const View::NormalizedVector v_view(1, 0, 0);
     auto v_patient = v_view.ConvertTo<Patient>(tm);
     CHECK(v_patient == Patient::Vector(15, 16, 17));
 }
 TEST_CASE("NormalizedVectors can be converted from one space to another to produce a Vector") {
     const TransformManager tm;
-    const View::Vector v_view;
+    const View::NormalizedVector v_view;
     using converted_type = decltype(v_view.ConvertTo<Patient>(tm));
     using required_type = Patient::Vector;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));

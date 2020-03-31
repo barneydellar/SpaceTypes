@@ -64,29 +64,8 @@ TEST_CASE("Vectors can be assigned from a vector") {
     CHECK(v.Y() == 2);
     CHECK(v.Z() == 3);
 }
-TEST_CASE("Vectors can be assigned from a normalized vector") {
-    const View::NormalizedVector v2(1, 0, 0);
-    const View::Vector v = v2;
-    CHECK(v.X() == 1);
-    CHECK(v.Y() == 0);
-    CHECK(v.Z() == 0);
-}
-TEST_CASE("Vectors can be assigned from a normalized XYvector") {
-    const View::NormalizedXYVector v2(1, 0);
-    const View::Vector v = v2;
-    CHECK(v.X() == 1);
-    CHECK(v.Y() == 0);
-    CHECK(v.Z() == 0);
-}
-TEST_CASE("Vectors can be assigned from am XYvector") {
-    const View::XYVector v2(1, 2);
-    const View::Vector v = v2;
-    CHECK(v.X() == 1);
-    CHECK(v.Y() == 2);
-    CHECK(v.Z() == 0);
-}
 
-TEST_CASE("Vectors can be cast to the implementation") {
+TEST_CASE("Vectors can be explicitly cast to the implementation") {
     const Patient::Vector v(1, 2, 3);
     auto impl = static_cast<TestVector>(v);
     CHECK(impl.m_values[0] == 1);
@@ -797,7 +776,7 @@ TEST_CASE("Vectors can be normalized") {
     const Image::Vector v(0, 3, 4);
     const auto v_norm = v.Norm();
     // Mag of v = sqrt(3*3 + 4*4) = 5
-    CHECK(v_norm == Image::Vector(0, 3.0 / 5, 4.0 / 5));
+    CHECK(v_norm == Image::NormalizedVector(0, 3.0 / 5, 4.0 / 5));
 }
 TEST_CASE("Vectors can be normalized to produce a NormalizedVector") {
     const View::Vector v;
@@ -838,7 +817,7 @@ TEST_CASE("Vectors support mag") {
     // 5 = sqrt(3*3 + 4*4)
     CHECK(v.Mag().get() == 5);
 }
-TEST_CASE("Mag is strongly typed") {
+TEST_CASE("Vector Mag is strongly typed") {
     const Image::Vector v(0, 3, 4);
     const Millimetres m{ 0 };
     CHECK(typeid(v.Mag()).name() == typeid(m).name());
