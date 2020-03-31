@@ -205,10 +205,10 @@ namespace Space {
             return Vector<ThisSpace, Implementation>(x, y, z);
         }
 
-        [[nodiscard]] double Dot(const Vector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
-        [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
-        [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
-        [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
+        [[nodiscard]] double Dot(const Vector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl); }
+        [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl); }
+        [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl); }
+        [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl); }
 
         [[nodiscard]] NormalizedXYVector<ThisSpace, Implementation> Norm() const {
             return NormalizedXYVector<ThisSpace, Implementation>(X(), Y());

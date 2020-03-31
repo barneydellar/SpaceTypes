@@ -118,8 +118,13 @@ TEST_CASE("PointsFromTheSameSpaceCanBeComparedUsingInequality_same") {
     const View::Point p1(1, 0, 0);
     const View::Point p2(1, 0, 0);
 
-    const bool c = p1 != p2;
-    const auto d = !c;
+    CHECK(!(p1 != p2));
+}
+TEST_CASE("Points and XY points from The Same Space Can Be Compared Using Inequality") {
+    const View::Point p1(1, 0, 0);
+    const View::XYPoint p2(1, 0);
+
+    CHECK(!(p1 != p2));
 }
 
 TEST_CASE("PointsFromTheSameSpaceCanBeComparedUsingInequality_different") {

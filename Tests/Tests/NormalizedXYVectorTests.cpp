@@ -257,9 +257,24 @@ TEST_CASE("Normalized XYVectors From Different Spaces Cannot Be Compared Using E
 #endif
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Normalized XYVectors From The Same Space Can Be Compared Using Inequality") {
+TEST_CASE("Normalized XYVectors and Vectors From The Same Space Can Be Compared Using Inequality") {
+    const View::NormalizedXYVector v1(1, 0);
+    const View::Vector v2(1, 0, 0);
+    CHECK(!(v1 != v2));
+}
+TEST_CASE("Normalized XYVectors and NormalizedVectors From The Same Space Can Be Compared Using Inequality") {
+    const View::NormalizedXYVector v1(1, 0);
+    const View::NormalizedVector v2(1, 0, 0);
+    CHECK(!(v1 != v2));
+}
+TEST_CASE("Normalized XYVectors and NormalizedXYVector From The Same Space Can Be Compared Using Inequality") {
     const View::NormalizedXYVector v1(1, 0);
     const View::NormalizedXYVector v2(1, 0);
+    CHECK(!(v1 != v2));
+}
+TEST_CASE("Normalized XYVectors and XYVector From The Same Space Can Be Compared Using Inequality") {
+    const View::NormalizedXYVector v1(1, 0);
+    const View::XYVector v2(1, 0);
     CHECK(!(v1 != v2));
 }
 
@@ -556,6 +571,20 @@ TEST_CASE("Normalized Vectors Can Be Subtracted from Normalized XY Vectors") {
     const auto added = v_norm_1 - v_norm_2;
     CHECK(added == View::Vector(1, 0, -1));
 }
+TEST_CASE("Vectors Can Be Subtracted from Normalized XY Vectors") {
+    const View::NormalizedXYVector v_norm_1(1, 0);
+    const View::Vector v_norm_2(0, 0, 1);
+
+    const auto added = v_norm_1 - v_norm_2;
+    CHECK(added == View::Vector(1, 0, -1));
+}
+TEST_CASE("XYVectors Can Be Subtracted from Normalized XY Vectors") {
+    const View::NormalizedXYVector v_norm_1(1, 0);
+    const View::XYVector v_norm_2(0, 1);
+
+    const auto added = v_norm_1 - v_norm_2;
+    CHECK(added == View::XYVector(1, -1));
+}
 
 //-------------------------------------------------------------------------------------------------
 
@@ -596,9 +625,6 @@ TEST_CASE("Normalized XYVectors And XYVectors Can Be Subtracted") {
     const auto added = v_norm_1 - v_norm_2;
     CHECK(added == View::XYVector(1, -1));
 }
-
-//-------------------------------------------------------------------------------------------------
-
 TEST_CASE("Normalized XYVectors And XYVectors Can Be Subtracted To Produce A XYVector") {
     const View::NormalizedXYVector v_norm_1;
     const View::XYVector v_2;
@@ -723,9 +749,21 @@ TEST_CASE("Vectors And NormalizedXYVectors From The Same Space Can Be Dotted") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Normalized XYVectors And XYVectors From The Same Space Can Be Dotted") {
+TEST_CASE("Normalized XYVectors And Vectors From The Same Space Can Be Dotted") {
     const View::NormalizedXYVector v1(1, 0);
     const View::Vector v2(1, 0, 4);
+    const auto dot = v1.Dot(v2);
+    CHECK(dot == 1);
+}
+TEST_CASE("Normalized XYVectors And NormalizedVector From The Same Space Can Be Dotted") {
+    const View::NormalizedXYVector v1(1, 0);
+    const View::NormalizedVector v2(1, 0, 0);
+    const auto dot = v1.Dot(v2);
+    CHECK(dot == 1);
+}
+TEST_CASE("Normalized XYVectors And XYVectors From The Same Space Can Be Dotted") {
+    const View::NormalizedXYVector v1(1, 0);
+    const View::XYVector v2(1, 0);
     const auto dot = v1.Dot(v2);
     CHECK(dot == 1);
 }
@@ -808,6 +846,14 @@ TEST_CASE("Normalized XYVectors Can Be Crossed Using Star To Give A New Normaliz
     );
 }
 
+TEST_CASE("Normalized XYVectors And Normalized Vectors Can Be Crossed Using Star") {
+    const View::NormalizedXYVector v_norm_x(1, 0);
+    const View::NormalizedVector v_norm_y(0, 1, 0);
+
+    const auto result = v_norm_x * v_norm_y;
+
+    CHECK(result == View::NormalizedVector(0, 0, 1));
+}
 TEST_CASE("Normalized XYVectors And Normalized Vectors Can Be Crossed Using Star To Give A New Normalized Vector") {
     const View::NormalizedVector v_norm_x;
     const View::NormalizedXYVector v_norm_y;
@@ -815,6 +861,46 @@ TEST_CASE("Normalized XYVectors And Normalized Vectors Can Be Crossed Using Star
     using converted_type_A = decltype(v_norm_x * v_norm_y);
     using converted_type_B = decltype(v_norm_y * v_norm_x);
     using required_type = decltype(View::NormalizedVector{});
+
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_A, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_B, required_type>));
+}
+
+TEST_CASE("Normalized XYVectors And Vectors Can Be Crossed Using Star") {
+    const View::NormalizedXYVector v_norm(1, 0);
+    const View::Vector v(0, 1, 0);
+
+    const auto result = v_norm * v;
+
+    CHECK(result == View::NormalizedVector(0, 0, 1));
+}
+TEST_CASE("Normalized XYVectors And Vectors Can Be Crossed Using Star To Give A New Vector") {
+    const View::NormalizedVector v_norm;
+    const View::Vector v;
+
+    using converted_type_A = decltype(v_norm * v);
+    using converted_type_B = decltype(v * v_norm);
+    using required_type = decltype(View::Vector{});
+
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_A, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_B, required_type>));
+}
+
+TEST_CASE("Normalized XYVectors And XYVectors Can Be Crossed Using Star") {
+    const View::NormalizedXYVector v_norm(1, 0);
+    const View::XYVector v(0, 1);
+
+    const auto result = v_norm * v;
+
+    CHECK(result == View::NormalizedVector(0, 0, 1));
+}
+TEST_CASE("Normalized XYVectors And XYVectors Can Be Crossed Using Star To Give A New Vector") {
+    const View::NormalizedVector v_norm;
+    const View::XYVector v;
+
+    using converted_type_A = decltype(v_norm * v);
+    using converted_type_B = decltype(v * v_norm);
+    using required_type = decltype(View::Vector{});
 
     CHECK(static_cast<bool>(std::is_same_v<converted_type_A, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_B, required_type>));
@@ -844,25 +930,6 @@ TEST_CASE("Normalized Vectors And Vectors Can Be Crossed To Give A New Vector") 
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Normalized XYVectors And Vectors Can Be Crossed Using Star") {
-    const View::NormalizedXYVector v_norm_x;
-    const View::Vector v_y(0, 1, 0);
-
-    const auto result = v_norm_x * v_y;
-
-    CHECK(result == View::Vector(0, 0, 1));
-}
-TEST_CASE("Normalized XYVectors And Vectors Can Be Crossed Using Star To Give A New Vector") {
-    const View::NormalizedXYVector v_norm_x;
-    const View::Vector v_y;
-
-    using converted_type_A = decltype(v_norm_x * v_y);
-    using converted_type_B = decltype(v_y * v_norm_x);
-    using required_type = decltype(View::Vector{});
-
-    CHECK(static_cast<bool>(std::is_same_v<converted_type_A, required_type>));
-    CHECK(static_cast<bool>(std::is_same_v<converted_type_B, required_type>));
-}
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("Normalized XYVectors Support Element Access By Name") {

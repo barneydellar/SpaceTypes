@@ -181,11 +181,32 @@ TEST_CASE("NormalizedVectorsFromTheSameSpaceCanBeComparedUsingInequality_same") 
     CHECK(!(v1 != v2));
 }
 
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Normalized Vectors and Vectors From The Same Space Can Be Compared Using Inequality") {
+    const View::NormalizedVector v1(1, 0, 0);
+    const View::Vector v2(1, 0, 0);
+    CHECK(!(v1 != v2));
+}
+
+TEST_CASE("Normalized Vectors and Normalized XY Vectors From The Same Space Can Be Compared Using Inequality") {
+    const View::NormalizedVector v1(1, 0, 0);
+    const View::NormalizedXYVector v2(1, 0);
+    CHECK(!(v1 != v2));
+}
+
+TEST_CASE("Normalized Vectors and XY Vectors From The Same Space Can Be Compared Using Inequality") {
+    const View::NormalizedVector v1(1, 0, 0);
+    const View::NormalizedXYVector v2(1, 0);
+    CHECK(!(v1 != v2));
+}
+
 TEST_CASE("NormalizedVectorsFromTheSameSpaceCanBeComparedUsingInequality_different") {
-    const Patient::Vector v1(1, 0, 0);
-    const Patient::Vector v2(0, 1, 0);
+    const Patient::NormalizedVector v1(1, 0, 0);
+    const Patient::NormalizedVector v2(0, 1, 0);
     CHECK(v1 != v2);
 }
+
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeComparedUsingInequality") {
     const View::NormalizedVector v1(1, 0, 0);
@@ -282,6 +303,27 @@ TEST_CASE("NormalizedVectorsFromDifferentSpacesCannotBeAdded") {
 TEST_CASE("NormalizedVectorsAndVectorsCanBeAdded") {
     const Image::NormalizedVector v_norm_1(1, 0, 0);
     const Image::Vector v_2(0, 1, 0);
+
+    const auto added = v_norm_1 + v_2;
+    CHECK(added == Image::Vector(1, 1, 0));
+}
+TEST_CASE("Normalized Vectors And NormalizedVector Can Be Added") {
+    const Image::NormalizedVector v_norm_1(1, 0, 0);
+    const Image::NormalizedVector v_2(0, 1, 0);
+
+    const auto added = v_norm_1 + v_2;
+    CHECK(added == Image::Vector(1, 1, 0));
+}
+TEST_CASE("Normalized Vectors And NormalizedXYVector Can Be Added") {
+    const Image::NormalizedVector v_norm_1(1, 0, 0);
+    const Image::NormalizedXYVector v_2(0, 1);
+
+    const auto added = v_norm_1 + v_2;
+    CHECK(added == Image::Vector(1, 1, 0));
+}
+TEST_CASE("Normalized Vectors And XYVector Can Be Added") {
+    const Image::NormalizedVector v_norm_1(1, 0, 0);
+    const Image::XYVector v_2(0, 1);
 
     const auto added = v_norm_1 + v_2;
     CHECK(added == Image::Vector(1, 1, 0));
@@ -399,6 +441,26 @@ TEST_CASE("NormalizedVectorsAndVectorsCanBeSubtracted") {
 
 //-------------------------------------------------------------------------------------------------
 
+TEST_CASE("Normalized Vectors And Normalized XY Vectors Can Be Subtracted") {
+    const Image::NormalizedVector v_norm_1(1, 0, 0);
+    const Image::NormalizedXYVector v_2(0, 1);
+
+    const auto added = v_norm_1 - v_2;
+    CHECK(added == Image::Vector(1, -1, 0));
+}
+
+//-------------------------------------------------------------------------------------------------
+
+TEST_CASE("Normalized Vectors And XY Vectors Can Be Subtracted") {
+    const Image::NormalizedVector v_norm_1(1, 0, 0);
+    const Image::XYVector v_2(0, 1);
+
+    const auto added = v_norm_1 - v_2;
+    CHECK(added == Image::Vector(1, -1, 0));
+}
+
+//-------------------------------------------------------------------------------------------------
+
 TEST_CASE("NormalizedVectorsAndVectorsCanBeSubtractedFromProduceAVector") {
     const Image::NormalizedVector v_norm_1(1, 0, 0);
     const Image::Vector v_2(0, 1, 0);
@@ -497,6 +559,18 @@ TEST_CASE("NormalizedVectorsAndVectorsFromTheSameSpaceCanBeDotted") {
     const auto dot = v1.Dot(v2);
     CHECK(dot == 1);
 }
+TEST_CASE("NormalizedVectors And NormalizedXYVector From The Same Space Can Be Dotted") {
+    const View::NormalizedVector v1(1, 0, 0);
+    const View::NormalizedXYVector v2(1, 0);
+    const auto dot = v1.Dot(v2);
+    CHECK(dot == 1);
+}
+TEST_CASE("NormalizedVectors And XYVector From The Same Space Can Be Dotted") {
+    const View::NormalizedVector v1(1, 0, 0);
+    const View::XYVector v2(1, 0);
+    const auto dot = v1.Dot(v2);
+    CHECK(dot == 1);
+}
 
 //-------------------------------------------------------------------------------------------------
 
@@ -574,6 +648,40 @@ TEST_CASE("NormalizedVectorsAndVectorsCanBeCrossedToGiveANewVector") {
     );
 }
 
+TEST_CASE("NormalizedVectors And NormalizedXYVector Can Be Crossed") {
+    const Image::NormalizedVector v_norm_x(1, 0, 0);
+    const Image::NormalizedXYVector v_y(0, 1);
+
+    const auto result = v_norm_x.Cross(v_y);
+
+    CHECK(result == Image::NormalizedVector(0, 0, 1));
+}
+TEST_CASE("Normalized Vectors And NormalizedXYVector Can Be Crossed To Give A New NormalizedVector") {
+    const Image::NormalizedVector v_norm_x(1, 0, 0);
+    const Image::NormalizedXYVector v_y(0, 1);
+
+    using converted_type = decltype(v_norm_x.Cross(v_y));
+    using required_type = decltype(Image::NormalizedVector{});
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+
+TEST_CASE("NormalizedVectors And XYVector Can Be Crossed") {
+    const Image::NormalizedVector v_norm_x(1, 0, 0);
+    const Image::XYVector v_y(0, 1);
+
+    const auto result = v_norm_x.Cross(v_y);
+
+    CHECK(result == Image::NormalizedVector(0, 0, 1));
+}
+TEST_CASE("Normalized Vectors And XYVector Can Be Crossed To Give A New Vector") {
+    const Image::NormalizedVector v_norm_x(1, 0, 0);
+    const Image::XYVector v_y(0, 1);
+
+    using converted_type = decltype(v_norm_x.Cross(v_y));
+    using required_type = decltype(Image:: Vector{});
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+
 //-------------------------------------------------------------------------------------------------
 
 TEST_CASE("NormalizedVectorsAndVectorsCanBeCrossedUsingStar") {
@@ -587,6 +695,44 @@ TEST_CASE("NormalizedVectorsAndVectorsCanBeCrossedUsingStar") {
 TEST_CASE("NormalizedVectorsAndVectorsCanBeCrossedUsingStarToGiveANewVector") {
     const Image::NormalizedVector v_norm_x(1, 0, 0);
     const Image::Vector v_y(0, 1, 0);
+
+    using converted_type = decltype(v_norm_x * v_y);
+    using required_type = decltype(Image::Vector{});
+    CHECK(
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
+    );
+}
+
+TEST_CASE("Normalized Vectors And NormalizedXYVector Can Be Crossed Using Star") {
+    const Image::NormalizedVector v_norm_x(1, 0, 0);
+    const Image::NormalizedXYVector v_y(0, 1);
+
+    const auto result = v_norm_x * v_y;
+
+    CHECK(result == Image::NormalizedVector(0, 0, 1));
+}
+TEST_CASE("Normalized Vectors And NormalizedXYVector Can Be Crossed Using Star To Give A New NormalizedVector") {
+    const Image::NormalizedVector v_norm_x(1, 0, 0);
+    const Image::NormalizedXYVector v_y(0, 1);
+
+    using converted_type = decltype(v_norm_x * v_y);
+    using required_type = decltype(Image::NormalizedVector{});
+    CHECK(
+        static_cast<bool>(std::is_same_v<converted_type, required_type>)
+    );
+}
+
+TEST_CASE("Normalized Vectors And XYVector Can Be Crossed Using Star") {
+    const Image::NormalizedVector v_norm_x(1, 0, 0);
+    const Image::XYVector v_y(0, 1);
+
+    const auto result = v_norm_x * v_y;
+
+    CHECK(result == Image::Vector(0, 0, 1));
+}
+TEST_CASE("Normalized Vectors And XYVector Can Be Crossed Using Star To Give A New Vector") {
+    const Image::NormalizedVector v_norm_x(1, 0, 0);
+    const Image::XYVector v_y(0, 1);
 
     using converted_type = decltype(v_norm_x * v_y);
     using required_type = decltype(Image::Vector{});
@@ -642,6 +788,13 @@ TEST_CASE("VectorsAndNormalizedVectorsCanBeCrossedUsingStarToGiveANewVector") {
 TEST_CASE("NormalisedVectorsFromTheSameSpaceCanBeCrossedUsingStarEqualOperator") {
     View::NormalizedVector v1(1, 0, 0);
     const View::NormalizedVector v2(0, 1, 0);
+    v1 *= v2;
+    CHECK(v1 == View::NormalizedVector(0, 0, 1));
+}
+
+TEST_CASE("Normalised Vectors and NormalizedXYVector From The Same Space Can Be Crossed Using Star Equal Operator") {
+    View::NormalizedVector v1(1, 0, 0);
+    const View::NormalizedXYVector v2(0, 1);
     v1 *= v2;
     CHECK(v1 == View::NormalizedVector(0, 0, 1));
 }

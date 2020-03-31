@@ -236,17 +236,15 @@ namespace Space {
             return Vector<ThisSpace, Implementation>(x, y, z);
         }
 
-        [[nodiscard]] double Dot(const Vector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
-        [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
-        [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
-        [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
+        [[nodiscard]] double Dot(const Vector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl); }
+        [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl); }
+        [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl); }
+        [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl); }
 
         template <typename U = std::enable_if_t<static_cast<bool>(ThisSpace::hasXY), ThisSpace>>
         [[nodiscard]] XYVector<U, Implementation> ToXY() const {
             return XYVector<ThisSpace, Implementation>(X(), Y());
         }
-        template <typename U = std::enable_if_t<!static_cast<bool>(ThisSpace::hasXY), void>>
-        [[nodiscard]] StaticAssert::XYVector_not_supported ToXY() const = delete;
 
         [[nodiscard]] NormalizedVector<ThisSpace, Implementation> Norm() const {
             return NormalizedVector<ThisSpace, Implementation>(X(), Y(), Z());
@@ -308,6 +306,11 @@ namespace Space {
 
         StaticAssert::invalid_point_to_vector_addition operator+(const Point<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_to_vector_addition{};
+        }
+
+        template <typename U = std::enable_if_t<!static_cast<bool>(ThisSpace::hasXY), void>>
+        [[nodiscard]] StaticAssert::XYVector_not_supported ToXY() const noexcept {
+            return StaticAssert::XYVector_not_supported{};
         }
 #endif
     protected:

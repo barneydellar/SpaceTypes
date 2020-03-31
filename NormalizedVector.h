@@ -60,16 +60,12 @@ namespace Space {
         }
 
         [[nodiscard]] operator Vector<ThisSpace, Implementation>() const noexcept {
-            return Vector<ThisSpace, Implementation>(X(), Y(), Z());
+           return Vector<ThisSpace, Implementation>(X(), Y(), Z());
         }
 
         [[nodiscard]] double X() const noexcept { return *(cbegin() + 0); }
         [[nodiscard]] double Y() const noexcept { return *(cbegin() + 1); }
         [[nodiscard]] double Z() const noexcept { return *(cbegin() + 2); }
-
-        void SetX(const double d) noexcept { *(detail::begin(m_impl) + 0) = d; }
-        void SetY(const double d) noexcept { *(detail::begin(m_impl) + 1) = d; }
-        void SetZ(const double d) noexcept { *(detail::begin(m_impl) + 2) = d; }
 
         [[nodiscard]] const double* cbegin() const noexcept { return reinterpret_cast<const double*>(&m_impl); }
         [[nodiscard]] const double* cend() const noexcept { return reinterpret_cast<const double*>(&m_impl) + 3; }
@@ -199,10 +195,22 @@ namespace Space {
             return Vector<ThisSpace, Implementation>(x, y, z);
         }
 
-        [[nodiscard]] double Dot(const Vector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
-        [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
-        [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
-        [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
+        [[nodiscard]] double Dot(const Vector<ThisSpace, Implementation>& other) const noexcept
+        {
+            return detail::Dot(m_impl, other.m_impl);
+        }
+        [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept
+        {
+            return detail::Dot(m_impl, other.m_impl);
+        }
+        [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept
+        {
+            return detail::Dot(m_impl, other.m_impl);
+        }
+        [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept
+        {
+            return detail::Dot(m_impl, other.m_impl);
+        }
 
         template <typename U = std::enable_if_t<static_cast<bool>(ThisSpace::hasXY), ThisSpace>>
         [[nodiscard]] NormalizedXYVector<U, Implementation> ToXY() const {
@@ -219,7 +227,7 @@ namespace Space {
         friend std::ostream& operator << (
             std::ostream& os,
             const NormalizedVector<ThisSpace, Implementation>& item
-            ) {
+        ) {
             const auto space = SpaceTypeNameMap<ThisSpace>::name;
             os << space << "::NormalizedVector (" << item.X() << ", " << item.Y() << ", " << item.Z() << ")";
             return os;
@@ -254,24 +262,8 @@ namespace Space {
             return StaticAssert::invalid_point_vector_equality{};
         }
 
-        StaticAssert::invalid_point_from_vector_subtraction operator-(const Point<ThisSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_point_from_vector_subtraction{};
-        }
-
         StaticAssert::invalid_point_to_vector_addition operator+(const Point<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_to_vector_addition{};
-        }
-
-
-        StaticAssert::invalid_normalized_vector_scale operator*=(const double&) const noexcept {
-            return StaticAssert::invalid_normalized_vector_scale{};
-        }
-
-        StaticAssert::invalid_normalized_vector_in_place_cross operator*=(const Vector<ThisSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_normalized_vector_in_place_cross{};
-        }
-        StaticAssert::invalid_normalized_vector_in_place_cross operator*=(const XYVector<ThisSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_normalized_vector_in_place_cross{};
         }
 
         StaticAssert::invalid_normalized_vector_addition operator+=(const Vector<ThisSpace, Implementation>&) const noexcept {
@@ -287,6 +279,10 @@ namespace Space {
             return StaticAssert::invalid_normalized_vector_addition{};
         }
 
+        StaticAssert::invalid_point_from_vector_subtraction operator-(const Point<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_point_from_vector_subtraction{};
+        }
+
         StaticAssert::invalid_normalized_vector_subtraction operator-=(const Vector<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_subtraction{};
         }
@@ -298,6 +294,17 @@ namespace Space {
         }
         StaticAssert::invalid_normalized_vector_subtraction operator-=(const XYVector<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_subtraction{};
+        }
+
+        StaticAssert::invalid_normalized_vector_scale operator*=(const double&) const noexcept {
+            return StaticAssert::invalid_normalized_vector_scale{};
+        }
+
+        StaticAssert::invalid_normalized_vector_in_place_cross operator*=(const Vector<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_normalized_vector_in_place_cross{};
+        }
+        StaticAssert::invalid_normalized_vector_in_place_cross operator*=(const XYVector<ThisSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_normalized_vector_in_place_cross{};
         }
 #endif
 

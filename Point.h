@@ -92,7 +92,6 @@ namespace Space {
         [[nodiscard]] bool operator!= (const Point<ThisSpace, Implementation>& other) const noexcept {
             return !(operator==(other));
         }
-
         [[nodiscard]] bool operator!= (const XYPoint<ThisSpace, Implementation>& other) const noexcept {
             return !(operator==(other));
         }
@@ -124,7 +123,6 @@ namespace Space {
             detail::Sub(v.m_impl, rhs.m_impl);
             return v;
         }
-
         [[nodiscard]] Point<ThisSpace, Implementation> operator-(const Vector<ThisSpace, Implementation>& rhs) const noexcept {
             Point<ThisSpace, Implementation> v(X(), Y(), Z());
             detail::Sub(v.m_impl, rhs.m_impl);
@@ -145,6 +143,7 @@ namespace Space {
             detail::Sub(v.m_impl, rhs.m_impl);
             return v;
         }
+
 
         Point<ThisSpace, Implementation> operator+=(const Vector<ThisSpace, Implementation>& rhs) noexcept {
             detail::Add(m_impl, rhs.m_impl);

@@ -87,9 +87,6 @@ namespace Space {
             return operator[](I);
         }
 
-        void SetX(const double d) noexcept { *(detail::begin(m_impl) + 0) = d; }
-        void SetY(const double d) noexcept { *(detail::begin(m_impl) + 1) = d; }
-
         [[nodiscard]] bool operator== (const Vector<ThisSpace, Implementation>& other) const noexcept {
             return std::equal(cbegin(), cend(), detail::cbegin(other.m_impl), detail::Equality);
         }
@@ -194,11 +191,10 @@ namespace Space {
             return Vector<ThisSpace, Implementation>(x, y, z);
         }
 
-        [[nodiscard]] double Dot(const Vector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
-        [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
-        [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
-        [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl);; }
-
+        [[nodiscard]] double Dot(const Vector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl); }
+        [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl); }
+        [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl); }
+        [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl); }
 
         template <typename OtherSpace, typename TransformManager>
         [[nodiscard]] std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, Vector<OtherSpace, Implementation>> ConvertTo(const TransformManager& transform_manager) const noexcept {
