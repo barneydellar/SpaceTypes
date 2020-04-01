@@ -241,8 +241,8 @@ namespace Space {
         [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl); }
         [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept { return detail::Dot(m_impl, other.m_impl); }
 
-        template <typename U = std::enable_if_t<static_cast<bool>(ThisSpace::hasXY), ThisSpace>>
-        [[nodiscard]] XYVector<U, Implementation> ToXY() const {
+        template <typename U = int, std::enable_if_t<static_cast<bool>(ThisSpace::hasXY), U> = 0>
+        [[nodiscard]] XYVector<ThisSpace, Implementation> ToXY() const {
             return XYVector<ThisSpace, Implementation>(X(), Y());
         }
 
@@ -308,7 +308,7 @@ namespace Space {
             return StaticAssert::invalid_point_to_vector_addition{};
         }
 
-        template <typename U = std::enable_if_t<!static_cast<bool>(ThisSpace::hasXY), void>>
+        template <typename U = int, std::enable_if_t<!static_cast<bool>(ThisSpace::hasXY), U> = 0>
         [[nodiscard]] StaticAssert::XYVector_not_supported ToXY() const noexcept {
             return StaticAssert::XYVector_not_supported{};
         }

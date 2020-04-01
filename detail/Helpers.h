@@ -47,7 +47,7 @@ namespace Space::detail {
     static void Scale(Implementation& self, const double& d)
     {
         std::transform(
-            cbegin<Implementation>(self),
+            cbegin(self),
             cend(self),
             begin(self),
             [d](auto v) { return v * d; }
