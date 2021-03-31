@@ -35,26 +35,16 @@ TEST_CASE("Points can be created using initalizer lists of three numbers") {
     CHECK(p[2] == 4);
 }
 TEST_CASE("Points throw when using initalizer lists that are too small") {
-    try
-    {
-        View::Point p{ 1, 2 };
-    }
-    catch (std::invalid_argument&)
-    {
-        return;
-    }
-    REQUIRE(false);
+    CHECK_THROWS_AS((View::Point{ 1, 2 }), std::invalid_argument);
+}
+TEST_CASE("Points throw with the right message when using initalizer lists that are too small") {
+    CHECK_THROWS_WITH((View::Point{ 1, 2 }), "You can only initialise with 3 elements");
 }
 TEST_CASE("Points throw when using initalizer lists that are too large") {
-    try
-    {
-        View::Point p{ 1, 2, 3, 4 };
-    }
-    catch (std::invalid_argument&)
-    {
-        return;
-    }
-    REQUIRE(false);
+    CHECK_THROWS_AS((View::Point{ 1, 2, 3, 4 }), std::invalid_argument);
+}
+TEST_CASE("Points throw with the right message when using initalizer lists that are too large") {
+    CHECK_THROWS_WITH((View::Point{ 1, 2, 3, 4 }), "You can only initialise with 3 elements");
 }
 
 TEST_CASE("Points can be assigned from a point") {
@@ -116,6 +106,10 @@ TEST_CASE("Points support element access by random access") {
 TEST_CASE("Points throw if random access is too high") {
     const Image::Point p;
     CHECK_THROWS_AS(p[3], std::invalid_argument);
+}
+TEST_CASE("Points throw with the right message if random access is too high") {
+    const Image::Point p;
+    CHECK_THROWS_WITH(p[3], "Index is out of range");
 }
 
 TEST_CASE("Points support element access by at") {

@@ -31,26 +31,16 @@ TEST_CASE("XYVectors can be created using initalizer lists of two numbers") {
     CHECK(v[1] == 2);
 }
 TEST_CASE("XYVectors throw when using initalizer lists that are too small") {
-    try
-    {
-        View::XYVector v{ 1 };
-    }
-    catch (std::invalid_argument&)
-    {
-        return;
-    }
-    REQUIRE(false);
+    CHECK_THROWS_AS((View::XYVector{ 2 }), std::invalid_argument);
+}
+TEST_CASE("XYVectors throw with the right message when using initalizer lists that are too small") {
+    CHECK_THROWS_WITH((View::XYVector{ 2 }), "You can only initialise with 2 elements");
 }
 TEST_CASE("XYVectors throw when using initalizer lists that are too large") {
-    try
-    {
-        View::XYVector v{ 1, 2, 3 };
-    }
-    catch (std::invalid_argument&)
-    {
-        return;
-    }
-    REQUIRE(false);
+    CHECK_THROWS_AS((View::XYVector{ 1, 2, 3 }), std::invalid_argument);
+}
+TEST_CASE("XYVectors throw with the right message when using initalizer lists that are too large") {
+    CHECK_THROWS_WITH((View::XYVector{ 1, 2, 3 }), "You can only initialise with 2 elements");
 }
 
 TEST_CASE("XYVectors can be assigned from an XYVectors") {
@@ -113,6 +103,10 @@ TEST_CASE("XYVectors support element access by random access") {
 TEST_CASE("XYVectors throw if random access is too high") {
     const Image::XYVector v;
     CHECK_THROWS_AS(v[2], std::invalid_argument);
+}
+TEST_CASE("XYVectors throw with the right message if random access is too high") {
+    const Image::XYVector v;
+    CHECK_THROWS_WITH(v[2], "Index is out of range");
 }
 
 TEST_CASE("XYVectors support element access by at") {
@@ -773,6 +767,10 @@ TEST_CASE("XYVectors can be normalized to produce a NormalizedXYVector") {
 TEST_CASE("Zero size XYVectors cannot be normalized") {
     const Image::XYVector v(0, 0);
     CHECK_THROWS_AS(v.Norm(), std::invalid_argument);
+}
+TEST_CASE("Zero size XYVectors throw the correct message when you try and normalise them.") {
+    const Image::XYVector v(0, 0);
+    CHECK_THROWS_WITH(v.Norm(), "Zero-sized normal vectors are not allowed");
 }
 
 TEST_CASE("XYVectors can be converted from one space to another ignoring translation") {

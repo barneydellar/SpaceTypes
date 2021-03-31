@@ -35,26 +35,16 @@ TEST_CASE("Vectors can be created using initalizer lists of three numbers") {
     CHECK(v[2] == 4);
 }
 TEST_CASE("Vectors throw when using initalizer lists that are too small") {
-    try
-    {
-        View::Vector v{ 1, 2 };
-    }
-    catch (std::invalid_argument&)
-    {
-        return;
-    }
-    REQUIRE(false);
+    CHECK_THROWS_AS((View::Vector{ 1, 2 }), std::invalid_argument);
+}
+TEST_CASE("Vectors throw with the right message when using initalizer lists that are too small") {
+    CHECK_THROWS_WITH((View::Vector{ 1, 2 }), "You can only initialise with 3 elements");
 }
 TEST_CASE("Vectors throw when using initalizer lists that are too large") {
-    try
-    {
-        View::Vector v{ 1, 2, 3, 4 };
-    }
-    catch (std::invalid_argument&)
-    {
-        return;
-    }
-    REQUIRE(false);
+    CHECK_THROWS_AS((View::Vector{ 1, 2, 3, 4 }), std::invalid_argument);
+}
+TEST_CASE("Vectors throw with the right message when using initalizer lists that are too large") {
+    CHECK_THROWS_WITH((View::Vector{ 1, 2, 3, 4 }), "You can only initialise with 3 elements");
 }
 
 TEST_CASE("Vectors can be assigned from a vector") {
@@ -116,6 +106,10 @@ TEST_CASE("Vectors support element access by random access") {
 TEST_CASE("Vectors throw if random access is too high") {
     const Image::Vector v;
     CHECK_THROWS_AS(v[3], std::invalid_argument);
+}
+TEST_CASE("Vectors throw with the right message if random access is too high") {
+    const Image::Vector v;
+    CHECK_THROWS_WITH(v[3], "Index is out of range");
 }
 
 TEST_CASE("Vectors support element access by at") {
@@ -787,6 +781,10 @@ TEST_CASE("Vectors can be normalized to produce a NormalizedVector") {
 TEST_CASE("Zero size vectors cannot be normalized") {
     const Image::Vector v(0, 0, 0);
     CHECK_THROWS_AS(v.Norm(), std::invalid_argument);
+}
+TEST_CASE("Zero size vectors throw the correct message when you try and normalise them.") {
+    const Image::Vector v(0, 0, 0);
+    CHECK_THROWS_WITH(v.Norm(), "Zero-sized normal vectors are not allowed");
 }
 
 TEST_CASE("Vectors can be converted from one space to another ignoring translation") {

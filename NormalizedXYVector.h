@@ -41,9 +41,10 @@ namespace Space {
         }
         NormalizedXYVector(const std::initializer_list<double>& l) noexcept(false)
         {
-            if (l.size() != 2)
+            constexpr int valid_size = 2;
+            if (l.size() != valid_size)
             {
-                throw std::invalid_argument("You can only initialise with two elements");
+                throw std::invalid_argument("You can only initialise with "s + std::to_string(valid_size) + " elements");
             }
             std::copy(
                 std::cbegin(l),

@@ -30,27 +30,18 @@ TEST_CASE("XYPoints can be created using initalizer lists of two numbers") {
     CHECK(p[0] == 1);
     CHECK(p[1] == 2);
 }
+
 TEST_CASE("XYPoints throw when using initalizer lists that are too small") {
-    try
-    {
-        View::XYPoint p{ 1 };
-    }
-    catch (std::invalid_argument&)
-    {
-        return;
-    }
-    REQUIRE(false);
+    CHECK_THROWS_AS((View::XYPoint{ 2 }), std::invalid_argument);
+}
+TEST_CASE("XYPoints throw with the right message when using initalizer lists that are too small") {
+    CHECK_THROWS_WITH((View::XYPoint{ 2 }), "You can only initialise with 2 elements");
 }
 TEST_CASE("XYPoints throw when using initalizer lists that are too large") {
-    try
-    {
-        View::XYPoint p{ 1, 2, 3 };
-    }
-    catch (std::invalid_argument&)
-    {
-        return;
-    }
-    REQUIRE(false);
+    CHECK_THROWS_AS((View::XYPoint{ 1, 2, 3 }), std::invalid_argument);
+}
+TEST_CASE("XYPoints throw with the right message when using initalizer lists that are too large") {
+    CHECK_THROWS_WITH((View::XYPoint{ 1, 2, 3 }), "You can only initialise with 2 elements");
 }
 
 TEST_CASE("XYPoints can be assigned from an XYPoint") {
@@ -111,7 +102,11 @@ TEST_CASE("XYPoints support element access by random access") {
 }
 TEST_CASE("XYPoints throw if random access is too high") {
     const Image::XYPoint p;
-    CHECK_THROWS_AS(p[3], std::invalid_argument);
+    CHECK_THROWS_AS(p[2], std::invalid_argument);
+}
+TEST_CASE("XYPoints throw with the right message if random access is too high") {
+    const Image::XYPoint p;
+    CHECK_THROWS_WITH(p[2], "Index is out of range");
 }
 
 TEST_CASE("XYPoints support element access by at") {

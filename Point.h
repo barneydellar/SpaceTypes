@@ -35,9 +35,10 @@ namespace Space {
         }
         Point(const std::initializer_list<double>& l)
         {
-            if (l.size() != 3)
+            constexpr int valid_size = 3;
+            if (l.size() != valid_size)
             {
-                throw std::invalid_argument("You can only initialise with three elements");
+                throw std::invalid_argument("You can only initialise with "s + std::to_string(valid_size) + " elements");
             }
             std::copy(
                 std::cbegin(l),
