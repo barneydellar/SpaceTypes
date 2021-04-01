@@ -36,26 +36,12 @@ namespace Space {
             );
             Normalize();
         }
-        explicit NormalizedVector(const double x, const double y, const double z) noexcept(false)
+        NormalizedVector(const double x, const double y, const double z) noexcept(false)
         {
             auto iter = detail::begin(m_impl);
             *iter++ = x;
             *iter++ = y;
             *iter = z;
-            Normalize();
-        }
-        NormalizedVector(const std::initializer_list<double>& l) noexcept(false)
-        {
-            constexpr int valid_size = 3;
-            if (l.size() != valid_size)
-            {
-                throw std::invalid_argument("You can only initialise with "s + std::to_string(valid_size) + " elements");
-            }
-            std::copy(
-                std::cbegin(l),
-                std::cend(l),
-                detail::begin(m_impl)
-            );
             Normalize();
         }
 

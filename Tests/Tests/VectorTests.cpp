@@ -34,18 +34,6 @@ TEST_CASE("Vectors can be created using initalizer lists of three numbers") {
     CHECK(v[1] == 2);
     CHECK(v[2] == 4);
 }
-TEST_CASE("Vectors throw when using initalizer lists that are too small") {
-    CHECK_THROWS_AS((View::Vector{ 1, 2 }), std::invalid_argument);
-}
-TEST_CASE("Vectors throw with the right message when using initalizer lists that are too small") {
-    CHECK_THROWS_WITH((View::Vector{ 1, 2 }), "You can only initialise with 3 elements");
-}
-TEST_CASE("Vectors throw when using initalizer lists that are too large") {
-    CHECK_THROWS_AS((View::Vector{ 1, 2, 3, 4 }), std::invalid_argument);
-}
-TEST_CASE("Vectors throw with the right message when using initalizer lists that are too large") {
-    CHECK_THROWS_WITH((View::Vector{ 1, 2, 3, 4 }), "You can only initialise with 3 elements");
-}
 
 TEST_CASE("Vectors can be assigned from a vector") {
     const View::Vector v2(1, 2, 3);

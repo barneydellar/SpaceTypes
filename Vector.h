@@ -27,25 +27,12 @@ namespace Space {
                 begin()
             );
         }
-        explicit Vector(const double x, const double y, const double z) noexcept
+        Vector(const double x, const double y, const double z) noexcept
         {
             auto iter = begin();
             *iter++ = x;
             *iter++ = y;
             *iter = z;
-        }
-        Vector(const std::initializer_list<double>& l)
-        {
-            constexpr int valid_size = 3;
-            if (l.size() != valid_size)
-            {
-                throw std::invalid_argument("You can only initialise with "s + std::to_string(valid_size) + " elements");
-            }
-            std::copy(
-                std::cbegin(l),
-                std::cend(l),
-                begin()
-            );
         }
 
         [[nodiscard]] explicit operator Implementation() const noexcept {

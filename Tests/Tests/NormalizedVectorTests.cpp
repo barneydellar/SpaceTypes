@@ -39,18 +39,6 @@ TEST_CASE("NormalizedVectors can be created using initalizer lists of three numb
     CHECK(v.Y() == 4 / 5.0);
     CHECK(v.Z() == 0);
 }
-TEST_CASE("NormalizedVectors throw when using initalizer lists that are too small") {
-    CHECK_THROWS_AS((View::NormalizedVector{ 1, 2 }), std::invalid_argument);
-}
-TEST_CASE("NormalizedVectors throw with the right message when using initalizer lists that are too small") {
-    CHECK_THROWS_WITH((View::NormalizedVector{ 1, 2 }), "You can only initialise with 3 elements");
-}
-TEST_CASE("NormalizedVectors throw when using initalizer lists that are too large") {
-    CHECK_THROWS_AS((View::NormalizedVector{ 1, 2, 3, 4 }), std::invalid_argument);
-}
-TEST_CASE("NormalizedVectors throw with the right message when using initalizer lists that are too large") {
-    CHECK_THROWS_WITH((View::NormalizedVector{ 1, 2, 3, 4 }), "You can only initialise with 3 elements");
-}
 
 TEST_CASE("NormalizedVectors can be assigned from a normalized vector") {
     const View::NormalizedVector v2(1, 0, 0);

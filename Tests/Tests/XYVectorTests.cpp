@@ -30,18 +30,6 @@ TEST_CASE("XYVectors can be created using initalizer lists of two numbers") {
     CHECK(v[0] == 1);
     CHECK(v[1] == 2);
 }
-TEST_CASE("XYVectors throw when using initalizer lists that are too small") {
-    CHECK_THROWS_AS((View::XYVector{ 2 }), std::invalid_argument);
-}
-TEST_CASE("XYVectors throw with the right message when using initalizer lists that are too small") {
-    CHECK_THROWS_WITH((View::XYVector{ 2 }), "You can only initialise with 2 elements");
-}
-TEST_CASE("XYVectors throw when using initalizer lists that are too large") {
-    CHECK_THROWS_AS((View::XYVector{ 1, 2, 3 }), std::invalid_argument);
-}
-TEST_CASE("XYVectors throw with the right message when using initalizer lists that are too large") {
-    CHECK_THROWS_WITH((View::XYVector{ 1, 2, 3 }), "You can only initialise with 2 elements");
-}
 
 TEST_CASE("XYVectors can be assigned from an XYVectors") {
     const View::XYVector v2(1, 2);

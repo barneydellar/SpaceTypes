@@ -35,18 +35,6 @@ TEST_CASE("NormalizedXYVectors can be created using initalizer lists of two numb
     CHECK(v.X() == 3 / 5.0);
     CHECK(v.Y() == 4 / 5.0);
 }
-TEST_CASE("NormalizedXYVectors throw when using initalizer lists that are too small") {
-    CHECK_THROWS_AS((View::NormalizedXYVector{ 2 }), std::invalid_argument);
-}
-TEST_CASE("NormalizedXYVectors throw with the right message when using initalizer lists that are too small") {
-    CHECK_THROWS_WITH((View::NormalizedXYVector{ 2 }), "You can only initialise with 2 elements");
-}
-TEST_CASE("NormalizedXYVectors throw when using initalizer lists that are too large") {
-    CHECK_THROWS_AS((View::NormalizedXYVector{ 1, 2, 3 }), std::invalid_argument);
-}
-TEST_CASE("NormalizedXYVectors throw with the right message when using initalizer lists that are too large") {
-    CHECK_THROWS_WITH((View::NormalizedXYVector{ 1, 2, 3 }), "You can only initialise with 2 elements");
-}
 
 TEST_CASE("NormalizedXYVectors can be assigned from a normalized XYvector") {
     const View::NormalizedXYVector v2(1, 0);
