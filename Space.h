@@ -49,6 +49,9 @@ namespace Space {
     template <int I>
     concept ValidFor2dAt = (I >= 0 && I <= 1);
 
+    template <typename SpaceA, typename SpaceB>
+    concept DifferentSpaces = !std::is_same_v<SpaceA, SpaceB>;
+
     template <typename ThisSpace, typename Implementation, XY b, typename Units>
     struct SpaceBase {
         using Unit = Units;

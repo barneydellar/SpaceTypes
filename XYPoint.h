@@ -153,8 +153,8 @@ namespace Space {
             return v;
         }
 
-        template <typename OtherSpace, typename TransformManager>
-        [[nodiscard]] std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, Point<OtherSpace, Implementation>> ConvertTo(const TransformManager& transform_manager) const {
+        template <typename OtherSpace, typename TransformManager> requires DifferentSpaces<OtherSpace, ThisSpace>
+        [[nodiscard]] Point<OtherSpace, Implementation> ConvertTo(const TransformManager& transform_manager) const {
             return Point<OtherSpace, Implementation>(transform_manager.template TransformPoint<ThisSpace, OtherSpace>(static_cast<Implementation>(*this)));
         }
 

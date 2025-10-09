@@ -206,8 +206,8 @@ namespace Space {
             return NormalizedXYVector<ThisSpace, Implementation>(X(), Y());
         }
 
-        template <typename OtherSpace, typename TransformManager>
-        [[nodiscard]] std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, Vector<OtherSpace, Implementation>> ConvertTo(const TransformManager& transform_manager) const noexcept {
+        template <typename OtherSpace, typename TransformManager> requires DifferentSpaces<OtherSpace, ThisSpace>
+        [[nodiscard]] Vector<OtherSpace, Implementation> ConvertTo(const TransformManager& transform_manager) const noexcept {
             return Vector < OtherSpace, Implementation>(transform_manager.template TransformVector<ThisSpace, OtherSpace>(static_cast<Implementation>(*this)));
         }
 

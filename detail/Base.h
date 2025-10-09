@@ -1,6 +1,9 @@
 #pragma once
 
 namespace Space::detail {
+    
+    template <typename SpaceA, typename SpaceB>
+    concept SameSpaceAs = std::is_same_v<SpaceA, SpaceB>;
 
     template <typename ThisSpace, typename Implementation>
     class Base
@@ -47,8 +50,8 @@ namespace Space::detail {
         StaticAssert::invalid_space Dot(const Base<OtherSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_space{};
         }
-        template <typename OtherSpace, typename TransformManager>
-        [[nodiscard]] std::enable_if_t<std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_conversion> ConvertTo(const TransformManager& transform_manager) const noexcept {
+        template <SameSpaceAs<ThisSpace> S, typename TransformManager>
+        [[nodiscard]] StaticAssert::invalid_conversion ConvertTo(const TransformManager& transform_manager) const noexcept {
             return StaticAssert::invalid_conversion{};
         }
     };
