@@ -1,10 +1,6 @@
 #include "pch.h"
 #include "SpaceHelpers.h"
-
-using namespace Space;
-
-#include "pch.h"
-#include "SpaceHelpers.h"
+#include "ExampleTransformManager.h"
 
 using namespace Space;
 

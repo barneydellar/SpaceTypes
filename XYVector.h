@@ -208,7 +208,7 @@ namespace Space {
         }
 
         [[nodiscard]] typename ThisSpace::Unit Mag() const noexcept {
-            return ThisSpace::Unit{ Mag_double() };
+            return typename ThisSpace::Unit{ Mag_double() };
         }
 
         [[nodiscard]] double Mag_double() const noexcept { return detail::Mag_internal(m_impl); }
