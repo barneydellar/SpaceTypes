@@ -119,7 +119,7 @@ const YourSpace::NormalizedXYVector v(5, 0); // v = {1, 0}
 
 It is a runtime error to create a Normalized Vector with zero values.
 
-Points or vector can also be created for use in collections:
+Points or vectors can also be created for use in collections:
 
 ```cpp
 std::vector<View::Point> vs{
