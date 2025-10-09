@@ -202,8 +202,7 @@ namespace Space {
             return detail::Dot(m_impl, other.m_impl);
         }
 
-        template <typename U = int, std::enable_if_t<static_cast<bool>(ThisSpace::hasXY), U> = 0>
-        [[nodiscard]] NormalizedXYVector<ThisSpace, Implementation> ToXY() const {
+        [[nodiscard]] NormalizedXYVector<ThisSpace, Implementation> ToXY() const requires ThisSpace::supportsXY {
             return NormalizedXYVector<ThisSpace, Implementation>(X(), Y());
         }
 
@@ -295,8 +294,7 @@ namespace Space {
             return StaticAssert::invalid_normalized_vector_in_place_cross{};
         }
 
-        template <typename U = int, std::enable_if_t<!static_cast<bool>(ThisSpace::hasXY), U> = 0>
-        [[nodiscard]] StaticAssert::XYVector_not_supported ToXY() const noexcept {
+        [[nodiscard]] StaticAssert::XYVector_not_supported ToXY() const noexcept requires ThisSpace::doesNotSupportXY {
             return StaticAssert::XYVector_not_supported{};
         }
 #endif

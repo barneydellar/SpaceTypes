@@ -493,11 +493,11 @@ TEST_CASE("NormalizedXYVectors cannot be crossed in place") {
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedXYVectors in different spaces cannot be crossed in place") {
-    View::NormalizedXYVector v;
-    const Image::Vector v_v;
-    const Image::NormalizedVector v_n;
-    const Image::NormalizedXYVector v_n_xy;
-    const Image::XYVector v_xy;
+    Image::NormalizedXYVector v;
+    const View::Vector v_v;
+    const View::NormalizedVector v_n;
+    const View::NormalizedXYVector v_n_xy;
+    const View::XYVector v_xy;
 
     using converted_type_1 = decltype(v *= v_v);
     using converted_type_2 = decltype(v *= v_n);

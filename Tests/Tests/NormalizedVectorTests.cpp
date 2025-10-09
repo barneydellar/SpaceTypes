@@ -482,11 +482,11 @@ TEST_CASE("NormalizedVectors cannot be crossed in place with non-normalized vect
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedVectors in different spaces cannot be crossed in place") {
-    View::NormalizedVector v;
-    const Image::Vector v_v;
-    const Image::NormalizedVector v_n;
-    const Image::NormalizedXYVector v_n_xy;
-    const Image::XYVector v_xy;
+    Image::NormalizedVector v;
+    const View::Vector v_v;
+    const View::NormalizedVector v_n;
+    const View::NormalizedXYVector v_n_xy;
+    const View::XYVector v_xy;
 
     using converted_type_1 = decltype(v *= v_v);
     using converted_type_2 = decltype(v *= v_n);
@@ -549,11 +549,11 @@ TEST_CASE("NormalizedVectors can have other vectors crossed using star to produc
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedVectors in different spaces cannot be crossed using star") {
-    View::NormalizedVector v;
-    const Image::Vector v_v;
-    const Image::NormalizedVector v_n;
-    const Image::NormalizedXYVector v_n_xy;
-    const Image::XYVector v_xy;
+    Image::NormalizedVector v;
+    const View::Vector v_v;
+    const View::NormalizedVector v_n;
+    const View::NormalizedXYVector v_n_xy;
+    const View::XYVector v_xy;
 
     using converted_type_1 = decltype(v * v_v);
     using converted_type_2 = decltype(v * v_n);
@@ -616,11 +616,11 @@ TEST_CASE("NormalizedVectors can have other vectors crossed to produce another V
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedVectors in different spaces cannot be crossed") {
-    View::NormalizedVector v;
-    const Image::Vector v_v;
-    const Image::NormalizedVector v_n;
-    const Image::NormalizedXYVector v_n_xy;
-    const Image::XYVector v_xy;
+    Image::NormalizedVector v;
+    const View::Vector v_v;
+    const View::NormalizedVector v_n;
+    const View::NormalizedXYVector v_n_xy;
+    const View::XYVector v_xy;
 
     using converted_type_1 = decltype(v.Cross(v_v));
     using converted_type_2 = decltype(v.Cross(v_n));

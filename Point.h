@@ -169,8 +169,7 @@ namespace Space {
             return Point<OtherSpace, Implementation>(transform_manager.template TransformPoint<ThisSpace, OtherSpace>(static_cast<Implementation>(*this)));
         }
 
-        template <typename U = int, std::enable_if_t<static_cast<bool>(ThisSpace::hasXY), U> = 0>
-        [[nodiscard]] XYPoint<ThisSpace, Implementation> ToXY() const {
+        [[nodiscard]] XYPoint<ThisSpace, Implementation> ToXY() const requires ThisSpace::supportsXY {
             return XYPoint<ThisSpace, Implementation>(X(), Y());
         }
 
@@ -245,8 +244,7 @@ namespace Space {
             return StaticAssert::invalid_point_from_vector_subtraction{};
         }
 
-        template <typename U = int, std::enable_if_t<!static_cast<bool>(ThisSpace::hasXY), U> = 0>
-        [[nodiscard]] StaticAssert::XYVector_not_supported ToXY() const noexcept {
+        [[nodiscard]] StaticAssert::XYVector_not_supported ToXY() const noexcept requires ThisSpace::doesNotSupportXY {
             return StaticAssert::XYVector_not_supported{};
         }
 

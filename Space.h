@@ -53,7 +53,8 @@ namespace Space {
     struct SpaceBase {
         using Unit = Units;
 
-        static constexpr XY hasXY = b;
+        static constexpr bool supportsXY = static_cast<bool>(b);
+        static constexpr bool doesNotSupportXY = !static_cast<bool>(b);
 
         using Point = Point<ThisSpace, Implementation>;
         using Vector = Vector<ThisSpace, Implementation>;
