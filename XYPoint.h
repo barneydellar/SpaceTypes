@@ -77,8 +77,8 @@ namespace Space {
             return *(cbegin() + i);
         }
 
-        template <int I>
-        [[nodiscard]] typename std::enable_if<I == 0 || I == 1, double>::type at() const {
+        template <int I> requires ValidFor2dAt<I>
+        [[nodiscard]] double at() const {
             return operator[](I);
         }
 
@@ -177,11 +177,10 @@ namespace Space {
         using _base::operator-;
         using _base::ConvertTo;
 
-        template <int I>
-        typename std::enable_if<I != 0 && I != 1, StaticAssert::invalid_at_access>::type at() const {
+        template <int I> requires !ValidFor2dAt<I>
+        typename StaticAssert::invalid_at_access at() const {
             return StaticAssert::invalid_at_access{};
         }
-
 
         StaticAssert::invalid_point_vector_equality operator== (const Vector<ThisSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};

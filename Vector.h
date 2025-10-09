@@ -59,8 +59,8 @@ namespace Space {
             return *(cbegin() + i);
         }
 
-        template <int I>
-        [[nodiscard]] typename std::enable_if<I == 0 || I == 1 || I == 2, double>::type at() const {
+        template <int I> requires ValidFor3dAt<I>
+        [[nodiscard]] double at() const {
             return operator[](I);
         }
 
@@ -270,8 +270,8 @@ namespace Space {
         using _base::Dot;
         using _base::Cross;
 
-        template <int I>
-        typename std::enable_if<I != 0 && I != 1 && I != 2, StaticAssert::invalid_at_access>::type at() const {
+        template <int I> requires !ValidFor3dAt<I>
+        StaticAssert::invalid_at_access at() const {
             return StaticAssert::invalid_at_access{};
         }
 

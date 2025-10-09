@@ -22,7 +22,6 @@ namespace Space {
 
     template <typename ThisSpace, typename Implementation>
     class XYVector;
-
 }
 
 #include "detail/StaticAsserts.h"
@@ -43,6 +42,12 @@ namespace Space {
         IsUsed = true,
         IsNotUsed = false
     };
+    
+    template <int I>
+    concept ValidFor3dAt = (I >= 0 && I <= 2);
+
+    template <int I>
+    concept ValidFor2dAt = (I >= 0 && I <= 1);
 
     template <typename ThisSpace, typename Implementation, XY b, typename Units>
     struct SpaceBase {

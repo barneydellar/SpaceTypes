@@ -2,15 +2,7 @@
 
 namespace Space::StaticAssert {
 
-    struct invalid_base
-    {
-        template<typename Anything = void>
-        operator Anything() const noexcept {
-            return Anything{};
-        }
-    };
-
-    struct invalid_space final : invalid_base
+    struct invalid_space final
     {
         template<typename T = void>
         invalid_space() {
@@ -18,7 +10,7 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_conversion final : invalid_base
+    struct invalid_conversion final
     {
         template<typename T = void>
         invalid_conversion() {
@@ -26,7 +18,7 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_point_vector_equality final : invalid_base
+    struct invalid_point_vector_equality final
     {
         template<typename T = void>
         invalid_point_vector_equality() {
@@ -34,7 +26,7 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_point_to_point_addition final : invalid_base
+    struct invalid_point_to_point_addition final
     {
         template<typename T = void>
         invalid_point_to_point_addition() {
@@ -42,7 +34,7 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_point_to_vector_addition final : invalid_base
+    struct invalid_point_to_vector_addition final
     {
         template<typename T = void>
         invalid_point_to_vector_addition() {
@@ -50,7 +42,7 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_point_from_point_subtraction final : invalid_base
+    struct invalid_point_from_point_subtraction final
     {
         template<typename T = void>
         invalid_point_from_point_subtraction() {
@@ -58,7 +50,7 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_point_from_vector_subtraction final : invalid_base
+    struct invalid_point_from_vector_subtraction final
     {
         template<typename T = void>
         invalid_point_from_vector_subtraction() {
@@ -66,7 +58,7 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_vector3_to_xy_point_addition final : invalid_base
+    struct invalid_vector3_to_xy_point_addition final
     {
         template<typename T = void>
         invalid_vector3_to_xy_point_addition() {
@@ -74,7 +66,7 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_vector3_from_xy_point_subtraction final : invalid_base
+    struct invalid_vector3_from_xy_point_subtraction final
     {
         template<typename T = void>
         invalid_vector3_from_xy_point_subtraction() {
@@ -82,7 +74,7 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_vector_to_vector_addition final : invalid_base
+    struct invalid_vector_to_vector_addition final
     {
         template<typename T = void>
         invalid_vector_to_vector_addition() {
@@ -90,7 +82,7 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_vector_from_vector_subtraction final : invalid_base
+    struct invalid_vector_from_vector_subtraction final
     {
         template<typename T = void>
         invalid_vector_from_vector_subtraction() {
@@ -98,7 +90,7 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_normalized_vector_addition final : invalid_base
+    struct invalid_normalized_vector_addition final
     {
         template<typename T = void>
         invalid_normalized_vector_addition() {
@@ -106,7 +98,7 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_normalized_vector_subtraction final : invalid_base
+    struct invalid_normalized_vector_subtraction final
     {
         template<typename T = void>
         invalid_normalized_vector_subtraction() {
@@ -114,7 +106,7 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_XYVector_in_place_cross final : invalid_base
+    struct invalid_XYVector_in_place_cross final
     {
         template<typename T = void>
         invalid_XYVector_in_place_cross() {
@@ -122,7 +114,7 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_normalized_vector_in_place_cross final : invalid_base
+    struct invalid_normalized_vector_in_place_cross final
     {
         template<typename T = void>
         invalid_normalized_vector_in_place_cross() {
@@ -130,7 +122,7 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_normalized_vector_scale final : invalid_base
+    struct invalid_normalized_vector_scale final
     {
         template<typename T = void>
         invalid_normalized_vector_scale() {
@@ -138,7 +130,7 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_random_access final : invalid_base
+    struct invalid_random_access final
     {
         template<typename T = void>
         invalid_random_access() {
@@ -146,15 +138,15 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_at_access final : invalid_base
+    struct invalid_at_access final
     {
         template<typename T = void>
         invalid_at_access() {
-            static_assert(false, "Index out of range.");
+            static_assert(false, "Index out of range when calling 'at'.");
         }
     };
 
-    struct XYVector_not_supported final : invalid_base
+    struct XYVector_not_supported final
     {
         template<typename T = void>
         XYVector_not_supported() {
