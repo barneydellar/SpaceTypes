@@ -8,8 +8,6 @@ namespace Space {
         : public detail::Base<ThisSpace, Implementation>
 #endif
     {
-        using _base = detail::Base<ThisSpace, Implementation>;
-
         friend class NormalizedVector<ThisSpace, Implementation>;
         friend class NormalizedXYVector<ThisSpace, Implementation>;
         friend class Point<ThisSpace, Implementation>;
@@ -223,6 +221,7 @@ namespace Space {
         }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
+        using _base = detail::Base<ThisSpace, Implementation>;
         using _base::operator-=;
         using _base::operator-; 
         using _base::operator+=;

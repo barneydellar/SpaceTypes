@@ -212,9 +212,7 @@ TEST_CASE("Points from different spaces cannot be compared using inequality") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
 }
-#endif
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("Points and Vectors cannot be compared using inequality") {
     const View::Point p;
     const View::Vector v_v;
