@@ -10,14 +10,6 @@ namespace Space::detail {
     {
     public:
 
-        template <typename OtherSpace>
-        std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_space> operator== (const Base<OtherSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_space{};
-        }
-        template <typename OtherSpace>
-        std::enable_if_t<!std::is_same_v<OtherSpace, ThisSpace>, StaticAssert::invalid_space> operator!= (const Base<OtherSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_space{};
-        }
         template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
         StaticAssert::invalid_space operator*(const Base<OtherSpace, Implementation>&) const noexcept {
             return StaticAssert::invalid_space{};

@@ -223,10 +223,8 @@ namespace Space {
         }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-        using _base::operator==;
-        using _base::operator!=;
         using _base::operator-=;
-        using _base::operator-;
+        using _base::operator-; 
         using _base::operator+=;
         using _base::operator+;
         using _base::operator*=;
@@ -238,6 +236,40 @@ namespace Space {
         template <int I> requires !ValidFor2dAt<I>
         StaticAssert::invalid_at_access at() const {
             return StaticAssert::invalid_at_access{};
+        }
+
+        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator!= (const Vector<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator!= (const NormalizedVector<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator!= (const NormalizedXYVector<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator!= (const XYVector<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+
+        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator== (const Vector<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator== (const NormalizedVector<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator== (const NormalizedXYVector<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator== (const XYVector<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
         }
 
         StaticAssert::invalid_point_vector_equality operator== (const Point<ThisSpace, Implementation>&) const noexcept {

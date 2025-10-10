@@ -169,8 +169,6 @@ namespace Space {
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 
-        using _base::operator==;
-        using _base::operator!=;
         using _base::operator+=;
         using _base::operator+;
         using _base::operator-=;
@@ -180,6 +178,24 @@ namespace Space {
         template <int I> requires !ValidFor2dAt<I>
         typename StaticAssert::invalid_at_access at() const {
             return StaticAssert::invalid_at_access{};
+        }
+
+        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator!= (const Point<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator!= (const XYPoint<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+
+        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator== (const Point<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator== (const XYPoint<OtherSpace, Implementation>&) const noexcept {
+            return StaticAssert::invalid_space{};
         }
 
         StaticAssert::invalid_point_vector_equality operator== (const Vector<ThisSpace, Implementation>&) const noexcept {
