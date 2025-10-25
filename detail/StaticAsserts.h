@@ -10,10 +10,10 @@ namespace Space::StaticAssert {
         }
     };
 
-    struct invalid_conversion final
+    struct invalid_same_space_conversion final
     {
         template<typename T = void>
-        invalid_conversion() {
+        invalid_same_space_conversion() {
             static_assert(false, "You can't convert to the same same space.");
         }
     };

@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "ExternalIncludes.h"
 #include "SpaceHelpers.h"
 #include "ExampleTransformManager.h"
 
@@ -151,9 +151,7 @@ TEST_CASE("XYPoints from different spaces cannot be compared using equal") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
 }
-#endif
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYPoints and Vectors cannot be compared using equal") {
     const Image::XYPoint p;
     const Image::Vector v_v;
@@ -207,9 +205,7 @@ TEST_CASE("XYPoints from different spaces cannot be compared using inequality") 
     CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
 }
-#endif
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYPoints and Vectors cannot be compared using inequality") {
     const View::XYPoint p;
     const View::Vector v_v;
@@ -254,9 +250,7 @@ TEST_CASE("XYPoints cannot have 3D vectors subtracted in place") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
 }
-#endif
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYPoints and vectors in different spaces cannot be subtracted in place") {
     View::XYPoint p;
     const Image::Vector v_v;
@@ -274,9 +268,7 @@ TEST_CASE("XYPoints and vectors in different spaces cannot be subtracted in plac
     CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
 }
-#endif
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYPoints cannot have other Points subtracted in place") {
     View::XYPoint p;
     const View::Point p_p;
@@ -386,9 +378,7 @@ TEST_CASE("XYPoints cannot have vectors in different spaces subtracted") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
 }
-#endif
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYPoints cannot have Points from other spaces subtracted") {
     Image::XYPoint p;
     const View::Point p_p;
@@ -427,9 +417,7 @@ TEST_CASE("XYPoints cannot have 3D vectors added in place") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
 }
-#endif
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYPoints cannot have vectors in different spaces added in place") {
     View::XYPoint p;
     const Image::Vector v_v;
@@ -447,9 +435,7 @@ TEST_CASE("XYPoints cannot have vectors in different spaces added in place") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
 }
-#endif
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYPoints cannot have points in different spaces added in place") {
     View::XYPoint p;
     const Image::Point p_p;
@@ -528,9 +514,7 @@ TEST_CASE("XYPoints can have vectors in other spaces cannot be added") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
 }
-#endif
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYPoints cannot have points added") {
     const View::XYPoint p;
     const View::Point p_p;
@@ -562,7 +546,7 @@ TEST_CASE("XYPoints cannot be converted to the same space") {
     const TransformManager tm;
     const View::XYPoint p;
     using converted_type = decltype(p.ConvertTo<View>(tm));
-    using required_type = StaticAssert::invalid_conversion;
+    using required_type = StaticAssert::invalid_same_space_conversion;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif

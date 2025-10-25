@@ -42,22 +42,22 @@ namespace Space {
     struct Volume final : SpaceBase<Volume, TestVector, XY::IsNotUsed, Voxels> {
         static inline SpaceIDs id = SpaceIDs::Volume;
     };
-    template <> const std::string SpaceTypeNameMap<Volume>::name = "Volume";
+    template <> constexpr std::string SpaceTypeNameMap<Volume>::name = "Volume";
 
     struct Data final : SpaceBase<Data, TestVector, XY::IsNotUsed, double> {
         static inline SpaceIDs id = SpaceIDs::Data;
     };
-    template <> const std::string SpaceTypeNameMap<Data>::name = "Data";
+    template <> constexpr std::string SpaceTypeNameMap<Data>::name = "Data";
 
     struct Image final : SpaceBase<Image, TestVector, XY::IsUsed, Millimetres> {
         static inline SpaceIDs id = SpaceIDs::Image;
     };
-    template <> const std::string SpaceTypeNameMap<Image>::name = "Image";
+    template <> constexpr std::string SpaceTypeNameMap<Image>::name = "Image";
 
     struct View final : SpaceBase<View, TestVector, XY::IsUsed, Pixels> {
         static inline SpaceIDs id = SpaceIDs::View;
     };
-    template <> const std::string SpaceTypeNameMap<View>::name = "View";
-
+    template <> constexpr std::string SpaceTypeNameMap<View>::name = "View";
+ 
 }
 

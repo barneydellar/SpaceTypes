@@ -3,37 +3,32 @@
 /// This header provides the ThisSpace Point, Vector and NormalizedVector classes.
 /// Please see Readme.md for more details.
 
-namespace Space {
+namespace Space::implementation{
 
-    template <typename ThisSpace, typename Implementation>
-    class NormalizedVector;
-
-    template <typename ThisSpace, typename Implementation>
-    class NormalizedXYVector;
-
-    template <typename ThisSpace, typename Implementation>
+    template <typename ThisSpace, typename UnderlyingData>
     class Point;
-
-    template <typename ThisSpace, typename Implementation>
-    class Vector;
-
-    template <typename ThisSpace, typename Implementation>
+    template <typename ThisSpace, typename UnderlyingData>
     class XYPoint;
-
-    template <typename ThisSpace, typename Implementation>
+    template <typename ThisSpace, typename UnderlyingData>
+    class Vector;
+    template <typename ThisSpace, typename UnderlyingData>
     class XYVector;
+    template <typename ThisSpace, typename UnderlyingData>
+    class NormalizedVector;
+    template <typename ThisSpace, typename UnderlyingData>
+    class NormalizedXYVector;
 }
 
 #include "detail/StaticAsserts.h"
 #include "detail/SpaceImpl.h"
 #include "detail/Base.h"
 #include "detail/Helpers.h"
+#include "Point.h"
+#include "XYPoint.h"
+#include "Vector.h"
+#include "XYVector.h"
 #include "NormalizedVector.h"
 #include "NormalizedXYVector.h"
-#include "Point.h"
-#include "Vector.h"
-#include "XYPoint.h"
-#include "XYVector.h"
 
 namespace Space {
 
@@ -43,29 +38,19 @@ namespace Space {
         IsNotUsed = false
     };
     
-    template <int I>
-    concept ValidFor3dAt = (I >= 0 && I <= 2);
-
-    template <int I>
-    concept ValidFor2dAt = (I >= 0 && I <= 1);
-
-    template <typename SpaceA, typename SpaceB>
-    concept DifferentSpaces = !std::is_same_v<SpaceA, SpaceB>;
-
-    template <typename ThisSpace, typename Implementation, XY b, typename Units>
+    template <typename ThisSpace, typename UnderlyingData, XY xy, typename Units>
     struct SpaceBase {
         using Unit = Units;
 
-        static constexpr bool supportsXY = static_cast<bool>(b);
-        static constexpr bool doesNotSupportXY = !static_cast<bool>(b);
+        static constexpr bool supportsXY = static_cast<bool>(xy);
+        static constexpr bool doesNotSupportXY = !static_cast<bool>(xy);
 
-        using Point = Point<ThisSpace, Implementation>;
-        using Vector = Vector<ThisSpace, Implementation>;
-        using NormalizedVector = NormalizedVector<ThisSpace, Implementation>;
-
-        using XYPoint = std::conditional_t<static_cast<bool>(b), XYPoint<ThisSpace, Implementation>, StaticAssert::XYVector_not_supported>;
-        using XYVector = std::conditional_t<static_cast<bool>(b), XYVector<ThisSpace, Implementation>, StaticAssert::XYVector_not_supported>;
-        using NormalizedXYVector = std::conditional_t<static_cast<bool>(b), NormalizedXYVector<ThisSpace, Implementation>, StaticAssert::XYVector_not_supported>;
+        using Point = implementation::Point<ThisSpace, UnderlyingData>;
+        using XYPoint = implementation::XYPoint<ThisSpace, UnderlyingData>;
+        using Vector = implementation::Vector<ThisSpace, UnderlyingData>;
+        using XYVector = implementation::XYVector<ThisSpace, UnderlyingData>;
+        using NormalizedVector = implementation::NormalizedVector<ThisSpace, UnderlyingData>;
+        using NormalizedXYVector = implementation::NormalizedXYVector<ThisSpace, UnderlyingData>;
     };
 }
 

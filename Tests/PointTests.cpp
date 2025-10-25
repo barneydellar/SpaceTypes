@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "ExternalIncludes.h"
 #include "SpaceHelpers.h"
 #include "ExampleTransformManager.h"
 
@@ -156,9 +156,7 @@ TEST_CASE("Points from different spaces cannot be compared using equal") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
 }
-#endif
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("Points and Vectors cannot be compared using equal") {
     const Image::Point p;
     const Image::Vector v_v;
@@ -275,9 +273,7 @@ TEST_CASE("Points and vectors in different spaces cannot be subtracted in place"
     CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
 }
-#endif
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("Points cannot have other Points subtracted in place") {
     View::Point p;
     const View::Point p_p;
@@ -375,9 +371,7 @@ TEST_CASE("Points cannot have vectors in different spaces subtracted") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
 }
-#endif
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("Points cannot have Points from other spaces subtracted") {
     Image::Point p;
     const View::Point p_p;
@@ -434,9 +428,7 @@ TEST_CASE("Points cannot have vectors in different spaces added in place") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
 }
-#endif
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("Points cannot have points in different spaces added in place") {
     View::Point p;
     const Image::Point p_p;
@@ -493,7 +485,7 @@ TEST_CASE("Points can have other vectors added to produce another Point") {
 }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("Points can have vectors in other spaces cannot be added") {
+TEST_CASE("Vectors in other spaces cannot be added") {
     View::Point p;
     const Image::Vector v_v;
     const Image::NormalizedVector v_n;
@@ -510,9 +502,7 @@ TEST_CASE("Points can have vectors in other spaces cannot be added") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
 }
-#endif
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("Points cannot have points added") {
     const View::Point p;
     const View::Point p_p;
@@ -562,7 +552,7 @@ TEST_CASE("Points cannot be converted to the same space") {
     const TransformManager tm;
     const View::Point p;
     using converted_type = decltype(p.ConvertTo<View>(tm));
-    using required_type = StaticAssert::invalid_conversion;
+    using required_type = StaticAssert::invalid_same_space_conversion;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 #endif
@@ -571,6 +561,7 @@ TEST_CASE("Points can be streamed") {
     const View::Point p(1.2, 2.3, 3.4);
     std::stringstream stream;
     stream << p;
+
     CHECK(stream.str() == std::string("View::Point (1.2, 2.3, 3.4)"));
 }
 

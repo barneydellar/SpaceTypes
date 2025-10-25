@@ -1,62 +1,61 @@
 #pragma once
 
-#include <string>
 using namespace std::string_literals;
 
-namespace Space {
+namespace Space::implementation {
 
-    template <typename ThisSpace, typename Implementation>
+    template <typename ThisSpace, typename UnderlyingData>
     class NormalizedVector final
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-        : public detail::Base<ThisSpace, Implementation>
+        : public Base<ThisSpace, UnderlyingData>
 #endif
     {
-        friend class NormalizedXYVector<ThisSpace, Implementation>;
-        friend class Point<ThisSpace, Implementation>;
-        friend class Vector<ThisSpace, Implementation>;
-        friend class XYPoint<ThisSpace, Implementation>;
-        friend class XYVector<ThisSpace, Implementation>;
+        friend class NormalizedXYVector<ThisSpace, UnderlyingData>;
+        friend class Point<ThisSpace, UnderlyingData>;
+        friend class Vector<ThisSpace, UnderlyingData>;
+        friend class XYPoint<ThisSpace, UnderlyingData>;
+        friend class XYVector<ThisSpace, UnderlyingData>;
 
     public:
 
         NormalizedVector() {
-            auto iter = detail::begin(m_impl);
+            auto iter = begin(underlyingData);
             *iter++ = 1;
             *iter++ = 0;
             *iter = 0;
         }
-        explicit NormalizedVector(const Implementation& v) noexcept(false)
+        explicit NormalizedVector(const UnderlyingData& v) noexcept(false)
         {
             std::copy(
-                detail::cbegin(v),
-                detail::cend(v),
-                detail::begin(m_impl)
+                implementation::cbegin(v),
+                implementation::cend(v),
+                begin(underlyingData)
             );
             Normalize();
         }
         NormalizedVector(const double x, const double y, const double z) noexcept(false)
         {
-            auto iter = detail::begin(m_impl);
+            auto iter = begin(underlyingData);
             *iter++ = x;
             *iter++ = y;
             *iter = z;
             Normalize();
         }
 
-        [[nodiscard]] explicit operator Implementation() const noexcept {
-            return m_impl;
+        [[nodiscard]] explicit operator UnderlyingData() const noexcept {
+            return underlyingData;
         }
 
-        [[nodiscard]] operator Vector<ThisSpace, Implementation>() const noexcept {
-           return Vector<ThisSpace, Implementation>(X(), Y(), Z());
+        [[nodiscard]] operator Vector<ThisSpace, UnderlyingData>() const noexcept {
+           return Vector<ThisSpace, UnderlyingData>(X(), Y(), Z());
         }
 
         [[nodiscard]] double X() const noexcept { return *(cbegin() + 0); }
         [[nodiscard]] double Y() const noexcept { return *(cbegin() + 1); }
         [[nodiscard]] double Z() const noexcept { return *(cbegin() + 2); }
 
-        [[nodiscard]] const double* cbegin() const noexcept { return reinterpret_cast<const double*>(&m_impl); }
-        [[nodiscard]] const double* cend() const noexcept { return reinterpret_cast<const double*>(&m_impl) + 3; }
+        [[nodiscard]] const double* cbegin() const noexcept { return reinterpret_cast<const double*>(&underlyingData); }
+        [[nodiscard]] const double* cend() const noexcept { return reinterpret_cast<const double*>(&underlyingData) + 3; }
 
         [[nodiscard]] double operator[] (const unsigned int i) const {
             if (i > 2) {
@@ -70,155 +69,155 @@ namespace Space {
             return operator[](I);
         }
 
-        [[nodiscard]] bool operator== (const Vector<ThisSpace, Implementation>& other) const noexcept {
-            return std::equal(cbegin(), cend(), detail::cbegin(other.m_impl), detail::Equality);
+        [[nodiscard]] bool operator== (const Vector<ThisSpace, UnderlyingData>& other) const noexcept {
+            return std::equal(cbegin(), cend(), implementation::cbegin(other.underlyingData), Equality);
         }
-        [[nodiscard]] bool operator== (const NormalizedVector<ThisSpace, Implementation>& other) const noexcept {
-            return std::equal(cbegin(), cend(), detail::cbegin(other.m_impl), detail::Equality);
+        [[nodiscard]] bool operator== (const NormalizedVector<ThisSpace, UnderlyingData>& other) const noexcept {
+            return std::equal(cbegin(), cend(), implementation::cbegin(other.underlyingData), Equality);
         }
-        [[nodiscard]] bool operator== (const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept {
-            return std::equal(cbegin(), cend(), detail::cbegin(other.m_impl), detail::Equality);
+        [[nodiscard]] bool operator== (const NormalizedXYVector<ThisSpace, UnderlyingData>& other) const noexcept {
+            return std::equal(cbegin(), cend(), implementation::cbegin(other.underlyingData), Equality);
         }
-        [[nodiscard]] bool operator== (const XYVector<ThisSpace, Implementation>& other) const noexcept {
-            return std::equal(cbegin(), cend(), detail::cbegin(other.m_impl), detail::Equality);
+        [[nodiscard]] bool operator== (const XYVector<ThisSpace, UnderlyingData>& other) const noexcept {
+            return std::equal(cbegin(), cend(), implementation::cbegin(other.underlyingData), Equality);
         }
 
-        [[nodiscard]] bool operator!= (const Vector<ThisSpace, Implementation>& other) const noexcept {
+        [[nodiscard]] bool operator!= (const Vector<ThisSpace, UnderlyingData>& other) const noexcept {
             return !(operator==(other));
         }
-        [[nodiscard]] bool operator!= (const NormalizedVector<ThisSpace, Implementation>& other) const noexcept {
+        [[nodiscard]] bool operator!= (const NormalizedVector<ThisSpace, UnderlyingData>& other) const noexcept {
             return !(operator==(other));
         }
-        [[nodiscard]] bool operator!= (const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept {
+        [[nodiscard]] bool operator!= (const NormalizedXYVector<ThisSpace, UnderlyingData>& other) const noexcept {
             return !(operator==(other));
         }
-        [[nodiscard]] bool operator!= (const XYVector<ThisSpace, Implementation>& other) const noexcept {
+        [[nodiscard]] bool operator!= (const XYVector<ThisSpace, UnderlyingData>& other) const noexcept {
             return !(operator==(other));
         }
 
-        [[nodiscard]] Vector<ThisSpace, Implementation> operator-(const Vector<ThisSpace, Implementation>& rhs) const noexcept {
-            Vector<ThisSpace, Implementation> v(X(), Y(), Z());
-            detail::Sub(v.m_impl, rhs.m_impl);
+        [[nodiscard]] Vector<ThisSpace, UnderlyingData> operator-(const Vector<ThisSpace, UnderlyingData>& rhs) const noexcept {
+            Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+            Sub(v.underlyingData, rhs.underlyingData);
             return v;
         }
-        [[nodiscard]] Vector<ThisSpace, Implementation> operator-(const NormalizedVector<ThisSpace, Implementation>& rhs) const noexcept {
-            Vector<ThisSpace, Implementation> v(X(), Y(), Z());
-            detail::Sub(v.m_impl, rhs.m_impl);
+        [[nodiscard]] Vector<ThisSpace, UnderlyingData> operator-(const NormalizedVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
+            Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+            Sub(v.underlyingData, rhs.underlyingData);
             return v;
         }
-        [[nodiscard]] Vector<ThisSpace, Implementation> operator-(const NormalizedXYVector<ThisSpace, Implementation>& rhs) const noexcept {
-            Vector<ThisSpace, Implementation> v(X(), Y(), Z());
-            detail::Sub(v.m_impl, rhs.m_impl);
+        [[nodiscard]] Vector<ThisSpace, UnderlyingData> operator-(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
+            Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+            Sub(v.underlyingData, rhs.underlyingData);
             return v;
         }
-        [[nodiscard]] Vector<ThisSpace, Implementation> operator-(const XYVector<ThisSpace, Implementation>& rhs) const noexcept {
-            Vector<ThisSpace, Implementation> v(X(), Y(), Z());
-            detail::Sub(v.m_impl, rhs.m_impl);
-            return v;
-        }
-
-        [[nodiscard]] Vector<ThisSpace, Implementation> operator+(const Vector<ThisSpace, Implementation>& rhs) const noexcept {
-            Vector<ThisSpace, Implementation> v(X(), Y(), Z());
-            detail::Add(v.m_impl, rhs.m_impl);
-            return v;
-        }
-        [[nodiscard]] Vector<ThisSpace, Implementation> operator+(const NormalizedVector<ThisSpace, Implementation>& rhs) const noexcept {
-            Vector<ThisSpace, Implementation> v(X(), Y(), Z());
-            detail::Add(v.m_impl, rhs.m_impl);
-            return v;
-        }
-        [[nodiscard]] Vector<ThisSpace, Implementation> operator+(const NormalizedXYVector<ThisSpace, Implementation>& rhs) const noexcept {
-            Vector<ThisSpace, Implementation> v(X(), Y(), Z());
-            detail::Add(v.m_impl, rhs.m_impl);
-            return v;
-        }
-        [[nodiscard]] Vector<ThisSpace, Implementation> operator+(const XYVector<ThisSpace, Implementation>& rhs) const noexcept {
-            Vector<ThisSpace, Implementation> v(X(), Y(), Z());
-            detail::Add(v.m_impl, rhs.m_impl);
+        [[nodiscard]] Vector<ThisSpace, UnderlyingData> operator-(const XYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
+            Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+            Sub(v.underlyingData, rhs.underlyingData);
             return v;
         }
 
-        [[nodiscard]] Vector<ThisSpace, Implementation> operator*(const double& d) const noexcept {
-            Vector<ThisSpace, Implementation> v(X(), Y(), Z());
-            detail::Scale(v.m_impl, d);
+        [[nodiscard]] Vector<ThisSpace, UnderlyingData> operator+(const Vector<ThisSpace, UnderlyingData>& rhs) const noexcept {
+            Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+            Add(v.underlyingData, rhs.underlyingData);
+            return v;
+        }
+        [[nodiscard]] Vector<ThisSpace, UnderlyingData> operator+(const NormalizedVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
+            Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+            Add(v.underlyingData, rhs.underlyingData);
+            return v;
+        }
+        [[nodiscard]] Vector<ThisSpace, UnderlyingData> operator+(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
+            Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+            Add(v.underlyingData, rhs.underlyingData);
+            return v;
+        }
+        [[nodiscard]] Vector<ThisSpace, UnderlyingData> operator+(const XYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
+            Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+            Add(v.underlyingData, rhs.underlyingData);
             return v;
         }
 
-        NormalizedVector<ThisSpace, Implementation> operator*=(const NormalizedVector<ThisSpace, Implementation>& rhs) noexcept {
+        [[nodiscard]] Vector<ThisSpace, UnderlyingData> operator*(const double& d) const noexcept {
+            Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+            Scale(v.underlyingData, d);
+            return v;
+        }
+
+        NormalizedVector<ThisSpace, UnderlyingData> operator*=(const NormalizedVector<ThisSpace, UnderlyingData>& rhs) noexcept {
             *this = this->Cross(rhs);
             return *this;
         }
-        NormalizedVector<ThisSpace, Implementation> operator*=(const NormalizedXYVector<ThisSpace, Implementation>& rhs) noexcept {
+        NormalizedVector<ThisSpace, UnderlyingData> operator*=(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) noexcept {
             *this = this->Cross(rhs);
             return *this;
         }
 
-        [[nodiscard]] Vector<ThisSpace, Implementation> operator*(const Vector<ThisSpace, Implementation>& rhs) const noexcept {
+        [[nodiscard]] Vector<ThisSpace, UnderlyingData> operator*(const Vector<ThisSpace, UnderlyingData>& rhs) const noexcept {
             return this->Cross(rhs);
         }
-        [[nodiscard]] NormalizedVector<ThisSpace, Implementation> operator*(const NormalizedXYVector<ThisSpace, Implementation>& rhs) const noexcept {
+        [[nodiscard]] NormalizedVector<ThisSpace, UnderlyingData> operator*(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
             return this->Cross(rhs);
         }
-        [[nodiscard]] NormalizedVector<ThisSpace, Implementation> operator*(const NormalizedVector<ThisSpace, Implementation>& rhs) const noexcept {
+        [[nodiscard]] NormalizedVector<ThisSpace, UnderlyingData> operator*(const NormalizedVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
             return this->Cross(rhs);
         }
-        [[nodiscard]] Vector<ThisSpace, Implementation> operator*(const XYVector<ThisSpace, Implementation>& rhs) const noexcept {
+        [[nodiscard]] Vector<ThisSpace, UnderlyingData> operator*(const XYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
             return this->Cross(rhs);
         }
 
-        [[nodiscard]] Vector<ThisSpace, Implementation> Cross(const Vector<ThisSpace, Implementation>& other) const noexcept {
-            const auto[x, y, z] = detail::Cross_internal(m_impl, other.m_impl);
-            return Vector<ThisSpace, Implementation>(x, y, z);
+        [[nodiscard]] Vector<ThisSpace, UnderlyingData> Cross(const Vector<ThisSpace, UnderlyingData>& other) const noexcept {
+            const auto[x, y, z] = Cross_internal(underlyingData, other.underlyingData);
+            return Vector<ThisSpace, UnderlyingData>(x, y, z);
         }
-        [[nodiscard]] NormalizedVector<ThisSpace, Implementation> Cross(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept {
-            const auto[x, y, z] = detail::Cross_internal(m_impl, other.m_impl);
-            return NormalizedVector<ThisSpace, Implementation>(x, y, z);
+        [[nodiscard]] NormalizedVector<ThisSpace, UnderlyingData> Cross(const NormalizedVector<ThisSpace, UnderlyingData>& other) const noexcept {
+            const auto[x, y, z] = Cross_internal(underlyingData, other.underlyingData);
+            return NormalizedVector<ThisSpace, UnderlyingData>(x, y, z);
         }
-        [[nodiscard]] NormalizedVector<ThisSpace, Implementation> Cross(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept {
-            const auto[x, y, z] = detail::Cross_internal(m_impl, other.m_impl);
-            return NormalizedVector<ThisSpace, Implementation>(x, y, z);
+        [[nodiscard]] NormalizedVector<ThisSpace, UnderlyingData> Cross(const NormalizedXYVector<ThisSpace, UnderlyingData>& other) const noexcept {
+            const auto[x, y, z] = Cross_internal(underlyingData, other.underlyingData);
+            return NormalizedVector<ThisSpace, UnderlyingData>(x, y, z);
         }
-        [[nodiscard]] Vector<ThisSpace, Implementation> Cross(const XYVector<ThisSpace, Implementation>& other) const noexcept {
-            const auto[x, y, z] = detail::Cross_internal(m_impl, other.m_impl);
-            return Vector<ThisSpace, Implementation>(x, y, z);
-        }
-
-        [[nodiscard]] double Dot(const Vector<ThisSpace, Implementation>& other) const noexcept
-        {
-            return detail::Dot(m_impl, other.m_impl);
-        }
-        [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, Implementation>& other) const noexcept
-        {
-            return detail::Dot(m_impl, other.m_impl);
-        }
-        [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, Implementation>& other) const noexcept
-        {
-            return detail::Dot(m_impl, other.m_impl);
-        }
-        [[nodiscard]] double Dot(const XYVector<ThisSpace, Implementation>& other) const noexcept
-        {
-            return detail::Dot(m_impl, other.m_impl);
+        [[nodiscard]] Vector<ThisSpace, UnderlyingData> Cross(const XYVector<ThisSpace, UnderlyingData>& other) const noexcept {
+            const auto[x, y, z] = Cross_internal(underlyingData, other.underlyingData);
+            return Vector<ThisSpace, UnderlyingData>(x, y, z);
         }
 
-        [[nodiscard]] NormalizedXYVector<ThisSpace, Implementation> ToXY() const requires ThisSpace::supportsXY {
-            return NormalizedXYVector<ThisSpace, Implementation>(X(), Y());
+        [[nodiscard]] double Dot(const Vector<ThisSpace, UnderlyingData>& other) const noexcept
+        {
+            return implementation::Dot(underlyingData, other.underlyingData);
+        }
+        [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, UnderlyingData>& other) const noexcept
+        {
+            return implementation::Dot(underlyingData, other.underlyingData);
+        }
+        [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, UnderlyingData>& other) const noexcept
+        {
+            return implementation::Dot(underlyingData, other.underlyingData);
+        }
+        [[nodiscard]] double Dot(const XYVector<ThisSpace, UnderlyingData>& other) const noexcept
+        {
+            return implementation::Dot(underlyingData, other.underlyingData);
         }
 
-        template <typename OtherSpace, typename TransformManager> requires DifferentSpaces<OtherSpace, ThisSpace>
-        [[nodiscard]] Vector<OtherSpace, Implementation> ConvertTo(const TransformManager& transform_manager) const noexcept {
-            return Vector < OtherSpace, Implementation>(transform_manager.template TransformVector<ThisSpace, OtherSpace>(static_cast<Implementation>(*this)));
+        [[nodiscard]] NormalizedXYVector<ThisSpace, UnderlyingData> ToXY() const requires ThisSpace::supportsXY {
+            return NormalizedXYVector<ThisSpace, UnderlyingData>(X(), Y());
+        }
+
+        template <typename OtherSpace, typename TransformManager> requires  DifferentSpaces<OtherSpace, ThisSpace>
+        [[nodiscard]] Vector<OtherSpace, UnderlyingData> ConvertTo(const TransformManager& transform_manager) const noexcept {
+            return Vector < OtherSpace, UnderlyingData>(transform_manager.template TransformVector<ThisSpace, OtherSpace>(static_cast<UnderlyingData>(*this)));
         }
 
         friend std::ostream& operator << (
             std::ostream& os,
-            const NormalizedVector<ThisSpace, Implementation>& item
+            const NormalizedVector<ThisSpace, UnderlyingData>& item
         ) {
             const auto space = SpaceTypeNameMap<ThisSpace>::name;
             os << space << "::NormalizedVector (" << item.X() << ", " << item.Y() << ", " << item.Z() << ")";
             return os;
         }
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-        using _base = detail::Base<ThisSpace, Implementation>;
+        using _base = Base<ThisSpace, UnderlyingData>;
         using _base::operator-=;
         using _base::operator-;
         using _base::operator+=;
@@ -229,89 +228,89 @@ namespace Space {
         using _base::Dot;
         using _base::Cross;
 
-        template <int I> requires !ValidFor3dAt<I>
+        template <int I> requires (!ValidFor3dAt<I>)
         StaticAssert::invalid_at_access at() const {
             return StaticAssert::invalid_at_access{};
         }
 
-        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-        StaticAssert::invalid_space operator!= (const Vector<OtherSpace, Implementation>&) const noexcept {
+        template <typename OtherSpace> requires  DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator!= (const Vector<OtherSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_space{};
         }
-        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-        StaticAssert::invalid_space operator!= (const NormalizedVector<OtherSpace, Implementation>&) const noexcept {
+        template <typename OtherSpace> requires  DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator!= (const NormalizedVector<OtherSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_space{};
         }
-        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-        StaticAssert::invalid_space operator!= (const NormalizedXYVector<OtherSpace, Implementation>&) const noexcept {
+        template <typename OtherSpace> requires  DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator!= (const NormalizedXYVector<OtherSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_space{};
         }
-        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-        StaticAssert::invalid_space operator!= (const XYVector<OtherSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_space{};
-        }
-
-        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-        StaticAssert::invalid_space operator== (const Vector<OtherSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_space{};
-        }
-        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-        StaticAssert::invalid_space operator== (const NormalizedVector<OtherSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_space{};
-        }
-        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-        StaticAssert::invalid_space operator== (const NormalizedXYVector<OtherSpace, Implementation>&) const noexcept {
-            return StaticAssert::invalid_space{};
-        }
-        template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-        StaticAssert::invalid_space operator== (const XYVector<OtherSpace, Implementation>&) const noexcept {
+        template <typename OtherSpace> requires  DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator!= (const XYVector<OtherSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_space{};
         }
 
-        StaticAssert::invalid_point_vector_equality operator== (const Point<ThisSpace, Implementation>&) const noexcept {
+        template <typename OtherSpace> requires  DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator== (const Vector<OtherSpace, UnderlyingData>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace> requires  DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator== (const NormalizedVector<OtherSpace, UnderlyingData>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace> requires  DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator== (const NormalizedXYVector<OtherSpace, UnderlyingData>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+        template <typename OtherSpace> requires  DifferentSpaces<OtherSpace, ThisSpace>
+        StaticAssert::invalid_space operator== (const XYVector<OtherSpace, UnderlyingData>&) const noexcept {
+            return StaticAssert::invalid_space{};
+        }
+
+        StaticAssert::invalid_point_vector_equality operator== (const Point<ThisSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
-        StaticAssert::invalid_point_vector_equality operator== (const XYPoint<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_vector_equality operator== (const XYPoint<ThisSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
-        StaticAssert::invalid_point_vector_equality operator!= (const Point<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_vector_equality operator!= (const Point<ThisSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
-        StaticAssert::invalid_point_vector_equality operator!= (const XYPoint<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_vector_equality operator!= (const XYPoint<ThisSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_point_vector_equality{};
         }
 
-        StaticAssert::invalid_point_to_vector_addition operator+(const Point<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_to_vector_addition operator+(const Point<ThisSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_point_to_vector_addition{};
         }
 
-        StaticAssert::invalid_normalized_vector_addition operator+=(const Vector<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_normalized_vector_addition operator+=(const Vector<ThisSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_addition{};
         }
-        StaticAssert::invalid_normalized_vector_addition operator+=(const NormalizedVector<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_normalized_vector_addition operator+=(const NormalizedVector<ThisSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_addition{};
         }
-        StaticAssert::invalid_normalized_vector_addition operator+=(const NormalizedXYVector<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_normalized_vector_addition operator+=(const NormalizedXYVector<ThisSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_addition{};
         }
-        StaticAssert::invalid_normalized_vector_addition operator+=(const XYVector<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_normalized_vector_addition operator+=(const XYVector<ThisSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_addition{};
         }
 
-        StaticAssert::invalid_point_from_vector_subtraction operator-(const Point<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_point_from_vector_subtraction operator-(const Point<ThisSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_point_from_vector_subtraction{};
         }
 
-        StaticAssert::invalid_normalized_vector_subtraction operator-=(const Vector<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_normalized_vector_subtraction operator-=(const Vector<ThisSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_subtraction{};
         }
-        StaticAssert::invalid_normalized_vector_subtraction operator-=(const NormalizedVector<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_normalized_vector_subtraction operator-=(const NormalizedVector<ThisSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_subtraction{};
         }
-        StaticAssert::invalid_normalized_vector_subtraction operator-=(const NormalizedXYVector<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_normalized_vector_subtraction operator-=(const NormalizedXYVector<ThisSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_subtraction{};
         }
-        StaticAssert::invalid_normalized_vector_subtraction operator-=(const XYVector<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_normalized_vector_subtraction operator-=(const XYVector<ThisSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_subtraction{};
         }
 
@@ -319,10 +318,10 @@ namespace Space {
             return StaticAssert::invalid_normalized_vector_scale{};
         }
 
-        StaticAssert::invalid_normalized_vector_in_place_cross operator*=(const Vector<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_normalized_vector_in_place_cross operator*=(const Vector<ThisSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_in_place_cross{};
         }
-        StaticAssert::invalid_normalized_vector_in_place_cross operator*=(const XYVector<ThisSpace, Implementation>&) const noexcept {
+        StaticAssert::invalid_normalized_vector_in_place_cross operator*=(const XYVector<ThisSpace, UnderlyingData>&) const noexcept {
             return StaticAssert::invalid_normalized_vector_in_place_cross{};
         }
 
@@ -334,7 +333,7 @@ namespace Space {
     private:
 
         void Normalize() {
-            const auto mag = detail::Mag_internal(m_impl);
+            const auto mag = Mag_internal(underlyingData);
             if (std::abs(mag) < 1e-6) {
                 throw std::invalid_argument("Zero-sized normal vectors are not allowed");
             }
@@ -342,12 +341,12 @@ namespace Space {
             std::transform(
                 cbegin(),
                 cend(),
-                detail::begin(m_impl),
+                begin(underlyingData),
                 [mag](auto v) { return v / mag; }
             );
         }
 
-        Implementation m_impl;
+        UnderlyingData underlyingData;
 
     };
 }

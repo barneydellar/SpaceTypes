@@ -1,26 +1,26 @@
 #pragma once
 
-namespace Space::detail {
+namespace Space::implementation {
 
-    template <typename Implementation>
-    [[nodiscard]] static double* begin(Implementation& i) noexcept {
+    template <typename UnderlyingData>
+    [[nodiscard]] static double* begin(UnderlyingData& i) noexcept {
         return reinterpret_cast<double*>(&i);
     }
-    template <typename Implementation>
-    [[nodiscard]] static double* end(Implementation& i) noexcept {
+    template <typename UnderlyingData>
+    [[nodiscard]] static double* end(UnderlyingData& i) noexcept {
         return reinterpret_cast<double*>(&i) + 3;
     }
-    template <typename Implementation>
-    [[nodiscard]] static const double* cbegin(const Implementation& i) noexcept {
+    template <typename UnderlyingData>
+    [[nodiscard]] static const double* cbegin(const UnderlyingData& i) noexcept {
         return reinterpret_cast<const double*>(&i);
     }
-    template <typename Implementation>
-    [[nodiscard]] static const double* cend(const Implementation& i) noexcept {
+    template <typename UnderlyingData>
+    [[nodiscard]] static const double* cend(const UnderlyingData& i) noexcept {
         return reinterpret_cast<const double*>(&i) + 3;
     }
 
-    template <typename Implementation>
-    static void Add(Implementation& self, const Implementation& other)
+    template <typename UnderlyingData>
+    static void Add(UnderlyingData& self, const UnderlyingData& other)
     {
         std::transform(
             cbegin(self),
@@ -31,8 +31,8 @@ namespace Space::detail {
         );
     }
 
-    template <typename Implementation>
-    static void Sub(Implementation& self, const Implementation& other)
+    template <typename UnderlyingData>
+    static void Sub(UnderlyingData& self, const UnderlyingData& other)
     {
         std::transform(
             cbegin(self),
@@ -43,8 +43,8 @@ namespace Space::detail {
         );
     }
 
-    template <typename Implementation>
-    static void Scale(Implementation& self, const double& d)
+    template <typename UnderlyingData>
+    static void Scale(UnderlyingData& self, const double& d)
     {
         std::transform(
             cbegin(self),
@@ -54,8 +54,8 @@ namespace Space::detail {
         );
     }
 
-    template <typename Implementation>
-    static double Dot(const Implementation& A, const Implementation& B) noexcept
+    template <typename UnderlyingData>
+    static double Dot(const UnderlyingData& A, const UnderlyingData& B) noexcept
     {
         return std::transform_reduce(
             cbegin(A),
@@ -67,8 +67,8 @@ namespace Space::detail {
         );
     }
 
-    template <typename Implementation>
-    static std::tuple<double, double, double> Cross_internal(const Implementation& A, const Implementation& B) noexcept {
+    template <typename UnderlyingData>
+    static std::tuple<double, double, double> Cross_internal(const UnderlyingData& A, const UnderlyingData& B) noexcept {
 
         const double ax = *(cbegin(A) + 0);
         const double ay = *(cbegin(A) + 1);
@@ -85,8 +85,8 @@ namespace Space::detail {
         return { x, y, z };
     }
 
-    template <typename Implementation>
-    static [[nodiscard]] double Mag_internal(const Implementation& i) noexcept {
+    template <typename UnderlyingData>
+    [[nodiscard]] static double Mag_internal(const UnderlyingData& i) noexcept {
 
         return std::sqrt(
             std::accumulate(
