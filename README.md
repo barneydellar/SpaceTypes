@@ -71,7 +71,7 @@ then a Space can be defined as follows:
 
 ```cpp
 struct MySpace final : SpaceBase<MySpace, ExistingImplementation, XY::IsUsed, NewSpaceUnits> {
-    static inline SpaceIDs id = NewSpaceId;
+    static inline SpaceIDs id = SpaceIDs::NewSpaceId;
 };
 template <> const std::string SpaceTypeNameMap<MySpace>::name = "MySpace";
 ```
