@@ -93,18 +93,18 @@ const MySpace::Vector v;
 const MySpace::NormalizedVector nv;
 ```
 
-A point or vector can be created from three doubles.
+A point or vector can be created from three doubles or values convertible to doubles.
 
 ```cpp
-const YourSpace::Point p(1, 2, 3);
+const YourSpace::Point p(1.1, 2.2, 3.3);
 const MySpace::Vector v(1, 2, 3);
 const MySpace::NormalizedVector nv(1, 0, 0);
 ```
 
-A 2-dimensional point or vector can be created from two doubles. The z-value will be set to zero.
+A 2-dimensional point or vector can be created from two doubles or values convertible to doubles. The z-value will be set to zero.
 
 ```cpp
-const YourSpace::XYPoint p(1, 2);
+const YourSpace::XYPoint p(1.1, 2.2);
 const MySpace::XYVector v(1, 2);
 const MySpace::NormalizedXYVector v(1, 0);
 ```
