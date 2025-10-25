@@ -3,7 +3,8 @@
 /// This header provides the ThisSpace Point, Vector and NormalizedVector classes.
 /// Please see Readme.md for more details.
 
-namespace Space::implementation{
+namespace Space::implementation
+{
 
     template <typename ThisSpace, typename UnderlyingData>
     class Point;
@@ -30,16 +31,18 @@ namespace Space::implementation{
 #include "NormalizedVector.h"
 #include "NormalizedXYVector.h"
 
-namespace Space {
+namespace Space
+{
 
     enum class XY
     {
         IsUsed = true,
         IsNotUsed = false
     };
-    
+
     template <typename ThisSpace, typename UnderlyingData, XY xy, typename Units>
-    struct SpaceBase {
+    struct SpaceBase
+    {
         using Unit = Units;
 
         static constexpr bool supportsXY = static_cast<bool>(xy);
@@ -53,4 +56,3 @@ namespace Space {
         using NormalizedXYVector = implementation::NormalizedXYVector<ThisSpace, UnderlyingData>;
     };
 }
-
