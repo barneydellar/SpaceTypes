@@ -52,7 +52,7 @@ namespace Space::implementation {
             return StaticAssert::invalid_space{};
         }
         template <SameSpaceAs<ThisSpace> S, typename TransformManager>
-        [[nodiscard]] StaticAssert::invalid_same_space_conversion ConvertTo(const TransformManager& transform_manager) const noexcept {
+        StaticAssert::invalid_same_space_conversion ConvertTo(const TransformManager& transform_manager) const noexcept {
             return StaticAssert::invalid_same_space_conversion{};
         }
     };

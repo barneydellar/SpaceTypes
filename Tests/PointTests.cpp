@@ -281,7 +281,7 @@ TEST_CASE("Points cannot have other Points subtracted in place") {
 
     using converted_type_1 = decltype(p -= p_p);
     using converted_type_2 = decltype(p -= p_xy);
-    using required_type = StaticAssert::invalid_point_from_vector_subtraction;
+    using required_type = StaticAssert::invalid_point_from_point_subtraction;
     CHECK(static_cast<bool>(std::is_same_v<converted_type_1, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
 }

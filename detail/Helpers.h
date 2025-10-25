@@ -68,7 +68,7 @@ namespace Space::implementation {
     }
 
     template <typename UnderlyingData>
-    static std::tuple<double, double, double> Cross_internal(const UnderlyingData& A, const UnderlyingData& B) noexcept {
+    static auto Cross_internal(const UnderlyingData& A, const UnderlyingData& B) noexcept {
 
         const double ax = *(cbegin(A) + 0);
         const double ay = *(cbegin(A) + 1);
@@ -82,7 +82,7 @@ namespace Space::implementation {
         const double y = az * bx - ax * bz;
         const double z = ax * by - ay * bx;
 
-        return { x, y, z };
+        return std::tuple{ x, y, z };
     }
 
     template <typename UnderlyingData>
