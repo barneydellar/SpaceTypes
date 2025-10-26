@@ -1,8 +1,7 @@
 #pragma once
 
-class TestVector
-{
+class TestVector {
 public:
-    explicit TestVector() = default;
-    std::array<double, 3> m_values{};
+  explicit TestVector() = default;
+  std::array<double, 3> m_values{};
 };

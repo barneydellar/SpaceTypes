@@ -7,6 +7,6 @@
 #include "catch.hpp"
 #include <array>
 #include <iostream>
-#include <sstream>
 #include <numeric>
+#include <sstream>
 #pragma warning(pop)
