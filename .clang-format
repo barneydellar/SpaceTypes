@@ -1,0 +1,9 @@
+---
+SortIncludes: Never
+IndentWidth: 4
+AllowAllParametersOfDeclarationOnNextLine: true
+AlignAfterOpenBracket: BlockIndent
+BinPackParameters: false
+PackConstructorInitializers: CurrentLine
+IndentWrappedFunctionNames: false
+ColumnLimit: 130

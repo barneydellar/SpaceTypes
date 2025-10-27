@@ -28,20 +28,17 @@ namespace Space {
 
 enum class XY { IsUsed = true, IsNotUsed = false };
 
-template <typename ThisSpace, typename UnderlyingData, XY xy, typename Units>
-struct SpaceBase {
-  using Unit = Units;
+template <typename ThisSpace, typename UnderlyingData, XY xy, typename Units> struct SpaceBase {
+    using Unit = Units;
 
-  static constexpr bool supportsXY = static_cast<bool>(xy);
-  static constexpr bool doesNotSupportXY = !static_cast<bool>(xy);
+    static constexpr bool supportsXY = static_cast<bool>(xy);
+    static constexpr bool doesNotSupportXY = !static_cast<bool>(xy);
 
-  using Point = implementation::Point<ThisSpace, UnderlyingData>;
-  using XYPoint = implementation::XYPoint<ThisSpace, UnderlyingData>;
-  using Vector = implementation::Vector<ThisSpace, UnderlyingData>;
-  using XYVector = implementation::XYVector<ThisSpace, UnderlyingData>;
-  using NormalizedVector =
-      implementation::NormalizedVector<ThisSpace, UnderlyingData>;
-  using NormalizedXYVector =
-      implementation::NormalizedXYVector<ThisSpace, UnderlyingData>;
+    using Point = implementation::Point<ThisSpace, UnderlyingData>;
+    using XYPoint = implementation::XYPoint<ThisSpace, UnderlyingData>;
+    using Vector = implementation::Vector<ThisSpace, UnderlyingData>;
+    using XYVector = implementation::XYVector<ThisSpace, UnderlyingData>;
+    using NormalizedVector = implementation::NormalizedVector<ThisSpace, UnderlyingData>;
+    using NormalizedXYVector = implementation::NormalizedXYVector<ThisSpace, UnderlyingData>;
 };
 } // namespace Space
