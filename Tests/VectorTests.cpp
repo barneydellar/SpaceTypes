@@ -225,8 +225,7 @@ TEST_CASE("Vector and NormalizedVector can be compared using inequality: differe
     const View::NormalizedVector v2(1, 0, 0);
     CHECK(v != v2);
 }
-TEST_CASE("Vector and NormalizedXYVector can be compared using inequality: "
-          "different") {
+TEST_CASE("Vector and NormalizedXYVector can be compared using inequality: different") {
     const View::Vector v(1, 0, 1);
     const View::NormalizedXYVector v2(1, 0);
     CHECK(v != v2);
@@ -582,8 +581,7 @@ TEST_CASE("Vectors can have XYVector crossed using star") {
     auto v3 = v * v2;
     CHECK(v3 == Image::Vector(0, 0, -1));
 }
-TEST_CASE("Vectors can have other vectors crossed using star to produce "
-          "another Vector") {
+TEST_CASE("Vectors can have other vectors crossed using star to produce another Vector") {
     View::Vector v;
     const View::Vector v_v;
     const View::NormalizedVector v_n;
@@ -740,8 +738,7 @@ TEST_CASE("Vectors can have their z-value removed to produce a XYVector") {
     using required_type = View::XYVector;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
-TEST_CASE("Vectors from Spaces that do not support XY cannot have their "
-          "z-value removed") {
+TEST_CASE("Vectors from Spaces that do not support XY cannot have their z-value removed") {
     const Volume::Vector v;
     using converted_type = decltype(v.ToXY());
     using required_type = StaticAssert::XYVector_not_supported;
@@ -764,8 +761,7 @@ TEST_CASE("Zero size vectors cannot be normalized") {
     const Image::Vector v(0, 0, 0);
     CHECK_THROWS_AS(v.Norm(), std::invalid_argument);
 }
-TEST_CASE("Zero size vectors throw the correct message when you try and "
-          "normalise them.") {
+TEST_CASE("Zero size vectors throw the correct message when you try and normalise them.") {
     const Image::Vector v(0, 0, 0);
     CHECK_THROWS_WITH(v.Norm(), "Zero-sized normal vectors are not allowed");
 }

@@ -526,8 +526,7 @@ TEST_CASE("XYPoints cannot have points added") {
 }
 #endif
 
-TEST_CASE("XYPoints can be converted from one space to another ignoring "
-          "translation") {
+TEST_CASE("XYPoints can be converted from one space to another ignoring translation") {
     const TransformManager tm;
     const View::Point p_view(1, 0, 0);
     auto v_patient = p_view.ConvertTo<Data>(tm);

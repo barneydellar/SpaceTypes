@@ -216,14 +216,12 @@ TEST_CASE("XYVector and Vector can be compared using inequality: different") {
     const View::Vector v2(1, 0, 0);
     CHECK(v != v2);
 }
-TEST_CASE("XYVector and NormalizedVector can be compared using inequality: "
-          "different") {
+TEST_CASE("XYVector and NormalizedVector can be compared using inequality: different") {
     const View::XYVector v(1, 1);
     const View::NormalizedVector v2(1, 0, 0);
     CHECK(v != v2);
 }
-TEST_CASE("XYVector and NormalizedXYVector can be compared using inequality: "
-          "different") {
+TEST_CASE("XYVector and NormalizedXYVector can be compared using inequality: different") {
     const View::XYVector v(1, 1);
     const View::NormalizedXYVector v2(1, 0);
     CHECK(v != v2);
@@ -346,8 +344,7 @@ TEST_CASE("XYVectors can have other XYVectors subtracted to produce a XYVector")
     CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
 }
-TEST_CASE("XYVectors can have other 3D vectors subtracted to produce another "
-          "Vector") {
+TEST_CASE("XYVectors can have other 3D vectors subtracted to produce another Vector") {
     View::XYVector v;
     const View::Vector v_v;
     const View::NormalizedVector v_n;
@@ -584,8 +581,7 @@ TEST_CASE("XYVectors can have XYVector crossed using star") {
     auto v3 = v * v2;
     CHECK(v3 == Image::Vector(0, 0, -1));
 }
-TEST_CASE("XYVectors can have other vectors crossed using star to produce "
-          "another Vector") {
+TEST_CASE("XYVectors can have other vectors crossed using star to produce another Vector") {
     View::XYVector v;
     const View::Vector v_v;
     const View::NormalizedVector v_n;
@@ -747,21 +743,18 @@ TEST_CASE("Zero size XYVectors cannot be normalized") {
     const Image::XYVector v(0, 0);
     CHECK_THROWS_AS(v.Norm(), std::invalid_argument);
 }
-TEST_CASE("Zero size XYVectors throw the correct message when you try and "
-          "normalise them.") {
+TEST_CASE("Zero size XYVectors throw the correct message when you try and normalise them.") {
     const Image::XYVector v(0, 0);
     CHECK_THROWS_WITH(v.Norm(), "Zero-sized normal vectors are not allowed");
 }
 
-TEST_CASE("XYVectors can be converted from one space to another ignoring "
-          "translation") {
+TEST_CASE("XYVectors can be converted from one space to another ignoring translation") {
     const TransformManager tm;
     const View::XYVector v_view(1, 0);
     auto v_patient = v_view.ConvertTo<Data>(tm);
     CHECK(v_patient == Data::Vector(15, 16, 17));
 }
-TEST_CASE("XYVectors can be converted from one space to another to produce a "
-          "Vector") {
+TEST_CASE("XYVectors can be converted from one space to another to produce a Vector") {
     const TransformManager tm;
     const View::XYVector v_view;
     using converted_type = decltype(v_view.ConvertTo<Data>(tm));

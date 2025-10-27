@@ -27,8 +27,7 @@ TEST_CASE("NormalizedVectors Can Be Constructed From Three Doubles") {
     CHECK(v.Y() == 4 / 5.0);
     CHECK(v.Z() == 0);
 }
-TEST_CASE("NormalizedVectors can be created using initalizer lists of three "
-          "numbers") {
+TEST_CASE("NormalizedVectors can be created using initalizer lists of three numbers") {
     View::NormalizedVector v{3, 4, 0};
     CHECK(v.X() == 3 / 5.0);
     CHECK(v.Y() == 4 / 5.0);
@@ -85,8 +84,7 @@ TEST_CASE("NormalizedVectors throw if random access is too high") {
     const Image::NormalizedVector v;
     CHECK_THROWS_AS(v[3], std::invalid_argument);
 }
-TEST_CASE("NormalizedVectors throw with the right message if random access is "
-          "too high") {
+TEST_CASE("NormalizedVectors throw with the right message if random access is too high") {
     const Image::NormalizedVector v;
     CHECK_THROWS_WITH(v[3], "Index is out of range");
 }
@@ -122,8 +120,7 @@ TEST_CASE("NormalizedVector and NormalizedVector can be compared using equal: sa
     const View::NormalizedVector v2(1, 0, 0);
     CHECK(v == v2);
 }
-TEST_CASE("NormalizedVector and NormalizedXYVector can be compared using "
-          "equal: same") {
+TEST_CASE("NormalizedVector and NormalizedXYVector can be compared using equal: same") {
     const View::NormalizedVector v(1, 0, 0);
     const View::NormalizedXYVector v2(1, 0);
     CHECK(v == v2);
@@ -139,14 +136,12 @@ TEST_CASE("NormalizedVector and Vector can be compared using equal: different") 
     const View::Vector v2(1, 0, 0);
     CHECK(!(v == v2));
 }
-TEST_CASE("NormalizedVector and NormalizedVector can be compared using equal: "
-          "different") {
+TEST_CASE("NormalizedVector and NormalizedVector can be compared using equal: different") {
     const View::NormalizedVector v(1, 0, 1);
     const View::NormalizedVector v2(1, 0, 0);
     CHECK(!(v == v2));
 }
-TEST_CASE("NormalizedVector and NormalizedXYVector can be compared using "
-          "equal: different") {
+TEST_CASE("NormalizedVector and NormalizedXYVector can be compared using equal: different") {
     const View::NormalizedVector v(1, 0, 1);
     const View::NormalizedXYVector v2(1, 0);
     CHECK(!(v == v2));
@@ -194,14 +189,12 @@ TEST_CASE("NormalizedVector and Vector can be compared using inequality: same") 
     const View::Vector v2(1, 0, 0);
     CHECK(!(v != v2));
 }
-TEST_CASE("NormalizedVector and NormalizedVector can be compared using "
-          "inequality: same") {
+TEST_CASE("NormalizedVector and NormalizedVector can be compared using inequality: same") {
     const View::NormalizedVector v(1, 0, 0);
     const View::NormalizedVector v2(1, 0, 0);
     CHECK(!(v != v2));
 }
-TEST_CASE("NormalizedVector and NormalizedXYVector can be compared using "
-          "inequality: same") {
+TEST_CASE("NormalizedVector and NormalizedXYVector can be compared using inequality: same") {
     const View::NormalizedVector v(1, 0, 0);
     const View::NormalizedXYVector v2(1, 0);
     CHECK(!(v != v2));
@@ -217,28 +210,24 @@ TEST_CASE("NormalizedVector and Vector can be compared using inequality: differe
     const View::Vector v2(1, 0, 0);
     CHECK(v != v2);
 }
-TEST_CASE("NormalizedVector and NormalizedVector can be compared using "
-          "inequality: different") {
+TEST_CASE("NormalizedVector and NormalizedVector can be compared using inequality: different") {
     const View::NormalizedVector v(1, 0, 1);
     const View::NormalizedVector v2(1, 0, 0);
     CHECK(v != v2);
 }
-TEST_CASE("NormalizedVector and NormalizedXYVector can be compared using "
-          "inequality: different") {
+TEST_CASE("NormalizedVector and NormalizedXYVector can be compared using inequality: different") {
     const View::NormalizedVector v(1, 0, 1);
     const View::NormalizedXYVector v2(1, 0);
     CHECK(v != v2);
 }
-TEST_CASE("NormalizedVector and XYVector can be compared using inequality: "
-          "different") {
+TEST_CASE("NormalizedVector and XYVector can be compared using inequality: different") {
     const View::NormalizedVector v(1, 0, 1);
     const View::XYVector v2(1, 0);
     CHECK(v != v2);
 }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-TEST_CASE("NormalizedVectors from different spaces cannot be compared using "
-          "inequality") {
+TEST_CASE("NormalizedVectors from different spaces cannot be compared using inequality") {
     const View::NormalizedVector v;
     const Image::Vector v_v;
     const Image::NormalizedVector v_n;
@@ -403,8 +392,7 @@ TEST_CASE("NormalizedVectors can have XYVector added") {
     auto v3 = v + v2;
     CHECK(v3 == Image::Vector(1, 1, 0));
 }
-TEST_CASE("NormalizedVectors can have other vectors added to produce another "
-          "Vector") {
+TEST_CASE("NormalizedVectors can have other vectors added to produce another Vector") {
     View::NormalizedVector v;
     const View::Vector v_v;
     const View::NormalizedVector v_n;
@@ -466,8 +454,7 @@ TEST_CASE("NormalizedVectors can have NormalizedXYVectors crossed in place") {
     v *= v2;
     CHECK(v == Image::Vector(0, 0, -1));
 }
-TEST_CASE("NormalizedVectors cannot be crossed in place with non-normalized "
-          "vectors") {
+TEST_CASE("NormalizedVectors cannot be crossed in place with non-normalized vectors") {
     View::NormalizedVector v;
     const View::Vector v_v;
     const View::XYVector v_xy;
@@ -523,8 +510,7 @@ TEST_CASE("NormalizedVectors can have XYVector crossed using star") {
     auto v3 = v * v2;
     CHECK(v3 == Image::Vector(0, 0, -1));
 }
-TEST_CASE("NormalizedVectors can have other normalized vectors crossed using "
-          "star to produce another NormalizedVector") {
+TEST_CASE("NormalizedVectors can have other normalized vectors crossed using star to produce another NormalizedVector") {
     View::NormalizedVector v;
     const View::NormalizedVector v_n;
     const View::NormalizedXYVector v_n_xy;
@@ -535,8 +521,7 @@ TEST_CASE("NormalizedVectors can have other normalized vectors crossed using "
     CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
 }
-TEST_CASE("NormalizedVectors can have other vectors crossed using star to "
-          "produce another Vector") {
+TEST_CASE("NormalizedVectors can have other vectors crossed using star to produce another Vector") {
     View::NormalizedVector v;
     const View::Vector v_v;
     const View::XYVector v_xy;
@@ -592,8 +577,7 @@ TEST_CASE("NormalizedVectors can have XYVector crossed") {
     auto v3 = v.Cross(v2);
     CHECK(v3 == Image::Vector(0, 0, -1));
 }
-TEST_CASE("NormalizedVectors can have other NormalizedVectors crossed to "
-          "produce another NormalizedVector") {
+TEST_CASE("NormalizedVectors can have other NormalizedVectors crossed to produce another NormalizedVector") {
     View::NormalizedVector v;
     const View::NormalizedVector v_n;
     const View::NormalizedXYVector v_n_xy;
@@ -604,8 +588,7 @@ TEST_CASE("NormalizedVectors can have other NormalizedVectors crossed to "
     CHECK(static_cast<bool>(std::is_same_v<converted_type_2, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
 }
-TEST_CASE("NormalizedVectors can have other vectors crossed to produce another "
-          "Vector") {
+TEST_CASE("NormalizedVectors can have other vectors crossed to produce another Vector") {
     View::NormalizedVector v;
     const View::Vector v_v;
     const View::XYVector v_xy;
@@ -687,30 +670,26 @@ TEST_CASE("NormalizedVectors can have their z-value removed") {
     const auto v2 = v.ToXY();
     CHECK(v2 == View::NormalizedXYVector(1, 0));
 }
-TEST_CASE("NormalizedVectors can have their z-value removed to produce a "
-          "NormalizedXYVector") {
+TEST_CASE("NormalizedVectors can have their z-value removed to produce a NormalizedXYVector") {
     const View::NormalizedVector v;
     using converted_type = decltype(v.ToXY());
     using required_type = View::NormalizedXYVector;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
-TEST_CASE("NormalizedVectors from Spaces that do not support XY cannot have "
-          "their z-value removed") {
+TEST_CASE("NormalizedVectors from Spaces that do not support XY cannot have their z-value removed") {
     const Volume::NormalizedVector v;
     using converted_type = decltype(v.ToXY());
     using required_type = StaticAssert::XYVector_not_supported;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
 
-TEST_CASE("NormalizedVectors can be converted from one space to another "
-          "ignoring translation") {
+TEST_CASE("NormalizedVectors can be converted from one space to another ignoring translation") {
     const TransformManager tm;
     const View::NormalizedVector v_view(1, 0, 0);
     auto v_patient = v_view.ConvertTo<Data>(tm);
     CHECK(v_patient == Data::Vector(15, 16, 17));
 }
-TEST_CASE("NormalizedVectors can be converted from one space to another to "
-          "produce a Vector") {
+TEST_CASE("NormalizedVectors can be converted from one space to another to produce a Vector") {
     const TransformManager tm;
     const View::NormalizedVector v_view;
     using converted_type = decltype(v_view.ConvertTo<Data>(tm));

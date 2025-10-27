@@ -58,8 +58,7 @@ TEST_CASE("Collections of XYVectors can be created using initalizer lists") {
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Collections of NormalizedXYVectors can be created using initalizer "
-          "lists") {
+TEST_CASE("Collections of NormalizedXYVectors can be created using initalizer lists") {
     const std::vector<View::NormalizedXYVector> vectors{{1, 0}, {0, 1}};
 
     CHECK(vectors[0] == View::NormalizedXYVector(1, 0));
@@ -68,8 +67,7 @@ TEST_CASE("Collections of NormalizedXYVectors can be created using initalizer "
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Strongly typed collections can be used in templated functions: View "
-          "Space") {
+TEST_CASE("Strongly typed collections can be used in templated functions: View Space") {
     const std::vector<View::Point> points{{1, 1, 1}, {2, 2, 2}};
 
     const auto first = ReturnFirst<View>(points);
@@ -79,8 +77,7 @@ TEST_CASE("Strongly typed collections can be used in templated functions: View "
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Strongly typed collections can be used in templated functions: Data "
-          "Space") {
+TEST_CASE("Strongly typed collections can be used in templated functions: Data Space") {
     const std::vector<Data::Point> points{Data::Point{1, 1, 1}, Data::Point{2, 2, 2}};
 
     const auto first = ReturnFirst<Data>(points);
@@ -90,8 +87,7 @@ TEST_CASE("Strongly typed collections can be used in templated functions: Data "
 
 //-------------------------------------------------------------------------------------------------
 
-TEST_CASE("Strongly typed collections can be transformed for use in "
-          "non-templated functions") {
+TEST_CASE("Strongly typed collections can be transformed for use in non-templated functions") {
     const std::vector<View::Point> points{{1, 1, 1}, {2, 2, 2}};
 
     std::vector<TestVector> impls;
