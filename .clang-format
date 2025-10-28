@@ -7,3 +7,4 @@ BinPackParameters: false
 PackConstructorInitializers: CurrentLine
 IndentWrappedFunctionNames: false
 ColumnLimit: 130
+RequiresClausePosition: WithPreceding

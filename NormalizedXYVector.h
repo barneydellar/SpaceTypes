@@ -65,8 +65,7 @@ class NormalizedXYVector final
         return *(cbegin() + i);
     }
 
-    template <int I>
-        requires ValidFor2dAt<I>
+    template <int I> requires ValidFor2dAt<I>
     [[nodiscard]] double at() const {
         return operator[](I);
     }
@@ -182,8 +181,7 @@ class NormalizedXYVector final
         return implementation::Dot(underlyingData, other.underlyingData);
     }
 
-    template <typename OtherSpace, typename TransformManager>
-        requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <typename OtherSpace, typename TransformManager> requires DifferentSpaces<OtherSpace, ThisSpace>
     [[nodiscard]] auto ConvertTo(const TransformManager &transform_manager) const noexcept {
         return Vector<OtherSpace, UnderlyingData>(
             transform_manager.template TransformVector<ThisSpace, OtherSpace>(static_cast<UnderlyingData>(*this))
@@ -207,50 +205,41 @@ class NormalizedXYVector final
     using _base::Cross;
     using _base::Dot;
 
-    template <int I>
-        requires(!ValidFor2dAt<I>)
+    template <int I> requires(!ValidFor2dAt<I>)
     StaticAssert::invalid_at_access at() const {
         return StaticAssert::invalid_at_access{};
     }
 
-    template <typename OtherSpace>
-        requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
     StaticAssert::invalid_space operator!=(const Vector<OtherSpace, UnderlyingData> &) const noexcept {
         return StaticAssert::invalid_space{};
     }
-    template <typename OtherSpace>
-        requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
     StaticAssert::invalid_space operator!=(const NormalizedVector<OtherSpace, UnderlyingData> &) const noexcept {
         return StaticAssert::invalid_space{};
     }
-    template <typename OtherSpace>
-        requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
     StaticAssert::invalid_space operator!=(const NormalizedXYVector<OtherSpace, UnderlyingData> &) const noexcept {
         return StaticAssert::invalid_space{};
     }
-    template <typename OtherSpace>
-        requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
     StaticAssert::invalid_space operator!=(const XYVector<OtherSpace, UnderlyingData> &) const noexcept {
         return StaticAssert::invalid_space{};
     }
 
-    template <typename OtherSpace>
-        requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
     StaticAssert::invalid_space operator==(const Vector<OtherSpace, UnderlyingData> &) const noexcept {
         return StaticAssert::invalid_space{};
     }
-    template <typename OtherSpace>
-        requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
     StaticAssert::invalid_space operator==(const NormalizedVector<OtherSpace, UnderlyingData> &) const noexcept {
         return StaticAssert::invalid_space{};
     }
-    template <typename OtherSpace>
-        requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
     StaticAssert::invalid_space operator==(const NormalizedXYVector<OtherSpace, UnderlyingData> &) const noexcept {
         return StaticAssert::invalid_space{};
     }
-    template <typename OtherSpace>
-        requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
     StaticAssert::invalid_space operator==(const XYVector<OtherSpace, UnderlyingData> &) const noexcept {
         return StaticAssert::invalid_space{};
     }

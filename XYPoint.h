@@ -65,8 +65,7 @@ class XYPoint final
         return *(cbegin() + i);
     }
 
-    template <int I>
-        requires ValidFor2dAt<I>
+    template <int I> requires ValidFor2dAt<I>
     [[nodiscard]] double at() const {
         return operator[](I);
     }
@@ -142,8 +141,7 @@ class XYPoint final
         return v;
     }
 
-    template <typename OtherSpace, typename TransformManager>
-        requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <typename OtherSpace, typename TransformManager> requires DifferentSpaces<OtherSpace, ThisSpace>
     [[nodiscard]] auto ConvertTo(const TransformManager &transform_manager) const {
         return Point<OtherSpace, UnderlyingData>(
             transform_manager.template TransformPoint<ThisSpace, OtherSpace>(static_cast<UnderlyingData>(*this))
@@ -164,30 +162,25 @@ class XYPoint final
     using _base::operator-;
     using _base::ConvertTo;
 
-    template <int I>
-        requires(!ValidFor2dAt<I>)
+    template <int I> requires(!ValidFor2dAt<I>)
     typename StaticAssert::invalid_at_access at() const {
         return StaticAssert::invalid_at_access{};
     }
 
-    template <typename OtherSpace>
-        requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
     StaticAssert::invalid_space operator!=(const Point<OtherSpace, UnderlyingData> &) const noexcept {
         return StaticAssert::invalid_space{};
     }
-    template <typename OtherSpace>
-        requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
     StaticAssert::invalid_space operator!=(const XYPoint<OtherSpace, UnderlyingData> &) const noexcept {
         return StaticAssert::invalid_space{};
     }
 
-    template <typename OtherSpace>
-        requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
     StaticAssert::invalid_space operator==(const Point<OtherSpace, UnderlyingData> &) const noexcept {
         return StaticAssert::invalid_space{};
     }
-    template <typename OtherSpace>
-        requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
     StaticAssert::invalid_space operator==(const XYPoint<OtherSpace, UnderlyingData> &) const noexcept {
         return StaticAssert::invalid_space{};
     }
