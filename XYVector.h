@@ -3,16 +3,14 @@
 namespace Space::implementation {
 
 template <typename ThisSpace, typename UnderlyingData>
-class XYVector final
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-    : public Base<ThisSpace, UnderlyingData>
-#endif
-{
+class XYVector final : public Base<ThisSpace, UnderlyingData> {
+    
     friend class NormalizedVector<ThisSpace, UnderlyingData>;
     friend class NormalizedXYVector<ThisSpace, UnderlyingData>;
     friend class Point<ThisSpace, UnderlyingData>;
     friend class Vector<ThisSpace, UnderlyingData>;
     friend class XYPoint<ThisSpace, UnderlyingData>;
+    using _base = Base<ThisSpace, UnderlyingData>;
 
   public:
     XYVector() noexcept { std::fill(begin(), end(), 0); }
@@ -29,8 +27,10 @@ class XYVector final
         *iter++ = y;
         *iter = 0;
     }
-
-    [[nodiscard]] explicit operator UnderlyingData() const noexcept { return underlyingData; }
+    [[nodiscard]] double *begin() noexcept { return reinterpret_cast<double *>(&(_base::underlyingData)); }
+    [[nodiscard]] double *end() noexcept { return reinterpret_cast<double *>(&(_base::underlyingData)) + 2; }
+    [[nodiscard]] const double *cbegin() const noexcept { return reinterpret_cast<const double *>(&(_base::underlyingData)); }
+    [[nodiscard]] const double *cend() const noexcept { return reinterpret_cast<const double *>(&(_base::underlyingData)) + 2; }
 
     [[nodiscard]] operator Vector<ThisSpace, UnderlyingData>() const noexcept {
         return Vector<ThisSpace, UnderlyingData>(X(), Y(), 0);
@@ -42,10 +42,6 @@ class XYVector final
     void SetX(const double d) noexcept { *(begin() + 0) = d; }
     void SetY(const double d) noexcept { *(begin() + 1) = d; }
 
-    [[nodiscard]] double *begin() noexcept { return reinterpret_cast<double *>(&underlyingData); }
-    [[nodiscard]] double *end() noexcept { return reinterpret_cast<double *>(&underlyingData) + 2; }
-    [[nodiscard]] const double *cbegin() const noexcept { return reinterpret_cast<const double *>(&underlyingData); }
-    [[nodiscard]] const double *cend() const noexcept { return reinterpret_cast<const double *>(&underlyingData) + 2; }
 
     double operator[](const unsigned int i) const {
         if (i > 1) {
@@ -84,11 +80,11 @@ class XYVector final
     }
 
     auto operator-=(const NormalizedXYVector<ThisSpace, UnderlyingData> &rhs) noexcept {
-        Sub(underlyingData, rhs.underlyingData);
+        Sub(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
     auto operator-=(const XYVector<ThisSpace, UnderlyingData> &rhs) noexcept {
-        Sub(underlyingData, rhs.underlyingData);
+        Sub(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
 
@@ -114,11 +110,11 @@ class XYVector final
     }
 
     auto operator+=(const NormalizedXYVector<ThisSpace, UnderlyingData> &rhs) noexcept {
-        Add(underlyingData, rhs.underlyingData);
+        Add(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
     auto operator+=(const XYVector<ThisSpace, UnderlyingData> &rhs) noexcept {
-        Add(underlyingData, rhs.underlyingData);
+        Add(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
 
@@ -144,7 +140,7 @@ class XYVector final
     }
 
     auto operator*=(const double &d) noexcept {
-        Scale(underlyingData, d);
+        Scale(_base::underlyingData, d);
         return *this;
     }
 
@@ -164,33 +160,33 @@ class XYVector final
     [[nodiscard]] auto operator*(const XYVector<ThisSpace, UnderlyingData> &rhs) const noexcept { return this->Cross(rhs); }
 
     [[nodiscard]] auto Cross(const Vector<ThisSpace, UnderlyingData> &other) const noexcept {
-        const auto [x, y, z] = Cross_internal(underlyingData, other.underlyingData);
+        const auto [x, y, z] = Cross_internal(_base::underlyingData, other.underlyingData);
         return Vector<ThisSpace, UnderlyingData>(x, y, z);
     }
     [[nodiscard]] auto Cross(const NormalizedVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        const auto [x, y, z] = Cross_internal(underlyingData, other.underlyingData);
+        const auto [x, y, z] = Cross_internal(_base::underlyingData, other.underlyingData);
         return Vector<ThisSpace, UnderlyingData>(x, y, z);
     }
     [[nodiscard]] auto Cross(const NormalizedXYVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        const auto [x, y, z] = Cross_internal(underlyingData, other.underlyingData);
+        const auto [x, y, z] = Cross_internal(_base::underlyingData, other.underlyingData);
         return Vector<ThisSpace, UnderlyingData>(x, y, z);
     }
     [[nodiscard]] auto Cross(const XYVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        const auto [x, y, z] = Cross_internal(underlyingData, other.underlyingData);
+        const auto [x, y, z] = Cross_internal(_base::underlyingData, other.underlyingData);
         return Vector<ThisSpace, UnderlyingData>(x, y, z);
     }
 
     [[nodiscard]] double Dot(const Vector<ThisSpace, UnderlyingData> &other) const noexcept {
-        return implementation::Dot(underlyingData, other.underlyingData);
+        return implementation::Dot(_base::underlyingData, other.underlyingData);
     }
     [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        return implementation::Dot(underlyingData, other.underlyingData);
+        return implementation::Dot(_base::underlyingData, other.underlyingData);
     }
     [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        return implementation::Dot(underlyingData, other.underlyingData);
+        return implementation::Dot(_base::underlyingData, other.underlyingData);
     }
     [[nodiscard]] double Dot(const XYVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        return implementation::Dot(underlyingData, other.underlyingData);
+        return implementation::Dot(_base::underlyingData, other.underlyingData);
     }
 
     [[nodiscard]] auto Norm() const { return NormalizedXYVector<ThisSpace, UnderlyingData>(X(), Y()); }
@@ -204,7 +200,7 @@ class XYVector final
 
     [[nodiscard]] auto Mag() const noexcept { return typename ThisSpace::Unit{Mag_double()}; }
 
-    [[nodiscard]] double Mag_double() const noexcept { return Mag_internal(underlyingData); }
+    [[nodiscard]] double Mag_double() const noexcept { return Mag_internal(_base::underlyingData); }
 
     friend std::ostream &operator<<(std::ostream &os, const XYVector<ThisSpace, UnderlyingData> &item) {
         const auto space = SpaceTypeNameMap<ThisSpace>::name;
@@ -213,7 +209,6 @@ class XYVector final
     }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-    using _base = Base<ThisSpace, UnderlyingData>;
     using _base::operator-=;
     using _base::operator-;
     using _base::operator+=;
@@ -314,7 +309,5 @@ class XYVector final
         return StaticAssert::invalid_vector_from_vector_subtraction{};
     }
 #endif
-  private:
-    UnderlyingData underlyingData;
 };
 } // namespace Space::implementation

@@ -3,16 +3,14 @@
 namespace Space::implementation {
 
 template <typename ThisSpace, typename UnderlyingData>
-class Point final
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-    : public Base<ThisSpace, UnderlyingData>
-#endif
+class Point final : public Base<ThisSpace, UnderlyingData>
 {
     friend class NormalizedVector<ThisSpace, UnderlyingData>;
     friend class NormalizedXYVector<ThisSpace, UnderlyingData>;
     friend class Vector<ThisSpace, UnderlyingData>;
     friend class XYPoint<ThisSpace, UnderlyingData>;
     friend class XYVector<ThisSpace, UnderlyingData>;
+    using _base = Base<ThisSpace, UnderlyingData>;
 
   public:
     Point() noexcept { std::fill(begin(), end(), 0); }
@@ -24,8 +22,6 @@ class Point final
         *iter = z;
     }
 
-    [[nodiscard]] explicit operator UnderlyingData() const noexcept { return underlyingData; }
-
     [[nodiscard]] double X() const noexcept { return *(cbegin() + 0); }
     [[nodiscard]] double Y() const noexcept { return *(cbegin() + 1); }
     [[nodiscard]] double Z() const noexcept { return *(cbegin() + 2); }
@@ -34,10 +30,10 @@ class Point final
     void SetY(const double d) noexcept { *(begin() + 1) = d; }
     void SetZ(const double d) noexcept { *(begin() + 2) = d; }
 
-    [[nodiscard]] double *begin() noexcept { return reinterpret_cast<double *>(&underlyingData); }
-    [[nodiscard]] double *end() noexcept { return reinterpret_cast<double *>(&underlyingData) + 3; }
-    [[nodiscard]] const double *cbegin() const noexcept { return reinterpret_cast<const double *>(&underlyingData); }
-    [[nodiscard]] const double *cend() const noexcept { return reinterpret_cast<const double *>(&underlyingData) + 3; }
+    [[nodiscard]] double *begin() noexcept { return reinterpret_cast<double *>(&(_base::underlyingData)); }
+    [[nodiscard]] double *end() noexcept { return reinterpret_cast<double *>(&(_base::underlyingData)) + 3; }
+    [[nodiscard]] const double *cbegin() const noexcept { return reinterpret_cast<const double *>(&(_base::underlyingData)); }
+    [[nodiscard]] const double *cend() const noexcept { return reinterpret_cast<const double *>(&(_base::underlyingData)) + 3; }
 
     [[nodiscard]] double operator[](const unsigned int i) const {
         if (i > 2) {
@@ -62,19 +58,19 @@ class Point final
     [[nodiscard]] bool operator!=(const XYPoint<ThisSpace, UnderlyingData> &other) const noexcept { return !(operator==(other)); }
 
     auto operator-=(const Vector<ThisSpace, UnderlyingData> &rhs) noexcept {
-        Sub(underlyingData, rhs.underlyingData);
+        Sub(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
     auto operator-=(const NormalizedVector<ThisSpace, UnderlyingData> &rhs) noexcept {
-        Sub(underlyingData, rhs.underlyingData);
+        Sub(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
     auto operator-=(const NormalizedXYVector<ThisSpace, UnderlyingData> &rhs) noexcept {
-        Sub(underlyingData, rhs.underlyingData);
+        Sub(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
     auto operator-=(const XYVector<ThisSpace, UnderlyingData> &rhs) noexcept {
-        Sub(underlyingData, rhs.underlyingData);
+        Sub(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
 
@@ -110,19 +106,19 @@ class Point final
     }
 
     auto operator+=(const Vector<ThisSpace, UnderlyingData> &rhs) noexcept {
-        Add(underlyingData, rhs.underlyingData);
+        Add(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
     auto operator+=(const NormalizedVector<ThisSpace, UnderlyingData> &rhs) noexcept {
-        Add(underlyingData, rhs.underlyingData);
+        Add(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
     auto operator+=(const NormalizedXYVector<ThisSpace, UnderlyingData> &rhs) noexcept {
-        Add(underlyingData, rhs.underlyingData);
+        Add(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
     auto operator+=(const XYVector<ThisSpace, UnderlyingData> &rhs) noexcept {
-        Add(underlyingData, rhs.underlyingData);
+        Add(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
 
@@ -167,7 +163,6 @@ class Point final
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 
-    using _base = Base<ThisSpace, UnderlyingData>;
     using _base::operator+=;
     using _base::operator-;
     using _base::operator+;
@@ -256,7 +251,5 @@ class Point final
     void operator*() = delete;
     void operator*=(double) = delete;
 
-  private:
-    UnderlyingData underlyingData;
 };
 } // namespace Space::implementation

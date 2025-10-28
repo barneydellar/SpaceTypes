@@ -5,37 +5,33 @@ using namespace std::string_literals;
 namespace Space::implementation {
 
 template <typename ThisSpace, typename UnderlyingData>
-class NormalizedVector final
-#ifndef IGNORE_SPACE_STATIC_ASSERT
-    : public Base<ThisSpace, UnderlyingData>
-#endif
+class NormalizedVector final : public Base<ThisSpace, UnderlyingData>
 {
     friend class NormalizedXYVector<ThisSpace, UnderlyingData>;
     friend class Point<ThisSpace, UnderlyingData>;
     friend class Vector<ThisSpace, UnderlyingData>;
     friend class XYPoint<ThisSpace, UnderlyingData>;
     friend class XYVector<ThisSpace, UnderlyingData>;
+    using _base = Base<ThisSpace, UnderlyingData>;
 
   public:
     NormalizedVector() {
-        auto iter = begin(underlyingData);
+        auto iter = begin(_base::underlyingData);
         *iter++ = 1;
         *iter++ = 0;
         *iter = 0;
     }
     explicit NormalizedVector(const UnderlyingData &v) noexcept(false) {
-        std::copy(implementation::cbegin(v), implementation::cend(v), begin(underlyingData));
+        std::copy(implementation::cbegin(v), implementation::cend(v), begin(_base::underlyingData));
         Normalize();
     }
     NormalizedVector(const double x, const double y, const double z) noexcept(false) {
-        auto iter = begin(underlyingData);
+        auto iter = begin(_base::underlyingData);
         *iter++ = x;
         *iter++ = y;
         *iter = z;
         Normalize();
     }
-
-    [[nodiscard]] explicit operator UnderlyingData() const noexcept { return underlyingData; }
 
     [[nodiscard]] operator Vector<ThisSpace, UnderlyingData>() const noexcept {
         return Vector<ThisSpace, UnderlyingData>(X(), Y(), Z());
@@ -45,8 +41,8 @@ class NormalizedVector final
     [[nodiscard]] double Y() const noexcept { return *(cbegin() + 1); }
     [[nodiscard]] double Z() const noexcept { return *(cbegin() + 2); }
 
-    [[nodiscard]] const double *cbegin() const noexcept { return reinterpret_cast<const double *>(&underlyingData); }
-    [[nodiscard]] const double *cend() const noexcept { return reinterpret_cast<const double *>(&underlyingData) + 3; }
+    [[nodiscard]] const double *cbegin() const noexcept { return reinterpret_cast<const double *>(&(_base::underlyingData)); }
+    [[nodiscard]] const double *cend() const noexcept { return reinterpret_cast<const double *>(&(_base::underlyingData)) + 3; }
 
     [[nodiscard]] double operator[](const unsigned int i) const {
         if (i > 2) {
@@ -151,33 +147,33 @@ class NormalizedVector final
     [[nodiscard]] auto operator*(const XYVector<ThisSpace, UnderlyingData> &rhs) const noexcept { return this->Cross(rhs); }
 
     [[nodiscard]] auto Cross(const Vector<ThisSpace, UnderlyingData> &other) const noexcept {
-        const auto [x, y, z] = Cross_internal(underlyingData, other.underlyingData);
+        const auto [x, y, z] = Cross_internal(_base::underlyingData, other.underlyingData);
         return Vector<ThisSpace, UnderlyingData>(x, y, z);
     }
     [[nodiscard]] auto Cross(const NormalizedVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        const auto [x, y, z] = Cross_internal(underlyingData, other.underlyingData);
+        const auto [x, y, z] = Cross_internal(_base::underlyingData, other.underlyingData);
         return NormalizedVector<ThisSpace, UnderlyingData>(x, y, z);
     }
     [[nodiscard]] auto Cross(const NormalizedXYVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        const auto [x, y, z] = Cross_internal(underlyingData, other.underlyingData);
+        const auto [x, y, z] = Cross_internal(_base::underlyingData, other.underlyingData);
         return NormalizedVector<ThisSpace, UnderlyingData>(x, y, z);
     }
     [[nodiscard]] auto Cross(const XYVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        const auto [x, y, z] = Cross_internal(underlyingData, other.underlyingData);
+        const auto [x, y, z] = Cross_internal(_base::underlyingData, other.underlyingData);
         return Vector<ThisSpace, UnderlyingData>(x, y, z);
     }
 
     [[nodiscard]] double Dot(const Vector<ThisSpace, UnderlyingData> &other) const noexcept {
-        return implementation::Dot(underlyingData, other.underlyingData);
+        return implementation::Dot(_base::underlyingData, other.underlyingData);
     }
     [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        return implementation::Dot(underlyingData, other.underlyingData);
+        return implementation::Dot(_base::underlyingData, other.underlyingData);
     }
     [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        return implementation::Dot(underlyingData, other.underlyingData);
+        return implementation::Dot(_base::underlyingData, other.underlyingData);
     }
     [[nodiscard]] double Dot(const XYVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        return implementation::Dot(underlyingData, other.underlyingData);
+        return implementation::Dot(_base::underlyingData, other.underlyingData);
     }
 
     [[nodiscard]] auto ToXY() const requires ThisSpace::supportsXY
@@ -198,7 +194,6 @@ class NormalizedVector final
         return os;
     }
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-    using _base = Base<ThisSpace, UnderlyingData>;
     using _base::operator-=;
     using _base::operator-;
     using _base::operator+=;
@@ -319,14 +314,12 @@ class NormalizedVector final
 
   private:
     void Normalize() {
-        const auto mag = Mag_internal(underlyingData);
+        const auto mag = Mag_internal(_base::underlyingData);
         if (std::abs(mag) < 1e-6) {
             throw std::invalid_argument("Zero-sized normal vectors are not allowed");
         }
 
-        std::transform(cbegin(), cend(), begin(underlyingData), [mag](auto v) { return v / mag; });
+        std::transform(cbegin(), cend(), begin(_base::underlyingData), [mag](auto v) { return v / mag; });
     }
-
-    UnderlyingData underlyingData;
 };
 } // namespace Space::implementation

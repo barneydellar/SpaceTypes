@@ -17,6 +17,10 @@
         "tuple": "cpp",
         "type_traits": "cpp",
         "utility": "cpp",
-        "array": "cpp"
+        "array": "cpp",
+        "deque": "cpp",
+        "string_view": "cpp",
+        "format": "cpp",
+        "span": "cpp"
     }
 }
