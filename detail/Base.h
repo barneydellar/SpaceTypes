@@ -15,8 +15,7 @@ template <typename SpaceA, typename SpaceB>
 concept DifferentSpaces = !std::is_same_v<SpaceA, SpaceB>;
 
 template <typename ThisSpace, typename UnderlyingData> class Base {
-public:
-
+  public:
     [[nodiscard]] explicit operator UnderlyingData() const noexcept { return underlyingData; }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
@@ -56,11 +55,8 @@ public:
     }
 #endif
 
-public:
+  public:
     UnderlyingData underlyingData;
 };
-
-
-
 
 } // namespace Space::implementation

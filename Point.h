@@ -2,9 +2,7 @@
 
 namespace Space::implementation {
 
-template <typename ThisSpace, typename UnderlyingData>
-class Point final : public Base<ThisSpace, UnderlyingData>
-{
+template <typename ThisSpace, typename UnderlyingData> class Point final : public Base<ThisSpace, UnderlyingData> {
     friend class NormalizedVector<ThisSpace, UnderlyingData>;
     friend class NormalizedXYVector<ThisSpace, UnderlyingData>;
     friend class Vector<ThisSpace, UnderlyingData>;
@@ -250,6 +248,5 @@ class Point final : public Base<ThisSpace, UnderlyingData>
     void Cross() = delete;
     void operator*() = delete;
     void operator*=(double) = delete;
-
 };
 } // namespace Space::implementation

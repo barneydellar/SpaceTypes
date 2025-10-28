@@ -4,9 +4,7 @@ using namespace std::string_literals;
 
 namespace Space::implementation {
 
-template <typename ThisSpace, typename UnderlyingData>
-class NormalizedVector final : public Base<ThisSpace, UnderlyingData>
-{
+template <typename ThisSpace, typename UnderlyingData> class NormalizedVector final : public Base<ThisSpace, UnderlyingData> {
     friend class NormalizedXYVector<ThisSpace, UnderlyingData>;
     friend class Point<ThisSpace, UnderlyingData>;
     friend class Vector<ThisSpace, UnderlyingData>;

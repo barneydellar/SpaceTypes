@@ -2,9 +2,8 @@
 
 namespace Space::implementation {
 
-template <typename ThisSpace, typename UnderlyingData>
-class XYVector final : public Base<ThisSpace, UnderlyingData> {
-    
+template <typename ThisSpace, typename UnderlyingData> class XYVector final : public Base<ThisSpace, UnderlyingData> {
+
     friend class NormalizedVector<ThisSpace, UnderlyingData>;
     friend class NormalizedXYVector<ThisSpace, UnderlyingData>;
     friend class Point<ThisSpace, UnderlyingData>;
@@ -41,7 +40,6 @@ class XYVector final : public Base<ThisSpace, UnderlyingData> {
 
     void SetX(const double d) noexcept { *(begin() + 0) = d; }
     void SetY(const double d) noexcept { *(begin() + 1) = d; }
-
 
     double operator[](const unsigned int i) const {
         if (i > 1) {

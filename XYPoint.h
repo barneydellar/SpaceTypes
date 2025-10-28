@@ -2,9 +2,7 @@
 
 namespace Space::implementation {
 
-template <typename ThisSpace, typename UnderlyingData>
-class XYPoint final : public Base<ThisSpace, UnderlyingData>
-{
+template <typename ThisSpace, typename UnderlyingData> class XYPoint final : public Base<ThisSpace, UnderlyingData> {
     friend class NormalizedVector<ThisSpace, UnderlyingData>;
     friend class NormalizedXYVector<ThisSpace, UnderlyingData>;
     friend class Point<ThisSpace, UnderlyingData>;
