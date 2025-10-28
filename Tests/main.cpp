@@ -1,2 +1,2 @@
 #define CATCH_CONFIG_MAIN
-#include "ExternalIncludes.h"
+#include "CatchIncludes.h"

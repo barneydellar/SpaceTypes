@@ -1,5 +1,5 @@
 #include "ExampleTransformManager.h"
-#include "ExternalIncludes.h"
+#include "CatchIncludes.h"
 #include "SpaceHelpers.h"
 #include "TestVector.h"
 
