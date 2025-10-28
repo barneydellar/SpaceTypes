@@ -15,7 +15,7 @@ TestVector ReturnFirstImpl(std::vector<TestVector> v) { return v.front(); }
 
 TEST_CASE("Collections of Points can be created using initalizer lists") {
     const std::vector<View::Point> points{{1, 1, 1}, {2, 2, 2}};
- 
+
     CHECK(points[0] == View::Point(1, 1, 1));
     CHECK(points[1] == View::Point(2, 2, 2));
 }
