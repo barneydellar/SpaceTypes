@@ -58,6 +58,15 @@ TEST_CASE("XYPoints support element access by name") {
     CHECK(p.Y() == 3);
 }
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("XYPoints do not support Z access") {
+    const Image::XYPoint v(2, 3);
+    using converted_type = decltype(v.Z());
+    using required_type = StaticAssert::invalid_3D_access;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+#endif
+
 TEST_CASE("XYPoint elements can be modified by name") {
     Image::XYPoint p(2, 3);
     p.SetX(10);
@@ -66,11 +75,26 @@ TEST_CASE("XYPoint elements can be modified by name") {
     CHECK(p.Y() == 20);
 }
 
-TEST_CASE("XYPoints support const begin and end") {
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("XYPoints do not support Z modification") {
+    Image::XYPoint v(2, 3);
+    using converted_type = decltype(v.SetZ(1));
+    using required_type = StaticAssert::invalid_3D_access;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+#endif
+
+TEST_CASE("XYPoints have 2 values") {
     const Image::XYPoint p(2, 3);
     std::vector<double> values;
     std::copy(p.cbegin(), p.cend(), std::back_inserter(values));
     CHECK(values.size() == 2);
+}
+
+TEST_CASE("XYPoints support const begin and end") {
+    const Image::XYPoint p(2, 3);
+    std::vector<double> values;
+    std::copy(p.cbegin(), p.cend(), std::back_inserter(values));
     CHECK(values[0] == 2);
     CHECK(values[1] == 3);
 }

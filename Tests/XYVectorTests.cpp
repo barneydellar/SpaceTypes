@@ -59,6 +59,15 @@ TEST_CASE("XYVectors support element access by name") {
     CHECK(v.Y() == 3);
 }
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("XYVectors do not support Z access") {
+    const Image::XYVector v(2, 3);
+    using converted_type = decltype(v.Z());
+    using required_type = StaticAssert::invalid_3D_access;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+#endif
+
 TEST_CASE("XYVector elements can be modifed by name") {
     Image::XYVector v(2, 3);
     v.SetX(10);
@@ -67,11 +76,26 @@ TEST_CASE("XYVector elements can be modifed by name") {
     CHECK(v.Y() == 20);
 }
 
-TEST_CASE("XYVectors support const begin and end") {
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("XYVectors do not support Z modification") {
+    Image::XYVector v(2, 3);
+    using converted_type = decltype(v.SetZ(1));
+    using required_type = StaticAssert::invalid_3D_access;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+#endif
+
+TEST_CASE("XYVectors have 2 values") {
     const Image::XYVector v(2, 3);
     std::vector<double> values;
     std::copy(v.cbegin(), v.cend(), std::back_inserter(values));
     CHECK(values.size() == 2);
+}
+
+TEST_CASE("XYVectors support const begin and end") {
+    const Image::XYVector v(2, 3);
+    std::vector<double> values;
+    std::copy(v.cbegin(), v.cend(), std::back_inserter(values));
     CHECK(values[0] == 2);
     CHECK(values[1] == 3);
 }
@@ -101,6 +125,7 @@ TEST_CASE("XYVectors support element access by at") {
     CHECK(v.at<0>() == 2);
     CHECK(v.at<1>() == 3);
 }
+
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYVectors at does not compile if too low") {
     const Image::XYVector v;

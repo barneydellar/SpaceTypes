@@ -67,11 +67,17 @@ TEST_CASE("Vector elements can be modified by name") {
     CHECK(v.Z() == 30);
 }
 
-TEST_CASE("Vectors support const begin and end") {
+TEST_CASE("Vectors have 3 values") {
     const Image::Vector v(2, 3, 4);
     std::vector<double> values;
     std::copy(v.cbegin(), v.cend(), std::back_inserter(values));
     CHECK(values.size() == 3);
+}
+
+TEST_CASE("Vectors support const begin and end") {
+    const Image::Vector v(2, 3, 4);
+    std::vector<double> values;
+    std::copy(v.cbegin(), v.cend(), std::back_inserter(values));
     CHECK(values[0] == 2);
     CHECK(values[1] == 3);
     CHECK(values[2] == 4);

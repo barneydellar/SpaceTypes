@@ -106,13 +106,17 @@ struct invalid_random_access final {
     template <typename T = void> invalid_random_access() { static_assert(false, "Negative indices are invalid."); }
 };
 
+struct invalid_3D_access final {
+    template <typename T = void> invalid_3D_access() { static_assert(false, "You can't access Z values of 2D pointes or vectors."); }
+};
+
 struct invalid_at_access final {
     template <typename T = void> invalid_at_access() { static_assert(false, "Index out of range when calling 'at'."); }
 };
 
-struct invalid_normalized_vector_access final {
-    template <typename T = void> invalid_normalized_vector_access() {
-        static_assert(false, "Normalized vectors don't support non-const access");
+struct invalid_normalized_vector_modification final {
+    template <typename T = void> invalid_normalized_vector_modification() {
+        static_assert(false, "Normalized vectors don't support changes to individual elements");
     }
 };
 

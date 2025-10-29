@@ -64,11 +64,30 @@ TEST_CASE("NormalizedVectors support element access by name") {
     CHECK(v.Z() == 0);
 }
 
-TEST_CASE("NormalizedVectors support const begin and end") {
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVectors do not support modification by name") {
+    Image::NormalizedVector v;
+    using converted_type_x = decltype(v.SetX(1));
+    using converted_type_y = decltype(v.SetY(1));
+    using converted_type_z = decltype(v.SetZ(1));
+    using required_type = StaticAssert::invalid_normalized_vector_modification;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_x, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_y, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_z, required_type>));
+}
+#endif
+
+TEST_CASE("NormalizedVectors have 3 values") {
     const Image::NormalizedVector v(1, 0, 0);
     std::vector<double> values;
     std::copy(v.cbegin(), v.cend(), std::back_inserter(values));
     CHECK(values.size() == 3);
+}
+
+TEST_CASE("NormalizedVectors support const begin and end") {
+    const Image::NormalizedVector v(1, 0, 0);
+    std::vector<double> values;
+    std::copy(v.cbegin(), v.cend(), std::back_inserter(values));
     CHECK(values[0] == 1);
     CHECK(values[1] == 0);
     CHECK(values[2] == 0);
@@ -79,7 +98,7 @@ TEST_CASE("NormalizedVectors don't support non-const begin and end") {
     Image::NormalizedVector v(1, 0, 0);
     using begin_converted_type = decltype(v.begin());
     using end_converted_type = decltype(v.end());
-    using required_type = StaticAssert::invalid_normalized_vector_access;
+    using required_type = StaticAssert::invalid_normalized_vector_modification;
     CHECK(static_cast<bool>(std::is_same_v<begin_converted_type, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<end_converted_type, required_type>));
 }

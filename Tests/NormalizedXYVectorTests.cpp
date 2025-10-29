@@ -74,11 +74,39 @@ TEST_CASE("NormalizedXYVectors support element access by name") {
     CHECK(v.Y() == 0);
 }
 
-TEST_CASE("NormalizedXYVectors support const begin and end") {
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedXYVectors do not support Z access") {
+    Image::NormalizedXYVector v(2, 3);
+    using converted_type = decltype(v.Z());
+    using required_type = StaticAssert::invalid_3D_access;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+#endif
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedXYVectors do not support modification by name") {
+    Image::NormalizedXYVector v;
+    using converted_type_x = decltype(v.SetX(1));
+    using converted_type_y = decltype(v.SetY(1));
+    using converted_type_z = decltype(v.SetZ(1));
+    using required_type = StaticAssert::invalid_normalized_vector_modification;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_x, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_y, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<converted_type_z, required_type>));
+}
+#endif
+
+TEST_CASE("NormalizedXYVectors have 2 values") {
     const Image::NormalizedXYVector v(1, 0);
     std::vector<double> values;
     std::copy(v.cbegin(), v.cend(), std::back_inserter(values));
     CHECK(values.size() == 2);
+}
+
+TEST_CASE("NormalizedXYVectors support const begin and end") {
+    const Image::NormalizedXYVector v(1, 0);
+    std::vector<double> values;
+    std::copy(v.cbegin(), v.cend(), std::back_inserter(values));
     CHECK(values[0] == 1);
     CHECK(values[1] == 0);
 }
@@ -88,7 +116,7 @@ TEST_CASE("NormalizedXYVectors don't support non-const begin and end") {
     Image::NormalizedXYVector v(1, 0);
     using begin_converted_type = decltype(v.begin());
     using end_converted_type = decltype(v.end());
-    using required_type = StaticAssert::invalid_normalized_vector_access;
+    using required_type = StaticAssert::invalid_normalized_vector_modification;
     CHECK(static_cast<bool>(std::is_same_v<begin_converted_type, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<end_converted_type, required_type>));
 }

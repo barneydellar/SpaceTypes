@@ -67,11 +67,17 @@ TEST_CASE("Point elements can be modified by name") {
     CHECK(p.Z() == 30);
 }
 
-TEST_CASE("Points support const begin and end") {
+TEST_CASE("Points have 3 values") {
     const Image::Point p(2, 3, 4);
     std::vector<double> values;
     std::copy(p.cbegin(), p.cend(), std::back_inserter(values));
     CHECK(values.size() == 3);
+}
+
+TEST_CASE("Points support const begin and end") {
+    const Image::Point p(2, 3, 4);
+    std::vector<double> values;
+    std::copy(p.cbegin(), p.cend(), std::back_inserter(values));
     CHECK(values[0] == 2);
     CHECK(values[1] == 3);
     CHECK(values[2] == 4);

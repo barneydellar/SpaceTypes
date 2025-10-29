@@ -2,7 +2,6 @@
 
 namespace Space::implementation {
 
-// TODO try changing the dimension here
 template <typename ThisSpace, typename UnderlyingData>
 class NormalizedXYVector final : public Base<ThisSpace, UnderlyingData, 2, true> {
 

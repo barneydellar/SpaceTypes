@@ -33,7 +33,6 @@ class Base {
 
     [[nodiscard]] double X() const noexcept { return *(cbegin() + 0); }
     [[nodiscard]] double Y() const noexcept { return *(cbegin() + 1); }
-    // Todo test this requires
     [[nodiscard]] double Z() const noexcept requires(Dimensions == 3)
     {
         return *(cbegin() + 2);
@@ -47,7 +46,7 @@ class Base {
     {
         *(begin() + 1) = d;
     }
-    // Todo test this requires
+
     void SetZ(const double d) noexcept requires(IsNormalised == false && Dimensions == 3)
     {
         *(begin() + 2) = d;
@@ -72,13 +71,36 @@ class Base {
         return StaticAssert::invalid_at_access{};
     }
 
-    StaticAssert::invalid_normalized_vector_access begin() noexcept requires(IsNormalised == true)
+    StaticAssert::invalid_3D_access Z() const noexcept requires(Dimensions < 3)
     {
-        return StaticAssert::invalid_normalized_vector_access{};
+        return StaticAssert::invalid_3D_access{};
     }
-    StaticAssert::invalid_normalized_vector_access end() noexcept requires(IsNormalised == true)
+
+    StaticAssert::invalid_3D_access SetZ(const double d) noexcept requires(IsNormalised == false && Dimensions < 3)
     {
-        return StaticAssert::invalid_normalized_vector_access{};
+        return StaticAssert::invalid_3D_access{};
+    }
+
+    StaticAssert::invalid_normalized_vector_modification SetX(const double d) noexcept requires(IsNormalised == true)
+    {
+        return StaticAssert::invalid_normalized_vector_modification{};
+    }
+        StaticAssert::invalid_normalized_vector_modification SetY(const double d) noexcept requires(IsNormalised == true)
+    {
+        return StaticAssert::invalid_normalized_vector_modification{};
+    }
+        StaticAssert::invalid_normalized_vector_modification SetZ(const double d) noexcept requires(IsNormalised == true)
+    {
+        return StaticAssert::invalid_normalized_vector_modification{};
+    }
+
+    StaticAssert::invalid_normalized_vector_modification begin() noexcept requires(IsNormalised == true)
+    {
+        return StaticAssert::invalid_normalized_vector_modification{};
+    }
+    StaticAssert::invalid_normalized_vector_modification end() noexcept requires(IsNormalised == true)
+    {
+        return StaticAssert::invalid_normalized_vector_modification{};
     }
 
     template <typename OtherSpace, int I, bool B> requires DifferentSpaces<OtherSpace, ThisSpace>
