@@ -3,7 +3,8 @@
 namespace Space::implementation {
 
 // TODO try changing the dimension here
-template <typename ThisSpace, typename UnderlyingData> class NormalizedXYVector final : public Base<ThisSpace, UnderlyingData, 2, true> {
+template <typename ThisSpace, typename UnderlyingData>
+class NormalizedXYVector final : public Base<ThisSpace, UnderlyingData, 2, true> {
 
     friend class NormalizedVector<ThisSpace, UnderlyingData>;
     friend class Point<ThisSpace, UnderlyingData>;
@@ -36,30 +37,15 @@ template <typename ThisSpace, typename UnderlyingData> class NormalizedXYVector 
     }
 
     [[nodiscard]] operator Vector<ThisSpace, UnderlyingData>() const noexcept {
-        return Vector<ThisSpace, UnderlyingData>(X(), Y(), 0);
+        return Vector<ThisSpace, UnderlyingData>(_base::X(), _base::Y(), 0);
     }
 
     [[nodiscard]] operator XYVector<ThisSpace, UnderlyingData>() const noexcept {
-        return XYVector<ThisSpace, UnderlyingData>(X(), Y());
+        return XYVector<ThisSpace, UnderlyingData>(_base::X(), _base::Y());
     }
 
     [[nodiscard]] operator NormalizedVector<ThisSpace, UnderlyingData>() const noexcept {
-        return NormalizedVector<ThisSpace, UnderlyingData>(X(), Y(), 0);
-    }
-
-    [[nodiscard]] double X() const noexcept { return *(_base::cbegin() + 0); }
-    [[nodiscard]] double Y() const noexcept { return *(_base::cbegin() + 1); }
-
-    double operator[](const unsigned int i) const {
-        if (i > 1) {
-            throw std::invalid_argument("Index is out of range");
-        }
-        return *(_base::cbegin() + i);
-    }
-
-    template <int I> requires ValidFor2dAt<I>
-    [[nodiscard]] double at() const {
-        return operator[](I);
+        return NormalizedVector<ThisSpace, UnderlyingData>(_base::X(), _base::Y(), 0);
     }
 
     [[nodiscard]] bool operator==(const Vector<ThisSpace, UnderlyingData> &other) const noexcept {
@@ -196,11 +182,6 @@ template <typename ThisSpace, typename UnderlyingData> class NormalizedXYVector 
     using _base::Cross;
     using _base::Dot;
 
-    template <int I> requires(!ValidFor2dAt<I>)
-    StaticAssert::invalid_at_access at() const {
-        return StaticAssert::invalid_at_access{};
-    }
-    
     template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
     StaticAssert::invalid_space operator!=(const Vector<OtherSpace, UnderlyingData> &) const noexcept {
         return StaticAssert::invalid_space{};

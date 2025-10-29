@@ -26,14 +26,8 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
         *iter = 0;
     }
 
-    [[nodiscard]] double X() const noexcept { return *(_base::cbegin() + 0); }
-    [[nodiscard]] double Y() const noexcept { return *(_base::cbegin() + 1); }
-
-    void SetX(const double d) noexcept { *(_base::begin() + 0) = d; }
-    void SetY(const double d) noexcept { *(_base::begin() + 1) = d; }
-
     [[nodiscard]] operator Point<ThisSpace, UnderlyingData>() const noexcept {
-        return Point<ThisSpace, UnderlyingData>(X(), Y(), 0);
+        return Point<ThisSpace, UnderlyingData>(_base::X(), _base::Y(), 0);
     }
 
     [[nodiscard]] bool operator==(const Point<ThisSpace, UnderlyingData> &other) const noexcept {
@@ -46,18 +40,6 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
     [[nodiscard]] bool operator!=(const Point<ThisSpace, UnderlyingData> &other) const noexcept { return !(operator==(other)); }
 
     [[nodiscard]] bool operator!=(const XYPoint<ThisSpace, UnderlyingData> &other) const noexcept { return !(operator==(other)); }
-
-    double operator[](const unsigned int i) const {
-        if (i > 1) {
-            throw std::invalid_argument("Index is out of range");
-        }
-        return *(_base::cbegin() + i);
-    }
-
-    template <int I> requires ValidFor2dAt<I>
-    [[nodiscard]] double at() const {
-        return operator[](I);
-    }
 
     auto operator-=(const XYVector<ThisSpace, UnderlyingData> &rhs) noexcept {
         Sub(_base::underlyingData, rhs.underlyingData);
@@ -149,11 +131,6 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
     using _base::operator-=;
     using _base::operator-;
     using _base::ConvertTo;
-
-    template <int I> requires(!ValidFor2dAt<I>)
-    typename StaticAssert::invalid_at_access at() const {
-        return StaticAssert::invalid_at_access{};
-    }
 
     template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
     StaticAssert::invalid_space operator!=(const Point<OtherSpace, UnderlyingData> &) const noexcept {

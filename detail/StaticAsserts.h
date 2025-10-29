@@ -111,9 +111,8 @@ struct invalid_at_access final {
 };
 
 struct invalid_normalized_vector_access final {
-    template <typename T = void>
-    invalid_normalized_vector_access() { 
-        static_assert(false, "Normalized vectors don't support non-const access"); 
+    template <typename T = void> invalid_normalized_vector_access() {
+        static_assert(false, "Normalized vectors don't support non-const access");
     }
 };
 

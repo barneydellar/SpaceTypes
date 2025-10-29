@@ -4,7 +4,8 @@ using namespace std::string_literals;
 
 namespace Space::implementation {
 
-template <typename ThisSpace, typename UnderlyingData> class NormalizedVector final : public Base<ThisSpace, UnderlyingData, 3, true> {
+template <typename ThisSpace, typename UnderlyingData>
+class NormalizedVector final : public Base<ThisSpace, UnderlyingData, 3, true> {
     friend class NormalizedXYVector<ThisSpace, UnderlyingData>;
     friend class Point<ThisSpace, UnderlyingData>;
     friend class Vector<ThisSpace, UnderlyingData>;
@@ -32,23 +33,7 @@ template <typename ThisSpace, typename UnderlyingData> class NormalizedVector fi
     }
 
     [[nodiscard]] operator Vector<ThisSpace, UnderlyingData>() const noexcept {
-        return Vector<ThisSpace, UnderlyingData>(X(), Y(), Z());
-    }
-
-    [[nodiscard]] double X() const noexcept { return *(_base::cbegin() + 0); }
-    [[nodiscard]] double Y() const noexcept { return *(_base::cbegin() + 1); }
-    [[nodiscard]] double Z() const noexcept { return *(_base::cbegin() + 2); }
-
-    [[nodiscard]] double operator[](const unsigned int i) const {
-        if (i > 2) {
-            throw std::invalid_argument("Index is out of range");
-        }
-        return *(_base::cbegin() + i);
-    }
-
-    template <int I> requires ValidFor3dAt<I>
-    [[nodiscard]] double at() const {
-        return operator[](I);
+        return Vector<ThisSpace, UnderlyingData>(_base::X(), _base::Y(), _base::Z());
     }
 
     [[nodiscard]] bool operator==(const Vector<ThisSpace, UnderlyingData> &other) const noexcept {
@@ -76,49 +61,49 @@ template <typename ThisSpace, typename UnderlyingData> class NormalizedVector fi
     }
 
     [[nodiscard]] auto operator-(const Vector<ThisSpace, UnderlyingData> &rhs) const noexcept {
-        Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+        Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
         Sub(v.underlyingData, rhs.underlyingData);
         return v;
     }
     [[nodiscard]] auto operator-(const NormalizedVector<ThisSpace, UnderlyingData> &rhs) const noexcept {
-        Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+        Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
         Sub(v.underlyingData, rhs.underlyingData);
         return v;
     }
     [[nodiscard]] auto operator-(const NormalizedXYVector<ThisSpace, UnderlyingData> &rhs) const noexcept {
-        Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+        Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
         Sub(v.underlyingData, rhs.underlyingData);
         return v;
     }
     [[nodiscard]] auto operator-(const XYVector<ThisSpace, UnderlyingData> &rhs) const noexcept {
-        Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+        Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
         Sub(v.underlyingData, rhs.underlyingData);
         return v;
     }
 
     [[nodiscard]] auto operator+(const Vector<ThisSpace, UnderlyingData> &rhs) const noexcept {
-        Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+        Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
         Add(v.underlyingData, rhs.underlyingData);
         return v;
     }
     [[nodiscard]] auto operator+(const NormalizedVector<ThisSpace, UnderlyingData> &rhs) const noexcept {
-        Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+        Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
         Add(v.underlyingData, rhs.underlyingData);
         return v;
     }
     [[nodiscard]] auto operator+(const NormalizedXYVector<ThisSpace, UnderlyingData> &rhs) const noexcept {
-        Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+        Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
         Add(v.underlyingData, rhs.underlyingData);
         return v;
     }
     [[nodiscard]] auto operator+(const XYVector<ThisSpace, UnderlyingData> &rhs) const noexcept {
-        Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+        Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
         Add(v.underlyingData, rhs.underlyingData);
         return v;
     }
 
     [[nodiscard]] auto operator*(const double &d) const noexcept {
-        Vector<ThisSpace, UnderlyingData> v(X(), Y(), Z());
+        Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
         Scale(v.underlyingData, d);
         return v;
     }
@@ -173,7 +158,7 @@ template <typename ThisSpace, typename UnderlyingData> class NormalizedVector fi
 
     [[nodiscard]] auto ToXY() const requires ThisSpace::supportsXY
     {
-        return NormalizedXYVector<ThisSpace, UnderlyingData>(X(), Y());
+        return NormalizedXYVector<ThisSpace, UnderlyingData>(_base::X(), _base::Y());
     }
 
     template <typename OtherSpace, typename TransformManager> requires DifferentSpaces<OtherSpace, ThisSpace>
@@ -199,11 +184,6 @@ template <typename ThisSpace, typename UnderlyingData> class NormalizedVector fi
     using _base::Cross;
     using _base::Dot;
 
-    template <int I> requires(!ValidFor3dAt<I>)
-    StaticAssert::invalid_at_access at() const {
-        return StaticAssert::invalid_at_access{};
-    }
-    
     template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
     StaticAssert::invalid_space operator!=(const Vector<OtherSpace, UnderlyingData> &) const noexcept {
         return StaticAssert::invalid_space{};
