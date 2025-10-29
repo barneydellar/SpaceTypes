@@ -9,7 +9,7 @@ template <typename ThisSpace, typename UnderlyingData> class Point;
 template <typename ThisSpace, typename UnderlyingData> class XYPoint;
 template <typename ThisSpace, typename UnderlyingData> class Vector;
 template <typename ThisSpace, typename UnderlyingData> class XYVector;
-template <typename ThisSpace, typename UnderlyingData> class NormalizedVector;
+template <typename ThisSpace, typename UnderlyingData> class NormalizedVec  tor;
 template <typename ThisSpace, typename UnderlyingData> class NormalizedXYVector;
 } // namespace Space::implementation
 

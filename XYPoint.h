@@ -2,49 +2,45 @@
 
 namespace Space::implementation {
 
-template <typename ThisSpace, typename UnderlyingData> class XYPoint final : public Base<ThisSpace, UnderlyingData> {
+template <typename ThisSpace, typename UnderlyingData> class XYPoint final : public Base<ThisSpace, UnderlyingData, 2> {
     friend class NormalizedVector<ThisSpace, UnderlyingData>;
     friend class NormalizedXYVector<ThisSpace, UnderlyingData>;
     friend class Point<ThisSpace, UnderlyingData>;
     friend class Vector<ThisSpace, UnderlyingData>;
     friend class XYVector<ThisSpace, UnderlyingData>;
+    using _base = Base<ThisSpace, UnderlyingData, 2>;
 
   public:
-    XYPoint() noexcept { std::fill(begin(), end(), 0); }
+    XYPoint() noexcept { std::fill(_base::begin(), _base::end(), 0); }
     explicit XYPoint(const UnderlyingData &v) noexcept {
-        auto iter = begin();
-        auto in = implementation::cbegin(v);
+        auto iter = _base::begin();
+        auto in = implementation::CBegin(v);
         *iter++ = *in++;
         *iter++ = *in++;
         *iter = 0;
     }
     XYPoint(const double x, const double y) noexcept {
-        auto iter = begin();
+        auto iter = _base::begin();
         *iter++ = x;
         *iter++ = y;
         *iter = 0;
     }
 
-    [[nodiscard]] double X() const noexcept { return *(cbegin() + 0); }
-    [[nodiscard]] double Y() const noexcept { return *(cbegin() + 1); }
+    [[nodiscard]] double X() const noexcept { return *(_base::cbegin() + 0); }
+    [[nodiscard]] double Y() const noexcept { return *(_base::cbegin() + 1); }
 
-    void SetX(const double d) noexcept { *(begin() + 0) = d; }
-    void SetY(const double d) noexcept { *(begin() + 1) = d; }
+    void SetX(const double d) noexcept { *(_base::begin() + 0) = d; }
+    void SetY(const double d) noexcept { *(_base::begin() + 1) = d; }
 
     [[nodiscard]] operator Point<ThisSpace, UnderlyingData>() const noexcept {
         return Point<ThisSpace, UnderlyingData>(X(), Y(), 0);
     }
 
-    [[nodiscard]] double *begin() noexcept { return reinterpret_cast<double *>(&(_base::underlyingData)); }
-    [[nodiscard]] double *end() noexcept { return reinterpret_cast<double *>(&(_base::underlyingData)) + 2; }
-    [[nodiscard]] const double *cbegin() const noexcept { return reinterpret_cast<const double *>(&(_base::underlyingData)); }
-    [[nodiscard]] const double *cend() const noexcept { return reinterpret_cast<const double *>(&(_base::underlyingData)) + 2; }
-
     [[nodiscard]] bool operator==(const Point<ThisSpace, UnderlyingData> &other) const noexcept {
-        return std::equal(cbegin(), cend(), implementation::cbegin(other.underlyingData), Equality);
+        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
     }
     [[nodiscard]] bool operator==(const XYPoint<ThisSpace, UnderlyingData> &other) const noexcept {
-        return std::equal(cbegin(), cend(), implementation::cbegin(other.underlyingData), Equality);
+        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
     }
 
     [[nodiscard]] bool operator!=(const Point<ThisSpace, UnderlyingData> &other) const noexcept { return !(operator==(other)); }
@@ -55,7 +51,7 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
         if (i > 1) {
             throw std::invalid_argument("Index is out of range");
         }
-        return *(cbegin() + i);
+        return *(_base::cbegin() + i);
     }
 
     template <int I> requires ValidFor2dAt<I>
@@ -148,7 +144,6 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
     }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
-    using _base = Base<ThisSpace, UnderlyingData>;
     using _base::operator+=;
     using _base::operator+;
     using _base::operator-=;

@@ -110,6 +110,13 @@ struct invalid_at_access final {
     template <typename T = void> invalid_at_access() { static_assert(false, "Index out of range when calling 'at'."); }
 };
 
+struct invalid_normalized_vector_access final {
+    template <typename T = void>
+    invalid_normalized_vector_access() { 
+        static_assert(false, "Normalized vectors don't support non-const access"); 
+    }
+};
+
 struct XYVector_not_supported final {
     template <typename T = void> XYVector_not_supported() {
         static_assert(false, "This space does not support 2D vectors or points.");

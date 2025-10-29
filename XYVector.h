@@ -2,50 +2,46 @@
 
 namespace Space::implementation {
 
-template <typename ThisSpace, typename UnderlyingData> class XYVector final : public Base<ThisSpace, UnderlyingData> {
+template <typename ThisSpace, typename UnderlyingData> class XYVector final : public Base<ThisSpace, UnderlyingData, 2> {
 
     friend class NormalizedVector<ThisSpace, UnderlyingData>;
     friend class NormalizedXYVector<ThisSpace, UnderlyingData>;
     friend class Point<ThisSpace, UnderlyingData>;
     friend class Vector<ThisSpace, UnderlyingData>;
     friend class XYPoint<ThisSpace, UnderlyingData>;
-    using _base = Base<ThisSpace, UnderlyingData>;
+    using _base = Base<ThisSpace, UnderlyingData, 2>;
 
   public:
-    XYVector() noexcept { std::fill(begin(), end(), 0); }
+    XYVector() noexcept { std::fill(_base::begin(), _base::end(), 0); }
     explicit XYVector(const UnderlyingData &v) noexcept {
-        auto iter = begin();
-        auto in = implementation::cbegin(v);
+        auto iter = _base::begin();
+        auto in = implementation::CBegin(v);
         *iter++ = *in++;
         *iter++ = *in++;
         *iter = 0;
     }
     XYVector(const double x, const double y) noexcept {
-        auto iter = begin();
+        auto iter = _base::begin();
         *iter++ = x;
         *iter++ = y;
         *iter = 0;
     }
-    [[nodiscard]] double *begin() noexcept { return reinterpret_cast<double *>(&(_base::underlyingData)); }
-    [[nodiscard]] double *end() noexcept { return reinterpret_cast<double *>(&(_base::underlyingData)) + 2; }
-    [[nodiscard]] const double *cbegin() const noexcept { return reinterpret_cast<const double *>(&(_base::underlyingData)); }
-    [[nodiscard]] const double *cend() const noexcept { return reinterpret_cast<const double *>(&(_base::underlyingData)) + 2; }
-
+    
     [[nodiscard]] operator Vector<ThisSpace, UnderlyingData>() const noexcept {
         return Vector<ThisSpace, UnderlyingData>(X(), Y(), 0);
     }
 
-    [[nodiscard]] double X() const noexcept { return *(cbegin() + 0); }
-    [[nodiscard]] double Y() const noexcept { return *(cbegin() + 1); }
+    [[nodiscard]] double X() const noexcept { return *(_base::cbegin() + 0); }
+    [[nodiscard]] double Y() const noexcept { return *(_base::cbegin() + 1); }
 
-    void SetX(const double d) noexcept { *(begin() + 0) = d; }
-    void SetY(const double d) noexcept { *(begin() + 1) = d; }
+    void SetX(const double d) noexcept { *(_base::begin() + 0) = d; }
+    void SetY(const double d) noexcept { *(_base::begin() + 1) = d; }
 
     double operator[](const unsigned int i) const {
         if (i > 1) {
             throw std::invalid_argument("Index is out of range");
         }
-        return *(cbegin() + i);
+        return *(_base::cbegin() + i);
     }
 
     template <int I> requires ValidFor2dAt<I>
@@ -54,16 +50,16 @@ template <typename ThisSpace, typename UnderlyingData> class XYVector final : pu
     }
 
     [[nodiscard]] bool operator==(const Vector<ThisSpace, UnderlyingData> &other) const noexcept {
-        return std::equal(cbegin(), cend(), implementation::cbegin(other.underlyingData), Equality);
+        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
     }
     [[nodiscard]] bool operator==(const NormalizedVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        return std::equal(cbegin(), cend(), implementation::cbegin(other.underlyingData), Equality);
+        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
     }
     [[nodiscard]] bool operator==(const NormalizedXYVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        return std::equal(cbegin(), cend(), implementation::cbegin(other.underlyingData), Equality);
+        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
     }
     [[nodiscard]] bool operator==(const XYVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        return std::equal(cbegin(), cend(), implementation::cbegin(other.underlyingData), Equality);
+        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
     }
 
     [[nodiscard]] bool operator!=(const Vector<ThisSpace, UnderlyingData> &other) const noexcept { return !(operator==(other)); }

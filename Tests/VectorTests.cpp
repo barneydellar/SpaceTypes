@@ -724,7 +724,6 @@ TEST_CASE("Vectors from different spaces cannot be dotted") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
 }
-
 #endif
 
 TEST_CASE("Vectors can have their z-value removed") {
@@ -738,12 +737,15 @@ TEST_CASE("Vectors can have their z-value removed to produce a XYVector") {
     using required_type = View::XYVector;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("Vectors from Spaces that do not support XY cannot have their z-value removed") {
     const Volume::Vector v;
     using converted_type = decltype(v.ToXY());
     using required_type = StaticAssert::XYVector_not_supported;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
+#endif
 
 TEST_CASE("Vectors can be normalized") {
     const Image::Vector v(0, 3, 4);

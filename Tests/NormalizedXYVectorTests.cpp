@@ -83,6 +83,17 @@ TEST_CASE("NormalizedXYVectors support const begin and end") {
     CHECK(values[1] == 0);
 }
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedXYVectors don't support non-const begin and end") {
+    Image::NormalizedXYVector v(1, 0);
+    using begin_converted_type = decltype(v.begin());
+    using end_converted_type = decltype(v.end());
+    using required_type = StaticAssert::invalid_normalized_vector_access;
+    CHECK(static_cast<bool>(std::is_same_v<begin_converted_type, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<end_converted_type, required_type>));
+}
+#endif
+
 TEST_CASE("NormalizedXYVectors support element access by random access") {
     const Image::NormalizedXYVector v(1, 0);
     CHECK(v[0] == 1);
@@ -460,6 +471,7 @@ TEST_CASE("NormalizedXYVectors cannot have points added") {
 }
 #endif
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedXYVectors cannot be crossed in place") {
     View::NormalizedXYVector v;
     const View::Vector v_v;
@@ -478,7 +490,6 @@ TEST_CASE("NormalizedXYVectors cannot be crossed in place") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
 }
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedXYVectors in different spaces cannot be crossed in place") {
     Image::NormalizedXYVector v;
     const View::Vector v_v;

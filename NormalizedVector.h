@@ -4,27 +4,27 @@ using namespace std::string_literals;
 
 namespace Space::implementation {
 
-template <typename ThisSpace, typename UnderlyingData> class NormalizedVector final : public Base<ThisSpace, UnderlyingData> {
+template <typename ThisSpace, typename UnderlyingData> class NormalizedVector final : public Base<ThisSpace, UnderlyingData, 3, true> {
     friend class NormalizedXYVector<ThisSpace, UnderlyingData>;
     friend class Point<ThisSpace, UnderlyingData>;
     friend class Vector<ThisSpace, UnderlyingData>;
     friend class XYPoint<ThisSpace, UnderlyingData>;
     friend class XYVector<ThisSpace, UnderlyingData>;
-    using _base = Base<ThisSpace, UnderlyingData>;
+    using _base = Base<ThisSpace, UnderlyingData, 3, true>;
 
   public:
     NormalizedVector() {
-        auto iter = begin(_base::underlyingData);
+        auto iter = implementation::Begin(_base::underlyingData);
         *iter++ = 1;
         *iter++ = 0;
         *iter = 0;
     }
     explicit NormalizedVector(const UnderlyingData &v) noexcept(false) {
-        std::copy(implementation::cbegin(v), implementation::cend(v), begin(_base::underlyingData));
+        std::copy(implementation::CBegin(v), implementation::CEnd(v), implementation::Begin(_base::underlyingData));
         Normalize();
     }
     NormalizedVector(const double x, const double y, const double z) noexcept(false) {
-        auto iter = begin(_base::underlyingData);
+        auto iter = implementation::Begin(_base::underlyingData);
         *iter++ = x;
         *iter++ = y;
         *iter = z;
@@ -35,18 +35,15 @@ template <typename ThisSpace, typename UnderlyingData> class NormalizedVector fi
         return Vector<ThisSpace, UnderlyingData>(X(), Y(), Z());
     }
 
-    [[nodiscard]] double X() const noexcept { return *(cbegin() + 0); }
-    [[nodiscard]] double Y() const noexcept { return *(cbegin() + 1); }
-    [[nodiscard]] double Z() const noexcept { return *(cbegin() + 2); }
-
-    [[nodiscard]] const double *cbegin() const noexcept { return reinterpret_cast<const double *>(&(_base::underlyingData)); }
-    [[nodiscard]] const double *cend() const noexcept { return reinterpret_cast<const double *>(&(_base::underlyingData)) + 3; }
+    [[nodiscard]] double X() const noexcept { return *(_base::cbegin() + 0); }
+    [[nodiscard]] double Y() const noexcept { return *(_base::cbegin() + 1); }
+    [[nodiscard]] double Z() const noexcept { return *(_base::cbegin() + 2); }
 
     [[nodiscard]] double operator[](const unsigned int i) const {
         if (i > 2) {
             throw std::invalid_argument("Index is out of range");
         }
-        return *(cbegin() + i);
+        return *(_base::cbegin() + i);
     }
 
     template <int I> requires ValidFor3dAt<I>
@@ -55,16 +52,16 @@ template <typename ThisSpace, typename UnderlyingData> class NormalizedVector fi
     }
 
     [[nodiscard]] bool operator==(const Vector<ThisSpace, UnderlyingData> &other) const noexcept {
-        return std::equal(cbegin(), cend(), implementation::cbegin(other.underlyingData), Equality);
+        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
     }
     [[nodiscard]] bool operator==(const NormalizedVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        return std::equal(cbegin(), cend(), implementation::cbegin(other.underlyingData), Equality);
+        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
     }
     [[nodiscard]] bool operator==(const NormalizedXYVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        return std::equal(cbegin(), cend(), implementation::cbegin(other.underlyingData), Equality);
+        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
     }
     [[nodiscard]] bool operator==(const XYVector<ThisSpace, UnderlyingData> &other) const noexcept {
-        return std::equal(cbegin(), cend(), implementation::cbegin(other.underlyingData), Equality);
+        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
     }
 
     [[nodiscard]] bool operator!=(const Vector<ThisSpace, UnderlyingData> &other) const noexcept { return !(operator==(other)); }
@@ -206,7 +203,7 @@ template <typename ThisSpace, typename UnderlyingData> class NormalizedVector fi
     StaticAssert::invalid_at_access at() const {
         return StaticAssert::invalid_at_access{};
     }
-
+    
     template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
     StaticAssert::invalid_space operator!=(const Vector<OtherSpace, UnderlyingData> &) const noexcept {
         return StaticAssert::invalid_space{};
@@ -317,7 +314,7 @@ template <typename ThisSpace, typename UnderlyingData> class NormalizedVector fi
             throw std::invalid_argument("Zero-sized normal vectors are not allowed");
         }
 
-        std::transform(cbegin(), cend(), begin(_base::underlyingData), [mag](auto v) { return v / mag; });
+        std::transform(_base::cbegin(), _base::cend(), Begin(_base::underlyingData), [mag](auto v) { return v / mag; });
     }
 };
 } // namespace Space::implementation

@@ -439,7 +439,7 @@ std::transform(
 // p == MySpace::Point(4, 6, 8);
 ```
 
-Non-normalized vectors and points also support non-const access via begin() and end().
+Non-normalized vectors and points also support non-const access via _base::begin() and _base::end().
 
 ## Serialisation
 

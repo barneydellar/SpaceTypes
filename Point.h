@@ -11,33 +11,28 @@ template <typename ThisSpace, typename UnderlyingData> class Point final : publi
     using _base = Base<ThisSpace, UnderlyingData>;
 
   public:
-    Point() noexcept { std::fill(begin(), end(), 0); }
-    explicit Point(const UnderlyingData &v) noexcept { std::copy(implementation::cbegin(v), implementation::cend(v), begin()); }
+    Point() noexcept { std::fill(_base::begin(), _base::end(), 0); }
+    explicit Point(const UnderlyingData &v) noexcept { std::copy(implementation::CBegin(v), implementation::CEnd(v), _base::begin()); }
     Point(const double x, const double y, const double z) noexcept {
-        auto iter = begin();
+        auto iter = _base::begin();
         *iter++ = x;
         *iter++ = y;
         *iter = z;
     }
 
-    [[nodiscard]] double X() const noexcept { return *(cbegin() + 0); }
-    [[nodiscard]] double Y() const noexcept { return *(cbegin() + 1); }
-    [[nodiscard]] double Z() const noexcept { return *(cbegin() + 2); }
+    [[nodiscard]] double X() const noexcept { return *(_base::cbegin() + 0); }
+    [[nodiscard]] double Y() const noexcept { return *(_base::cbegin() + 1); }
+    [[nodiscard]] double Z() const noexcept { return *(_base::cbegin() + 2); }
 
-    void SetX(const double d) noexcept { *(begin() + 0) = d; }
-    void SetY(const double d) noexcept { *(begin() + 1) = d; }
-    void SetZ(const double d) noexcept { *(begin() + 2) = d; }
-
-    [[nodiscard]] double *begin() noexcept { return reinterpret_cast<double *>(&(_base::underlyingData)); }
-    [[nodiscard]] double *end() noexcept { return reinterpret_cast<double *>(&(_base::underlyingData)) + 3; }
-    [[nodiscard]] const double *cbegin() const noexcept { return reinterpret_cast<const double *>(&(_base::underlyingData)); }
-    [[nodiscard]] const double *cend() const noexcept { return reinterpret_cast<const double *>(&(_base::underlyingData)) + 3; }
+    void SetX(const double d) noexcept { *(_base::begin() + 0) = d; }
+    void SetY(const double d) noexcept { *(_base::begin() + 1) = d; }
+    void SetZ(const double d) noexcept { *(_base::begin() + 2) = d; }
 
     [[nodiscard]] double operator[](const unsigned int i) const {
         if (i > 2) {
             throw std::invalid_argument("Index is out of range");
         }
-        return *(cbegin() + i);
+        return *(_base::cbegin() + i);
     }
 
     template <int I> requires ValidFor3dAt<I>
@@ -46,10 +41,10 @@ template <typename ThisSpace, typename UnderlyingData> class Point final : publi
     }
 
     [[nodiscard]] bool operator==(const Point<ThisSpace, UnderlyingData> &other) const noexcept {
-        return std::equal(cbegin(), cend(), implementation::cbegin(other.underlyingData), Equality);
+        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
     }
     [[nodiscard]] bool operator==(const XYPoint<ThisSpace, UnderlyingData> &other) const noexcept {
-        return std::equal(cbegin(), cend(), implementation::cbegin(other.underlyingData), Equality);
+        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
     }
 
     [[nodiscard]] bool operator!=(const Point<ThisSpace, UnderlyingData> &other) const noexcept { return !(operator==(other)); }

@@ -525,12 +525,15 @@ TEST_CASE("Points can have their z-value removed to produce a XYPoint") {
     using required_type = View::XYPoint;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("Points from Spaces that do not support XY cannot have their z-value removed") {
     const Volume::Point p;
     using converted_type = decltype(p.ToXY());
     using required_type = StaticAssert::XYVector_not_supported;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
+#endif
 
 TEST_CASE("Points can be converted from one space to another ignoring translation") {
     const TransformManager tm;

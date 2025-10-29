@@ -74,6 +74,17 @@ TEST_CASE("NormalizedVectors support const begin and end") {
     CHECK(values[2] == 0);
 }
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("NormalizedVectors don't support non-const begin and end") {
+    Image::NormalizedVector v(1, 0, 0);
+    using begin_converted_type = decltype(v.begin());
+    using end_converted_type = decltype(v.end());
+    using required_type = StaticAssert::invalid_normalized_vector_access;
+    CHECK(static_cast<bool>(std::is_same_v<begin_converted_type, required_type>));
+    CHECK(static_cast<bool>(std::is_same_v<end_converted_type, required_type>));
+}
+#endif
+
 TEST_CASE("NormalizedVectors support element access by random access") {
     const Image::NormalizedVector v(1, 0, 0);
     CHECK(v[0] == 1);
@@ -454,6 +465,8 @@ TEST_CASE("NormalizedVectors can have NormalizedXYVectors crossed in place") {
     v *= v2;
     CHECK(v == Image::Vector(0, 0, -1));
 }
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedVectors cannot be crossed in place with non-normalized vectors") {
     View::NormalizedVector v;
     const View::Vector v_v;
@@ -466,7 +479,6 @@ TEST_CASE("NormalizedVectors cannot be crossed in place with non-normalized vect
     CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
 }
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedVectors in different spaces cannot be crossed in place") {
     Image::NormalizedVector v;
     const View::Vector v_v;
@@ -676,12 +688,15 @@ TEST_CASE("NormalizedVectors can have their z-value removed to produce a Normali
     using required_type = View::NormalizedXYVector;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
+
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedVectors from Spaces that do not support XY cannot have their z-value removed") {
     const Volume::NormalizedVector v;
     using converted_type = decltype(v.ToXY());
     using required_type = StaticAssert::XYVector_not_supported;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }
+#endif
 
 TEST_CASE("NormalizedVectors can be converted from one space to another ignoring translation") {
     const TransformManager tm;

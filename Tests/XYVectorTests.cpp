@@ -519,6 +519,7 @@ TEST_CASE("XYVectors can be scaled") {
     CHECK(v == View::Vector(2, 4, 6));
 }
 
+#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYVectors cannot be crossed in place") {
     View::XYVector v;
     const View::Vector v_v;
@@ -537,7 +538,6 @@ TEST_CASE("XYVectors cannot be crossed in place") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
 }
 
-#ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYVectors in different spaces cannot be crossed in place") {
     Image::XYVector v;
     const View::Vector v_v;
