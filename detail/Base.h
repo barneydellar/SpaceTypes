@@ -141,7 +141,7 @@ class Base {
     }
 #endif
 
-  public:
+protected:
     UnderlyingData underlyingData;
 };
 
