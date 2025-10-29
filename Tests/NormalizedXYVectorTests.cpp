@@ -76,7 +76,7 @@ TEST_CASE("NormalizedXYVectors support element access by name") {
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("NormalizedXYVectors do not support Z access") {
-    Image::NormalizedXYVector v(2, 3);
+    const Image::NormalizedXYVector v(2, 3);
     using converted_type = decltype(v.Z());
     using required_type = StaticAssert::invalid_3D_access;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
