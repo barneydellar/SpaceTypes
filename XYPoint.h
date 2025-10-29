@@ -38,6 +38,7 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
     template <int I>
     [[nodiscard]] bool operator!=(const PointLike<ThisSpace, UnderlyingData, I>& other) const noexcept { return !(operator==(other)); }
 
+    // Todo why only xy vectors here?
     auto operator-=(const XYVector<ThisSpace, UnderlyingData>& rhs) noexcept {
         Sub(_base::underlyingData, rhs.underlyingData);
         return *this;
@@ -139,29 +140,13 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
         return StaticAssert::invalid_space{};
     }
 
-    StaticAssert::invalid_point_vector_equality operator==(const Vector<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator==(const NormalizedVector<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator==(const NormalizedXYVector<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator==(const XYVector<ThisSpace, UnderlyingData>&) const noexcept {
+    template <int I, bool B>
+    StaticAssert::invalid_point_vector_equality operator==(const VectorLike<ThisSpace, UnderlyingData, I, B>&) const noexcept {
         return StaticAssert::invalid_point_vector_equality{};
     }
 
-    StaticAssert::invalid_point_vector_equality operator!=(const Vector<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator!=(const NormalizedVector<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator!=(const NormalizedXYVector<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator!=(const XYVector<ThisSpace, UnderlyingData>&) const noexcept {
+    template <int I, bool B>
+    StaticAssert::invalid_point_vector_equality operator!=(const VectorLike<ThisSpace, UnderlyingData, I, B>&) const noexcept {
         return StaticAssert::invalid_point_vector_equality{};
     }
 
@@ -185,8 +170,7 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
     StaticAssert::invalid_vector3_from_xy_point_subtraction operator-=(const Vector<ThisSpace, UnderlyingData>&) noexcept {
         return StaticAssert::invalid_vector3_from_xy_point_subtraction{};
     }
-    StaticAssert::invalid_vector3_from_xy_point_subtraction
-    operator-=(const NormalizedVector<ThisSpace, UnderlyingData>&) noexcept {
+    StaticAssert::invalid_vector3_from_xy_point_subtraction operator-=(const NormalizedVector<ThisSpace, UnderlyingData>&) noexcept {
         return StaticAssert::invalid_vector3_from_xy_point_subtraction{};
     }
 

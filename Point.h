@@ -30,87 +30,34 @@ template <typename ThisSpace, typename UnderlyingData> class Point final : publi
     template <int I>
     [[nodiscard]] bool operator!=(const PointLike<ThisSpace, UnderlyingData, I>& other) const noexcept { return !(operator==(other)); }
 
-    auto operator-=(const Vector<ThisSpace, UnderlyingData>& rhs) noexcept {
-        Sub(_base::underlyingData, rhs.underlyingData);
-        return *this;
-    }
-    auto operator-=(const NormalizedVector<ThisSpace, UnderlyingData>& rhs) noexcept {
-        Sub(_base::underlyingData, rhs.underlyingData);
-        return *this;
-    }
-    auto operator-=(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) noexcept {
-        Sub(_base::underlyingData, rhs.underlyingData);
-        return *this;
-    }
-    auto operator-=(const XYVector<ThisSpace, UnderlyingData>& rhs) noexcept {
+    template <int I, bool B>
+    auto operator-=(const VectorLike<ThisSpace, UnderlyingData, I, B>& rhs) noexcept {
         Sub(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
 
-    [[nodiscard]] auto operator-(const Point<ThisSpace, UnderlyingData>& rhs) const noexcept {
+    template <int I>
+    [[nodiscard]] auto operator-(const PointLike<ThisSpace, UnderlyingData, I>& rhs) const noexcept {
         Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
         Sub(v.underlyingData, rhs.underlyingData);
         return v;
     }
-    [[nodiscard]] auto operator-(const XYPoint<ThisSpace, UnderlyingData>& rhs) const noexcept {
-        Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
-        Sub(v.underlyingData, rhs.underlyingData);
-        return v;
-    }
-    [[nodiscard]] auto operator-(const Vector<ThisSpace, UnderlyingData>& rhs) const noexcept {
-        Point<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
-        Sub(v.underlyingData, rhs.underlyingData);
-        return v;
-    }
-    [[nodiscard]] auto operator-(const NormalizedVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
-        Point<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
-        Sub(v.underlyingData, rhs.underlyingData);
-        return v;
-    }
-    [[nodiscard]] auto operator-(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
-        Point<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
-        Sub(v.underlyingData, rhs.underlyingData);
-        return v;
-    }
-    [[nodiscard]] auto operator-(const XYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
+
+    template <int I, bool B>
+    [[nodiscard]] auto operator-(const VectorLike<ThisSpace, UnderlyingData, I, B>& rhs) const noexcept {
         Point<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
         Sub(v.underlyingData, rhs.underlyingData);
         return v;
     }
 
-    auto operator+=(const Vector<ThisSpace, UnderlyingData>& rhs) noexcept {
-        Add(_base::underlyingData, rhs.underlyingData);
-        return *this;
-    }
-    auto operator+=(const NormalizedVector<ThisSpace, UnderlyingData>& rhs) noexcept {
-        Add(_base::underlyingData, rhs.underlyingData);
-        return *this;
-    }
-    auto operator+=(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) noexcept {
-        Add(_base::underlyingData, rhs.underlyingData);
-        return *this;
-    }
-    auto operator+=(const XYVector<ThisSpace, UnderlyingData>& rhs) noexcept {
+    template <int I, bool B>
+    auto operator+=(const VectorLike<ThisSpace, UnderlyingData, I, B>& rhs) noexcept {
         Add(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
 
-    [[nodiscard]] auto operator+(const Vector<ThisSpace, UnderlyingData>& rhs) const noexcept {
-        Point<ThisSpace, UnderlyingData> p(_base::X(), _base::Y(), _base::Z());
-        Add(p.underlyingData, rhs.underlyingData);
-        return p;
-    }
-    [[nodiscard]] auto operator+(const NormalizedVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
-        Point<ThisSpace, UnderlyingData> p(_base::X(), _base::Y(), _base::Z());
-        Add(p.underlyingData, rhs.underlyingData);
-        return p;
-    }
-    [[nodiscard]] auto operator+(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
-        Point<ThisSpace, UnderlyingData> p(_base::X(), _base::Y(), _base::Z());
-        Add(p.underlyingData, rhs.underlyingData);
-        return p;
-    }
-    [[nodiscard]] auto operator+(const XYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
+    template <int I, bool B>
+    [[nodiscard]] auto operator+(const VectorLike<ThisSpace, UnderlyingData, I, B>& rhs) const noexcept {
         Point<ThisSpace, UnderlyingData> p(_base::X(), _base::Y(), _base::Z());
         Add(p.underlyingData, rhs.underlyingData);
         return p;
@@ -152,29 +99,13 @@ template <typename ThisSpace, typename UnderlyingData> class Point final : publi
         return StaticAssert::invalid_space{};
     }
 
-    StaticAssert::invalid_point_vector_equality operator==(const Vector<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator==(const NormalizedVector<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator==(const NormalizedXYVector<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator==(const XYVector<ThisSpace, UnderlyingData>&) const noexcept {
+    template <int I, bool B>
+    StaticAssert::invalid_point_vector_equality operator==(const VectorLike<ThisSpace, UnderlyingData, I, B>&) const noexcept {
         return StaticAssert::invalid_point_vector_equality{};
     }
 
-    StaticAssert::invalid_point_vector_equality operator!=(const Vector<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator!=(const NormalizedVector<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator!=(const NormalizedXYVector<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator!=(const XYVector<ThisSpace, UnderlyingData>&) const noexcept {
+    template <int I, bool B>
+    StaticAssert::invalid_point_vector_equality operator!=(const VectorLike<ThisSpace, UnderlyingData, I, B>&) const noexcept {
         return StaticAssert::invalid_point_vector_equality{};
     }
 

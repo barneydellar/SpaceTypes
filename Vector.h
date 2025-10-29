@@ -32,77 +32,27 @@ template <typename ThisSpace, typename UnderlyingData> class Vector final : publ
         return !(operator==(other)); 
     }
 
-    auto operator-=(const Vector<ThisSpace, UnderlyingData>& rhs) noexcept {
-        Sub(_base::underlyingData, rhs.underlyingData);
-        return *this;
-    }
-    auto operator-=(const NormalizedVector<ThisSpace, UnderlyingData>& rhs) noexcept {
-        Sub(_base::underlyingData, rhs.underlyingData);
-        return *this;
-    }
-    auto operator-=(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) noexcept {
-        Sub(_base::underlyingData, rhs.underlyingData);
-        return *this;
-    }
-    auto operator-=(const XYVector<ThisSpace, UnderlyingData>& rhs) noexcept {
+    template <int I, bool B>
+    auto operator-=(const VectorLike<ThisSpace, UnderlyingData, I, B>& rhs) noexcept {
         Sub(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
 
-    [[nodiscard]] auto operator-(const Vector<ThisSpace, UnderlyingData>& rhs) const noexcept {
-        Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
-        Sub(v.underlyingData, rhs.underlyingData);
-        return v;
-    }
-    [[nodiscard]] auto operator-(const NormalizedVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
-        Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
-        Sub(v.underlyingData, rhs.underlyingData);
-        return v;
-    }
-    [[nodiscard]] auto operator-(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
-        Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
-        Sub(v.underlyingData, rhs.underlyingData);
-        return v;
-    }
-    [[nodiscard]] auto operator-(const XYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
+    template <int I, bool B>
+    [[nodiscard]] auto operator-(const VectorLike<ThisSpace, UnderlyingData, I, B>& rhs) const noexcept {
         Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
         Sub(v.underlyingData, rhs.underlyingData);
         return v;
     }
 
-    auto operator+=(const Vector<ThisSpace, UnderlyingData>& rhs) noexcept {
-        Add(_base::underlyingData, rhs.underlyingData);
-        return *this;
-    }
-    auto operator+=(const NormalizedVector<ThisSpace, UnderlyingData>& rhs) noexcept {
-        Add(_base::underlyingData, rhs.underlyingData);
-        return *this;
-    }
-    auto operator+=(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) noexcept {
-        Add(_base::underlyingData, rhs.underlyingData);
-        return *this;
-    }
-    auto operator+=(const XYVector<ThisSpace, UnderlyingData>& rhs) noexcept {
+    template <int I, bool B>
+    auto operator+=(const VectorLike<ThisSpace, UnderlyingData, I, B>& rhs) noexcept {
         Add(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
 
-    [[nodiscard]] auto operator+(const Vector<ThisSpace, UnderlyingData>& rhs) const noexcept {
-        Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
-        Add(v.underlyingData, rhs.underlyingData);
-        return v;
-    }
-    [[nodiscard]] auto operator+(const NormalizedVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
-        Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
-        Add(v.underlyingData, rhs.underlyingData);
-        return v;
-    }
-    [[nodiscard]] auto operator+(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
-        Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
-        Add(v.underlyingData, rhs.underlyingData);
-        return v;
-    }
-    [[nodiscard]] auto operator+(const XYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
+    template <int I, bool B>
+    [[nodiscard]] auto operator+(const VectorLike<ThisSpace, UnderlyingData, I, B>& rhs) const noexcept {
         Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
         Add(v.underlyingData, rhs.underlyingData);
         return v;
@@ -113,19 +63,8 @@ template <typename ThisSpace, typename UnderlyingData> class Vector final : publ
         return *this;
     }
 
-    auto operator*=(const Vector<ThisSpace, UnderlyingData>& rhs) noexcept {
-        *this = this->Cross(rhs);
-        return *this;
-    }
-    auto operator*=(const NormalizedVector<ThisSpace, UnderlyingData>& rhs) noexcept {
-        *this = this->Cross(rhs);
-        return *this;
-    }
-    auto operator*=(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) noexcept {
-        *this = this->Cross(rhs);
-        return *this;
-    }
-    auto operator*=(const XYVector<ThisSpace, UnderlyingData>& rhs) noexcept {
+    template <int I, bool B>
+    auto operator*=(const VectorLike<ThisSpace, UnderlyingData, I, B>& rhs) noexcept {
         *this = this->Cross(rhs);
         return *this;
     }
@@ -136,42 +75,17 @@ template <typename ThisSpace, typename UnderlyingData> class Vector final : publ
         return v;
     }
 
-    [[nodiscard]] auto operator*(const Vector<ThisSpace, UnderlyingData>& rhs) const noexcept { return this->Cross(rhs); }
-    [[nodiscard]] auto operator*(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
-        return this->Cross(rhs);
-    }
-    [[nodiscard]] auto operator*(const NormalizedVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
-        return this->Cross(rhs);
-    }
-    [[nodiscard]] auto operator*(const XYVector<ThisSpace, UnderlyingData>& rhs) const noexcept { return this->Cross(rhs); }
+    template <int I, bool B>
+    [[nodiscard]] auto operator*(const VectorLike<ThisSpace, UnderlyingData, I, B>& rhs) const noexcept { return this->Cross(rhs); }
 
-    [[nodiscard]] auto Cross(const Vector<ThisSpace, UnderlyingData>& other) const noexcept {
-        const auto [x, y, z] = Cross_internal(_base::underlyingData, other.underlyingData);
-        return Vector<ThisSpace, UnderlyingData>(x, y, z);
-    }
-    [[nodiscard]] auto Cross(const NormalizedVector<ThisSpace, UnderlyingData>& other) const noexcept {
-        const auto [x, y, z] = Cross_internal(_base::underlyingData, other.underlyingData);
-        return Vector<ThisSpace, UnderlyingData>(x, y, z);
-    }
-    [[nodiscard]] auto Cross(const NormalizedXYVector<ThisSpace, UnderlyingData>& other) const noexcept {
-        const auto [x, y, z] = Cross_internal(_base::underlyingData, other.underlyingData);
-        return Vector<ThisSpace, UnderlyingData>(x, y, z);
-    }
-    [[nodiscard]] auto Cross(const XYVector<ThisSpace, UnderlyingData>& other) const noexcept {
+    template <int I, bool B>
+    [[nodiscard]] auto Cross(const VectorLike<ThisSpace, UnderlyingData, I, B>& other) const noexcept {
         const auto [x, y, z] = Cross_internal(_base::underlyingData, other.underlyingData);
         return Vector<ThisSpace, UnderlyingData>(x, y, z);
     }
 
-    [[nodiscard]] double Dot(const Vector<ThisSpace, UnderlyingData>& other) const noexcept {
-        return implementation::Dot(_base::underlyingData, other.underlyingData);
-    }
-    [[nodiscard]] double Dot(const NormalizedVector<ThisSpace, UnderlyingData>& other) const noexcept {
-        return implementation::Dot(_base::underlyingData, other.underlyingData);
-    }
-    [[nodiscard]] double Dot(const NormalizedXYVector<ThisSpace, UnderlyingData>& other) const noexcept {
-        return implementation::Dot(_base::underlyingData, other.underlyingData);
-    }
-    [[nodiscard]] double Dot(const XYVector<ThisSpace, UnderlyingData>& other) const noexcept {
+    template <int I, bool B>
+    [[nodiscard]] double Dot(const VectorLike<ThisSpace, UnderlyingData, I, B>& other) const noexcept {
         return implementation::Dot(_base::underlyingData, other.underlyingData);
     }
 
