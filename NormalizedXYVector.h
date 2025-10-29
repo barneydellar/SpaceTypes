@@ -105,7 +105,6 @@ class NormalizedXYVector final : public VectorLike<ThisSpace, UnderlyingData, 2,
         return v;
     }
 
-
     [[nodiscard]] auto operator*(const Vector<ThisSpace, UnderlyingData>& rhs) const noexcept { return this->Cross(rhs); }
     [[nodiscard]] auto operator*(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
         return this->Cross(rhs);

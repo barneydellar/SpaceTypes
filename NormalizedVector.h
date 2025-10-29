@@ -170,37 +170,13 @@ class NormalizedVector final : public VectorLike<ThisSpace, UnderlyingData, 3, t
     using _base::Cross;
     using _base::Dot;
 
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator!=(const Vector<OtherSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator!=(const NormalizedVector<OtherSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator!=(const NormalizedXYVector<OtherSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator!=(const XYVector<OtherSpace, UnderlyingData>&) const noexcept {
+    template <typename OtherSpace, int I, bool B> requires DifferentSpaces<OtherSpace, ThisSpace>
+    StaticAssert::invalid_space operator!=(const VectorLike<OtherSpace, UnderlyingData, I, B>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
 
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator==(const Vector<OtherSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator==(const NormalizedVector<OtherSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator==(const NormalizedXYVector<OtherSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator==(const XYVector<OtherSpace, UnderlyingData>&) const noexcept {
+    template <typename OtherSpace, int I, bool B> requires DifferentSpaces<OtherSpace, ThisSpace>
+    StaticAssert::invalid_space operator==(const VectorLike<OtherSpace, UnderlyingData, I, B>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
 
