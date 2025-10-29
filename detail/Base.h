@@ -146,6 +146,9 @@ public:
 };
 
 template <typename ThisSpace, typename UnderlyingData, int Dimensions = 3>
-class PointLike: public Base<ThisSpace, UnderlyingData, Dimensions, false> {
-};
+class PointLike: public Base<ThisSpace, UnderlyingData, Dimensions, false> {};
+
+template <typename ThisSpace, typename UnderlyingData, int Dimensions = 3, bool IsNormalised = false>
+class VectorLike: public Base<ThisSpace, UnderlyingData, Dimensions, IsNormalised> {};
+
 } // namespace Space::implementation

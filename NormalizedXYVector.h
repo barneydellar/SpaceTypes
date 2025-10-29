@@ -3,7 +3,7 @@
 namespace Space::implementation {
 
 template <typename ThisSpace, typename UnderlyingData>
-class NormalizedXYVector final : public Base<ThisSpace, UnderlyingData, 2, true> {
+class NormalizedXYVector final : public VectorLike<ThisSpace, UnderlyingData, 2, true> {
 
     friend class NormalizedVector<ThisSpace, UnderlyingData>;
     friend class Point<ThisSpace, UnderlyingData>;
@@ -47,27 +47,13 @@ class NormalizedXYVector final : public Base<ThisSpace, UnderlyingData, 2, true>
         return NormalizedVector<ThisSpace, UnderlyingData>(_base::X(), _base::Y(), 0);
     }
 
-    [[nodiscard]] bool operator==(const Vector<ThisSpace, UnderlyingData>& other) const noexcept {
-        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
-    }
-    [[nodiscard]] bool operator==(const NormalizedVector<ThisSpace, UnderlyingData>& other) const noexcept {
-        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
-    }
-    [[nodiscard]] bool operator==(const NormalizedXYVector<ThisSpace, UnderlyingData>& other) const noexcept {
-        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
-    }
-    [[nodiscard]] bool operator==(const XYVector<ThisSpace, UnderlyingData>& other) const noexcept {
+    template <int I, bool B>
+    [[nodiscard]] bool operator==(const VectorLike<ThisSpace, UnderlyingData, I, B>& other) const noexcept {
         return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
     }
 
-    [[nodiscard]] bool operator!=(const Vector<ThisSpace, UnderlyingData>& other) const noexcept { return !(operator==(other)); }
-    [[nodiscard]] bool operator!=(const NormalizedVector<ThisSpace, UnderlyingData>& other) const noexcept {
-        return !(operator==(other));
-    }
-    [[nodiscard]] bool operator!=(const NormalizedXYVector<ThisSpace, UnderlyingData>& other) const noexcept {
-        return !(operator==(other));
-    }
-    [[nodiscard]] bool operator!=(const XYVector<ThisSpace, UnderlyingData>& other) const noexcept {
+    template <int I, bool B>
+    [[nodiscard]] bool operator!=(const VectorLike<ThisSpace, UnderlyingData, I, B>& other) const noexcept {
         return !(operator==(other));
     }
 
@@ -180,38 +166,13 @@ class NormalizedXYVector final : public Base<ThisSpace, UnderlyingData, 2, true>
     using _base::ConvertTo;
     using _base::Cross;
     using _base::Dot;
-
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator!=(const Vector<OtherSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator!=(const NormalizedVector<OtherSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator!=(const NormalizedXYVector<OtherSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator!=(const XYVector<OtherSpace, UnderlyingData>&) const noexcept {
+    template <typename OtherSpace, int I, bool B> requires DifferentSpaces<OtherSpace, ThisSpace>
+    StaticAssert::invalid_space operator!=(const VectorLike<OtherSpace, UnderlyingData, I, B>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
 
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator==(const Vector<OtherSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator==(const NormalizedVector<OtherSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator==(const NormalizedXYVector<OtherSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator==(const XYVector<OtherSpace, UnderlyingData>&) const noexcept {
+    template <typename OtherSpace, int I, bool B> requires DifferentSpaces<OtherSpace, ThisSpace>
+    StaticAssert::invalid_space operator==(const VectorLike<OtherSpace, UnderlyingData, I, B>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
 
