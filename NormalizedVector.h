@@ -218,21 +218,25 @@ class NormalizedVector final : public Base<ThisSpace, UnderlyingData, 3, true> {
         return StaticAssert::invalid_space{};
     }
 
-    StaticAssert::invalid_point_vector_equality operator==(const Point<ThisSpace, UnderlyingData>&) const noexcept {
+    template <int I>
+    StaticAssert::invalid_point_vector_equality operator==(const PointLike<ThisSpace, UnderlyingData, I>&) const noexcept {
         return StaticAssert::invalid_point_vector_equality{};
     }
-    StaticAssert::invalid_point_vector_equality operator==(const XYPoint<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator!=(const Point<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator!=(const XYPoint<ThisSpace, UnderlyingData>&) const noexcept {
+    template <int I>
+    StaticAssert::invalid_point_vector_equality operator!=(const PointLike<ThisSpace, UnderlyingData, I>&) const noexcept {
         return StaticAssert::invalid_point_vector_equality{};
     }
 
-    StaticAssert::invalid_point_to_vector_addition operator+(const Point<ThisSpace, UnderlyingData>&) const noexcept {
+    // Todo tests for xypoint
+    template <int I>
+    StaticAssert::invalid_point_to_vector_addition operator+(const PointLike<ThisSpace, UnderlyingData, I>&) const noexcept {
         return StaticAssert::invalid_point_to_vector_addition{};
+    }
+
+    // Todo tests for xypoint
+    template <int I>
+    StaticAssert::invalid_point_from_vector_subtraction operator-(const PointLike<ThisSpace, UnderlyingData, I>&) const noexcept {
+        return StaticAssert::invalid_point_from_vector_subtraction{};
     }
 
     StaticAssert::invalid_normalized_vector_addition operator+=(const Vector<ThisSpace, UnderlyingData>&) const noexcept {
@@ -248,10 +252,6 @@ class NormalizedVector final : public Base<ThisSpace, UnderlyingData, 3, true> {
     }
     StaticAssert::invalid_normalized_vector_addition operator+=(const XYVector<ThisSpace, UnderlyingData>&) const noexcept {
         return StaticAssert::invalid_normalized_vector_addition{};
-    }
-
-    StaticAssert::invalid_point_from_vector_subtraction operator-(const Point<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_from_vector_subtraction{};
     }
 
     StaticAssert::invalid_normalized_vector_subtraction operator-=(const Vector<ThisSpace, UnderlyingData>&) const noexcept {

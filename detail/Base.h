@@ -141,8 +141,11 @@ class Base {
     }
 #endif
 
-protected:
+public:
     UnderlyingData underlyingData;
 };
 
+template <typename ThisSpace, typename UnderlyingData, int Dimensions = 3>
+class PointLike: public Base<ThisSpace, UnderlyingData, Dimensions, false> {
+};
 } // namespace Space::implementation

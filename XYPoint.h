@@ -2,7 +2,7 @@
 
 namespace Space::implementation {
 
-template <typename ThisSpace, typename UnderlyingData> class XYPoint final : public Base<ThisSpace, UnderlyingData, 2> {
+template <typename ThisSpace, typename UnderlyingData> class XYPoint final : public PointLike<ThisSpace, UnderlyingData, 2> {
     friend class NormalizedVector<ThisSpace, UnderlyingData>;
     friend class NormalizedXYVector<ThisSpace, UnderlyingData>;
     friend class Point<ThisSpace, UnderlyingData>;
@@ -30,15 +30,13 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
         return Point<ThisSpace, UnderlyingData>(_base::X(), _base::Y(), 0);
     }
 
-    [[nodiscard]] bool operator==(const Point<ThisSpace, UnderlyingData>& other) const noexcept {
-        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
-    }
-    [[nodiscard]] bool operator==(const XYPoint<ThisSpace, UnderlyingData>& other) const noexcept {
+    template <int I>
+    [[nodiscard]] bool operator==(const PointLike<ThisSpace, UnderlyingData, I>& other) const noexcept {
         return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
     }
 
-    [[nodiscard]] bool operator!=(const Point<ThisSpace, UnderlyingData>& other) const noexcept { return !(operator==(other)); }
-    [[nodiscard]] bool operator!=(const XYPoint<ThisSpace, UnderlyingData>& other) const noexcept { return !(operator==(other)); }
+    template <int I>
+    [[nodiscard]] bool operator!=(const PointLike<ThisSpace, UnderlyingData, I>& other) const noexcept { return !(operator==(other)); }
 
     auto operator-=(const XYVector<ThisSpace, UnderlyingData>& rhs) noexcept {
         Sub(_base::underlyingData, rhs.underlyingData);
@@ -131,21 +129,13 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
     using _base::operator-;
     using _base::ConvertTo;
 
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator!=(const Point<OtherSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator!=(const XYPoint<OtherSpace, UnderlyingData>&) const noexcept {
+    template <typename OtherSpace, int I> requires DifferentSpaces<OtherSpace, ThisSpace>
+    StaticAssert::invalid_space operator!=(const PointLike<OtherSpace, UnderlyingData, I>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
 
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator==(const Point<OtherSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
-    template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator==(const XYPoint<OtherSpace, UnderlyingData>&) const noexcept {
+    template <typename OtherSpace, int I> requires DifferentSpaces<OtherSpace, ThisSpace>
+    StaticAssert::invalid_space operator==(const PointLike<OtherSpace, UnderlyingData, I>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
 
@@ -175,10 +165,8 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
         return StaticAssert::invalid_point_vector_equality{};
     }
 
-    StaticAssert::invalid_point_to_point_addition operator+=(const Point<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_to_point_addition{};
-    }
-    StaticAssert::invalid_point_to_point_addition operator+=(const XYPoint<ThisSpace, UnderlyingData>&) const noexcept {
+    template <int I>
+    StaticAssert::invalid_point_to_point_addition operator+=(const PointLike<ThisSpace, UnderlyingData, I>&) const noexcept {
         return StaticAssert::invalid_point_to_point_addition{};
     }
 
@@ -189,10 +177,8 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
         return StaticAssert::invalid_vector3_to_xy_point_addition{};
     }
 
-    StaticAssert::invalid_point_from_point_subtraction operator-=(const Point<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_from_point_subtraction{};
-    }
-    StaticAssert::invalid_point_from_point_subtraction operator-=(const XYPoint<ThisSpace, UnderlyingData>&) const noexcept {
+    template <int I>
+    StaticAssert::invalid_point_from_point_subtraction operator-=(const PointLike<ThisSpace, UnderlyingData, I>&) const noexcept {
         return StaticAssert::invalid_point_from_point_subtraction{};
     }
 
@@ -204,10 +190,8 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
         return StaticAssert::invalid_vector3_from_xy_point_subtraction{};
     }
 
-    StaticAssert::invalid_point_to_point_addition operator+(const Point<ThisSpace, UnderlyingData>&) const {
-        return StaticAssert::invalid_point_to_point_addition{};
-    }
-    StaticAssert::invalid_point_to_point_addition operator+(const XYPoint<ThisSpace, UnderlyingData>&) const {
+    template <int I>
+    StaticAssert::invalid_point_to_point_addition operator+(const PointLike<ThisSpace, UnderlyingData, I>&) const {
         return StaticAssert::invalid_point_to_point_addition{};
     }
 #endif

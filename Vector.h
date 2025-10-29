@@ -257,24 +257,25 @@ template <typename ThisSpace, typename UnderlyingData> class Vector final : publ
         return StaticAssert::invalid_space{};
     }
 
-    StaticAssert::invalid_point_vector_equality operator==(const Point<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator==(const XYPoint<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator!=(const Point<ThisSpace, UnderlyingData>&) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator!=(const XYPoint<ThisSpace, UnderlyingData>&) const noexcept {
+    template <int I>
+    StaticAssert::invalid_point_vector_equality operator==(const PointLike<ThisSpace, UnderlyingData, I>&) const noexcept {
         return StaticAssert::invalid_point_vector_equality{};
     }
 
-    StaticAssert::invalid_point_from_vector_subtraction operator-(const Point<ThisSpace, UnderlyingData>&) const noexcept {
+    template <int I>
+    StaticAssert::invalid_point_vector_equality operator!=(const PointLike<ThisSpace, UnderlyingData, I>&) const noexcept {
+        return StaticAssert::invalid_point_vector_equality{};
+    }
+
+    // Todo tests for xypoint
+    template <int I>
+    StaticAssert::invalid_point_from_vector_subtraction operator-(const PointLike<ThisSpace, UnderlyingData, I>&) const noexcept {
         return StaticAssert::invalid_point_from_vector_subtraction{};
     }
 
-    StaticAssert::invalid_point_to_vector_addition operator+(const Point<ThisSpace, UnderlyingData>&) const noexcept {
+    // Todo tests for xypoint
+    template <int I>
+    StaticAssert::invalid_point_to_vector_addition operator+(const PointLike<ThisSpace, UnderlyingData, I>&) const noexcept {
         return StaticAssert::invalid_point_to_vector_addition{};
     }
 
