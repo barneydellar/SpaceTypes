@@ -19,16 +19,16 @@ requires(Dimensions == 2 || Dimensions == 3)
 class Base {
   public:
     [[nodiscard]] explicit operator UnderlyingData() const noexcept { return underlyingData; }
-    [[nodiscard]] const double *cbegin() const noexcept { return reinterpret_cast<const double *>(&underlyingData); }
-    [[nodiscard]] const double *cend() const noexcept { return reinterpret_cast<const double *>(&underlyingData) + Dimensions; }
+    [[nodiscard]] const double* cbegin() const noexcept { return reinterpret_cast<const double*>(&underlyingData); }
+    [[nodiscard]] const double* cend() const noexcept { return reinterpret_cast<const double*>(&underlyingData) + Dimensions; }
 
-    [[nodiscard]] double *begin() noexcept requires(IsNormalised == false)
+    [[nodiscard]] double* begin() noexcept requires(IsNormalised == false)
     {
-        return reinterpret_cast<double *>(&underlyingData);
+        return reinterpret_cast<double*>(&underlyingData);
     }
-    [[nodiscard]] double *end() noexcept requires(IsNormalised == false)
+    [[nodiscard]] double* end() noexcept requires(IsNormalised == false)
     {
-        return reinterpret_cast<double *>(&underlyingData) + Dimensions;
+        return reinterpret_cast<double*>(&underlyingData) + Dimensions;
     }
 
     [[nodiscard]] double X() const noexcept { return *(cbegin() + 0); }
@@ -82,39 +82,39 @@ class Base {
     }
 
     template <typename OtherSpace, int I, bool B> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator*(const Base<OtherSpace, UnderlyingData, I, B> &) const noexcept {
+    StaticAssert::invalid_space operator*(const Base<OtherSpace, UnderlyingData, I, B>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
     template <typename OtherSpace, int I, bool B>
-    StaticAssert::invalid_space Cross(const Base<OtherSpace, UnderlyingData, I, B> &) const noexcept {
+    StaticAssert::invalid_space Cross(const Base<OtherSpace, UnderlyingData, I, B>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
     template <typename OtherSpace, int I, bool B> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator*=(const Base<OtherSpace, UnderlyingData, I, B> &) noexcept {
+    StaticAssert::invalid_space operator*=(const Base<OtherSpace, UnderlyingData, I, B>&) noexcept {
         return StaticAssert::invalid_space{};
     }
     template <typename OtherSpace, int I, bool B> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator+(const Base<OtherSpace, UnderlyingData, I, B> &) const noexcept {
+    StaticAssert::invalid_space operator+(const Base<OtherSpace, UnderlyingData, I, B>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
     template <typename OtherSpace, int I, bool B> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator+=(const Base<OtherSpace, UnderlyingData, I, B> &) noexcept {
+    StaticAssert::invalid_space operator+=(const Base<OtherSpace, UnderlyingData, I, B>&) noexcept {
         return StaticAssert::invalid_space{};
     }
     template <typename OtherSpace, int I, bool B> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator-(const Base<OtherSpace, UnderlyingData, I, B> &) const noexcept {
+    StaticAssert::invalid_space operator-(const Base<OtherSpace, UnderlyingData, I, B>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
     template <typename OtherSpace, int I, bool B> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator-=(const Base<OtherSpace, UnderlyingData, I, B> &) noexcept {
+    StaticAssert::invalid_space operator-=(const Base<OtherSpace, UnderlyingData, I, B>&) noexcept {
         return StaticAssert::invalid_space{};
     }
     template <typename OtherSpace, int I, bool B>
-    StaticAssert::invalid_space Dot(const Base<OtherSpace, UnderlyingData, I, B> &) const noexcept {
+    StaticAssert::invalid_space Dot(const Base<OtherSpace, UnderlyingData, I, B>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
     template <SameSpaceAs<ThisSpace> S, typename TransformManager>
-    StaticAssert::invalid_same_space_conversion ConvertTo(const TransformManager &transform_manager) const noexcept {
+    StaticAssert::invalid_same_space_conversion ConvertTo(const TransformManager& transform_manager) const noexcept {
         return StaticAssert::invalid_same_space_conversion{};
     }
 #endif

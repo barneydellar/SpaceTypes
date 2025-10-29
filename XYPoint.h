@@ -12,7 +12,7 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
 
   public:
     XYPoint() noexcept { std::fill(_base::begin(), _base::end(), 0); }
-    explicit XYPoint(const UnderlyingData &v) noexcept {
+    explicit XYPoint(const UnderlyingData& v) noexcept {
         auto iter = _base::begin();
         auto in = implementation::CBegin(v);
         *iter++ = *in++;
@@ -30,96 +30,95 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
         return Point<ThisSpace, UnderlyingData>(_base::X(), _base::Y(), 0);
     }
 
-    [[nodiscard]] bool operator==(const Point<ThisSpace, UnderlyingData> &other) const noexcept {
+    [[nodiscard]] bool operator==(const Point<ThisSpace, UnderlyingData>& other) const noexcept {
         return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
     }
-    [[nodiscard]] bool operator==(const XYPoint<ThisSpace, UnderlyingData> &other) const noexcept {
+    [[nodiscard]] bool operator==(const XYPoint<ThisSpace, UnderlyingData>& other) const noexcept {
         return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
     }
 
-    [[nodiscard]] bool operator!=(const Point<ThisSpace, UnderlyingData> &other) const noexcept { return !(operator==(other)); }
+    [[nodiscard]] bool operator!=(const Point<ThisSpace, UnderlyingData>& other) const noexcept { return !(operator==(other)); }
+    [[nodiscard]] bool operator!=(const XYPoint<ThisSpace, UnderlyingData>& other) const noexcept { return !(operator==(other)); }
 
-    [[nodiscard]] bool operator!=(const XYPoint<ThisSpace, UnderlyingData> &other) const noexcept { return !(operator==(other)); }
-
-    auto operator-=(const XYVector<ThisSpace, UnderlyingData> &rhs) noexcept {
+    auto operator-=(const XYVector<ThisSpace, UnderlyingData>& rhs) noexcept {
         Sub(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
-    auto operator-=(const NormalizedXYVector<ThisSpace, UnderlyingData> &rhs) noexcept {
+    auto operator-=(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) noexcept {
         Sub(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
 
-    [[nodiscard]] auto operator-(const Vector<ThisSpace, UnderlyingData> &rhs) const noexcept {
+    [[nodiscard]] auto operator-(const Vector<ThisSpace, UnderlyingData>& rhs) const noexcept {
         Point<ThisSpace, UnderlyingData> v(static_cast<UnderlyingData>(*this));
         Sub(v.underlyingData, rhs.underlyingData);
         return v;
     }
-    [[nodiscard]] auto operator-(const NormalizedVector<ThisSpace, UnderlyingData> &rhs) const noexcept {
+    [[nodiscard]] auto operator-(const NormalizedVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
         Point<ThisSpace, UnderlyingData> v(static_cast<UnderlyingData>(*this));
         Sub(v.underlyingData, rhs.underlyingData);
         return v;
     }
-    [[nodiscard]] auto operator-(const NormalizedXYVector<ThisSpace, UnderlyingData> &rhs) const noexcept {
+    [[nodiscard]] auto operator-(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
         XYPoint<ThisSpace, UnderlyingData> v(static_cast<UnderlyingData>(*this));
         Sub(v.underlyingData, rhs.underlyingData);
         return v;
     }
-    [[nodiscard]] auto operator-(const XYVector<ThisSpace, UnderlyingData> &rhs) const noexcept {
+    [[nodiscard]] auto operator-(const XYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
         XYPoint<ThisSpace, UnderlyingData> v(static_cast<UnderlyingData>(*this));
         Sub(v.underlyingData, rhs.underlyingData);
         return v;
     }
 
-    [[nodiscard]] auto operator-(const XYPoint<ThisSpace, UnderlyingData> &rhs) const noexcept {
+    [[nodiscard]] auto operator-(const XYPoint<ThisSpace, UnderlyingData>& rhs) const noexcept {
         XYVector<ThisSpace, UnderlyingData> v(static_cast<UnderlyingData>(*this));
         Sub(v.underlyingData, rhs._base::underlyingData);
         return v;
     }
-    [[nodiscard]] auto operator-(const Point<ThisSpace, UnderlyingData> &rhs) const noexcept {
+    [[nodiscard]] auto operator-(const Point<ThisSpace, UnderlyingData>& rhs) const noexcept {
         Vector<ThisSpace, UnderlyingData> v(static_cast<UnderlyingData>(*this));
         Sub(v.underlyingData, rhs.underlyingData);
         return v;
     }
 
-    auto operator+=(const XYVector<ThisSpace, UnderlyingData> &rhs) noexcept {
+    auto operator+=(const XYVector<ThisSpace, UnderlyingData>& rhs) noexcept {
         Add(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
-    auto operator+=(const NormalizedXYVector<ThisSpace, UnderlyingData> &rhs) noexcept {
+    auto operator+=(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) noexcept {
         Add(_base::underlyingData, rhs.underlyingData);
         return *this;
     }
 
-    [[nodiscard]] auto operator+(const Vector<ThisSpace, UnderlyingData> &rhs) const noexcept {
+    [[nodiscard]] auto operator+(const Vector<ThisSpace, UnderlyingData>& rhs) const noexcept {
         Point<ThisSpace, UnderlyingData> v(static_cast<UnderlyingData>(*this));
         Add(v.underlyingData, rhs.underlyingData);
         return v;
     }
-    [[nodiscard]] auto operator+(const NormalizedVector<ThisSpace, UnderlyingData> &rhs) const noexcept {
+    [[nodiscard]] auto operator+(const NormalizedVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
         Point<ThisSpace, UnderlyingData> v(static_cast<UnderlyingData>(*this));
         Add(v.underlyingData, rhs.underlyingData);
         return v;
     }
-    [[nodiscard]] auto operator+(const NormalizedXYVector<ThisSpace, UnderlyingData> &rhs) const noexcept {
+    [[nodiscard]] auto operator+(const NormalizedXYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
         XYPoint<ThisSpace, UnderlyingData> v(static_cast<UnderlyingData>(*this));
         Add(v.underlyingData, rhs.underlyingData);
         return v;
     }
-    [[nodiscard]] auto operator+(const XYVector<ThisSpace, UnderlyingData> &rhs) const noexcept {
+    [[nodiscard]] auto operator+(const XYVector<ThisSpace, UnderlyingData>& rhs) const noexcept {
         XYPoint<ThisSpace, UnderlyingData> v(static_cast<UnderlyingData>(*this));
         Add(v.underlyingData, rhs.underlyingData);
         return v;
     }
 
     template <typename OtherSpace, typename TransformManager> requires DifferentSpaces<OtherSpace, ThisSpace>
-    [[nodiscard]] auto ConvertTo(const TransformManager &transform_manager) const {
+    [[nodiscard]] auto ConvertTo(const TransformManager& transform_manager) const {
         return Point<OtherSpace, UnderlyingData>(
             transform_manager.template TransformPoint<ThisSpace, OtherSpace>(static_cast<UnderlyingData>(*this))
         );
     }
 
-    friend std::ostream &operator<<(std::ostream &os, const XYPoint<ThisSpace, UnderlyingData> &item) {
+    friend std::ostream& operator<<(std::ostream& os, const XYPoint<ThisSpace, UnderlyingData>& item) {
         const auto space = SpaceTypeNameMap<ThisSpace>::name;
         os << space << "::XYPoint (" << item.X() << ", " << item.Y() << ")";
         return os;
@@ -133,82 +132,82 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
     using _base::ConvertTo;
 
     template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator!=(const Point<OtherSpace, UnderlyingData> &) const noexcept {
+    StaticAssert::invalid_space operator!=(const Point<OtherSpace, UnderlyingData>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
     template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator!=(const XYPoint<OtherSpace, UnderlyingData> &) const noexcept {
+    StaticAssert::invalid_space operator!=(const XYPoint<OtherSpace, UnderlyingData>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
 
     template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator==(const Point<OtherSpace, UnderlyingData> &) const noexcept {
+    StaticAssert::invalid_space operator==(const Point<OtherSpace, UnderlyingData>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
     template <typename OtherSpace> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator==(const XYPoint<OtherSpace, UnderlyingData> &) const noexcept {
+    StaticAssert::invalid_space operator==(const XYPoint<OtherSpace, UnderlyingData>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
 
-    StaticAssert::invalid_point_vector_equality operator==(const Vector<ThisSpace, UnderlyingData> &) const noexcept {
+    StaticAssert::invalid_point_vector_equality operator==(const Vector<ThisSpace, UnderlyingData>&) const noexcept {
         return StaticAssert::invalid_point_vector_equality{};
     }
-    StaticAssert::invalid_point_vector_equality operator==(const NormalizedVector<ThisSpace, UnderlyingData> &) const noexcept {
+    StaticAssert::invalid_point_vector_equality operator==(const NormalizedVector<ThisSpace, UnderlyingData>&) const noexcept {
         return StaticAssert::invalid_point_vector_equality{};
     }
-    StaticAssert::invalid_point_vector_equality operator==(const NormalizedXYVector<ThisSpace, UnderlyingData> &) const noexcept {
+    StaticAssert::invalid_point_vector_equality operator==(const NormalizedXYVector<ThisSpace, UnderlyingData>&) const noexcept {
         return StaticAssert::invalid_point_vector_equality{};
     }
-    StaticAssert::invalid_point_vector_equality operator==(const XYVector<ThisSpace, UnderlyingData> &) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-
-    StaticAssert::invalid_point_vector_equality operator!=(const Vector<ThisSpace, UnderlyingData> &) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator!=(const NormalizedVector<ThisSpace, UnderlyingData> &) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator!=(const NormalizedXYVector<ThisSpace, UnderlyingData> &) const noexcept {
-        return StaticAssert::invalid_point_vector_equality{};
-    }
-    StaticAssert::invalid_point_vector_equality operator!=(const XYVector<ThisSpace, UnderlyingData> &) const noexcept {
+    StaticAssert::invalid_point_vector_equality operator==(const XYVector<ThisSpace, UnderlyingData>&) const noexcept {
         return StaticAssert::invalid_point_vector_equality{};
     }
 
-    StaticAssert::invalid_point_to_point_addition operator+=(const Point<ThisSpace, UnderlyingData> &) const noexcept {
+    StaticAssert::invalid_point_vector_equality operator!=(const Vector<ThisSpace, UnderlyingData>&) const noexcept {
+        return StaticAssert::invalid_point_vector_equality{};
+    }
+    StaticAssert::invalid_point_vector_equality operator!=(const NormalizedVector<ThisSpace, UnderlyingData>&) const noexcept {
+        return StaticAssert::invalid_point_vector_equality{};
+    }
+    StaticAssert::invalid_point_vector_equality operator!=(const NormalizedXYVector<ThisSpace, UnderlyingData>&) const noexcept {
+        return StaticAssert::invalid_point_vector_equality{};
+    }
+    StaticAssert::invalid_point_vector_equality operator!=(const XYVector<ThisSpace, UnderlyingData>&) const noexcept {
+        return StaticAssert::invalid_point_vector_equality{};
+    }
+
+    StaticAssert::invalid_point_to_point_addition operator+=(const Point<ThisSpace, UnderlyingData>&) const noexcept {
         return StaticAssert::invalid_point_to_point_addition{};
     }
-    StaticAssert::invalid_point_to_point_addition operator+=(const XYPoint<ThisSpace, UnderlyingData> &) const noexcept {
+    StaticAssert::invalid_point_to_point_addition operator+=(const XYPoint<ThisSpace, UnderlyingData>&) const noexcept {
         return StaticAssert::invalid_point_to_point_addition{};
     }
 
-    StaticAssert::invalid_vector3_to_xy_point_addition operator+=(const Vector<ThisSpace, UnderlyingData> &) noexcept {
+    StaticAssert::invalid_vector3_to_xy_point_addition operator+=(const Vector<ThisSpace, UnderlyingData>&) noexcept {
         return StaticAssert::invalid_vector3_to_xy_point_addition{};
     }
-    StaticAssert::invalid_vector3_to_xy_point_addition operator+=(const NormalizedVector<ThisSpace, UnderlyingData> &) noexcept {
+    StaticAssert::invalid_vector3_to_xy_point_addition operator+=(const NormalizedVector<ThisSpace, UnderlyingData>&) noexcept {
         return StaticAssert::invalid_vector3_to_xy_point_addition{};
     }
 
-    StaticAssert::invalid_point_from_point_subtraction operator-=(const Point<ThisSpace, UnderlyingData> &) const noexcept {
+    StaticAssert::invalid_point_from_point_subtraction operator-=(const Point<ThisSpace, UnderlyingData>&) const noexcept {
         return StaticAssert::invalid_point_from_point_subtraction{};
     }
-    StaticAssert::invalid_point_from_point_subtraction operator-=(const XYPoint<ThisSpace, UnderlyingData> &) const noexcept {
+    StaticAssert::invalid_point_from_point_subtraction operator-=(const XYPoint<ThisSpace, UnderlyingData>&) const noexcept {
         return StaticAssert::invalid_point_from_point_subtraction{};
     }
 
-    StaticAssert::invalid_vector3_from_xy_point_subtraction operator-=(const Vector<ThisSpace, UnderlyingData> &) noexcept {
+    StaticAssert::invalid_vector3_from_xy_point_subtraction operator-=(const Vector<ThisSpace, UnderlyingData>&) noexcept {
         return StaticAssert::invalid_vector3_from_xy_point_subtraction{};
     }
     StaticAssert::invalid_vector3_from_xy_point_subtraction
-    operator-=(const NormalizedVector<ThisSpace, UnderlyingData> &) noexcept {
+    operator-=(const NormalizedVector<ThisSpace, UnderlyingData>&) noexcept {
         return StaticAssert::invalid_vector3_from_xy_point_subtraction{};
     }
 
-    StaticAssert::invalid_point_to_point_addition operator+(const Point<ThisSpace, UnderlyingData> &) const {
+    StaticAssert::invalid_point_to_point_addition operator+(const Point<ThisSpace, UnderlyingData>&) const {
         return StaticAssert::invalid_point_to_point_addition{};
     }
-    StaticAssert::invalid_point_to_point_addition operator+(const XYPoint<ThisSpace, UnderlyingData> &) const {
+    StaticAssert::invalid_point_to_point_addition operator+(const XYPoint<ThisSpace, UnderlyingData>&) const {
         return StaticAssert::invalid_point_to_point_addition{};
     }
 #endif
