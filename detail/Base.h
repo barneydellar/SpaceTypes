@@ -19,47 +19,28 @@ enum class BaseType { XYVector, XYPoint, Vector, Point, NormalizedVector, Normal
 static constexpr bool IsXY(BaseType BT) {
     return BT == BaseType::XYVector || BT == BaseType::XYPoint || BT == BaseType::NormalizedXYVector;
 }
-static constexpr bool Is3D(BaseType BT) {
-    return !IsXY(BT);
-}
-static constexpr bool IsPoint(BaseType BT) {
-    return BT == BaseType::Point || BT == BaseType::XYPoint;
-}
-static constexpr bool IsVector(BaseType BT) {
-    return !IsPoint(BT);
-}
-static constexpr bool IsNormalized(BaseType BT) {
-    return BT == BaseType::NormalizedVector || BT == BaseType::NormalizedXYVector;
-}
-static constexpr bool IsNotNormalized(BaseType BT) {
-    return !IsNormalized(BT);
-}
-static constexpr int Dimensions(BaseType BT) {
-    return IsXY(BT) ? 2 : 3;
-}
+static constexpr bool Is3D(BaseType BT) { return !IsXY(BT); }
+static constexpr bool IsPoint(BaseType BT) { return BT == BaseType::Point || BT == BaseType::XYPoint; }
+static constexpr bool IsVector(BaseType BT) { return !IsPoint(BT); }
+static constexpr bool IsNormalized(BaseType BT) { return BT == BaseType::NormalizedVector || BT == BaseType::NormalizedXYVector; }
+static constexpr bool IsNotNormalized(BaseType BT) { return !IsNormalized(BT); }
+static constexpr int Dimensions(BaseType BT) { return IsXY(BT) ? 2 : 3; }
 
-template <typename ThisSpace, typename UnderlyingData, BaseType BT>
-class Base {
-    
+template <typename ThisSpace, typename UnderlyingData, BaseType BT> class Base {
+
   public:
-
-  
-    template<typename S, typename U, BaseType B>
-    friend const U& UnderlyingDataFrom(const Base<S, U, B>& a);
-
-    template<typename S, typename U, BaseType B>
-    friend U& UnderlyingDataFrom(Base<S, U, B>& a);
-
     [[nodiscard]] explicit operator UnderlyingData() const noexcept { return underlyingData; }
     [[nodiscard]] const double* cbegin() const noexcept { return reinterpret_cast<const double*>(&underlyingData); }
-    [[nodiscard]] const double* cend() const noexcept { return reinterpret_cast<const double*>(&underlyingData) + Dimensions(BT); }
+    [[nodiscard]] const double* cend() const noexcept {
+        return reinterpret_cast<const double*>(&underlyingData) + Dimensions(BT);
+    }
 
     [[nodiscard]] double* begin() noexcept requires(IsNotNormalized(BT))
     {
         return reinterpret_cast<double*>(&underlyingData);
     }
     [[nodiscard]] double* end() noexcept requires(IsNotNormalized(BT))
-    {   
+    {
         return reinterpret_cast<double*>(&underlyingData) + Dimensions(BT);
     }
 
@@ -173,16 +154,15 @@ class Base {
     }
 #endif
 
-protected:
-    UnderlyingData underlyingData;
-};    
-template<typename S, typename U, BaseType B>
-const U& UnderlyingDataFrom(const Base<S, U, B>& a) {
-    return a.underlyingData;
-}
+  protected:
+    template <typename S, typename U, BaseType B> friend const U& UnderlyingDataFrom(const Base<S, U, B>& a);
 
-template<typename S, typename U, BaseType B>
-U& UnderlyingDataFrom(Base<S, U, B>& a) {
-    return a.underlyingData;
-}
+    template <typename S, typename U, BaseType B> friend U& UnderlyingDataFrom(Base<S, U, B>& a);
+
+    UnderlyingData underlyingData;
+};
+
+template <typename S, typename U, BaseType B> const U& UnderlyingDataFrom(const Base<S, U, B>& a) { return a.underlyingData; }
+
+template <typename S, typename U, BaseType B> U& UnderlyingDataFrom(Base<S, U, B>& a) { return a.underlyingData; }
 } // namespace Space::implementation

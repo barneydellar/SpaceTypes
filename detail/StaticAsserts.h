@@ -107,7 +107,9 @@ struct invalid_random_access final {
 };
 
 struct invalid_3D_access final {
-    template <typename T = void> invalid_3D_access() { static_assert(false, "You can't access Z values of 2D pointes or vectors."); }
+    template <typename T = void> invalid_3D_access() {
+        static_assert(false, "You can't access Z values of 2D pointes or vectors.");
+    }
 };
 
 struct invalid_at_access final {

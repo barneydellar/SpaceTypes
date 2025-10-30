@@ -2,11 +2,11 @@
 
 namespace Space::implementation {
 
-template <typename ThisSpace, typename UnderlyingData> class XYPoint final : public Base<ThisSpace, UnderlyingData, BaseType::XYPoint> {
+template <typename ThisSpace, typename UnderlyingData>
+class XYPoint final : public Base<ThisSpace, UnderlyingData, BaseType::XYPoint> {
     using _base = Base<ThisSpace, UnderlyingData, BaseType::XYPoint>;
 
   public:
-
     XYPoint() noexcept { std::fill(_base::begin(), _base::end(), 0); }
     explicit XYPoint(const UnderlyingData& v) noexcept {
         auto iter = _base::begin();
@@ -26,28 +26,30 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
         return Point<ThisSpace, UnderlyingData>(_base::X(), _base::Y(), 0);
     }
 
-    template <BaseType BT> requires (IsPoint(BT))
+    template <BaseType BT> requires(IsPoint(BT))
     [[nodiscard]] bool operator==(const Base<ThisSpace, UnderlyingData, BT>& other) const noexcept {
         return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(UnderlyingDataFrom(other)), Equality);
     }
 
-    template <BaseType BT> requires (IsPoint(BT))
-    [[nodiscard]] bool operator!=(const Base<ThisSpace, UnderlyingData, BT>& other) const noexcept { return !(operator==(other)); }
+    template <BaseType BT> requires(IsPoint(BT))
+    [[nodiscard]] bool operator!=(const Base<ThisSpace, UnderlyingData, BT>& other) const noexcept {
+        return !(operator==(other));
+    }
 
     // Todo why only xy vectors here?
-    template <BaseType BT> requires (IsVector(BT) && IsXY(BT))
+    template <BaseType BT> requires(IsVector(BT) && IsXY(BT))
     auto operator-=(const Base<ThisSpace, UnderlyingData, BT>& rhs) noexcept {
         Sub(_base::underlyingData, UnderlyingDataFrom(rhs));
         return *this;
     }
 
-    template <BaseType BT> requires (IsVector(BT) && Is3D(BT))
+    template <BaseType BT> requires(IsVector(BT) && Is3D(BT))
     [[nodiscard]] auto operator-(const Base<ThisSpace, UnderlyingData, BT>& rhs) const noexcept {
         Point<ThisSpace, UnderlyingData> v(static_cast<UnderlyingData>(*this));
         Sub(UnderlyingDataFrom(v), UnderlyingDataFrom(rhs));
         return v;
     }
-    template <BaseType BT> requires (IsVector(BT) && IsXY(BT))
+    template <BaseType BT> requires(IsVector(BT) && IsXY(BT))
     [[nodiscard]] auto operator-(const Base<ThisSpace, UnderlyingData, BT>& rhs) const noexcept {
         XYPoint<ThisSpace, UnderlyingData> v(static_cast<UnderlyingData>(*this));
         Sub(UnderlyingDataFrom(v), UnderlyingDataFrom(rhs));
@@ -65,19 +67,19 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
         return v;
     }
 
-    template <BaseType BT> requires (IsVector(BT) && IsXY(BT))
+    template <BaseType BT> requires(IsVector(BT) && IsXY(BT))
     auto operator+=(const Base<ThisSpace, UnderlyingData, BT>& rhs) noexcept {
         Add(_base::underlyingData, UnderlyingDataFrom(rhs));
         return *this;
     }
 
-    template <BaseType BT> requires (IsVector(BT) && Is3D(BT))
+    template <BaseType BT> requires(IsVector(BT) && Is3D(BT))
     [[nodiscard]] auto operator+(const Base<ThisSpace, UnderlyingData, BT>& rhs) const noexcept {
         Point<ThisSpace, UnderlyingData> v(static_cast<UnderlyingData>(*this));
         Add(UnderlyingDataFrom(v), UnderlyingDataFrom(rhs));
         return v;
     }
-    template <BaseType BT> requires (IsVector(BT) && IsXY(BT))
+    template <BaseType BT> requires(IsVector(BT) && IsXY(BT))
     [[nodiscard]] auto operator+(const Base<ThisSpace, UnderlyingData, BT>& rhs) const noexcept {
         XYPoint<ThisSpace, UnderlyingData> v(static_cast<UnderlyingData>(*this));
         Add(UnderlyingDataFrom(v), UnderlyingDataFrom(rhs));
@@ -104,48 +106,48 @@ template <typename ThisSpace, typename UnderlyingData> class XYPoint final : pub
     using _base::operator-;
     using _base::ConvertTo;
 
-    template <typename OtherSpace, BaseType BT> requires (DifferentSpaces<OtherSpace, ThisSpace> && IsPoint(BT))
+    template <typename OtherSpace, BaseType BT> requires(DifferentSpaces<OtherSpace, ThisSpace> && IsPoint(BT))
     StaticAssert::invalid_space operator!=(const Base<OtherSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
-    template <typename OtherSpace, BaseType BT> requires (DifferentSpaces<OtherSpace, ThisSpace> && IsPoint(BT))
+    template <typename OtherSpace, BaseType BT> requires(DifferentSpaces<OtherSpace, ThisSpace> && IsPoint(BT))
     StaticAssert::invalid_space operator==(const Base<OtherSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
-    
-    template <BaseType BT> requires (IsVector(BT))
+
+    template <BaseType BT> requires(IsVector(BT))
     StaticAssert::invalid_point_vector_equality operator==(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_point_vector_equality{};
     }
 
-    template <BaseType BT> requires (IsVector(BT))
+    template <BaseType BT> requires(IsVector(BT))
     StaticAssert::invalid_point_vector_equality operator!=(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_point_vector_equality{};
     }
 
-    template <BaseType BT> requires (IsPoint(BT))
+    template <BaseType BT> requires(IsPoint(BT))
     StaticAssert::invalid_point_to_point_addition operator+=(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_point_to_point_addition{};
     }
 
-    // Todo operator + 
+    // Todo operator +
 
-    template <BaseType BT> requires (IsVector(BT) && Is3D(BT))
+    template <BaseType BT> requires(IsVector(BT) && Is3D(BT))
     StaticAssert::invalid_vector3_to_xy_point_addition operator+=(const Base<ThisSpace, UnderlyingData, BT>&) noexcept {
         return StaticAssert::invalid_vector3_to_xy_point_addition{};
     }
 
-    template <BaseType BT> requires (IsPoint(BT))
+    template <BaseType BT> requires(IsPoint(BT))
     StaticAssert::invalid_point_from_point_subtraction operator-=(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_point_from_point_subtraction{};
     }
 
-    template <BaseType BT> requires (IsVector(BT) && Is3D(BT))
+    template <BaseType BT> requires(IsVector(BT) && Is3D(BT))
     StaticAssert::invalid_vector3_from_xy_point_subtraction operator-=(const Base<ThisSpace, UnderlyingData, BT>&) noexcept {
         return StaticAssert::invalid_vector3_from_xy_point_subtraction{};
     }
 
-    template <BaseType BT> requires (IsPoint(BT))
+    template <BaseType BT> requires(IsPoint(BT))
     StaticAssert::invalid_point_to_point_addition operator+(const Base<ThisSpace, UnderlyingData, BT>&) const {
         return StaticAssert::invalid_point_to_point_addition{};
     }

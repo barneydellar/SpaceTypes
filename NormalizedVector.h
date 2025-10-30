@@ -29,24 +29,24 @@ class NormalizedVector final : public Base<ThisSpace, UnderlyingData, BaseType::
         return Vector<ThisSpace, UnderlyingData>(_base::X(), _base::Y(), _base::Z());
     }
 
-    template <BaseType BT> requires (IsVector(BT))
+    template <BaseType BT> requires(IsVector(BT))
     [[nodiscard]] bool operator==(const Base<ThisSpace, UnderlyingData, BT>& other) const noexcept {
         return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(UnderlyingDataFrom(other)), Equality);
     }
 
-    template <BaseType BT> requires (IsVector(BT))
+    template <BaseType BT> requires(IsVector(BT))
     [[nodiscard]] bool operator!=(const Base<ThisSpace, UnderlyingData, BT>& other) const noexcept {
         return !(operator==(other));
     }
 
-    template <BaseType BT> requires (IsVector(BT))
+    template <BaseType BT> requires(IsVector(BT))
     [[nodiscard]] auto operator-(const Base<ThisSpace, UnderlyingData, BT>& rhs) const noexcept {
         Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
         Sub(UnderlyingDataFrom(v), UnderlyingDataFrom(rhs));
         return v;
     }
 
-    template <BaseType BT> requires (IsVector(BT))
+    template <BaseType BT> requires(IsVector(BT))
     [[nodiscard]] auto operator+(const Base<ThisSpace, UnderlyingData, BT>& rhs) const noexcept {
         Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
         Add(UnderlyingDataFrom(v), UnderlyingDataFrom(rhs));
@@ -59,28 +59,30 @@ class NormalizedVector final : public Base<ThisSpace, UnderlyingData, BaseType::
         return v;
     }
 
-    template <BaseType BT> requires (IsVector(BT) && IsNormalized(BT))
+    template <BaseType BT> requires(IsVector(BT) && IsNormalized(BT))
     auto operator*=(const Base<ThisSpace, UnderlyingData, BT>& rhs) noexcept {
         *this = this->Cross(rhs);
         return *this;
     }
 
-    template <BaseType BT> requires (IsVector(BT))
-    [[nodiscard]] auto operator*(const Base<ThisSpace, UnderlyingData, BT>& rhs) const noexcept { return this->Cross(rhs); }
+    template <BaseType BT> requires(IsVector(BT))
+    [[nodiscard]] auto operator*(const Base<ThisSpace, UnderlyingData, BT>& rhs) const noexcept {
+        return this->Cross(rhs);
+    }
 
-    template <BaseType BT> requires (IsVector(BT) && IsNotNormalized(BT))
+    template <BaseType BT> requires(IsVector(BT) && IsNotNormalized(BT))
     [[nodiscard]] auto Cross(const Base<ThisSpace, UnderlyingData, BT>& other) const noexcept {
         const auto [x, y, z] = Cross_internal(_base::underlyingData, UnderlyingDataFrom(other));
         return Vector<ThisSpace, UnderlyingData>(x, y, z);
     }
 
-    template <BaseType BT> requires (IsVector(BT) && IsNormalized(BT))
+    template <BaseType BT> requires(IsVector(BT) && IsNormalized(BT))
     [[nodiscard]] auto Cross(const Base<ThisSpace, UnderlyingData, BT>& other) const noexcept {
         const auto [x, y, z] = Cross_internal(_base::underlyingData, UnderlyingDataFrom(other));
         return NormalizedVector<ThisSpace, UnderlyingData>(x, y, z);
     }
 
-    template <BaseType BT> requires (IsVector(BT))
+    template <BaseType BT> requires(IsVector(BT))
     [[nodiscard]] double Dot(const Base<ThisSpace, UnderlyingData, BT>& other) const noexcept {
         return implementation::Dot(_base::underlyingData, UnderlyingDataFrom(other));
     }
@@ -113,42 +115,42 @@ class NormalizedVector final : public Base<ThisSpace, UnderlyingData, BaseType::
     using _base::Cross;
     using _base::Dot;
 
-    template <typename OtherSpace, BaseType BT> requires (DifferentSpaces<OtherSpace, ThisSpace> && IsVector(BT))
+    template <typename OtherSpace, BaseType BT> requires(DifferentSpaces<OtherSpace, ThisSpace> && IsVector(BT))
     StaticAssert::invalid_space operator!=(const Base<OtherSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
-    template <typename OtherSpace, BaseType BT> requires (DifferentSpaces<OtherSpace, ThisSpace> && IsVector(BT))
+    template <typename OtherSpace, BaseType BT> requires(DifferentSpaces<OtherSpace, ThisSpace> && IsVector(BT))
     StaticAssert::invalid_space operator==(const Base<OtherSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
 
-    template <BaseType BT> requires (IsPoint(BT))
+    template <BaseType BT> requires(IsPoint(BT))
     StaticAssert::invalid_point_vector_equality operator==(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_point_vector_equality{};
     }
-    template <BaseType BT> requires (IsPoint(BT))
+    template <BaseType BT> requires(IsPoint(BT))
     StaticAssert::invalid_point_vector_equality operator!=(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_point_vector_equality{};
     }
 
     // Todo tests for xypoint
-    template <BaseType BT> requires (IsPoint(BT))
+    template <BaseType BT> requires(IsPoint(BT))
     StaticAssert::invalid_point_to_vector_addition operator+(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_point_to_vector_addition{};
     }
 
     // Todo tests for xypoint
-    template <BaseType BT> requires (IsPoint(BT))
+    template <BaseType BT> requires(IsPoint(BT))
     StaticAssert::invalid_point_from_vector_subtraction operator-(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_point_from_vector_subtraction{};
     }
 
-    template <BaseType BT> requires (IsVector(BT))
+    template <BaseType BT> requires(IsVector(BT))
     StaticAssert::invalid_normalized_vector_addition operator+=(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_normalized_vector_addition{};
     }
 
-    template <BaseType BT> requires (IsVector(BT))
+    template <BaseType BT> requires(IsVector(BT))
     StaticAssert::invalid_normalized_vector_subtraction operator-=(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_normalized_vector_subtraction{};
     }
@@ -157,7 +159,7 @@ class NormalizedVector final : public Base<ThisSpace, UnderlyingData, BaseType::
         return StaticAssert::invalid_normalized_vector_scale{};
     }
 
-    template <BaseType BT> requires (IsVector(BT) && IsNotNormalized(BT))
+    template <BaseType BT> requires(IsVector(BT) && IsNotNormalized(BT))
     StaticAssert::invalid_normalized_vector_in_place_cross operator*=(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_normalized_vector_in_place_cross{};
     }

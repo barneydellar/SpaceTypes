@@ -263,7 +263,7 @@ TEST_CASE("XYVectors from different spaces cannot be compared using inequality")
     const Image::Vector v_v;
     const Image::NormalizedVector v_n;
     const Image::NormalizedXYVector v_n_xy;
-     const Image::XYVector v_xy;
+    const Image::XYVector v_xy;
 
     using converted_type_1 = decltype(v != v_v);
     using converted_type_2 = decltype(v != v_n);
