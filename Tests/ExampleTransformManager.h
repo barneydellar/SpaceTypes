@@ -4,13 +4,12 @@
 
 class TransformManager final {
   public:
-
     void SetDataPointValues(double x, double y, double z) noexcept {
         dataPointValues[0] = x;
         dataPointValues[1] = y;
         dataPointValues[2] = z;
     }
-    
+
     template <typename From, typename To> [[nodiscard]] TestVector TransformPoint(TestVector) const noexcept {
         using namespace Space;
         if (From::id == SpaceIDs::View) {
@@ -50,7 +49,8 @@ class TransformManager final {
             return t;
         }
     }
-private:
+
+  private:
     std::array<double, 3> dataPointValues{0, 0, 0};
     std::array<double, 3> dataVectorValues{0, 0, 0};
 };
