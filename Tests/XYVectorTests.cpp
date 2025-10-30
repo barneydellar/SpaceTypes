@@ -263,7 +263,7 @@ TEST_CASE("XYVectors from different spaces cannot be compared using inequality")
     const Image::Vector v_v;
     const Image::NormalizedVector v_n;
     const Image::NormalizedXYVector v_n_xy;
-    const Image::XYVector v_xy;
+     const Image::XYVector v_xy;
 
     using converted_type_1 = decltype(v != v_v);
     using converted_type_2 = decltype(v != v_n);
@@ -749,7 +749,6 @@ TEST_CASE("XYVectors from different spaces cannot be dotted") {
     CHECK(static_cast<bool>(std::is_same_v<converted_type_3, required_type>));
     CHECK(static_cast<bool>(std::is_same_v<converted_type_4, required_type>));
 }
-
 #endif
 
 TEST_CASE("XYVectors can be normalized") {
@@ -777,6 +776,7 @@ TEST_CASE("XYVectors can be converted from one space to another ignoring transla
     const TransformManager tm;
     const View::XYVector v_view(1, 0);
     auto v_patient = v_view.ConvertTo<Data>(tm);
+    // TODO make these magic numbers explicit
     CHECK(v_patient == Data::Vector(15, 16, 17));
 }
 TEST_CASE("XYVectors can be converted from one space to another to produce a Vector") {

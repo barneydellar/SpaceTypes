@@ -2,15 +2,12 @@
 
 namespace Space::implementation {
 
-template <typename ThisSpace, typename UnderlyingData> class Vector final : public VectorLike<ThisSpace, UnderlyingData> {
-    friend class NormalizedVector<ThisSpace, UnderlyingData>;
-    friend class NormalizedXYVector<ThisSpace, UnderlyingData>;
-    friend class Point<ThisSpace, UnderlyingData>;
-    friend class XYPoint<ThisSpace, UnderlyingData>;
-    friend class XYVector<ThisSpace, UnderlyingData>;
-    using _base = Base<ThisSpace, UnderlyingData>;
+template <typename ThisSpace, typename UnderlyingData> class Vector final : public Base<ThisSpace, UnderlyingData, BaseType::Vector> {
+
+    using _base = Base<ThisSpace, UnderlyingData, BaseType::Vector>;
 
   public:
+
     Vector() noexcept { std::fill(_base::begin(), _base::end(), 0); }
     explicit Vector(const UnderlyingData& v) noexcept {
         std::copy(implementation::CBegin(v), implementation::CEnd(v), _base::begin());
@@ -22,39 +19,39 @@ template <typename ThisSpace, typename UnderlyingData> class Vector final : publ
         *iter = z;
     }
 
-    template <int I, bool B>
-    [[nodiscard]] bool operator==(const VectorLike<ThisSpace, UnderlyingData, I, B>& other) const noexcept {
-        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(other.underlyingData), Equality);
+    template <BaseType BT> requires (IsVector(BT))
+    [[nodiscard]] bool operator==(const Base<ThisSpace, UnderlyingData, BT>& other) const noexcept {
+        return std::equal(_base::cbegin(), _base::cend(), implementation::CBegin(UnderlyingDataFrom(other)), Equality);
     }
 
-    template <int I, bool B>
-    [[nodiscard]] bool operator!=(const VectorLike<ThisSpace, UnderlyingData, I, B>& other) const noexcept { 
+    template <BaseType BT> requires (IsVector(BT))
+    [[nodiscard]] bool operator!=(const Base<ThisSpace, UnderlyingData, BT>& other) const noexcept { 
         return !(operator==(other)); 
     }
 
-    template <int I, bool B>
-    auto operator-=(const VectorLike<ThisSpace, UnderlyingData, I, B>& rhs) noexcept {
-        Sub(_base::underlyingData, rhs.underlyingData);
+    template <BaseType BT> requires (IsVector(BT))
+    auto operator-=(const Base<ThisSpace, UnderlyingData, BT>& rhs) noexcept {
+        Sub(_base::underlyingData, UnderlyingDataFrom(rhs));
         return *this;
     }
 
-    template <int I, bool B>
-    [[nodiscard]] auto operator-(const VectorLike<ThisSpace, UnderlyingData, I, B>& rhs) const noexcept {
+    template <BaseType BT> requires (IsVector(BT))
+    [[nodiscard]] auto operator-(const Base<ThisSpace, UnderlyingData, BT>& rhs) const noexcept {
         Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
-        Sub(v.underlyingData, rhs.underlyingData);
+        Sub(UnderlyingDataFrom(v), UnderlyingDataFrom(rhs));
         return v;
     }
 
-    template <int I, bool B>
-    auto operator+=(const VectorLike<ThisSpace, UnderlyingData, I, B>& rhs) noexcept {
-        Add(_base::underlyingData, rhs.underlyingData);
+    template <BaseType BT> requires (IsVector(BT))
+    auto operator+=(const Base<ThisSpace, UnderlyingData, BT>& rhs) noexcept {
+        Add(_base::underlyingData, UnderlyingDataFrom(rhs));
         return *this;
     }
-
-    template <int I, bool B>
-    [[nodiscard]] auto operator+(const VectorLike<ThisSpace, UnderlyingData, I, B>& rhs) const noexcept {
+    
+    template <BaseType BT> requires (IsVector(BT))
+    [[nodiscard]] auto operator+(const Base<ThisSpace, UnderlyingData, BT>& rhs) const noexcept {
         Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
-        Add(v.underlyingData, rhs.underlyingData);
+        Add(UnderlyingDataFrom(v), UnderlyingDataFrom(rhs));
         return v;
     }
 
@@ -63,30 +60,30 @@ template <typename ThisSpace, typename UnderlyingData> class Vector final : publ
         return *this;
     }
 
-    template <int I, bool B>
-    auto operator*=(const VectorLike<ThisSpace, UnderlyingData, I, B>& rhs) noexcept {
+    template <BaseType BT> requires (IsVector(BT))
+    auto operator*=(const Base<ThisSpace, UnderlyingData, BT>& rhs) noexcept {
         *this = this->Cross(rhs);
         return *this;
     }
 
     [[nodiscard]] auto operator*(const double& d) const noexcept {
         Vector<ThisSpace, UnderlyingData> v(_base::X(), _base::Y(), _base::Z());
-        Scale(v.underlyingData, d);
+        Scale(UnderlyingDataFrom(v), d);
         return v;
     }
 
-    template <int I, bool B>
-    [[nodiscard]] auto operator*(const VectorLike<ThisSpace, UnderlyingData, I, B>& rhs) const noexcept { return this->Cross(rhs); }
+    template <BaseType BT> requires (IsVector(BT))
+    [[nodiscard]] auto operator*(const Base<ThisSpace, UnderlyingData, BT>& rhs) const noexcept { return this->Cross(rhs); }
 
-    template <int I, bool B>
-    [[nodiscard]] auto Cross(const VectorLike<ThisSpace, UnderlyingData, I, B>& other) const noexcept {
-        const auto [x, y, z] = Cross_internal(_base::underlyingData, other.underlyingData);
+    template <BaseType BT> requires (IsVector(BT))
+    [[nodiscard]] auto Cross(const Base<ThisSpace, UnderlyingData, BT>& other) const noexcept {
+        const auto [x, y, z] = Cross_internal(_base::underlyingData, UnderlyingDataFrom(other));
         return Vector<ThisSpace, UnderlyingData>(x, y, z);
     }
 
-    template <int I, bool B>
-    [[nodiscard]] double Dot(const VectorLike<ThisSpace, UnderlyingData, I, B>& other) const noexcept {
-        return implementation::Dot(_base::underlyingData, other.underlyingData);
+    template <BaseType BT> requires (IsVector(BT))
+    [[nodiscard]] double Dot(const Base<ThisSpace, UnderlyingData, BT>& other) const noexcept {
+        return implementation::Dot(_base::underlyingData, UnderlyingDataFrom(other));
     }
 
     [[nodiscard]] auto ToXY() const requires ThisSpace::supportsXY
@@ -112,6 +109,7 @@ template <typename ThisSpace, typename UnderlyingData> class Vector final : publ
         os << space << "::Vector (" << item.X() << ", " << item.Y() << ", " << item.Z() << ")";
         return os;
     }
+
 #ifndef IGNORE_SPACE_STATIC_ASSERT
     using _base::operator-=;
     using _base::operator-;
@@ -123,35 +121,35 @@ template <typename ThisSpace, typename UnderlyingData> class Vector final : publ
     using _base::Cross;
     using _base::Dot;
 
-    template <typename OtherSpace, int I, bool B> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator!=(const VectorLike<OtherSpace, UnderlyingData, I, B>&) const noexcept {
+    template <typename OtherSpace, BaseType BT> requires (DifferentSpaces<OtherSpace, ThisSpace> && IsVector(BT))
+    StaticAssert::invalid_space operator==(const Base<OtherSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
 
-    template <typename OtherSpace, int I, bool B> requires DifferentSpaces<OtherSpace, ThisSpace>
-    StaticAssert::invalid_space operator==(const VectorLike<OtherSpace, UnderlyingData, I, B>&) const noexcept {
+    template <typename OtherSpace, BaseType BT> requires (DifferentSpaces<OtherSpace, ThisSpace> && IsVector(BT))
+    StaticAssert::invalid_space operator!=(const Base<OtherSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
 
-    template <int I>
-    StaticAssert::invalid_point_vector_equality operator==(const PointLike<ThisSpace, UnderlyingData, I>&) const noexcept {
+    template <BaseType BT> requires (IsPoint(BT))
+    StaticAssert::invalid_point_vector_equality operator==(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_point_vector_equality{};
     }
 
-    template <int I>
-    StaticAssert::invalid_point_vector_equality operator!=(const PointLike<ThisSpace, UnderlyingData, I>&) const noexcept {
+    template <BaseType BT> requires (IsPoint(BT))
+    StaticAssert::invalid_point_vector_equality operator!=(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_point_vector_equality{};
     }
 
     // Todo tests for xypoint
-    template <int I>
-    StaticAssert::invalid_point_from_vector_subtraction operator-(const PointLike<ThisSpace, UnderlyingData, I>&) const noexcept {
+    template <BaseType BT> requires (IsPoint(BT))
+    StaticAssert::invalid_point_from_vector_subtraction operator-(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_point_from_vector_subtraction{};
     }
 
     // Todo tests for xypoint
-    template <int I>
-    StaticAssert::invalid_point_to_vector_addition operator+(const PointLike<ThisSpace, UnderlyingData, I>&) const noexcept {
+    template <BaseType BT> requires (IsPoint(BT))
+    StaticAssert::invalid_point_to_vector_addition operator+(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_point_to_vector_addition{};
     }
 

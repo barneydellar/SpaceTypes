@@ -8,7 +8,7 @@ set(SOURCES
     NormalizedXYVectorTests.cpp
     PointTests.cpp
     VectorTests.cpp
-    XYPointTests.cpp
+    XYPointTests.cpp 
     XYVectorTests.cpp
 )
 
