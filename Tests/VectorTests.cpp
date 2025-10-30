@@ -190,7 +190,7 @@ TEST_CASE("Vectors from different spaces cannot be compared using equal") {
 TEST_CASE("Vectors and Points cannot be compared using equal") {
     const View::Vector v;
     const View::Point p;
-    const View::Point p_xy;
+    const View::XYPoint p_xy;
 
     using converted_type_1 = decltype(v == p);
     using converted_type_2 = decltype(v == p_xy);
@@ -264,7 +264,7 @@ TEST_CASE("Vectors from different spaces cannot be compared using inequality") {
 TEST_CASE("Vectors and Points cannot be compared using inequality") {
     const View::Vector v;
     const View::Point p;
-    const View::Point p_xy;
+    const View::XYPoint p_xy;
 
     using converted_type_1 = decltype(v != p);
     using converted_type_2 = decltype(v != p_xy);
@@ -383,7 +383,7 @@ TEST_CASE("Vectors in different spaces cannot be subtracted") {
 TEST_CASE("Vectors cannot have points subtracted") {
     const View::Vector v;
     const View::Point p;
-    const View::Point p_xy;
+    const View::XYPoint p_xy;
 
     using converted_type_1 = decltype(v - p);
     using converted_type_2 = decltype(v - p_xy);
@@ -502,7 +502,7 @@ TEST_CASE("Vectors in different spaces cannot be added") {
 TEST_CASE("Vectors cannot have points added") {
     const View::Vector v;
     const View::Point p;
-    const View::Point p_xy;
+    const View::XYPoint p_xy;
 
     using converted_type_1 = decltype(v + p);
     using converted_type_2 = decltype(v + p_xy);
@@ -775,7 +775,8 @@ TEST_CASE("Zero size vectors throw the correct message when you try and normalis
 }
 
 TEST_CASE("Vectors can be converted from one space to another ignoring translation") {
-    const TransformManager tm;
+    TransformManager tm;
+    tm.SetDataVectorValues(15, 16, 17);
     const View::Vector v_view(1, 0, 0);
     auto v_patient = v_view.ConvertTo<Data>(tm);
     CHECK(v_patient == Data::Vector(15, 16, 17));

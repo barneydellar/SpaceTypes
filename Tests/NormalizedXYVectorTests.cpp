@@ -221,7 +221,7 @@ TEST_CASE("NormalizedXYVectors from different spaces cannot be compared using eq
 TEST_CASE("NormalizedXYVector and Points cannot be compared using equal") {
     const View::NormalizedXYVector v;
     const View::Point p;
-    const View::Point p_xy;
+    const View::XYPoint p_xy;
 
     using converted_type_1 = decltype(v == p);
     using converted_type_2 = decltype(v == p_xy);
@@ -295,7 +295,7 @@ TEST_CASE("NormalizedXYVectors from different spaces cannot be compared using in
 TEST_CASE("NormalizedXYVectors and Points cannot be compared using inequality") {
     const View::NormalizedXYVector v;
     const View::Point p;
-    const View::Point p_xy;
+    const View::XYPoint p_xy;
 
     using converted_type_1 = decltype(v != p);
     using converted_type_2 = decltype(v != p_xy);
@@ -392,7 +392,7 @@ TEST_CASE("NormalizedXYVectors in different spaces cannot be subtracted") {
 TEST_CASE("NormalizedXYVectors cannot have points subtracted") {
     const View::NormalizedXYVector v;
     const View::Point p;
-    const View::Point p_xy;
+    const View::XYPoint p_xy;
 
     using converted_type_1 = decltype(v - p);
     using converted_type_2 = decltype(v - p_xy);
@@ -489,7 +489,7 @@ TEST_CASE("NormalizedXYVectors in different spaces cannot be added") {
 TEST_CASE("NormalizedXYVectors cannot have points added") {
     const View::NormalizedXYVector v;
     const View::Point p;
-    const View::Point p_xy;
+    const View::XYPoint p_xy;
 
     using converted_type_1 = decltype(v + p);
     using converted_type_2 = decltype(v + p_xy);
@@ -718,7 +718,8 @@ TEST_CASE("NormalizedXYVectors from different spaces cannot be dotted") {
 #endif
 
 TEST_CASE("NormalizedXYVectors can be converted from one space to another ignoring translation") {
-    const TransformManager tm;
+    TransformManager tm;
+    tm.SetDataVectorValues(15, 16, 17);
     const View::NormalizedXYVector v_view(1, 0);
     auto v_patient = v_view.ConvertTo<Data>(tm);
     CHECK(v_patient == Data::Vector(15, 16, 17));

@@ -36,7 +36,6 @@ class XYPoint final : public Base<ThisSpace, UnderlyingData, BaseType::XYPoint> 
         return !(operator==(other));
     }
 
-    // Todo why only xy vectors here?
     template <BaseType BT> requires(IsVector(BT) && IsXY(BT))
     auto operator-=(const Base<ThisSpace, UnderlyingData, BT>& rhs) noexcept {
         Sub(_base::underlyingData, UnderlyingDataFrom(rhs));
@@ -130,7 +129,10 @@ class XYPoint final : public Base<ThisSpace, UnderlyingData, BaseType::XYPoint> 
         return StaticAssert::invalid_point_to_point_addition{};
     }
 
-    // Todo operator +
+    template <BaseType BT> requires(IsPoint(BT))
+    StaticAssert::invalid_point_to_point_addition operator+(const Base<ThisSpace, UnderlyingData, BT>&) const {
+        return StaticAssert::invalid_point_to_point_addition{};
+    }
 
     template <BaseType BT> requires(IsVector(BT) && Is3D(BT))
     StaticAssert::invalid_vector3_to_xy_point_addition operator+=(const Base<ThisSpace, UnderlyingData, BT>&) noexcept {
@@ -145,11 +147,6 @@ class XYPoint final : public Base<ThisSpace, UnderlyingData, BaseType::XYPoint> 
     template <BaseType BT> requires(IsVector(BT) && Is3D(BT))
     StaticAssert::invalid_vector3_from_xy_point_subtraction operator-=(const Base<ThisSpace, UnderlyingData, BT>&) noexcept {
         return StaticAssert::invalid_vector3_from_xy_point_subtraction{};
-    }
-
-    template <BaseType BT> requires(IsPoint(BT))
-    StaticAssert::invalid_point_to_point_addition operator+(const Base<ThisSpace, UnderlyingData, BT>&) const {
-        return StaticAssert::invalid_point_to_point_addition{};
     }
 #endif
     // Hide functions from intellisense

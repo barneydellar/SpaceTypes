@@ -133,13 +133,11 @@ class NormalizedVector final : public Base<ThisSpace, UnderlyingData, BaseType::
         return StaticAssert::invalid_point_vector_equality{};
     }
 
-    // Todo tests for xypoint
     template <BaseType BT> requires(IsPoint(BT))
     StaticAssert::invalid_point_to_vector_addition operator+(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_point_to_vector_addition{};
     }
 
-    // Todo tests for xypoint
     template <BaseType BT> requires(IsPoint(BT))
     StaticAssert::invalid_point_from_vector_subtraction operator-(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
         return StaticAssert::invalid_point_from_vector_subtraction{};

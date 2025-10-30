@@ -205,7 +205,7 @@ TEST_CASE("XYVectors from different spaces cannot be compared using equal") {
 TEST_CASE("XYVectors and Points cannot be compared using equal") {
     const View::XYVector v;
     const View::Point p;
-    const View::Point p_xy;
+    const View::XYPoint p_xy;
 
     using converted_type_1 = decltype(v == p);
     using converted_type_2 = decltype(v == p_xy);
@@ -279,7 +279,7 @@ TEST_CASE("XYVectors from different spaces cannot be compared using inequality")
 TEST_CASE("XYVectors and Points cannot be compared using inequality") {
     const View::XYVector v;
     const View::Point p;
-    const View::Point p_xy;
+    const View::XYPoint p_xy;
 
     using converted_type_1 = decltype(v != p);
     using converted_type_2 = decltype(v != p_xy);
@@ -403,7 +403,7 @@ TEST_CASE("XYVectors in different spaces cannot be subtracted") {
 TEST_CASE("XYVectors cannot have points subtracted") {
     const View::XYVector v;
     const View::Point p;
-    const View::Point p_xy;
+    const View::XYPoint p_xy;
 
     using converted_type_1 = decltype(v - p);
     using converted_type_2 = decltype(v - p_xy);
@@ -528,7 +528,7 @@ TEST_CASE("XYVectors in different spaces cannot be added") {
 TEST_CASE("XYVectors cannot have points added") {
     const View::XYVector v;
     const View::Point p;
-    const View::Point p_xy;
+    const View::XYPoint p_xy;
 
     using converted_type_1 = decltype(v + p);
     using converted_type_2 = decltype(v + p_xy);
@@ -773,10 +773,10 @@ TEST_CASE("Zero size XYVectors throw the correct message when you try and normal
 }
 
 TEST_CASE("XYVectors can be converted from one space to another ignoring translation") {
-    const TransformManager tm;
+    TransformManager tm;
+    tm.SetDataVectorValues(15, 16, 17);
     const View::XYVector v_view(1, 0);
     auto v_patient = v_view.ConvertTo<Data>(tm);
-    // TODO make these magic numbers explicit
     CHECK(v_patient == Data::Vector(15, 16, 17));
 }
 TEST_CASE("XYVectors can be converted from one space to another to produce a Vector") {
