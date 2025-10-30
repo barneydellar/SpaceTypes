@@ -116,6 +116,16 @@ template <typename ThisSpace, typename UnderlyingData, BaseType BT> class Base {
         return StaticAssert::invalid_normalized_vector_modification{};
     }
 
+    template <typename OtherSpace, BaseType OtherBaseType> requires(DifferentSpaces<OtherSpace, ThisSpace>)
+    StaticAssert::invalid_space operator!=(const Base<OtherSpace, UnderlyingData, OtherBaseType>&) const noexcept {
+        return StaticAssert::invalid_space{};
+    }
+
+    template <typename OtherSpace, BaseType OtherBaseType> requires(DifferentSpaces<OtherSpace, ThisSpace>)
+    StaticAssert::invalid_space operator==(const Base<OtherSpace, UnderlyingData, OtherBaseType>&) const noexcept {
+        return StaticAssert::invalid_space{};
+    }
+
     template <typename OtherSpace, BaseType OtherBaseType> requires DifferentSpaces<OtherSpace, ThisSpace>
     StaticAssert::invalid_space operator*(const Base<OtherSpace, UnderlyingData, OtherBaseType>&) const noexcept {
         return StaticAssert::invalid_space{};

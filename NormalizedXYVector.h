@@ -119,6 +119,9 @@ class NormalizedXYVector final : public Base<ThisSpace, UnderlyingData, BaseType
         return os;
     }
 #ifndef IGNORE_SPACE_STATIC_ASSERT
+
+    using _base::operator==;
+    using _base::operator!=;
     using _base::operator-=;
     using _base::operator-;
     using _base::operator+=;
@@ -128,16 +131,6 @@ class NormalizedXYVector final : public Base<ThisSpace, UnderlyingData, BaseType
     using _base::ConvertTo;
     using _base::Cross;
     using _base::Dot;
-
-    template <typename OtherSpace, BaseType BT> requires(DifferentSpaces<OtherSpace, ThisSpace> && IsVector(BT))
-    StaticAssert::invalid_space operator!=(const Base<OtherSpace, UnderlyingData, BT>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
-
-    template <typename OtherSpace, BaseType BT> requires(DifferentSpaces<OtherSpace, ThisSpace> && IsVector(BT))
-    StaticAssert::invalid_space operator==(const Base<OtherSpace, UnderlyingData, BT>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
 
     template <BaseType BT> requires(IsPoint(BT))
     StaticAssert::invalid_point_vector_equality operator==(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {

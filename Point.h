@@ -8,9 +8,11 @@ class Point final : public Base<ThisSpace, UnderlyingData, BaseType::Point> {
 
   public:
     Point() noexcept { std::fill(_base::begin(), _base::end(), 0); }
+
     explicit Point(const UnderlyingData& v) noexcept {
         std::copy(implementation::CBegin(v), implementation::CEnd(v), _base::begin());
     }
+
     Point(const double x, const double y, const double z) noexcept {
         auto iter = _base::begin();
         *iter++ = x;
@@ -81,21 +83,13 @@ class Point final : public Base<ThisSpace, UnderlyingData, BaseType::Point> {
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 
+    using _base::operator==;
+    using _base::operator!=;
     using _base::operator+=;
     using _base::operator-;
     using _base::operator+;
     using _base::operator-=;
     using _base::ConvertTo;
-
-    template <typename OtherSpace, BaseType BT> requires(DifferentSpaces<OtherSpace, ThisSpace> && IsPoint(BT))
-    StaticAssert::invalid_space operator!=(const Base<OtherSpace, UnderlyingData, BT>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
-
-    template <typename OtherSpace, BaseType BT> requires(DifferentSpaces<OtherSpace, ThisSpace> && IsPoint(BT))
-    StaticAssert::invalid_space operator==(const Base<OtherSpace, UnderlyingData, BT>&) const noexcept {
-        return StaticAssert::invalid_space{};
-    }
 
     template <BaseType BT> requires(IsVector(BT))
     StaticAssert::invalid_point_vector_equality operator==(const Base<ThisSpace, UnderlyingData, BT>&) const noexcept {
