@@ -63,7 +63,7 @@ class Point final : public Base<ThisSpace, UnderlyingData, BaseType::Point> {
         return p;
     }
 
-    template <typename OtherSpace, typename TransformManager> requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <DifferentSpaceTo<ThisSpace> OtherSpace, typename TransformManager>
     [[nodiscard]] auto ConvertTo(const TransformManager& transform_manager) const {
         return Point<OtherSpace, UnderlyingData>(
             transform_manager.template TransformPoint<ThisSpace, OtherSpace>(static_cast<UnderlyingData>(*this))

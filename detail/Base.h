@@ -5,14 +5,11 @@ namespace Space::implementation {
 template <typename SpaceA, typename SpaceB>
 concept SameSpaceAs = std::is_same_v<SpaceA, SpaceB>;
 
-template <int I>
-concept ValidFor3dAt = (I >= 0 && I <= 2);
-
-template <int I>
-concept ValidFor2dAt = (I >= 0 && I <= 1);
-
 template <typename SpaceA, typename SpaceB>
-concept DifferentSpaces = !std::is_same_v<SpaceA, SpaceB>;
+concept DifferentSpaceTo = !std::is_same_v<SpaceA, SpaceB>;
+
+static constexpr bool ValidForDimensions(int I, int D) { return I >= 0 && I < D; }
+static constexpr bool InvalidForDimensions(int I, int D) { return !ValidForDimensions(I, D); }
 
 enum class BaseType { XYVector, XYPoint, Vector, Point, NormalizedVector, NormalizedXYVector };
 
@@ -72,14 +69,14 @@ template <typename ThisSpace, typename UnderlyingData, BaseType BT> class Base {
         return *(cbegin() + i);
     }
 
-    template <int I> requires(I >= 0 && I < Dimensions(BT))
+    template <int I> requires(ValidForDimensions(I, Dimensions(BT)))
     [[nodiscard]] double at() const {
         return operator[](I);
     }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 
-    template <int I> requires(I < 0 || I >= Dimensions(BT))
+    template <int I> requires(InvalidForDimensions(I, Dimensions(BT)))
     StaticAssert::invalid_at_access at() const {
         return StaticAssert::invalid_at_access{};
     }
@@ -116,45 +113,45 @@ template <typename ThisSpace, typename UnderlyingData, BaseType BT> class Base {
         return StaticAssert::invalid_normalized_vector_modification{};
     }
 
-    template <typename OtherSpace, BaseType OtherBaseType> requires(DifferentSpaces<OtherSpace, ThisSpace>)
+    template <DifferentSpaceTo<ThisSpace> OtherSpace, BaseType OtherBaseType>
     StaticAssert::invalid_space operator!=(const Base<OtherSpace, UnderlyingData, OtherBaseType>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
 
-    template <typename OtherSpace, BaseType OtherBaseType> requires(DifferentSpaces<OtherSpace, ThisSpace>)
+    template <DifferentSpaceTo<ThisSpace> OtherSpace, BaseType OtherBaseType>
     StaticAssert::invalid_space operator==(const Base<OtherSpace, UnderlyingData, OtherBaseType>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
 
-    template <typename OtherSpace, BaseType OtherBaseType> requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <DifferentSpaceTo<ThisSpace> OtherSpace, BaseType OtherBaseType>
     StaticAssert::invalid_space operator*(const Base<OtherSpace, UnderlyingData, OtherBaseType>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
-    template <typename OtherSpace, BaseType OtherBaseType>
+    template <DifferentSpaceTo<ThisSpace> OtherSpace, BaseType OtherBaseType>
     StaticAssert::invalid_space Cross(const Base<OtherSpace, UnderlyingData, OtherBaseType>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
-    template <typename OtherSpace, BaseType OtherBaseType> requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <DifferentSpaceTo<ThisSpace> OtherSpace, BaseType OtherBaseType>
     StaticAssert::invalid_space operator*=(const Base<OtherSpace, UnderlyingData, OtherBaseType>&) noexcept {
         return StaticAssert::invalid_space{};
     }
-    template <typename OtherSpace, BaseType OtherBaseType> requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <DifferentSpaceTo<ThisSpace> OtherSpace, BaseType OtherBaseType>
     StaticAssert::invalid_space operator+(const Base<OtherSpace, UnderlyingData, OtherBaseType>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
-    template <typename OtherSpace, BaseType OtherBaseType> requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <DifferentSpaceTo<ThisSpace> OtherSpace, BaseType OtherBaseType>
     StaticAssert::invalid_space operator+=(const Base<OtherSpace, UnderlyingData, OtherBaseType>&) noexcept {
         return StaticAssert::invalid_space{};
     }
-    template <typename OtherSpace, BaseType OtherBaseType> requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <DifferentSpaceTo<ThisSpace> OtherSpace, BaseType OtherBaseType>
     StaticAssert::invalid_space operator-(const Base<OtherSpace, UnderlyingData, OtherBaseType>&) const noexcept {
         return StaticAssert::invalid_space{};
     }
-    template <typename OtherSpace, BaseType OtherBaseType> requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <DifferentSpaceTo<ThisSpace> OtherSpace, BaseType OtherBaseType>
     StaticAssert::invalid_space operator-=(const Base<OtherSpace, UnderlyingData, OtherBaseType>&) noexcept {
         return StaticAssert::invalid_space{};
     }
-    template <typename OtherSpace, BaseType OtherBaseType>
+    template <DifferentSpaceTo<ThisSpace> OtherSpace, BaseType OtherBaseType>
     StaticAssert::invalid_space Dot(const Base<OtherSpace, UnderlyingData, OtherBaseType>&) const noexcept {
         return StaticAssert::invalid_space{};
     }

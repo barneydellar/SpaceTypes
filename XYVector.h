@@ -105,7 +105,7 @@ class XYVector final : public Base<ThisSpace, UnderlyingData, BaseType::XYVector
 
     [[nodiscard]] auto Norm() const { return NormalizedXYVector<ThisSpace, UnderlyingData>(_base::X(), _base::Y()); }
 
-    template <typename OtherSpace, typename TransformManager> requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <DifferentSpaceTo<ThisSpace> OtherSpace, typename TransformManager>
     [[nodiscard]] auto ConvertTo(const TransformManager& transform_manager) const noexcept {
         return Vector<OtherSpace, UnderlyingData>(
             transform_manager.template TransformVector<ThisSpace, OtherSpace>(static_cast<UnderlyingData>(*this))

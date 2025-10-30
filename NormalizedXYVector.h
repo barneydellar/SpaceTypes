@@ -106,7 +106,7 @@ class NormalizedXYVector final : public Base<ThisSpace, UnderlyingData, BaseType
         return implementation::Dot(_base::underlyingData, UnderlyingDataFrom(other));
     }
 
-    template <typename OtherSpace, typename TransformManager> requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <DifferentSpaceTo<ThisSpace> OtherSpace, typename TransformManager>
     [[nodiscard]] auto ConvertTo(const TransformManager& transform_manager) const noexcept {
         return Vector<OtherSpace, UnderlyingData>(
             transform_manager.template TransformVector<ThisSpace, OtherSpace>(static_cast<UnderlyingData>(*this))

@@ -95,7 +95,7 @@ class Vector final : public Base<ThisSpace, UnderlyingData, BaseType::Vector> {
 
     [[nodiscard]] auto Norm() const { return NormalizedVector<ThisSpace, UnderlyingData>(_base::X(), _base::Y(), _base::Z()); }
 
-    template <typename OtherSpace, typename TransformManager> requires DifferentSpaces<OtherSpace, ThisSpace>
+    template <DifferentSpaceTo<ThisSpace> OtherSpace, typename TransformManager>
     [[nodiscard]] auto ConvertTo(const TransformManager& transform_manager) const noexcept {
         return Vector<OtherSpace, UnderlyingData>(
             transform_manager.template TransformVector<ThisSpace, OtherSpace>(static_cast<UnderlyingData>(*this))
