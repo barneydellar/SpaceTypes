@@ -402,7 +402,16 @@ The data from a point or vector can be accessed using square brackets. The only 
 
 ```cpp
 const MySpace::Vector v(1, 2, 3);
-// v[0] == 1;
+if (v[0] == 1) {
+    //...
+}
+```
+
+The same syntax can be used to modify non-const non-normalized points or vectors:
+
+```cpp
+MySpace::Vector v;
+v[0] = 3;
 ```
 
 #### Named Element Modification
@@ -420,7 +429,9 @@ The data from a point or vector can be accessed using the X(), Y() or Z() functi
 
 ```cpp
 const MySpace::Vector v(1, 2, 3);
-// v.Y() == 2;
+if (v.Y() == 2) {
+    //...
+}
 ```
 
 ### At Access
@@ -429,7 +440,17 @@ The data from a point or vector can be accessed using at(). The only valid indic
 
 ```cpp
 const MySpace::Vector v(1, 2, 3);
-//v.at<2>() == 3;
+if (v.at<2>() == 3) {
+    //...
+}
+```
+
+The same syntax can be used to modify non-const non-normalized points or vectors:
+
+```cpp
+MySpace::Vector v;
+v.at<2>() = 3;
+// v[2] == 3;
 ```
 
 ### Iteration
