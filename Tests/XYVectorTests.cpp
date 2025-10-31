@@ -119,13 +119,27 @@ TEST_CASE("XYVectors throw with the right message if random access is too high")
     const Image::XYVector v;
     CHECK_THROWS_WITH(v[2], "Index is out of range");
 }
+TEST_CASE("Non-const XYVectors can be modified using random access") {
+    Image::XYVector v;
+    v[0] = 5;
+    v[1] = 6;
+    CHECK(v[0] == 5);
+    CHECK(v[1] == 6);
+}
+TEST_CASE("Non-const XYVectors throw if random access is too high") {
+    Image::XYVector v;
+    CHECK_THROWS_AS(v[2], std::invalid_argument);
+}
+TEST_CASE("Non-const XYVectors throw with the right message if random access is too high") {
+    Image::XYVector v;
+    CHECK_THROWS_WITH(v[2], "Index is out of range");
+}
 
 TEST_CASE("XYVectors support element access by at") {
     const Image::XYVector v(2, 3);
     CHECK(v.at<0>() == 2);
     CHECK(v.at<1>() == 3);
 }
-
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 TEST_CASE("XYVectors at does not compile if too low") {
     const Image::XYVector v;
@@ -135,6 +149,28 @@ TEST_CASE("XYVectors at does not compile if too low") {
 }
 TEST_CASE("XYVectors at does not compile if too high") {
     const Image::XYVector v;
+    using converted_type = decltype(v.at<2>());
+    using required_type = StaticAssert::invalid_at_access;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+#endif
+
+TEST_CASE("Non-const XYVectors support element modification by at") {
+    Image::XYVector v;
+    v.at<0>() = 5;
+    v.at<1>() = 6;
+    CHECK(v.at<0>() == 5);
+    CHECK(v.at<1>() == 6);
+}
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("Non-const XYVectors at does not compile if too low") {
+    Image::XYVector v;
+    using converted_type = decltype(v.at<-1>());
+    using required_type = StaticAssert::invalid_at_access;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+TEST_CASE("Non-const XYVectors at does not compile if too high") {
+    Image::XYVector v;
     using converted_type = decltype(v.at<2>());
     using required_type = StaticAssert::invalid_at_access;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));

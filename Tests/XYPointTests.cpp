@@ -119,6 +119,22 @@ TEST_CASE("XYPoints throw with the right message if random access is too high") 
     CHECK_THROWS_WITH(p[2], "Index is out of range");
 }
 
+TEST_CASE("Non-const XYPoints can be modified using random access") {
+    Image::XYPoint p;
+    p[0] = 5;
+    p[1] = 6;
+    CHECK(p[0] == 5);
+    CHECK(p[1] == 6);
+}
+TEST_CASE("Non-const XYPoints throw if random access is too high") {
+    Image::XYPoint p;
+    CHECK_THROWS_AS(p[2], std::invalid_argument);
+}
+TEST_CASE("Non-const XYPoints throw with the right message if random access is too high") {
+    Image::XYPoint p;
+    CHECK_THROWS_WITH(p[2], "Index is out of range");
+}
+
 TEST_CASE("XYPoints support element access by at") {
     const Image::XYPoint p(2, 3);
     CHECK(p.at<0>() == 2);
@@ -134,6 +150,28 @@ TEST_CASE("XYPoints at does not compile if too low") {
 TEST_CASE("XYPoints at does not compile if too high") {
     const Image::XYPoint p;
     using converted_type = decltype(p.at<3>());
+    using required_type = StaticAssert::invalid_at_access;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+#endif
+
+TEST_CASE("Non-const XYPoints support element modification by at") {
+    Image::XYPoint p;
+    p.at<0>() = 5;
+    p.at<1>() = 6;
+    CHECK(p.at<0>() == 5);
+    CHECK(p.at<1>() == 6);
+}
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("Non-const XYPoints at does not compile if too low") {
+    Image::XYPoint p;
+    using converted_type = decltype(p.at<-1>());
+    using required_type = StaticAssert::invalid_at_access;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+TEST_CASE("Non-const XYPoints at does not compile if too high") {
+    Image::XYPoint p;
+    using converted_type = decltype(p.at<2>());
     using required_type = StaticAssert::invalid_at_access;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
 }

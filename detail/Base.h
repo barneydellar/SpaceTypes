@@ -69,8 +69,20 @@ template <typename ThisSpace, typename UnderlyingData, BaseType BT> class Base {
         return *(cbegin() + i);
     }
 
+    [[nodiscard]] double& operator[](const unsigned int i) requires(IsNotNormalized(BT)) {
+        if (i >= Dimensions(BT)) {
+            throw std::invalid_argument("Index is out of range");
+        }
+        return *(reinterpret_cast<double*>(&underlyingData) + i);
+    }
+
     template <int I> requires(ValidForDimensions(I, Dimensions(BT)))
     [[nodiscard]] double at() const {
+        return operator[](I);
+    }
+
+    template <int I> requires(ValidForDimensions(I, Dimensions(BT)) && IsNotNormalized(BT))
+    [[nodiscard]] double& at()  {
         return operator[](I);
     }
 
@@ -151,6 +163,7 @@ template <typename ThisSpace, typename UnderlyingData, BaseType BT> class Base {
     StaticAssert::invalid_space operator-=(const Base<OtherSpace, UnderlyingData, OtherBaseType>&) noexcept {
         return StaticAssert::invalid_space{};
     }
+
     template <DifferentSpaceTo<ThisSpace> OtherSpace, BaseType OtherBaseType>
     StaticAssert::invalid_space Dot(const Base<OtherSpace, UnderlyingData, OtherBaseType>&) const noexcept {
         return StaticAssert::invalid_space{};

@@ -105,6 +105,24 @@ TEST_CASE("Points throw with the right message if random access is too high") {
     CHECK_THROWS_WITH(p[3], "Index is out of range");
 }
 
+TEST_CASE("Non-const Points can be modified using random access") {
+    Image::Point p;
+    p[0] = 5;
+    p[1] = 6;
+    p[2] = 7;
+    CHECK(p[0] == 5);
+    CHECK(p[1] == 6);
+    CHECK(p[2] == 7);
+}
+TEST_CASE("Non-const Points throw if random access is too high") {
+    Image::Point p;
+    CHECK_THROWS_AS(p[3], std::invalid_argument);
+}
+TEST_CASE("Non-const Points throw with the right message if random access is too high") {
+    Image::Point p;
+    CHECK_THROWS_WITH(p[3], "Index is out of range");
+}
+
 TEST_CASE("Points support element access by at") {
     const Image::Point p(2, 3, 4);
     CHECK(p.at<0>() == 2);
@@ -120,6 +138,30 @@ TEST_CASE("Points at does not compile if too low") {
 }
 TEST_CASE("Points at does not compile if too high") {
     const Image::Point p;
+    using converted_type = decltype(p.at<3>());
+    using required_type = StaticAssert::invalid_at_access;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+#endif
+
+TEST_CASE("Non-const Points support element modification by at") {
+    Image::Point p;
+    p.at<0>() = 5;
+    p.at<1>() = 6;
+    p.at<2>() = 7;
+    CHECK(p.at<0>() == 5);
+    CHECK(p.at<1>() == 6);
+    CHECK(p.at<2>() == 7);
+}
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("Non-const Points at does not compile if too low") {
+    Image::Point p;
+    using converted_type = decltype(p.at<-1>());
+    using required_type = StaticAssert::invalid_at_access;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+TEST_CASE("Non-const Points at does not compile if too high") {
+    Image::Point p;
     using converted_type = decltype(p.at<3>());
     using required_type = StaticAssert::invalid_at_access;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));

@@ -104,6 +104,23 @@ TEST_CASE("Vectors throw with the right message if random access is too high") {
     const Image::Vector v;
     CHECK_THROWS_WITH(v[3], "Index is out of range");
 }
+TEST_CASE("Non-const vectors can be modified using random access") {
+    Image::Vector v;
+    v[0] = 5;
+    v[1] = 6;
+    v[2] = 7;
+    CHECK(v[0] == 5);
+    CHECK(v[1] == 6);
+    CHECK(v[2] == 7);
+}
+TEST_CASE("Non-const vectors throw if random access is too high") {
+    Image::Vector v;
+    CHECK_THROWS_AS(v[3], std::invalid_argument);
+}
+TEST_CASE("Non-const vectors throw with the right message if random access is too high") {
+    Image::Vector v;
+    CHECK_THROWS_WITH(v[3], "Index is out of range");
+}
 
 TEST_CASE("Vectors support element access by at") {
     const Image::Vector v(2, 3, 4);
@@ -120,6 +137,30 @@ TEST_CASE("Vectors at does not compile if too low") {
 }
 TEST_CASE("Vectors at does not compile if too high") {
     const Image::Vector v;
+    using converted_type = decltype(v.at<3>());
+    using required_type = StaticAssert::invalid_at_access;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+#endif
+
+TEST_CASE("Non-const vectors support element access by at") {
+    Image::Vector v;
+    v.at<0>() = 5;
+    v.at<1>() = 6;
+    v.at<2>() = 7;
+    CHECK(v.at<0>() == 5);
+    CHECK(v.at<1>() == 6);
+    CHECK(v.at<2>() == 7);
+}
+#ifndef IGNORE_SPACE_STATIC_ASSERT
+TEST_CASE("Non-const vectors at does not compile if too low") {
+    Image::Vector v;
+    using converted_type = decltype(v.at<-1>());
+    using required_type = StaticAssert::invalid_at_access;
+    CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
+}
+TEST_CASE("Non-const vectors at does not compile if too high") {
+    Image::Vector v;
     using converted_type = decltype(v.at<3>());
     using required_type = StaticAssert::invalid_at_access;
     CHECK(static_cast<bool>(std::is_same_v<converted_type, required_type>));
