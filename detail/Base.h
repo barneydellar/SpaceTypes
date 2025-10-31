@@ -8,20 +8,20 @@ concept SameSpaceAs = std::is_same_v<SpaceA, SpaceB>;
 template <typename SpaceA, typename SpaceB>
 concept DifferentSpaceTo = !std::is_same_v<SpaceA, SpaceB>;
 
-static constexpr bool ValidForDimensions(int I, int D) { return I >= 0 && I < D; }
-static constexpr bool InvalidForDimensions(int I, int D) { return !ValidForDimensions(I, D); }
+static consteval bool ValidForDimensions(int I, int D) { return I >= 0 && I < D; }
+static consteval bool InvalidForDimensions(int I, int D) { return !ValidForDimensions(I, D); }
 
 enum class BaseType { XYVector, XYPoint, Vector, Point, NormalizedVector, NormalizedXYVector };
 
-static constexpr bool IsXY(BaseType BT) {
+static consteval bool IsXY(BaseType BT) {
     return BT == BaseType::XYVector || BT == BaseType::XYPoint || BT == BaseType::NormalizedXYVector;
 }
-static constexpr bool Is3D(BaseType BT) { return !IsXY(BT); }
-static constexpr bool IsPoint(BaseType BT) { return BT == BaseType::Point || BT == BaseType::XYPoint; }
-static constexpr bool IsVector(BaseType BT) { return !IsPoint(BT); }
-static constexpr bool IsNormalized(BaseType BT) { return BT == BaseType::NormalizedVector || BT == BaseType::NormalizedXYVector; }
-static constexpr bool IsNotNormalized(BaseType BT) { return !IsNormalized(BT); }
-static constexpr int Dimensions(BaseType BT) { return IsXY(BT) ? 2 : 3; }
+static consteval bool Is3D(BaseType BT) { return !IsXY(BT); }
+static consteval bool IsPoint(BaseType BT) { return BT == BaseType::Point || BT == BaseType::XYPoint; }
+static consteval bool IsVector(BaseType BT) { return !IsPoint(BT); }
+static consteval bool IsNormalized(BaseType BT) { return BT == BaseType::NormalizedVector || BT == BaseType::NormalizedXYVector; }
+static consteval bool IsNotNormalized(BaseType BT) { return !IsNormalized(BT); }
+static consteval int Dimensions(BaseType BT) { return IsXY(BT) ? 2 : 3; }
 
 template <typename ThisSpace, typename UnderlyingData, BaseType BT> class Base {
 

@@ -1,11 +1,14 @@
 # SpaceTypes
 
-This is a C++ library for 3D points and vectors that are strongly typed on their coordinate space. It provides new types to wrap round an exsiting implementation, to ensures that vectors and points from different spaces cannot interact with each other. It is designed to catch these problems at compile-time, rather than at run time.
+This is a C++ library for 3D points and vectors that are strongly typed on their coordinate space. 
 
-This is a header-only library. Simply #include "Space.h".
-The library defines the namespace *Space*.
+This library allows you to define your own coordinate spaces, the units they use, whether they support XY-only points (e.g. for rendering to a screen) as well as the transformations between spaces. 
 
-This library has only been tested using Visual Studio 2017 with C++17. The tests use Catch2.
+The library then provides strongly-typed points and vectors within these spaces. It ensures that vectors and points from different spaces cannot interact with each other. It is designed to catch problems at compile-time, rather than at run time.
+
+This is a header-only library. Simply #include "Space.h". The library defines the namespace *Space*.
+
+The tests use a provided copy of Catch2.
 
 ## Licence
 
@@ -15,7 +18,7 @@ The library is licenced under the [Hippocratic License Version Number: 2.1.](LIC
 
 This namespace provides several templated types: Point, Vector and NormalizedVector. Optionally, XYPoint, XYVector and NormalizedXYVector are also available for a given space. Each point or vector lives in a Space. It is possible to convert points and vectors from space to another, in a type-safe way. Importantly, points and vectors can *only* interact with points and vectors from the same space. Attempting to add a vector from one space to a vector from another will result in a compilation error.
 
-The library requires an existing implementation, which you will need to provide as a template argument. This implementation must be default contructible, and must have three doubles for x, y, and z as its first fields. The library also requires a Transform Manager which is able to convert the instances of the existing implementation from one Space to another.
+The library requires an existing underlying implementation of a point or vector which you will need to provide as a template argument. This implementation must be default contructible, and must have three doubles for x, y, and z as its first fields. The library also requires a Transform Manager which is able to convert the instances of the existing implementation from one Space to another.
 
 The existing implementation of the 3D location or direction must implement the following API:
 
@@ -44,7 +47,7 @@ public:
 };
 ```
 
-Once we have such an implementation, we also need units for the space:
+Once you have such an implementation, you also need units for the space:
 
 ```cpp
 using NewSpaceUnits = double;
@@ -58,7 +61,7 @@ using NewSpaceUnits = NamedType<double, struct NewSpaceUnitsTag>;
 
 The units must be constructable from a double. They will be used to return the magnitude of a vector.
 
-Once we have these and a unique identifer for the space in an enum called SpaceIDs:
+Once you have these and a unique identifer for the space in an enum:
 
 ```cpp
 enum class SpaceIDs
@@ -73,7 +76,7 @@ then a Space can be defined as follows:
 struct MySpace final : SpaceBase<MySpace, ExistingImplementation, XY::IsUsed, NewSpaceUnits> {
     static inline SpaceIDs id = SpaceIDs::NewSpaceId;
 };
-template <> const std::string SpaceTypeNameMap<MySpace>::name = "MySpace";
+template <> constexpr std::string SpaceTypeNameMap<MySpace>::name = "MySpace";
 ```
 
 The XY parameter must be either XY::IsUsed or XY::IsNotUsed. It controls whether XY-only points and vectors are supported in this space.
@@ -114,7 +117,6 @@ Note that a NormalizedVector and a NormalisedXYVector will always have unit leng
 ```cpp
 const YourSpace::NormalizedVector v(5, 0, 0); // v = {1, 0, 0}
 const YourSpace::NormalizedXYVector v(5, 0); // v = {1, 0}
-
 ```
 
 It is a runtime error to create a Normalized Vector with zero values.
@@ -296,6 +298,13 @@ const YourSpace::Vector v1(5, 0, 0);
 const auto m = v1.Mag(); // m = 5 Millimetres
 ```
 
+You can also get the magnitude as a weakly-typed double:
+
+```cpp
+const YourSpace::Vector v1(5, 0, 0);
+const auto m = v1.Mag_double(); // m = 5.0
+```
+
 ## Comparison
 
 Vectors from the same space can be compared using == or !=. This will test each value with a tolerance of 1e-6.
@@ -338,7 +347,7 @@ const auto p = p_view.ConvertTo<YourSpace>(tm); // YourSpace::Point(x, y, z)
 
 ### Example Transform Manager
 
-Suppose we have two spaces defined, with units in *double*. Each has a static value identifying the type.
+Suppose you have two spaces defined, with units in *double*. Each has a static value identifying the type.
 
 ```cpp
 enum class SpaceIDs
@@ -354,7 +363,7 @@ struct SecondSpace final : SpaceBase<SecondSpace, ExistingImplementation, double
 };
 ```
 
-We can then define a TransformManager as follows:
+You can then define a TransformManager as follows:
 
 ```cpp
 class TransformManager final
@@ -402,7 +411,7 @@ The data from a point or vector can be modified using the SetX(), SetY() or SetZ
 
 ```cpp
 MySpace::Vector v(1, 2, 3);
-v.SetX((5); // v == {5, 2, 3};
+v.SetX(5); // v == {5, 2, 3};
 ```
 
 #### Named Element Access
