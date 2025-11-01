@@ -477,7 +477,7 @@ Points, Vectors and NormalisedVectors can be serialised:
 
 ```cpp
 const MySpace::Point p(2, 3, 4);
-std::cout << p;
+std::println(p);
 // Prints "MySpace::Point (2, 3, 4)"
 ```
 
