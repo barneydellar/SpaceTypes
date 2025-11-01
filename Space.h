@@ -3,6 +3,12 @@
 /// This header provides the ThisSpace Point, Vector and NormalizedVector
 /// classes. Please see Readme.md for more details.
 
+#include <array>
+#include <iostream>
+#include <numeric>
+#include <sstream>
+#include <format>
+
 namespace Space::implementation {
 
 template <typename ThisSpace, typename UnderlyingData> class Point;

@@ -15,11 +15,6 @@ set(SOURCES
 # Add the executable
 add_executable(space_tests ${SOURCES})
 
-target_precompile_headers(space_tests 
-    PRIVATE
-        "pch.h"
-)
-
 # Include directories
 target_include_directories(space_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/..)
 

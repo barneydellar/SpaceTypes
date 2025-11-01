@@ -99,10 +99,9 @@ class NormalizedVector final : public Base<ThisSpace, UnderlyingData, BaseType::
         );
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const NormalizedVector<ThisSpace, UnderlyingData>& item) {
+    friend std::ostream& operator<<(std::ostream& os, const NormalizedVector<ThisSpace, UnderlyingData>& v) {
         const auto space = SpaceTypeNameMap<ThisSpace>::name;
-        os << space << "::NormalizedVector (" << item.X() << ", " << item.Y() << ", " << item.Z() << ")";
-        return os;
+        return os << std::format("{}::NormalizedVector ({}, {}, {})", space, v.X(), v.Y(), v.Z());
     }
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 

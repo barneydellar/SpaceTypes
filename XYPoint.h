@@ -92,10 +92,9 @@ class XYPoint final : public Base<ThisSpace, UnderlyingData, BaseType::XYPoint> 
         );
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const XYPoint<ThisSpace, UnderlyingData>& item) {
+    friend std::ostream& operator<<(std::ostream& os, const XYPoint<ThisSpace, UnderlyingData>& p) {
         const auto space = SpaceTypeNameMap<ThisSpace>::name;
-        os << space << "::XYPoint (" << item.X() << ", " << item.Y() << ")";
-        return os;
+        return os << std::format("{}::XYPoint ({}, {})", space, p.X(), p.Y());
     }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
