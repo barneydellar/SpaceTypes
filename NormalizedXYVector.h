@@ -113,7 +113,7 @@ class NormalizedXYVector final : public Base<ThisSpace, UnderlyingData, BaseType
         );
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const NormalizedXYVector<ThisSpace, UnderlyingData>& v) {
+    friend auto& operator<<(std::ostream& os, const NormalizedXYVector<ThisSpace, UnderlyingData>& v) {
         const auto space = SpaceTypeNameMap<ThisSpace>::name;
         return os << std::format("{}::NormalizedXYVector ({}, {})", space, v.X(), v.Y());
     }

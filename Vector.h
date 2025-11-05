@@ -106,7 +106,7 @@ class Vector final : public Base<ThisSpace, UnderlyingData, BaseType::Vector> {
 
     [[nodiscard]] double Mag_double() const noexcept { return Mag_internal(_base::underlyingData); }
 
-    friend std::ostream& operator<<(std::ostream& os, const Vector<ThisSpace, UnderlyingData>& v) {
+    friend auto& operator<<(std::ostream& os, const Vector<ThisSpace, UnderlyingData>& v) {
         const auto space = SpaceTypeNameMap<ThisSpace>::name;
         return os << std::format("{}::Vector ({}, {}, {})", space, v.X(), v.Y(), v.Z());
     }

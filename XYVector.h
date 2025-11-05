@@ -116,7 +116,7 @@ class XYVector final : public Base<ThisSpace, UnderlyingData, BaseType::XYVector
 
     [[nodiscard]] double Mag_double() const noexcept { return Mag_internal(_base::underlyingData); }
 
-    friend std::ostream& operator<<(std::ostream& os, const XYVector<ThisSpace, UnderlyingData>& v) {
+    friend auto& operator<<(std::ostream& os, const XYVector<ThisSpace, UnderlyingData>& v) {
         const auto space = SpaceTypeNameMap<ThisSpace>::name;
         return os << std::format("{}::XYVector ({}, {})", space, v.X(), v.Y());
     }

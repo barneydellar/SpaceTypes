@@ -75,7 +75,7 @@ class Point final : public Base<ThisSpace, UnderlyingData, BaseType::Point> {
         return XYPoint<ThisSpace, UnderlyingData>(_base::X(), _base::Y());
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const Point<ThisSpace, UnderlyingData>& p) {
+    friend auto& operator<<(std::ostream& os, const Point<ThisSpace, UnderlyingData>& p) {
         const auto space = SpaceTypeNameMap<ThisSpace>::name;
         return os << std::format("{}::Point ({}, {}, {})", space, p.X(), p.Y(), p.Z());
     }
