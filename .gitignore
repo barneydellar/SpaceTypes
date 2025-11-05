@@ -6,3 +6,4 @@
 /.vs/SpaceTypes.slnx/v18
 /.vs/VSWorkspaceState.json
 build/*
+llvm.sh
