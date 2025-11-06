@@ -742,21 +742,46 @@ TEST_CASE("NormalizedVectors cannot be converted to the same space") {
 }
 #endif
 
-TEST_CASE("NormalizedVectors can be formatted") {
+TEST_CASE("NormalizedVectors can be default-formatted") {
     const View::NormalizedVector v(1, 0, 0);
-    CHECK(std::format("{}", v) == std::string("View::NormalizedVector (1, 0, 0)"));
+    CHECK(std::format("{}", v) == "View::NormalizedVector (1, 0, 0)");
+}
+
+TEST_CASE("NormalizedVectors can be formatted to show the space") {
+    const View::NormalizedVector v(1, 0, 0);
+    CHECK(std::format("{:s}", v) == "View");
+}
+
+TEST_CASE("NormalizedVectors can be formatted to show the type") {
+    const View::NormalizedVector v(1, 0, 0);
+    CHECK(std::format("{:t}", v) == "NormalizedVector");
+}
+
+TEST_CASE("NormalizedVectors can be formatted to show the x value") {
+    const View::NormalizedVector v(3, 4, 5);
+    CHECK(std::format("{:x}", v) == std::format("{}", v.X()));
+}
+
+TEST_CASE("NormalizedVectors can be formatted to show the y value") {
+    const View::NormalizedVector v(3, 4, 5);
+    CHECK(std::format("{:y}", v) == std::format("{}", v.Y()));
+}
+
+TEST_CASE("NormalizedVectors can be formatted to show the z value") {
+    const View::NormalizedVector v(3, 4, 5);
+    CHECK(std::format("{:z}", v) == std::format("{}", v.Z()));
 }
 
 TEST_CASE("NormalizedVectors can be streamed") {
     const View::NormalizedVector v(1, 0, 0);
     std::stringstream stream;
     stream << v;
-    CHECK(stream.str() == std::string("View::NormalizedVector (1, 0, 0)"));
+    CHECK(stream.str() == "View::NormalizedVector (1, 0, 0)");
 }
 
 TEST_CASE("NormalizedVectors can be printed") {
     const View::NormalizedVector v(1, 0, 0);
     std::stringstream stream;
     std::print(stream, "{}", v);
-    CHECK(stream.str() == std::string("View::NormalizedVector (1, 0, 0)"));
+    CHECK(stream.str() == "View::NormalizedVector (1, 0, 0)");
 }

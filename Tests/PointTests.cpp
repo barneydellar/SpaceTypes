@@ -607,21 +607,46 @@ TEST_CASE("Points cannot be converted to the same space") {
 }
 #endif
 
-TEST_CASE("Points can be formatted") {
-    const View::Point p(1.2, 2.3, 3.4);
-    CHECK(std::format("{}", p) == std::string("View::Point (1.2, 2.3, 3.4)"));
+TEST_CASE("Points can be default-formatted") {
+    const View::Point v(3, 4, 5);
+    CHECK(std::format("{}", v) == "View::Point (3, 4, 5)");
+}
+
+TEST_CASE("Points can be formatted to show the space") {
+    const View::Point v(1, 0, 0);
+    CHECK(std::format("{:s}", v) == "View");
+}
+
+TEST_CASE("Points can be formatted to show the type") {
+    const View::Point v(1, 0, 0);
+    CHECK(std::format("{:t}", v) == "Point");
+}
+
+TEST_CASE("Points can be formatted to show the x value") {
+    const View::Point v(3, 4, 5);
+    CHECK(std::format("{:x}", v) == "3");
+}
+
+TEST_CASE("Points can be formatted to show the y value") {
+    const View::Point v(3, 4, 5);
+    CHECK(std::format("{:y}", v) == "4");
+}
+
+TEST_CASE("Points can be formatted to show the z value") {
+    const View::Point v(3, 4, 5);
+    CHECK(std::format("{:z}", v) == "5");
 }
 
 TEST_CASE("Points can be streamed") {
     const View::Point p(1.2, 2.3, 3.4);
     std::stringstream stream;
     stream << p;
-    CHECK(stream.str() == std::string("View::Point (1.2, 2.3, 3.4)"));
+    CHECK(stream.str() == "View::Point (1.2, 2.3, 3.4)");
 }
 
 TEST_CASE("Points can be printed") {
     const View::Point p(1.2, 2.3, 3.4);
     std::stringstream stream;
     std::print(stream, "{}", p);
-    CHECK(stream.str() == std::string("View::Point (1.2, 2.3, 3.4)"));
+    CHECK(stream.str() == "View::Point (1.2, 2.3, 3.4)");
 }

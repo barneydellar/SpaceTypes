@@ -855,21 +855,46 @@ TEST_CASE("Vectors support Mag_double") {
     CHECK(v.Mag_double() == 5);
 }
 
-TEST_CASE("Vectors can be formatted") {
-    const View::Vector v(1.2, 2.3, 3.4);
-    CHECK(std::format("{}", v) == std::string("View::Vector (1.2, 2.3, 3.4)"));
+TEST_CASE("Vectors can be default-formatted") {
+    const View::Vector v(3, 4, 5);
+    CHECK(std::format("{}", v) == "View::Vector (3, 4, 5)");
+}
+
+TEST_CASE("Vectors can be formatted to show the space") {
+    const View::Vector v(1, 0, 0);
+    CHECK(std::format("{:s}", v) == "View");
+}
+
+TEST_CASE("Vectors can be formatted to show the type") {
+    const View::Vector v(1, 0, 0);
+    CHECK(std::format("{:t}", v) == "Vector");
+}
+
+TEST_CASE("Vectors can be formatted to show the x value") {
+    const View::Vector v(3, 4, 5);
+    CHECK(std::format("{:x}", v) == "3");
+}
+
+TEST_CASE("Vectors can be formatted to show the y value") {
+    const View::Vector v(3, 4, 5);
+    CHECK(std::format("{:y}", v) == "4");
+}
+
+TEST_CASE("Vectors can be formatted to show the z value") {
+    const View::Vector v(3, 4, 5);
+    CHECK(std::format("{:z}", v) == "5");
 }
 
 TEST_CASE("Vectors can be streamed") {
     const View::Vector v(1.2, 2.3, 3.4);
     std::stringstream stream;
     stream << v;
-    CHECK(stream.str() == std::string("View::Vector (1.2, 2.3, 3.4)"));
+    CHECK(stream.str() == "View::Vector (1.2, 2.3, 3.4)");
 }
 
 TEST_CASE("Vectors can be printed") {
     const View::Vector v(1.2, 2.3, 3.4);
     std::stringstream stream;
     std::print(stream, "{}", v);
-    CHECK(stream.str() == std::string("View::Vector (1.2, 2.3, 3.4)"));
+    CHECK(stream.str() == "View::Vector (1.2, 2.3, 3.4)");
 }

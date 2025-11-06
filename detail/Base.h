@@ -23,6 +23,23 @@ static consteval bool IsNormalized(BaseType BT) { return BT == BaseType::Normali
 static consteval bool IsNotNormalized(BaseType BT) { return !IsNormalized(BT); }
 static consteval int Dimensions(BaseType BT) { return IsXY(BT) ? 2 : 3; }
 
+static consteval auto Name(BaseType BT) {
+    switch (BT) {
+    case BaseType::XYVector:
+        return "XYVector";
+    case BaseType::XYPoint:
+        return "XYPoint";
+    case BaseType::Vector:
+        return "Vector";
+    case BaseType::Point:
+        return "Point";
+    case BaseType::NormalizedVector:
+        return "NormalizedVector";
+    case BaseType::NormalizedXYVector:
+        return "NormalizedXYVector";
+    }
+}
+
 template <typename ThisSpace, typename UnderlyingData, BaseType BT> class Base {
 
   public:
@@ -186,4 +203,68 @@ template <typename ThisSpace, typename UnderlyingData, BaseType BT> class Base {
 template <typename S, typename U, BaseType B> const U& UnderlyingDataFrom(const Base<S, U, B>& a) { return a.underlyingData; }
 
 template <typename S, typename U, BaseType B> U& UnderlyingDataFrom(Base<S, U, B>& a) { return a.underlyingData; }
+
+template <typename S, BaseType BT> struct baseFormatter : std::formatter<std::string> {
+
+    constexpr auto parse(std::format_parse_context& ctx) {
+        auto pos = ctx.begin();
+        if (pos == ctx.end() || *pos == '}') {
+            _format_type = format_type::full;
+            return pos;
+        }
+
+        if (*pos == 's') {
+            _format_type = format_type::space_only;
+        } else if (*pos == 't') {
+            _format_type = format_type::type_only;
+        } else if (*pos == 'x') {
+            _format_type = format_type::x_only;
+        } else if (*pos == 'y') {
+            _format_type = format_type::y_only;
+        } else if (*pos == 'z' && Is3D(BT)) {
+            _format_type = format_type::z_only;
+        } else {
+            unexpected_format_specification();
+        }
+
+        return ++pos;
+    }
+
+    template <class FormatContext> auto format(const auto& v, FormatContext& fc) const {
+        switch (_format_type) {
+        case format_type::type_only:
+            return formatter<std::string>::format(Name(BT), fc);
+        case format_type::space_only:
+            return formatter<std::string>::format(Space::SpaceTypeNameMap<S>::name, fc);
+        case format_type::x_only:
+            return formatter<std::string>::format(std::format("{}", v.X()), fc);
+        case format_type::y_only:
+            return formatter<std::string>::format(std::format("{}", v.Y()), fc);
+        case format_type::z_only:
+            if constexpr (Is3D(BT)) {
+                return formatter<std::string>::format(std::format("{}", v.Z()), fc);
+            }
+            throw std::format_error("Invalid format type");
+        case format_type::full:
+            if constexpr (Is3D(BT)) {
+                return formatter<std::string>::format(
+                    std::format("{}::{} ({}, {}, {})", Space::SpaceTypeNameMap<S>::name, Name(BT), v.X(), v.Y(), v.Z()), fc
+                );
+            } else {
+                return formatter<std::string>::format(
+                    std::format("{}::{} ({}, {})", Space::SpaceTypeNameMap<S>::name, Name(BT), v.X(), v.Y()), fc
+                );
+            }
+        default:
+            throw std::format_error("Invalid format type");
+        }
+    }
+
+  private:
+    void unexpected_format_specification() {}
+
+    enum class format_type { full, space_only, type_only, x_only, y_only, z_only };
+    format_type _format_type = format_type::full;
+};
+
 } // namespace Space::implementation

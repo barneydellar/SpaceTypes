@@ -612,9 +612,41 @@ TEST_CASE("XYPoints cannot be converted to the same space") {
 }
 #endif
 
+TEST_CASE("XYPoints can be default-formatted") {
+    const View::XYPoint v(1, 0);
+    CHECK(std::format("{}", v) == "View::XYPoint (1, 0)");
+}
+
+TEST_CASE("XYPoints can be formatted to show the space") {
+    const View::XYPoint v(1, 0);
+    CHECK(std::format("{:s}", v) == "View");
+}
+
+TEST_CASE("XYPoints can be formatted to show the type") {
+    const View::XYPoint v(1, 0);
+    CHECK(std::format("{:t}", v) == "XYPoint");
+}
+
+TEST_CASE("XYPoints can be formatted to show the x value") {
+    const View::XYPoint v(3, 4);
+    CHECK(std::format("{:x}", v) == "3");
+}
+
+TEST_CASE("XYPoints can be formatted to show the y value") {
+    const View::XYPoint v(3, 4);
+    CHECK(std::format("{:y}", v) == "4");
+}
+
 TEST_CASE("XYPoints can be streamed") {
-    const View::XYPoint p(1.2, 2.3);
+    const View::XYPoint v(1, 0);
     std::stringstream stream;
-    stream << p;
-    CHECK(stream.str() == std::string("View::XYPoint (1.2, 2.3)"));
+    stream << v;
+    CHECK(stream.str() == "View::XYPoint (1, 0)");
+}
+
+TEST_CASE("XYPoints can be printed") {
+    const View::XYPoint v(1, 0);
+    std::stringstream stream;
+    std::print(stream, "{}", v);
+    CHECK(stream.str() == "View::XYPoint (1, 0)");
 }

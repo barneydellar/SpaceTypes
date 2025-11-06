@@ -850,46 +850,39 @@ TEST_CASE("XYVectors support Mag_double") {
 
 TEST_CASE("XYVectors can be default-formatted") {
     const View::XYVector v(1.2, 2.3);
-    CHECK(std::format("{}", v) == std::string("View::XYVector (1.2, 2.3)"));
+    CHECK(std::format("{}", v) == "View::XYVector (1.2, 2.3)");
 }
 
-TEST_CASE("XYVectors can be formatted to show just the space") {
+TEST_CASE("XYVectors can be formatted to show the space") {
     const View::XYVector v(1.2, 2.3);
-    CHECK(std::format("{:s}", v) == std::string("View"));
+    CHECK(std::format("{:s}", v) == "View");
 }
 
-TEST_CASE("XYVectors can be formatted to show just the type") {
+TEST_CASE("XYVectors can be formatted to show the type") {
     const View::XYVector v(1.2, 2.3);
-    CHECK(std::format("{:t}", v) == std::string("XYVector"));
+    CHECK(std::format("{:t}", v) == "XYVector");
 }
 
-TEST_CASE("XYVectors can be formatted to show the space and the type") {
+TEST_CASE("XYVectors can be formatted to show the x value") {
     const View::XYVector v(1.2, 2.3);
-    CHECK(std::format("{:st}", v) == std::string("ViewXYVector"));
-    CHECK(std::format("{:s t}", v) == std::string("View XYVector"));
-    CHECK(std::format("{:s::t}", v) == std::string("View::XYVector"));
+    CHECK(std::format("{:x}", v) == "1.2");
 }
 
-TEST_CASE("XYVectors can be formatted to show the x and y values") {
+TEST_CASE("XYVectors can be formatted to show the y value") {
     const View::XYVector v(1.2, 2.3);
-    CHECK(std::format("{:[ x ; y ]}", v) == std::string("[ 1.2 ; 2.3 ]"));
-}
-
-TEST_CASE("XYVectors can be formatted to show all values using curly braces") {
-    const View::XYVector v(1.2, 2.3);
-    CHECK(std::format("{:{{(x,y) s-t.}}}", v) == std::string("{(1.2,2.3) View-XYVector.}"));
+    CHECK(std::format("{:y}", v) == "2.3");
 }
 
 TEST_CASE("XYVectors can be streamed") {
     const View::XYVector v(1.2, 2.3);
     std::stringstream stream;
     stream << v;
-    CHECK(stream.str() == std::string("View::XYVector (1.2, 2.3)"));
+    CHECK(stream.str() == "View::XYVector (1.2, 2.3)");
 }
 
 TEST_CASE("XYVectors can be printed") {
     const View::XYVector v(1.2, 2.3);
     std::stringstream stream;
     std::print(stream, "{0}", v);
-    CHECK(stream.str() == std::string("View::XYVector (1.2, 2.3)"));
+    CHECK(stream.str() == "View::XYVector (1.2, 2.3)");
 }

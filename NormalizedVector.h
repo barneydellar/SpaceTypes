@@ -173,11 +173,12 @@ class NormalizedVector final : public Base<ThisSpace, UnderlyingData, BaseType::
 } // namespace Space::implementation
 
 template <typename S, typename U>
-struct std::formatter<Space::implementation::NormalizedVector<S, U>> : std::formatter<std::string_view> {
-    template <class FormatContext> auto format(const auto& v, FormatContext& fc) const {
-        const auto space = Space::SpaceTypeNameMap<S>::name;
-        std::string temp;
-        std::format_to(std::back_inserter(temp), "{}::NormalizedVector ({}, {}, {})", space, v.X(), v.Y(), v.Z());
-        return std::formatter<string_view>::format(temp, fc);
-    }
+struct std::formatter<Space::implementation::NormalizedVector<S, U>>
+    : Space::implementation::baseFormatter<S, Space::implementation::BaseType::NormalizedVector> {
+
+    using _base = Space::implementation::baseFormatter<S, Space::implementation::BaseType::NormalizedVector>;
+
+    constexpr auto parse(std::format_parse_context& ctx) { return _base::parse(ctx); }
+
+    template <class FormatContext> auto format(const auto& v, FormatContext& fc) const { return _base::format(v, fc); }
 };

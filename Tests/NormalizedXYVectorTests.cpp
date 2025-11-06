@@ -741,21 +741,41 @@ TEST_CASE("NormalizedXYVectors cannot be converted to the same space") {
 }
 #endif
 
-TEST_CASE("NormalizedXYVectors can be formatted") {
+TEST_CASE("NormalizedXYVectors can be default-formatted") {
     const View::NormalizedXYVector v(1, 0);
-    CHECK(std::format("{}", v) == std::string("View::NormalizedXYVector (1, 0)"));
+    CHECK(std::format("{}", v) == "View::NormalizedXYVector (1, 0)");
+}
+
+TEST_CASE("NormalizedXYVectors can be formatted to show the space") {
+    const View::NormalizedXYVector v(1, 0);
+    CHECK(std::format("{:s}", v) == "View");
+}
+
+TEST_CASE("NormalizedXYVectors can be formatted to show the type") {
+    const View::NormalizedXYVector v(1, 0);
+    CHECK(std::format("{:t}", v) == "NormalizedXYVector");
+}
+
+TEST_CASE("NormalizedXYVectors can be formatted to show the x value") {
+    const View::NormalizedXYVector v(3, 4);
+    CHECK(std::format("{:x}", v) == std::format("{}", v.X()));
+}
+
+TEST_CASE("NormalizedXYVectors can be formatted to show the y value") {
+    const View::NormalizedXYVector v(3, 4);
+    CHECK(std::format("{:y}", v) == std::format("{}", v.Y()));
 }
 
 TEST_CASE("NormalizedXYVectors can be streamed") {
     const View::NormalizedXYVector v(1, 0);
     std::stringstream stream;
     stream << v;
-    CHECK(stream.str() == std::string("View::NormalizedXYVector (1, 0)"));
+    CHECK(stream.str() == "View::NormalizedXYVector (1, 0)");
 }
 
 TEST_CASE("NormalizedXYVectors can be printed") {
     const View::NormalizedXYVector v(1, 0);
     std::stringstream stream;
     std::print(stream, "{}", v);
-    CHECK(stream.str() == std::string("View::NormalizedXYVector (1, 0)"));
+    CHECK(stream.str() == "View::NormalizedXYVector (1, 0)");
 }
