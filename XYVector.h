@@ -175,11 +175,48 @@ class XYVector final : public Base<ThisSpace, UnderlyingData, BaseType::XYVector
 } // namespace Space::implementation
 
 template <typename S, typename U>
-struct std::formatter<Space::implementation::XYVector<S, U>> : std::formatter<std::string_view> {
+struct std::formatter<Space::implementation::XYVector<S, U>> : std::formatter<std::string> {
+
+    void unexpected_format_specification(){}
+
+    constexpr auto parse(std::format_parse_context& ctx){
+        auto pos = ctx.begin();
+        if (pos == ctx.end() || *pos == '}') {
+            _s = "{0}::{1} ({2}, {3})";
+            return pos;
+        }
+
+        auto valid_separators = std::string_view{",.;|-:()[]{} "};
+
+        while (pos != ctx.end() && *pos != '}') {
+            if (*pos == 's') {
+                _s += "{0}";
+            }
+            else if (*pos == 't') {
+                _s += "{1}";
+            }
+            else if (*pos == 'x') {
+                _s += "{2}";
+            }
+            else if (*pos == 'y') {
+                _s += "{3}";
+            } else if (valid_separators.find(*pos) != std::string_view::npos) {
+                _s += *pos;
+            } else {
+                unexpected_format_specification();
+            }
+
+            ++pos;
+        }
+        return pos;
+    }
+
     template <class FormatContext> auto format(const auto& v, FormatContext& fc) const {
         const auto space = Space::SpaceTypeNameMap<S>::name;
-        std::string temp;
-        std::format_to(std::back_inserter(temp), "{}::XYVector ({}, {})", space, v.X(), v.Y());
-        return std::formatter<string_view>::format(temp, fc);
+        double x = v.X();
+        double y = v.Y();
+        return formatter<string>::format(std::vformat(_s, std::make_format_args(space, "XYVector", x, y)), fc);
     }
+
+    std::string _s = "";
 };
