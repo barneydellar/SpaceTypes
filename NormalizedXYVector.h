@@ -114,8 +114,7 @@ class NormalizedXYVector final : public Base<ThisSpace, UnderlyingData, BaseType
     }
 
     friend auto& operator<<(std::ostream& os, const NormalizedXYVector<ThisSpace, UnderlyingData>& v) {
-        const auto space = SpaceTypeNameMap<ThisSpace>::name;
-        return os << std::format("{}::NormalizedXYVector ({}, {})", space, v.X(), v.Y());
+        return os << std::format("{}", v);
     }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
@@ -182,3 +181,11 @@ class NormalizedXYVector final : public Base<ThisSpace, UnderlyingData, BaseType
     }
 };
 } // namespace Space::implementation
+
+template <typename S, typename U>
+struct std::formatter<Space::implementation::NormalizedXYVector<S, U>> : std::formatter<std::string> {
+    template <class FormatContext> auto format(Space::implementation::NormalizedXYVector<S, U> v, FormatContext& fc) const {
+        const auto space = Space::SpaceTypeNameMap<S>::name;
+        return formatter<string>::format(std::format("{}::NormalizedXYVector ({}, {})", space, v.X(), v.Y()), fc);
+    }
+};

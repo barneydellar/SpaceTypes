@@ -848,9 +848,21 @@ TEST_CASE("XYVectors support Mag_double") {
     CHECK(v.Mag_double() == 5);
 }
 
+TEST_CASE("XYVectors can be formatted") {
+    const View::XYVector v(1.2, 2.3);
+    CHECK(std::format("{}", v) == std::string("View::XYVector (1.2, 2.3)"));
+}
+
 TEST_CASE("XYVectors can be streamed") {
     const View::XYVector v(1.2, 2.3);
     std::stringstream stream;
     stream << v;
+    CHECK(stream.str() == std::string("View::XYVector (1.2, 2.3)"));
+}
+
+TEST_CASE("XYVectors can be printed") {
+    const View::XYVector v(1.2, 2.3);
+    std::stringstream stream;
+    std::print(stream, "{}", v);
     CHECK(stream.str() == std::string("View::XYVector (1.2, 2.3)"));
 }

@@ -742,9 +742,21 @@ TEST_CASE("NormalizedVectors cannot be converted to the same space") {
 }
 #endif
 
+TEST_CASE("NormalizedVectors can be formatted") {
+    const View::NormalizedVector v(1, 0, 0);
+    CHECK(std::format("{}", v) == std::string("View::NormalizedVector (1, 0, 0)"));
+}
+
 TEST_CASE("NormalizedVectors can be streamed") {
     const View::NormalizedVector v(1, 0, 0);
     std::stringstream stream;
     stream << v;
+    CHECK(stream.str() == std::string("View::NormalizedVector (1, 0, 0)"));
+}
+
+TEST_CASE("NormalizedVectors can be printed") {
+    const View::NormalizedVector v(1, 0, 0);
+    std::stringstream stream;
+    std::print(stream, "{}", v);
     CHECK(stream.str() == std::string("View::NormalizedVector (1, 0, 0)"));
 }

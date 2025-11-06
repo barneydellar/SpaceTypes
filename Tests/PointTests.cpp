@@ -607,10 +607,21 @@ TEST_CASE("Points cannot be converted to the same space") {
 }
 #endif
 
+TEST_CASE("Points can be formatted") {
+    const View::Point p(1.2, 2.3, 3.4);
+    CHECK(std::format("{}", p) == std::string("View::Point (1.2, 2.3, 3.4)"));
+}
+
 TEST_CASE("Points can be streamed") {
     const View::Point p(1.2, 2.3, 3.4);
     std::stringstream stream;
     stream << p;
+    CHECK(stream.str() == std::string("View::Point (1.2, 2.3, 3.4)"));
+}
 
+TEST_CASE("Points can be printed") {
+    const View::Point p(1.2, 2.3, 3.4);
+    std::stringstream stream;
+    std::print(stream, "{}", p);
     CHECK(stream.str() == std::string("View::Point (1.2, 2.3, 3.4)"));
 }

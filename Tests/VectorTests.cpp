@@ -855,9 +855,21 @@ TEST_CASE("Vectors support Mag_double") {
     CHECK(v.Mag_double() == 5);
 }
 
+TEST_CASE("Vectors can be formatted") {
+    const View::Vector v(1.2, 2.3, 3.4);
+    CHECK(std::format("{}", v) == std::string("View::Vector (1.2, 2.3, 3.4)"));
+}
+
 TEST_CASE("Vectors can be streamed") {
     const View::Vector v(1.2, 2.3, 3.4);
     std::stringstream stream;
     stream << v;
+    CHECK(stream.str() == std::string("View::Vector (1.2, 2.3, 3.4)"));
+}
+
+TEST_CASE("Vectors can be printed") {
+    const View::Vector v(1.2, 2.3, 3.4);
+    std::stringstream stream;
+    std::print(stream, "{}", v);
     CHECK(stream.str() == std::string("View::Vector (1.2, 2.3, 3.4)"));
 }

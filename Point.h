@@ -75,10 +75,7 @@ class Point final : public Base<ThisSpace, UnderlyingData, BaseType::Point> {
         return XYPoint<ThisSpace, UnderlyingData>(_base::X(), _base::Y());
     }
 
-    friend auto& operator<<(std::ostream& os, const Point<ThisSpace, UnderlyingData>& p) {
-        const auto space = SpaceTypeNameMap<ThisSpace>::name;
-        return os << std::format("{}::Point ({}, {}, {})", space, p.X(), p.Y(), p.Z());
-    }
+    friend auto& operator<<(std::ostream& os, const Point<ThisSpace, UnderlyingData>& p) { return os << std::format("{}", p); }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 
@@ -128,3 +125,10 @@ class Point final : public Base<ThisSpace, UnderlyingData, BaseType::Point> {
     void operator*=(double) = delete;
 };
 } // namespace Space::implementation
+
+template <typename S, typename U> struct std::formatter<Space::implementation::Point<S, U>> : std::formatter<std::string> {
+    template <class FormatContext> auto format(Space::implementation::Point<S, U> p, FormatContext& fc) const {
+        const auto space = Space::SpaceTypeNameMap<S>::name;
+        return formatter<string>::format(std::format("{}::Point ({}, {}, {})", space, p.X(), p.Y(), p.Z()), fc);
+    }
+};

@@ -116,10 +116,7 @@ class XYVector final : public Base<ThisSpace, UnderlyingData, BaseType::XYVector
 
     [[nodiscard]] double Mag_double() const noexcept { return Mag_internal(_base::underlyingData); }
 
-    friend auto& operator<<(std::ostream& os, const XYVector<ThisSpace, UnderlyingData>& v) {
-        const auto space = SpaceTypeNameMap<ThisSpace>::name;
-        return os << std::format("{}::XYVector ({}, {})", space, v.X(), v.Y());
-    }
+    friend auto& operator<<(std::ostream& os, const XYVector<ThisSpace, UnderlyingData>& v) { return os << std::format("{}", v); }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 
@@ -176,3 +173,10 @@ class XYVector final : public Base<ThisSpace, UnderlyingData, BaseType::XYVector
 #endif
 };
 } // namespace Space::implementation
+
+template <typename S, typename U> struct std::formatter<Space::implementation::XYVector<S, U>> : std::formatter<std::string> {
+    template <class FormatContext> auto format(Space::implementation::XYVector<S, U> v, FormatContext& fc) const {
+        const auto space = Space::SpaceTypeNameMap<S>::name;
+        return formatter<string>::format(std::format("{}::XYVector ({}, {})", space, v.X(), v.Y()), fc);
+    }
+};

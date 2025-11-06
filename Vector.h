@@ -106,10 +106,7 @@ class Vector final : public Base<ThisSpace, UnderlyingData, BaseType::Vector> {
 
     [[nodiscard]] double Mag_double() const noexcept { return Mag_internal(_base::underlyingData); }
 
-    friend auto& operator<<(std::ostream& os, const Vector<ThisSpace, UnderlyingData>& v) {
-        const auto space = SpaceTypeNameMap<ThisSpace>::name;
-        return os << std::format("{}::Vector ({}, {}, {})", space, v.X(), v.Y(), v.Z());
-    }
+    friend auto& operator<<(std::ostream& os, const Vector<ThisSpace, UnderlyingData>& v) { return os << std::format("{}", v); }
 
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 
@@ -152,3 +149,10 @@ class Vector final : public Base<ThisSpace, UnderlyingData, BaseType::Vector> {
 #endif
 };
 } // namespace Space::implementation
+
+template <typename S, typename U> struct std::formatter<Space::implementation::Vector<S, U>> : std::formatter<std::string> {
+    template <class FormatContext> auto format(Space::implementation::Vector<S, U> v, FormatContext& fc) const {
+        const auto space = Space::SpaceTypeNameMap<S>::name;
+        return formatter<string>::format(std::format("{}::Vector ({}, {}, {})", space, v.X(), v.Y(), v.Z()), fc);
+    }
+};

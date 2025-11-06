@@ -58,6 +58,8 @@
         "numbers": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "print": "cpp",
+        "text_encoding": "cpp"
     }
 }

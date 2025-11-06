@@ -741,9 +741,21 @@ TEST_CASE("NormalizedXYVectors cannot be converted to the same space") {
 }
 #endif
 
+TEST_CASE("NormalizedXYVectors can be formatted") {
+    const View::NormalizedXYVector v(1, 0);
+    CHECK(std::format("{}", v) == std::string("View::NormalizedXYVector (1, 0)"));
+}
+
 TEST_CASE("NormalizedXYVectors can be streamed") {
     const View::NormalizedXYVector v(1, 0);
     std::stringstream stream;
     stream << v;
+    CHECK(stream.str() == std::string("View::NormalizedXYVector (1, 0)"));
+}
+
+TEST_CASE("NormalizedXYVectors can be printed") {
+    const View::NormalizedXYVector v(1, 0);
+    std::stringstream stream;
+    std::print(stream, "{}", v);
     CHECK(stream.str() == std::string("View::NormalizedXYVector (1, 0)"));
 }

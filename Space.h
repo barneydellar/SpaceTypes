@@ -8,6 +8,7 @@
 #include <numeric>
 #include <sstream>
 #include <format>
+#include <print>
 
 namespace Space::implementation {
 

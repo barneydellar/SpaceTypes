@@ -100,8 +100,7 @@ class NormalizedVector final : public Base<ThisSpace, UnderlyingData, BaseType::
     }
 
     friend auto& operator<<(std::ostream& os, const NormalizedVector<ThisSpace, UnderlyingData>& v) {
-        const auto space = SpaceTypeNameMap<ThisSpace>::name;
-        return os << std::format("{}::NormalizedVector ({}, {}, {})", space, v.X(), v.Y(), v.Z());
+        return os << std::format("{}", v);
     }
 #ifndef IGNORE_SPACE_STATIC_ASSERT
 
@@ -172,3 +171,11 @@ class NormalizedVector final : public Base<ThisSpace, UnderlyingData, BaseType::
     }
 };
 } // namespace Space::implementation
+
+template <typename S, typename U>
+struct std::formatter<Space::implementation::NormalizedVector<S, U>> : std::formatter<std::string> {
+    template <class FormatContext> auto format(Space::implementation::NormalizedVector<S, U> v, FormatContext& fc) const {
+        const auto space = Space::SpaceTypeNameMap<S>::name;
+        return formatter<string>::format(std::format("{}::NormalizedVector ({}, {}, {})", space, v.X(), v.Y(), v.Z()), fc);
+    }
+};
