@@ -207,27 +207,36 @@ template <typename S, typename U, BaseType B> U& UnderlyingDataFrom(Base<S, U, B
 template <typename S, BaseType BT> struct baseFormatter : std::formatter<std::string> {
 
     constexpr auto parse(std::format_parse_context& ctx) {
-        auto pos = ctx.begin();
-        if (pos == ctx.end() || *pos == '}') {
+        auto it = ctx.begin();
+        if (it == ctx.end() || *it == '}') {
             _format_type = format_type::full;
-            return pos;
+            return it;
         }
 
-        if (*pos == 's') {
-            _format_type = format_type::space_only;
-        } else if (*pos == 't') {
-            _format_type = format_type::type_only;
-        } else if (*pos == 'x') {
-            _format_type = format_type::x_only;
-        } else if (*pos == 'y') {
-            _format_type = format_type::y_only;
-        } else if (*pos == 'z' && Is3D(BT)) {
-            _format_type = format_type::z_only;
-        } else {
-            unexpected_format_specification();
+        switch (*it++) {
+            case 's':
+                _format_type = format_type::space_only;
+                break;
+            case 't':
+                _format_type = format_type::type_only;
+                break;
+            case 'x':
+                _format_type = format_type::x_only;
+                break;
+            case 'y':
+                _format_type = format_type::y_only;
+                break;
+            case 'z':
+                if (Is3D(BT)) {
+                    _format_type = format_type::z_only;
+                    break;
+                }
+                throw std::format_error("Invalid format specifier");
+            default:
+                throw std::format_error("Invalid format specifier");
         }
 
-        return ++pos;
+        return it;
     }
 
     template <class FormatContext> auto format(const auto& v, FormatContext& fc) const {
@@ -261,7 +270,6 @@ template <typename S, BaseType BT> struct baseFormatter : std::formatter<std::st
     }
 
   private:
-    void unexpected_format_specification() {}
 
     enum class format_type { full, space_only, type_only, x_only, y_only, z_only };
     format_type _format_type = format_type::full;
