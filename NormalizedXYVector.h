@@ -183,9 +183,11 @@ class NormalizedXYVector final : public Base<ThisSpace, UnderlyingData, BaseType
 } // namespace Space::implementation
 
 template <typename S, typename U>
-struct std::formatter<Space::implementation::NormalizedXYVector<S, U>> : std::formatter<std::string> {
-    template <class FormatContext> auto format(Space::implementation::NormalizedXYVector<S, U> v, FormatContext& fc) const {
+struct std::formatter<Space::implementation::NormalizedXYVector<S, U>> : std::formatter<std::string_view> {
+    template <class FormatContext> auto format(const auto& v, FormatContext& fc) const {
         const auto space = Space::SpaceTypeNameMap<S>::name;
-        return formatter<string>::format(std::format("{}::NormalizedXYVector ({}, {})", space, v.X(), v.Y()), fc);
+        std::string temp;
+        std::format_to(std::back_inserter(temp), "{}::NormalizedXYVector ({}, {})", space, v.X(), v.Y());
+        return std::formatter<string_view>::format(temp, fc);
     }
 };

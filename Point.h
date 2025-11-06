@@ -126,9 +126,11 @@ class Point final : public Base<ThisSpace, UnderlyingData, BaseType::Point> {
 };
 } // namespace Space::implementation
 
-template <typename S, typename U> struct std::formatter<Space::implementation::Point<S, U>> : std::formatter<std::string> {
-    template <class FormatContext> auto format(Space::implementation::Point<S, U> p, FormatContext& fc) const {
+template <typename S, typename U> struct std::formatter<Space::implementation::Point<S, U>> : std::formatter<std::string_view> {
+    template <class FormatContext> auto format(const auto& p, FormatContext& fc) const {
         const auto space = Space::SpaceTypeNameMap<S>::name;
-        return formatter<string>::format(std::format("{}::Point ({}, {}, {})", space, p.X(), p.Y(), p.Z()), fc);
+        std::string temp;
+        std::format_to(std::back_inserter(temp), "{}::Point ({}, {}, {})", space, p.X(), p.Y(), p.Z());
+        return std::formatter<string_view>::format(temp, fc);
     }
 };

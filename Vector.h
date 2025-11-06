@@ -150,9 +150,11 @@ class Vector final : public Base<ThisSpace, UnderlyingData, BaseType::Vector> {
 };
 } // namespace Space::implementation
 
-template <typename S, typename U> struct std::formatter<Space::implementation::Vector<S, U>> : std::formatter<std::string> {
-    template <class FormatContext> auto format(Space::implementation::Vector<S, U> v, FormatContext& fc) const {
+template <typename S, typename U> struct std::formatter<Space::implementation::Vector<S, U>> : std::formatter<std::string_view> {
+    template <class FormatContext> auto format(const auto& v, FormatContext& fc) const {
         const auto space = Space::SpaceTypeNameMap<S>::name;
-        return formatter<string>::format(std::format("{}::Vector ({}, {}, {})", space, v.X(), v.Y(), v.Z()), fc);
+        std::string temp;
+        std::format_to(std::back_inserter(temp), "{}::Vector ({}, {}, {})", space, v.X(), v.Y(), v.Z());
+        return std::formatter<string_view>::format(temp, fc);
     }
 };
