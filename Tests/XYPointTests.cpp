@@ -622,6 +622,12 @@ TEST_CASE("XYPoints can format the default-formatting") {
     CHECK(std::format("{:*^38}", v) == "****View::XYPoint (1.2345, 2.3456)****");
 }
 
+TEST_CASE("XYPoints can localise the default-formatting") {
+    const View::XYPoint v(3.123, 4.123);
+    const auto localised = std::format(std::locale("de_DE.UTF-8"), "{}", v);
+    CHECK(localised.contains("(3,123, 4,123"));
+}
+
 TEST_CASE("XYPoints can be formatted to show the space") {
     const View::XYPoint v(1.2345, 2.3456);
     CHECK(std::format("{:s}", v) == "View");

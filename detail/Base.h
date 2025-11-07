@@ -273,10 +273,10 @@ template <typename S, BaseType BT> struct baseFormatter : std::formatter<std::st
             throw std::format_error("Invalid format type");
         case format_type::full:
             if constexpr (Is3D(BT)) {
-                fc.advance_to(stringFormatter.format(std::format("{}::{} ({}, {}, {})", Space::SpaceTypeNameMap<S>::name, Name(BT), v.X(), v.Y(), v.Z()), fc));
+                fc.advance_to(stringFormatter.format(std::format(fc.locale(), "{}::{} ({:L}, {:L}, {:L})", Space::SpaceTypeNameMap<S>::name, Name(BT), v.X(), v.Y(), v.Z()), fc));
                 return fc.out();
             } else {
-                fc.advance_to(stringFormatter.format(std::format("{}::{} ({}, {})", Space::SpaceTypeNameMap<S>::name, Name(BT), v.X(), v.Y()), fc));
+                fc.advance_to(stringFormatter.format(std::format(fc.locale(), "{}::{} ({:L}, {:L})", Space::SpaceTypeNameMap<S>::name, Name(BT), v.X(), v.Y()), fc));
                 return fc.out();
             }
         default:

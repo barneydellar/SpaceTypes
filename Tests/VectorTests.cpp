@@ -865,6 +865,12 @@ TEST_CASE("Vectors can format the default-formatting") {
     CHECK(std::format("{:*^30}", v) == "****View::Vector (1, 0, 0)****");
 }
 
+TEST_CASE("Vectors can localise the default-formatting") {
+    const View::Vector v(3.123, 4.123, 5.123);
+    const auto localised = std::format(std::locale("de_DE.UTF-8"), "{}", v);
+    CHECK(localised.contains("(3,123, 4,123, 5,123"));
+}
+
 TEST_CASE("Vectors can be formatted to show the space") {
     const View::Vector v(1, 0, 0);
     CHECK(std::format("{:s}", v) == "View");

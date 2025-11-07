@@ -1,6 +1,7 @@
 #include "ExampleTransformManager.h"
 #include "Includes.h"
 #include "SpaceHelpers.h"
+#include <locale>
 
 using namespace Space;
 
@@ -752,6 +753,13 @@ TEST_CASE("NormalizedVectors can format the default-formatting") {
     CHECK(std::format("{:*^40}", v) == "****View::NormalizedVector (1, 0, 0)****");
 }
 
+TEST_CASE("NormalizedVectors can localise the default-formatting") {
+    const View::NormalizedVector v(1, 1, 0);
+    const auto localised = std::format(std::locale("de_DE.UTF-8"), "{}", v);
+    CHECK(localised.contains("0,707"));
+    CHECK(!localised.contains("0.707"));
+}
+
 TEST_CASE("NormalizedVectors can be formatted to show the space") {
     const View::NormalizedVector v(1, 0, 0);
     CHECK(std::format("{:s}", v) == "View");
@@ -782,6 +790,13 @@ TEST_CASE("NormalizedVectors can format the x value") {
     CHECK(std::format("{:x.2}", v) == std::format("{:.2}", v.X()));
 }
 
+TEST_CASE("NormalizedVectors can localise the x value") {
+    const View::NormalizedVector v(3, 4, 5);
+    const auto localised = std::format(std::locale("de_DE.UTF-8"), "{:xL}", v);
+    CHECK(localised.contains(','));
+    CHECK(!localised.contains('.'));
+}
+
 TEST_CASE("NormalizedVectors can be formatted to show the y value") {
     const View::NormalizedVector v(3, 4, 5);
     CHECK(std::format("{:y}", v) == std::format("{}", v.Y()));
@@ -792,6 +807,13 @@ TEST_CASE("NormalizedVectors can format the y value") {
     CHECK(std::format("{:y.2}", v) == std::format("{:.2}", v.Y()));
 }
 
+TEST_CASE("NormalizedVectors can localise the y value") {
+    const View::NormalizedVector v(3, 4, 5);
+    const auto localised = std::format(std::locale("de_DE.UTF-8"), "{:yL}", v);
+    CHECK(localised.contains(','));
+    CHECK(!localised.contains('.'));
+}
+
 TEST_CASE("NormalizedVectors can be formatted to show the z value") {
     const View::NormalizedVector v(3, 4, 5);
     CHECK(std::format("{:z}", v) == std::format("{}", v.Z()));
@@ -800,6 +822,13 @@ TEST_CASE("NormalizedVectors can be formatted to show the z value") {
 TEST_CASE("NormalizedVectors can format the z value") {
     const View::NormalizedVector v(3, 4, 5);
     CHECK(std::format("{:z.2}", v) == std::format("{:.2}", v.Z()));
+}
+
+TEST_CASE("NormalizedVectors can localise the z value") {
+    const View::NormalizedVector v(3, 4, 5);
+    const auto localised = std::format(std::locale("de_DE.UTF-8"), "{:zL}", v);
+    CHECK(localised.contains(','));
+    CHECK(!localised.contains('.'));
 }
 
 TEST_CASE("NormalizedVectors can be streamed") {

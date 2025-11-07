@@ -751,6 +751,13 @@ TEST_CASE("NormalizedXYVectors can format the default-formatting") {
     CHECK(std::format("{:*^39}", v) == "****View::NormalizedXYVector (1, 0)****");
 }
 
+TEST_CASE("NormalizedXYVectors can localise the default-formatting") {
+    const View::NormalizedXYVector v(1, 1);
+    const auto localised = std::format(std::locale("de_DE.UTF-8"), "{}", v);
+    CHECK(localised.contains("0,707"));
+    CHECK(!localised.contains("0.707"));
+}
+
 TEST_CASE("NormalizedXYVectors can be formatted to show the space") {
     const View::NormalizedXYVector v(1, 0);
     CHECK(std::format("{:s}", v) == "View");

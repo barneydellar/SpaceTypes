@@ -858,6 +858,12 @@ TEST_CASE("XYVectors can format the default-formatting") {
     CHECK(std::format("{:*^39}", v) == "****View::XYVector (1.2345, 2.3456)****");
 }
 
+TEST_CASE("XYVectors can localise the default-formatting") {
+    const View::XYVector v(3.123, 4.123);
+    const auto localised = std::format(std::locale("de_DE.UTF-8"), "{}", v);
+    CHECK(localised.contains("(3,123, 4,123"));
+}
+
 TEST_CASE("XYVectors can be formatted to show the space") {
     const View::XYVector v(1.2345, 2.3456);
     CHECK(std::format("{:s}", v) == "View");
