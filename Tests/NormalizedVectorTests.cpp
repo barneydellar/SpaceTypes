@@ -747,9 +747,19 @@ TEST_CASE("NormalizedVectors can be default-formatted") {
     CHECK(std::format("{}", v) == "View::NormalizedVector (1, 0, 0)");
 }
 
+TEST_CASE("NormalizedVectors can format the default-formatting") {
+    const View::NormalizedVector v(1, 0, 0);
+    CHECK(std::format("{:*^40}", v) == "****View::NormalizedVector (1, 0, 0)****");
+}
+
 TEST_CASE("NormalizedVectors can be formatted to show the space") {
     const View::NormalizedVector v(1, 0, 0);
     CHECK(std::format("{:s}", v) == "View");
+}
+
+TEST_CASE("NormalizedVectors can format the space") {
+    const View::NormalizedVector v(1, 0, 0);
+    CHECK(std::format("{:s*^8}", v) == "**View**");
 }
 
 TEST_CASE("NormalizedVectors can be formatted to show the type") {
@@ -757,9 +767,19 @@ TEST_CASE("NormalizedVectors can be formatted to show the type") {
     CHECK(std::format("{:t}", v) == "NormalizedVector");
 }
 
+TEST_CASE("NormalizedVectors can format the type") {
+    const View::NormalizedVector v(1, 0, 0);
+    CHECK(std::format("{:t*^20}", v) == "**NormalizedVector**");
+}
+
 TEST_CASE("NormalizedVectors can be formatted to show the x value") {
     const View::NormalizedVector v(3, 4, 5);
     CHECK(std::format("{:x}", v) == std::format("{}", v.X()));
+}
+
+TEST_CASE("NormalizedVectors can format the x value") {
+    const View::NormalizedVector v(3, 4, 5);
+    CHECK(std::format("{:x.2}", v) == std::format("{:.2}", v.X()));
 }
 
 TEST_CASE("NormalizedVectors can be formatted to show the y value") {
@@ -767,9 +787,19 @@ TEST_CASE("NormalizedVectors can be formatted to show the y value") {
     CHECK(std::format("{:y}", v) == std::format("{}", v.Y()));
 }
 
+TEST_CASE("NormalizedVectors can format the y value") {
+    const View::NormalizedVector v(3, 4, 5);
+    CHECK(std::format("{:y.2}", v) == std::format("{:.2}", v.Y()));
+}
+
 TEST_CASE("NormalizedVectors can be formatted to show the z value") {
     const View::NormalizedVector v(3, 4, 5);
     CHECK(std::format("{:z}", v) == std::format("{}", v.Z()));
+}
+
+TEST_CASE("NormalizedVectors can format the z value") {
+    const View::NormalizedVector v(3, 4, 5);
+    CHECK(std::format("{:z.2}", v) == std::format("{:.2}", v.Z()));
 }
 
 TEST_CASE("NormalizedVectors can be streamed") {

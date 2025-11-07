@@ -849,40 +849,65 @@ TEST_CASE("XYVectors support Mag_double") {
 }
 
 TEST_CASE("XYVectors can be default-formatted") {
-    const View::XYVector v(1.2, 2.3);
-    CHECK(std::format("{}", v) == "View::XYVector (1.2, 2.3)");
+    const View::XYVector v(1.2345, 2.3456);
+    CHECK(std::format("{}", v) == "View::XYVector (1.2345, 2.3456)");
+}
+
+TEST_CASE("XYVectors can format the default-formatting") {
+    const View::XYVector v(1.2345, 2.3456);
+    CHECK(std::format("{:*^39}", v) == "****View::XYVector (1.2345, 2.3456)****");
 }
 
 TEST_CASE("XYVectors can be formatted to show the space") {
-    const View::XYVector v(1.2, 2.3);
+    const View::XYVector v(1.2345, 2.3456);
     CHECK(std::format("{:s}", v) == "View");
 }
 
+TEST_CASE("XYVectors can format the space") {
+    const View::XYVector v(1.2345, 2.3456);
+    CHECK(std::format("{:s*^8}", v) == "**View**");
+}
+
 TEST_CASE("XYVectors can be formatted to show the type") {
-    const View::XYVector v(1.2, 2.3);
+    const View::XYVector v(1.2345, 2.3456);
     CHECK(std::format("{:t}", v) == "XYVector");
 }
 
+TEST_CASE("XYVectors can format the type") {
+    const View::XYVector v(1.2345, 2.3456);
+    CHECK(std::format("{:t*^12}", v) == "**XYVector**");
+}
+
 TEST_CASE("XYVectors can be formatted to show the x value") {
-    const View::XYVector v(1.2, 2.3);
-    CHECK(std::format("{:x}", v) == "1.2");
+    const View::XYVector v(1.2345, 2.3456);
+    CHECK(std::format("{:x}", v) == "1.2345");
+}
+
+TEST_CASE("XYVectors can format the x value") {
+    const View::XYVector v(1.2345, 2.3);
+    CHECK(std::format("{:x.2}", v) == "1.2");
 }
 
 TEST_CASE("XYVectors can be formatted to show the y value") {
-    const View::XYVector v(1.2, 2.3);
-    CHECK(std::format("{:y}", v) == "2.3");
+    const View::XYVector v(1.2345, 2.3456);
+    CHECK(std::format("{:y}", v) == "2.3456");
+}
+
+TEST_CASE("XYVectors can format the y value") {
+    const View::XYVector v(1.2345, 2.3456);
+    CHECK(std::format("{:y.2}", v) == "2.3");
 }
 
 TEST_CASE("XYVectors can be streamed") {
-    const View::XYVector v(1.2, 2.3);
+    const View::XYVector v(1.2345, 2.3456);
     std::stringstream stream;
     stream << v;
-    CHECK(stream.str() == "View::XYVector (1.2, 2.3)");
+    CHECK(stream.str() == "View::XYVector (1.2345, 2.3456)");
 }
 
 TEST_CASE("XYVectors can be printed") {
-    const View::XYVector v(1.2, 2.3);
+    const View::XYVector v(1.2345, 2.3456);
     std::stringstream stream;
     std::print(stream, "{0}", v);
-    CHECK(stream.str() == "View::XYVector (1.2, 2.3)");
+    CHECK(stream.str() == "View::XYVector (1.2345, 2.3456)");
 }

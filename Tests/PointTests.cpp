@@ -608,33 +608,63 @@ TEST_CASE("Points cannot be converted to the same space") {
 #endif
 
 TEST_CASE("Points can be default-formatted") {
-    const View::Point v(3, 4, 5);
-    CHECK(std::format("{}", v) == "View::Point (3, 4, 5)");
+    const View::Point p(3, 4, 5);
+    CHECK(std::format("{}", p) == "View::Point (3, 4, 5)");
+}
+
+TEST_CASE("Points can format the default-formatting") {
+    const View::Point p(1, 0, 0);
+    CHECK(std::format("{:*^29}", p) == "****View::Point (1, 0, 0)****");
 }
 
 TEST_CASE("Points can be formatted to show the space") {
-    const View::Point v(1, 0, 0);
-    CHECK(std::format("{:s}", v) == "View");
+    const View::Point p(1, 0, 0);
+    CHECK(std::format("{:s}", p) == "View");
+}
+
+TEST_CASE("Points can format the space") {
+    const View::Point p(1, 0, 0);
+    CHECK(std::format("{:s*^8}", p) == "**View**");
 }
 
 TEST_CASE("Points can be formatted to show the type") {
-    const View::Point v(1, 0, 0);
-    CHECK(std::format("{:t}", v) == "Point");
+    const View::Point p(1, 0, 0);
+    CHECK(std::format("{:t}", p) == "Point");
+}
+
+TEST_CASE("Points can format the type") {
+    const View::Point p(1, 0, 0);
+    CHECK(std::format("{:t*^9}", p) == "**Point**");
 }
 
 TEST_CASE("Points can be formatted to show the x value") {
-    const View::Point v(3, 4, 5);
-    CHECK(std::format("{:x}", v) == "3");
+    const View::Point p(3.123, 4.123, 5.123);
+    CHECK(std::format("{:x}", p) == "3.123");
+}
+
+TEST_CASE("Points can format the x value") {
+    const View::Point p(3.123, 4.123, 5.123);
+    CHECK(std::format("{:x.2}", p) == "3.1");
 }
 
 TEST_CASE("Points can be formatted to show the y value") {
-    const View::Point v(3, 4, 5);
-    CHECK(std::format("{:y}", v) == "4");
+    const View::Point p(3.123, 4.123, 5.123);
+    CHECK(std::format("{:y}", p) == "4.123");
+}
+
+TEST_CASE("Points can format the y value") {
+    const View::Point p(3.123, 4.123, 5.123);
+    CHECK(std::format("{:y.2}", p) == "4.1");
 }
 
 TEST_CASE("Points can be formatted to show the z value") {
-    const View::Point v(3, 4, 5);
-    CHECK(std::format("{:z}", v) == "5");
+    const View::Point p(3.123, 4.123, 5.123);
+    CHECK(std::format("{:z}", p) == "5.123");
+}
+
+TEST_CASE("Points can format the z value") {
+    const View::Point p(3.123, 4.123, 5.123);
+    CHECK(std::format("{:z.2}", p) == "5.1");
 }
 
 TEST_CASE("Points can be streamed") {

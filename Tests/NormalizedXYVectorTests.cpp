@@ -746,9 +746,19 @@ TEST_CASE("NormalizedXYVectors can be default-formatted") {
     CHECK(std::format("{}", v) == "View::NormalizedXYVector (1, 0)");
 }
 
+TEST_CASE("NormalizedXYVectors can format the default-formatting") {
+    const View::NormalizedXYVector v(1, 0);
+    CHECK(std::format("{:*^39}", v) == "****View::NormalizedXYVector (1, 0)****");
+}
+
 TEST_CASE("NormalizedXYVectors can be formatted to show the space") {
     const View::NormalizedXYVector v(1, 0);
     CHECK(std::format("{:s}", v) == "View");
+}
+
+TEST_CASE("NormalizedXYVectors can format the space") {
+    const View::NormalizedXYVector v(1, 0);
+    CHECK(std::format("{:s*^8}", v) == "**View**");
 }
 
 TEST_CASE("NormalizedXYVectors can be formatted to show the type") {
@@ -756,14 +766,29 @@ TEST_CASE("NormalizedXYVectors can be formatted to show the type") {
     CHECK(std::format("{:t}", v) == "NormalizedXYVector");
 }
 
+TEST_CASE("NormalizedXYVectors can format the type") {
+    const View::NormalizedXYVector v(1, 0);
+    CHECK(std::format("{:t*^22}", v) == "**NormalizedXYVector**");
+}
+
 TEST_CASE("NormalizedXYVectors can be formatted to show the x value") {
     const View::NormalizedXYVector v(3, 4);
     CHECK(std::format("{:x}", v) == std::format("{}", v.X()));
 }
 
+TEST_CASE("NormalizedXYVectors can format the x value") {
+    const View::NormalizedXYVector v(3, 4);
+    CHECK(std::format("{:x.2}", v) == std::format("{:.2}", v.X()));
+}
+
 TEST_CASE("NormalizedXYVectors can be formatted to show the y value") {
     const View::NormalizedXYVector v(3, 4);
     CHECK(std::format("{:y}", v) == std::format("{}", v.Y()));
+}
+
+TEST_CASE("NormalizedXYVectors can format the y value") {
+    const View::NormalizedXYVector v(3, 4);
+    CHECK(std::format("{:y.2}", v) == std::format("{:.2}", v.Y()));
 }
 
 TEST_CASE("NormalizedXYVectors can be streamed") {

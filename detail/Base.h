@@ -206,34 +206,46 @@ template <typename S, typename U, BaseType B> U& UnderlyingDataFrom(Base<S, U, B
 
 template <typename S, BaseType BT> struct baseFormatter : std::formatter<std::string> {
 
+    std::formatter<double> doubleFormatter;
+    std::formatter<std::string> stringFormatter;
+
     constexpr auto parse(std::format_parse_context& ctx) {
         auto it = ctx.begin();
-        if (it == ctx.end() || *it == '}') {
-            _format_type = format_type::full;
-            return it;
-        }
 
-        switch (*it++) {
+        switch (*it) {
             case 's':
                 _format_type = format_type::space_only;
+                ctx.advance_to(it + 1);
+                it = stringFormatter.parse(ctx);
                 break;
             case 't':
                 _format_type = format_type::type_only;
+                ctx.advance_to(it + 1);
+                it = stringFormatter.parse(ctx);
                 break;
             case 'x':
                 _format_type = format_type::x_only;
+                ctx.advance_to(it + 1);
+                it = doubleFormatter.parse(ctx);
                 break;
             case 'y':
                 _format_type = format_type::y_only;
+                ctx.advance_to(it + 1);
+                it = doubleFormatter.parse(ctx);
                 break;
             case 'z':
                 if (Is3D(BT)) {
                     _format_type = format_type::z_only;
+                    ctx.advance_to(it + 1);
+                    it = doubleFormatter.parse(ctx);
                     break;
+                } else {
+                    throw std::format_error("Z is not supported by this type");
                 }
-                throw std::format_error("Invalid format specifier");
             default:
-                throw std::format_error("Invalid format specifier");
+                _format_type = format_type::full;
+                it = stringFormatter.parse(ctx);
+                break;
         }
 
         return it;
@@ -242,27 +254,30 @@ template <typename S, BaseType BT> struct baseFormatter : std::formatter<std::st
     template <class FormatContext> auto format(const auto& v, FormatContext& fc) const {
         switch (_format_type) {
         case format_type::type_only:
-            return formatter<std::string>::format(Name(BT), fc);
+            fc.advance_to(stringFormatter.format(Name(BT), fc));
+            return fc.out();
         case format_type::space_only:
-            return formatter<std::string>::format(Space::SpaceTypeNameMap<S>::name, fc);
+            fc.advance_to(stringFormatter.format(Space::SpaceTypeNameMap<S>::name, fc));
+            return fc.out();
         case format_type::x_only:
-            return formatter<std::string>::format(std::format("{}", v.X()), fc);
+            fc.advance_to(doubleFormatter.format(v.X(), fc));
+            return fc.out();
         case format_type::y_only:
-            return formatter<std::string>::format(std::format("{}", v.Y()), fc);
+            fc.advance_to(doubleFormatter.format(v.Y(), fc));
+            return fc.out();
         case format_type::z_only:
             if constexpr (Is3D(BT)) {
-                return formatter<std::string>::format(std::format("{}", v.Z()), fc);
+                fc.advance_to(doubleFormatter.format(v.Z(), fc));
+                return fc.out();
             }
             throw std::format_error("Invalid format type");
         case format_type::full:
             if constexpr (Is3D(BT)) {
-                return formatter<std::string>::format(
-                    std::format("{}::{} ({}, {}, {})", Space::SpaceTypeNameMap<S>::name, Name(BT), v.X(), v.Y(), v.Z()), fc
-                );
+                fc.advance_to(stringFormatter.format(std::format("{}::{} ({}, {}, {})", Space::SpaceTypeNameMap<S>::name, Name(BT), v.X(), v.Y(), v.Z()), fc));
+                return fc.out();
             } else {
-                return formatter<std::string>::format(
-                    std::format("{}::{} ({}, {})", Space::SpaceTypeNameMap<S>::name, Name(BT), v.X(), v.Y()), fc
-                );
+                fc.advance_to(stringFormatter.format(std::format("{}::{} ({}, {})", Space::SpaceTypeNameMap<S>::name, Name(BT), v.X(), v.Y()), fc));
+                return fc.out();
             }
         default:
             throw std::format_error("Invalid format type");

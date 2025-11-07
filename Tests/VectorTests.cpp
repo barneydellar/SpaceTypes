@@ -860,9 +860,19 @@ TEST_CASE("Vectors can be default-formatted") {
     CHECK(std::format("{}", v) == "View::Vector (3, 4, 5)");
 }
 
+TEST_CASE("Vectors can format the default-formatting") {
+    const View::Vector v(1, 0, 0);
+    CHECK(std::format("{:*^30}", v) == "****View::Vector (1, 0, 0)****");
+}
+
 TEST_CASE("Vectors can be formatted to show the space") {
     const View::Vector v(1, 0, 0);
     CHECK(std::format("{:s}", v) == "View");
+}
+
+TEST_CASE("Vectors can format the space") {
+    const View::Vector v(1, 0, 0);
+    CHECK(std::format("{:s*^8}", v) == "**View**");
 }
 
 TEST_CASE("Vectors can be formatted to show the type") {
@@ -870,9 +880,19 @@ TEST_CASE("Vectors can be formatted to show the type") {
     CHECK(std::format("{:t}", v) == "Vector");
 }
 
+TEST_CASE("Vectors can format the type") {
+    const View::Vector v(1, 0, 0);
+    CHECK(std::format("{:t*^10}", v) == "**Vector**");
+}
+
 TEST_CASE("Vectors can be formatted to show the x value") {
     const View::Vector v(3, 4, 5);
     CHECK(std::format("{:x}", v) == "3");
+}
+
+TEST_CASE("Vectors can format the x value") {
+    const View::Vector v(3.123, 4.123, 5.123);
+    CHECK(std::format("{:x.2}", v) == "3.1");
 }
 
 TEST_CASE("Vectors can be formatted to show the y value") {
@@ -880,9 +900,19 @@ TEST_CASE("Vectors can be formatted to show the y value") {
     CHECK(std::format("{:y}", v) == "4");
 }
 
+TEST_CASE("Vectors can format the y value") {
+    const View::Vector v(3.123, 4.123, 5.123);
+    CHECK(std::format("{:y.2}", v) == "4.1");
+}
+
 TEST_CASE("Vectors can be formatted to show the z value") {
     const View::Vector v(3, 4, 5);
     CHECK(std::format("{:z}", v) == "5");
+}
+
+TEST_CASE("Vectors can format the z value") {
+    const View::Vector v(3.123, 4.123, 5.123);
+    CHECK(std::format("{:z.2}", v) == "5.1");
 }
 
 TEST_CASE("Vectors can be streamed") {
