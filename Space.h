@@ -9,6 +9,7 @@
 #include <sstream>
 #include <format>
 #include <print>
+#include <locale>
 
 namespace Space::implementation {
 

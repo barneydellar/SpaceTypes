@@ -213,39 +213,39 @@ template <typename S, BaseType BT> struct baseFormatter : std::formatter<std::st
         auto it = ctx.begin();
 
         switch (*it) {
-            case 's':
-                _format_type = format_type::space_only;
-                ctx.advance_to(it + 1);
-                it = stringFormatter.parse(ctx);
-                break;
-            case 't':
-                _format_type = format_type::type_only;
-                ctx.advance_to(it + 1);
-                it = stringFormatter.parse(ctx);
-                break;
-            case 'x':
-                _format_type = format_type::x_only;
+        case 's':
+            _format_type = format_type::space_only;
+            ctx.advance_to(it + 1);
+            it = stringFormatter.parse(ctx);
+            break;
+        case 't':
+            _format_type = format_type::type_only;
+            ctx.advance_to(it + 1);
+            it = stringFormatter.parse(ctx);
+            break;
+        case 'x':
+            _format_type = format_type::x_only;
+            ctx.advance_to(it + 1);
+            it = doubleFormatter.parse(ctx);
+            break;
+        case 'y':
+            _format_type = format_type::y_only;
+            ctx.advance_to(it + 1);
+            it = doubleFormatter.parse(ctx);
+            break;
+        case 'z':
+            if (Is3D(BT)) {
+                _format_type = format_type::z_only;
                 ctx.advance_to(it + 1);
                 it = doubleFormatter.parse(ctx);
                 break;
-            case 'y':
-                _format_type = format_type::y_only;
-                ctx.advance_to(it + 1);
-                it = doubleFormatter.parse(ctx);
-                break;
-            case 'z':
-                if (Is3D(BT)) {
-                    _format_type = format_type::z_only;
-                    ctx.advance_to(it + 1);
-                    it = doubleFormatter.parse(ctx);
-                    break;
-                } else {
-                    throw std::format_error("Z is not supported by this type");
-                }
-            default:
-                _format_type = format_type::full;
-                it = stringFormatter.parse(ctx);
-                break;
+            } else {
+                throw std::format_error("Z is not supported by this type");
+            }
+        default:
+            _format_type = format_type::full;
+            it = stringFormatter.parse(ctx);
+            break;
         }
 
         return it;
@@ -273,10 +273,17 @@ template <typename S, BaseType BT> struct baseFormatter : std::formatter<std::st
             throw std::format_error("Invalid format type");
         case format_type::full:
             if constexpr (Is3D(BT)) {
-                fc.advance_to(stringFormatter.format(std::format(fc.locale(), "{}::{} ({:L}, {:L}, {:L})", Space::SpaceTypeNameMap<S>::name, Name(BT), v.X(), v.Y(), v.Z()), fc));
+                fc.advance_to(stringFormatter.format(
+                    std::format(
+                        fc.locale(), "{}::{} ({:L}, {:L}, {:L})", Space::SpaceTypeNameMap<S>::name, Name(BT), v.X(), v.Y(), v.Z()
+                    ),
+                    fc
+                ));
                 return fc.out();
             } else {
-                fc.advance_to(stringFormatter.format(std::format(fc.locale(), "{}::{} ({:L}, {:L})", Space::SpaceTypeNameMap<S>::name, Name(BT), v.X(), v.Y()), fc));
+                fc.advance_to(stringFormatter.format(
+                    std::format(fc.locale(), "{}::{} ({:L}, {:L})", Space::SpaceTypeNameMap<S>::name, Name(BT), v.X(), v.Y()), fc
+                ));
                 return fc.out();
             }
         default:
@@ -285,7 +292,6 @@ template <typename S, BaseType BT> struct baseFormatter : std::formatter<std::st
     }
 
   private:
-
     enum class format_type { full, space_only, type_only, x_only, y_only, z_only };
     format_type _format_type = format_type::full;
 };

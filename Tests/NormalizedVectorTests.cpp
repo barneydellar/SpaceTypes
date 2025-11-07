@@ -1,7 +1,6 @@
 #include "ExampleTransformManager.h"
 #include "Includes.h"
 #include "SpaceHelpers.h"
-#include <locale>
 
 using namespace Space;
 
